@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; height: 100%; overflow: hidden; }
+body { background: var(--c-space); color: var(--c-text); font-family: Inter, system-ui, sans-serif; }
+
+.globe-wrap { position: fixed; inset: 0; }
+.stars { position: absolute; inset: 0; pointer-events: none; }
+
+.info-card {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 10;
+  width: min(420px, calc(100vw - 32px)); padding: 10px 20px 12px; text-align: center; pointer-events: none;
+  border-radius: 14px; border: 1px solid var(--c-card-border);
+  background: linear-gradient(180deg, var(--c-card-top), var(--c-card-bottom));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45); backdrop-filter: blur(10px);
+}
+.info-card__label { font: 500 11px/1.4 'IBM Plex Mono', monospace; letter-spacing: 0.24em; text-transform: uppercase; color: var(--c-label); }
+.info-card__name { font: 700 30px/1.15 'Space Grotesk', Inter, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.marker {
+  width: 10px; height: 10px; padding: 0; border-radius: 50%; cursor: pointer; pointer-events: auto;
+  background: var(--c-land-base); border: 2px solid var(--c-marker-ring); box-sizing: content-box;
+  transition: transform 0.12s;
+}
+.marker.has-content { background: var(--c-cream); }
+.marker.is-hover { transform: scale(1.3); background: var(--c-cream-hover); }
+.marker.is-selected { background: var(--c-cream-selected); transform: scale(1.4); }
+:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
+
+.load-error { position: fixed; top: 100px; left: 16px; right: 16px; text-align: center; color: var(--c-label); }
+@media (prefers-reduced-motion: reduce) { .marker { transition: none; } }
