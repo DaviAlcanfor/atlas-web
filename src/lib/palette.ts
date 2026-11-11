@@ -20,6 +20,24 @@ export const palette = {
   label: '#5fa8f0',
   text: '#ffffff',
   focus: '#9cc9ff',
+  // panel accents (keep the app from being monochrome)
+  accentTeal: '#4fd1c5',
+  accentAmber: '#f6c25b',
+  accentCoral: '#f08a7e',
+  accentViolet: '#b49cf6',
+  accentGreen: '#8fd694',
+  panelCard: 'rgba(255, 255, 255, 0.045)',
+  panelLine: 'rgba(160, 190, 240, 0.18)',
+} as const;
+
+/** Timeline dot color per event kind (CSS variable names, so components stay token-only). */
+export const kindColor = {
+  political: 'var(--c-accent-violet)',
+  war: 'var(--c-accent-coral)',
+  treaty: 'var(--c-accent-teal)',
+  cultural: 'var(--c-accent-amber)',
+  economic: 'var(--c-accent-green)',
+  other: 'var(--c-label)',
 } as const;
 
 // Soft, desaturated fills for the "Political regime" layer (one per distinct regime, assigned in sorted order).

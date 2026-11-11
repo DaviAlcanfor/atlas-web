@@ -52,6 +52,7 @@ interface Props {
   selectedId: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string | null) => void;
+  onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
 }
 
 const setMarkerVisible = (el: object, visible: boolean) => {
@@ -59,7 +60,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, selectedId, onHover, onSelect }: Props) {
+export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, selectedId, onHover, onSelect, onReady: onReadyProp }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -213,8 +214,11 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     c.minDistance = 100 * (1 + MIN_ALTITUDE); // GLOBE_RADIUS is 100 in three-globe
     c.maxDistance = 100 * (1 + 4);
     // programmatic camera moves don't fire 'change' by themselves; update() does, which re-hides far-side markers
-    requestAnimationFrame(() => c.update());
-  }, []);
+    requestAnimationFrame(() => {
+      c.update();
+      onReadyProp?.();
+    });
+  }, [onReadyProp]);
 
   const capMaterial = useCallback(
     (d: object) => {

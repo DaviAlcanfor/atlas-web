@@ -24,3 +24,9 @@
 - All 196 `/v1/countries/{iso2}` responses validate against the web schemas. 22 markers, 5 `has_content`, 5 with `regime`.
 - `GET /v1/snapshots/nearest` now returns 404 "No snapshots available yet" while `snapshot_years` is empty (web handles it via `isNotFound`; UI in phase 3).
 - Data quality (API side, not patched in UI): FR `currencies` lists "franco CFP (₣)" next to the euro (Wikidata value for overseas territories); the 5 seed countries' 23 events all have `source_ids: []`; regime text comes from an unverified legacy seed.
+
+## CR-2: news per country (requested by the user, 2026-11-11)
+- **What:** the web panel needs a "Notícias" (news) section. Contract v1.0 has no news endpoint, and the web app may only consume the Atlas API.
+- **Today (web):** the section states that the API has no news yet and links out to a Google News search for the country (a link only; nothing is fetched or invented).
+- **Proposed fix:** `GET /v1/countries/{iso2}/news?limit=` -> `{ items: [{ id, title, url, source_name, published_at, language }] }`, fetched/cached server side (keys stay on the API).
+- **Status:** open.

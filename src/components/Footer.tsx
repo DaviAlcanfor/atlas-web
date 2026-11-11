@@ -3,10 +3,13 @@ import { isMock } from '../api';
 // Attribution. Wording marked TODO must be confirmed against the API repo's README; do not guess license text.
 export function Footer() {
   return (
-    <footer className="footer">
-      {isMock && <strong>MOCK DATA · </strong>}
-      Borders: Natural Earth (public domain). Historical borders: historical-basemaps (GPL-3.0) — TODO: attribution and license notice wording.
-      Facts and history: Atlas API; each upstream source and its license is listed in the country panel — TODO: Wikidata / World Bank license text.
-    </footer>
+    <>
+      {/* Never let fake data pass as real: a build without VITE_API_URL is visibly marked. */}
+      {isMock && <div className="mock-badge" role="note">DADOS DE TESTE (mock)</div>}
+      <footer className="footer">
+        Fronteiras: Natural Earth (domínio público). Fronteiras históricas: historical-basemaps (GPL-3.0) — TODO: texto de atribuição e aviso de licença.
+        Fatos e história: API do Atlas; cada fonte e sua licença aparecem no painel do país — TODO: texto de licença Wikidata / World Bank.
+      </footer>
+    </>
   );
 }

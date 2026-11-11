@@ -25,6 +25,7 @@ The API is a separate repo ("atlas-api"). Its contract is `contract/CONTRACT.md`
 - Missing field = "no data". Never fabricate values.
 - Every fact block shows its source (from `sources`) and "updated at".
 - Client: `src/api/client.ts` (fetch, `application/problem+json` errors, browser HTTP/ETag cache left on) + zod validation of every response.
+  `VITE_API_URL` (public URL, not a secret) is committed in `.env.production` so Vercel builds hit the real API; `.env.local` for dev.
   Mock mode: if `VITE_API_URL` is unset, an in-memory adapter (`src/api/mocks/`) returns fixtures that conform to the contract. Same components either way.
 - CORS blocked by the API? Do not work around it in the web app: report it (the fix is the API's `CORS_ORIGINS`).
 
