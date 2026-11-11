@@ -22,6 +22,9 @@ export const palette = {
   focus: '#9cc9ff',
 } as const;
 
+// Soft, desaturated fills for the "Political regime" layer (one per distinct regime, assigned in sorted order).
+export const regimePalette = ['#c9b79c', '#9db4c8', '#b7c4a0', '#c9a6a6', '#b3a6c9', '#a6c9c0', '#d0c08a', '#a6b0c9'] as const;
+
 export const hatch = { periodPx: 10, linePx: 2 } as const; // measured along screen axes (reference screenshot 3)
 
 const kebab = (s: string) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());

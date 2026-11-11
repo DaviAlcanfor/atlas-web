@@ -7,22 +7,26 @@ Stack: TypeScript (strict) + Vite + React (function components/hooks) + `react-g
 - `npm run dev` — dev server (port 5173)
 - `npm run build` — typecheck + production build
 - `npm test` — vitest
-- `npm run data` — ETL for geometry (`scripts/build-data.ts`)
+- `npm run data` — ETL for modern geometry (`scripts/build-data.ts`)
 - `npm run shot -- <out-dir>` — Playwright screenshots + drag frame-rate probe (needs dev server running; `HEADED=1 GPU=1` for real GPU)
 - Windows note: the project path contains `&`, so `npx` fails; call tools via `node node_modules/<pkg>/...`.
+  `vitest` additionally crashes ("reading 'config'") when run from a path containing `&`: run it through a junction, e.g. `mklink /J %TEMP%\atlasjunc "<project path>"` and `cd` there.
 
-## Data strategy (decision: external API, not local mocks)
-We do **not** mock or hand-store all country data locally. Keeping everything in the repo does not scale
-(hundreds of countries, facts that change, historical snapshots). Instead:
+## Data strategy (decision: the web app talks ONLY to the Atlas API)
+The API is a separate repo ("atlas-api"). Its contract is `contract/CONTRACT.md` (FROZEN: never edit it; problems go to
+`contract/CHANGE_REQUESTS.md`, then stop and tell the user). Live: https://atlas-api.fastapicloud.dev (docs at `/docs`).
 
-- **Facts** (names, capitals, flags, population, languages, currencies, leaders, memberships) come from an **external API**
-  (REST Countries v5; World Bank as optional second source), fetched at runtime or build time, never invented.
-- **Geometry** (Natural Earth via `world-atlas`, historical-basemaps snapshots) stays as static files in `public/data/`, because it is large, stable and not served by an API.
-- **Curated text** (history timeline, "current politics") stays in `content/<ISO2>.json`, validated with zod. This is the only hand-written data.
-- Missing field = "no data". Never fabricate values; mark uncertain curated content with `TODO`.
-- Every fact block shows its source and "updated at".
-- **API keys never ship to the browser.** If the API needs a key (REST Countries uses `RESTCOUNTRIES_API_KEY`), call it from a build script or a serverless proxy (e.g. Vercel function), not from client code. `.env` is git-ignored.
-- The earlier plan (everything static from build-time JSON) is superseded where it conflicts with this section; the exact fetch layer (build-time vs. proxy + cache) is decided in phase 2 after checking the free-plan limits.
+- **Facts, curated timeline/politics, snapshot links, search**: only from the Atlas API. The web app does NOT call REST Countries,
+  World Bank or Wikidata (browser or build time) and holds no API keys.
+- **Geometry** is static under `public/data/`. MODERN geometry is built by this repo (`scripts/build-data.ts`, Natural Earth via `world-atlas`).
+  HISTORICAL geometry (historical-basemaps) is copied by the user into `public/data/historical/`; paths come from the API's `geometry_url`.
+- **"Has content" and micro-state marker positions** come from `GET /v1/countries` (`has_content`, `marker`), not from local files.
+  There is no `content/` folder in the web app.
+- Missing field = "no data". Never fabricate values.
+- Every fact block shows its source (from `sources`) and "updated at".
+- Client: `src/api/client.ts` (fetch, `application/problem+json` errors, browser HTTP/ETag cache left on) + zod validation of every response.
+  Mock mode: if `VITE_API_URL` is unset, an in-memory adapter (`src/api/mocks/`) returns fixtures that conform to the contract. Same components either way.
+- CORS blocked by the API? Do not work around it in the web app: report it (the fix is the API's `CORS_ORIGINS`).
 
 ## Conventions
 - Design tokens only in `src/lib/palette.ts` (mirrored to CSS variables). No hardcoded colors in components.
@@ -38,7 +42,7 @@ We do **not** mock or hand-store all country data locally. Keeping everything in
 
 ## Phases
 1. Globe matching the reference screenshots (in review)
-2. Data fetching + facts in the panel
-3. Historical layer + slider
-4. Historical panel
-5. Search + seed content + Vercel deploy
+2. API client + mock mode + country panel + layer toggle
+3. Historical layer + slider + historical panel (on mocks)
+4. Integration with the live API (list every contract mismatch)
+5. Search + approved leftovers + polish + Vercel deploy

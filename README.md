@@ -2,7 +2,7 @@
 
 Globo 3D interativo onde cada país carrega história, política atual e fatos, e um slider de tempo troca o globo para fronteiras históricas (ex.: Império Otomano).
 
-> **Status:** fase 1 de 5 (globo) entregue. Veja [TODO.md](TODO.md) para o que falta e [AGENTS.md](AGENTS.md) para as convenções do projeto.
+> **Status:** fase 1 de 5 (globo) entregue; fase 2 (API + mocks + painel) em andamento. Veja [TODO.md](TODO.md) para o que falta e [AGENTS.md](AGENTS.md) para as convenções do projeto.
 
 ## Stack
 TypeScript (strict) · Vite · React 19 (hooks) · `react-globe.gl` 2.38 (three-globe / three 0.187) · `zod` · `vitest` · Playwright (screenshots). Site estático, sem Next.js.
@@ -24,19 +24,21 @@ Opções do `shot`: `HEADED=1 GPU=1` usa a GPU real em vez do renderizador por s
 | Peça | O que é | Onde |
 |---|---|---|
 | **Geometria** | Natural Earth 50m (via `world-atlas`), chaveada por ISO 3166-1 alpha-2. Kosovo = `XK` (não oficial). Historical-basemaps entra na fase 3. | `public/data/modern.geojson`, `lines.json` |
-| **Dados** | Fatos (capital, população, idiomas, moeda…) vêm de **API externa** (REST Countries v5; World Bank opcional), não de mocks locais. Chaves nunca vão ao browser. | fase 2 (ver AGENTS.md) |
+| **Dados** | Fatos, texto curado (história, política atual), vínculos de snapshots e busca vêm **somente da Atlas API** (repo separado; contrato em `contract/CONTRACT.md`). O app não chama REST Countries nem World Bank e não tem chaves. Sem `VITE_API_URL`, usa mocks em memória (`src/api/mocks/`). | `src/api/` |
 | **Código** | App React + globo. | `src/` |
 
-Texto curado (história, política atual) fica em `content/<ISO2>.json`. Hoje há só 5 stubs (AT, BR, DE, EG, JP) com ISO2 e nome; presença do arquivo = país "com conteúdo" (cor creme). Dado ausente = "no data"; nada é inventado.
+"País com conteúdo" (cor creme) e a posição dos marcadores de micro-estados vêm de `GET /v1/countries` (`has_content`, `marker`). Dado ausente = "no data"; nada é inventado.
+
+Variável de ambiente: `VITE_API_URL` (ex.: `https://atlas-api.fastapicloud.dev`). A API precisa liberar a origem do app em `CORS_ORIGINS`.
 
 ### ETL (`scripts/build-data.ts`)
 Converte `world-atlas/countries-50m` em:
-- `modern.geojson` (~1,3 MB): polígonos com `ISO2`, `NAME`, `micro`, `lat`, `lng`. Ilhas < ~400 km² são removidas dos polígonos para reduzir draw calls (permanecem nas linhas de costa).
+- `modern.geojson` (~1,3 MB): polígonos com `ISO2`, `NAME`, `lat`, `lng`. Ilhas < ~400 km² são removidas dos polígonos para reduzir draw calls (permanecem nas linhas de costa).
 - `lines.json` (~1,1 MB): fronteiras terrestres e costas separadas, para cores diferentes.
-- Micro-estados soberanos (Andorra, Mônaco, Liechtenstein, San Marino, Vaticano, Malta etc.; lista fixa de 22) recebem marcador clicável no centroide.
+- Marcadores de micro-estados: posição vem da API (`marker`), não do ETL.
 
 ### Adicionar um país com conteúdo
-Crie `content/<ISO2>.json` (ex.: `content/IT.json` com `{ "iso2": "IT", "name": "Italy" }`). O schema zod completo (história, política) chega na fase 2.
+Isso é feito no repo da API (o app só consome `has_content`).
 
 ### Adicionar um ano de snapshot histórico
 Fase 3 (ainda não implementado).
@@ -44,11 +46,12 @@ Fase 3 (ainda não implementado).
 ## Estrutura
 ```
 scripts/        build-data.ts, screenshot.ts
-content/        <ISO2>.json (texto curado)
-public/data/    modern.geojson, lines.json
+contract/       CONTRACT.md (congelado), CHANGE_REQUESTS.md
+public/data/    modern.geojson, lines.json (e historical/ na fase 3)
 src/
-  components/   Globe, InfoCard
-  hooks/        useAtlasData
+  api/          client, schemas zod, tipos, mocks
+  components/   Globe, InfoCard, CountryPanel, LayerToggle
+  hooks/        useAtlasData, useAsync
   lib/          palette (tokens de design), hatchMaterial (shaders), stars
   state.tsx     contexto único + sincronização com o hash da URL (#c=AT)
 ```

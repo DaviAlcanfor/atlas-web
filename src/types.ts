@@ -3,7 +3,7 @@ import type { Feature, Geometry } from 'geojson';
 export interface CountryProps {
   ISO2: string | null; // null for disputed/unlisted places (Somaliland, N. Cyprus...)
   NAME: string;
-  micro: boolean; // too small to see: drawn as a marker
+  micro: boolean; // set by mergeCountries() from the API's `marker`; not present in modern.geojson
   lat: number;
   lng: number;
 }

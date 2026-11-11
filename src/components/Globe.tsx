@@ -5,7 +5,8 @@ import { palette } from '../lib/palette';
 import { drawStars } from '../lib/stars';
 import { geoBounds, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments } from 'three';
-import { idOf, type CountryFeature, type Lines } from '../types';
+import { regimeColors } from '../lib/regimes';
+import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
 const ALT_BASE = 0.004;
 const ALT_SELECTED = 0.015;
@@ -45,6 +46,8 @@ interface Props {
   features: CountryFeature[];
   lines: Lines;
   contentIds: Set<string>;
+  layer: LayerId;
+  regimes: Map<string, string>; // iso2 -> regime text (only countries where the API has one)
   hoveredId: string | null;
   selectedId: string | null;
   onHover: (id: string | null) => void;
@@ -56,7 +59,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, contentIds, hoveredId, selectedId, onHover, onSelect }: Props) {
+export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, selectedId, onHover, onSelect }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -128,13 +131,18 @@ export function Globe({ features, lines, contentIds, hoveredId, selectedId, onHo
     });
     return () => cleanups.forEach((c) => c());
   }, [markers]);
+  const colors = useMemo(() => regimeColors(regimes), [regimes]);
+  const regimeMats = useMemo(() => new Map([...colors].map(([k, c]) => [k, createSolidMaterial(c)])), [colors]);
   useEffect(() => {
     markers.forEach((b, id) => {
-      b.classList.toggle('has-content', contentIds.has(id));
+      const regime = regimes.get(id);
+      b.classList.toggle('has-content', layer === 'content' && contentIds.has(id));
       b.classList.toggle('is-hover', id === hoveredId);
       b.classList.toggle('is-selected', id === selectedId);
+      // in the regime layer the marker takes the regime color unless hovered/selected (their CSS classes win)
+      b.style.background = layer === 'regime' && regime && id !== hoveredId && id !== selectedId ? colors.get(regime) ?? '' : '';
     });
-  }, [markers, contentIds, hoveredId, selectedId]);
+  }, [markers, contentIds, layer, regimes, colors, hoveredId, selectedId]);
 
   const lineObjects = useMemo(() => [buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)], [lines]);
 
@@ -212,10 +220,14 @@ export function Globe({ features, lines, contentIds, hoveredId, selectedId, onHo
     (d: object) => {
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
-      if (!contentIds.has(id)) return hov || id === selectedId ? mats.hatchHover : mats.hatch;
-      return id === selectedId ? mats.selected : hov ? mats.hover : mats.content;
+      const regime = regimes.get(id);
+      const filled = layer === 'regime' ? !!regime : contentIds.has(id);
+      if (!filled) return hov || id === selectedId ? mats.hatchHover : mats.hatch;
+      if (id === selectedId) return mats.selected;
+      if (hov) return mats.hover;
+      return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [contentIds, hoveredId, selectedId, mats],
+    [contentIds, layer, regimes, regimeMats, hoveredId, selectedId, mats],
   );
 
   return (

@@ -12,14 +12,8 @@ const require = createRequire(import.meta.url);
 const topo = JSON.parse(readFileSync(require.resolve('world-atlas/countries-50m.json'), 'utf8')) as Topology;
 const obj = topo.objects.countries as GeometryCollection;
 
-// Area (steradians) below which a country gets a clickable marker. 2e-5 sr ~ 800 km2.
-const MICRO_SR = 2e-5;
 // Natural Earth ids are ISO numeric; a few disputed places have none.
 const NAME_TO_ISO2: Record<string, string> = { Kosovo: 'XK' }; // XK = unofficial, used by EU/World Bank
-
-// Markers only for sovereign micro-states; small territories (Cayman, Guam...) stay plain polygons.
-// ponytail: hardcoded list; phase 2 can replace it with REST Countries `independent`.
-const SOVEREIGN_MICRO = new Set('VA FM MH TO SG SC SM VC LC KN PW NR MC MT MV LI GD DM BB BH AG AD'.split(' '));
 
 // three-globe makes one mesh (= one draw call) per sub-polygon, so ~1000 tiny islands cost real frame time.
 // Drop sub-polygons smaller than this (steradians; 1e-5 ~ 400 km2) unless it is the country's biggest part.
@@ -50,7 +44,7 @@ const features = fc.features.map((f) => {
   const [lng, lat] = geoCentroid(f);
   return {
     type: 'Feature',
-    properties: { ISO2: iso2, NAME: name, micro: geoArea(f) < MICRO_SR && SOVEREIGN_MICRO.has(iso2 ?? ''), lat, lng },
+    properties: { ISO2: iso2, NAME: name, lat, lng }, // micro-state markers come from the API (CountrySummary.marker), see src/lib/merge.ts
     geometry: pruneParts(f.geometry),
   } as Feature<Geometry>;
 });
@@ -70,4 +64,3 @@ const kb = (p: string) => (statSync(p).size / 1024).toFixed(0) + ' KB';
 console.log('modern.geojson', kb('public/data/modern.geojson'), '| lines.json', kb('public/data/lines.json'));
 console.log('polygon parts:', features.reduce((n, f) => n + (f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates.length : 1), 0));
 console.log('features:', features.length, '| no ISO2:', features.filter((f) => !f.properties!.ISO2).map((f) => f.properties!.NAME).join(', '));
-console.log('micro:', features.filter((f) => f.properties!.micro).map((f) => `${f.properties!.NAME}(${f.properties!.ISO2})`).join(', '));
