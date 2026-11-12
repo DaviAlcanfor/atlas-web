@@ -6,6 +6,47 @@ Specs do web: `specs/NNN-*.md` deste repo. Specs da API: `atlas-api/specs/NNN-*.
 (o dono aprovou a v1.2 em bloco: aplicar no `CONTRACT.md` dos dois repos no início da fase que a usar); terminar cada tarefa com
 testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo quando a tarefa cruza os dois.
 
+## RETOMAR AQUI (estado em 2026-11-12, fim da sessão)
+
+### No ar
+API v1.1 (glossário, regime de 153 países, governantes, pessoas, pistas, capital) e front com: design "Signal", globo em pontos,
+Next.js (`/pais/[iso2]`, `/glossario`), bandeira do país, estados, timeline, ícones, camada Bandeiras, polimento 021 (estados com botão,
+fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr, carregamento com %, painel 540 px).
+
+### Pronto, mas ainda não no ar (fazer nesta ordem)
+1. **Idiomas reais (spec 017)**: o ETL `python -m etl wikidata-languages` (pasta `atlas-api`, `PYTHONPATH=src`, `.venv/Scripts/python.exe`)
+   travava (duas execuções da manhã ficaram 8 h paradas; foram encerradas) e foi relançado às 17:01. Conferir se gerou
+   `data_out/languages.json`; se travar de novo, investigar `_cached` em `etl/wikidata/languages.py` (provável espera de limite de taxa
+   do Wikidata sem teto). Depois: `-m atlas_api.cli import-facts` no banco local, conferir BR (Nheengatu, Guarani, Libras, Hunsrik,
+   Talian), regerar amostras com `scratchpad/samples_v12a.py` e trocar o mock feito à mão `geo/src/api/mocks/languages.ts` pelos dados reais.
+2. **atlas-api, branch `feat/v1.2-data`**: tem 3 commits (019, 017, 015, 009, CR-003) + 2 arquivos sem commit: `contract/CONTRACT.md`
+   (v1.2 parte A já aplicada, idêntica à do web) e `specs/012-historical-series.md` (pesquisa do Cliopatria). Commitar, rodar
+   pytest + ruff + mypy, push e abrir PR para `main`. **Não mergear ainda.**
+3. **Ensaiar a migração 0006 → 0010** (0007 capitals, 0008 country_languages, 0009 indicators, 0010 fx) num banco local descartável a partir
+   de um worktree da branch do PR, com `alembic upgrade 0010` + `import-content` + `import-facts` (usa `data_out/`: wikidata, worldbank,
+   undp, fx, languages, leaders, pantheon). Gerar um `.ps1` só ASCII como o de 2026-11-12 (ver "Lições").
+4. **Produção** (dono, ou agente se o dono disser "roda você"): rodar o script na produção, **depois** mergear o PR da API (o merge publica).
+   Conferir `/v1/countries/BR/profile`, `/v1/countries/BR/economy`, `/v1/currencies/BRL`, `languages_spoken` em `/v1/countries/BR`.
+5. **atlas-web PR #7** (front v1.2: "Como vive o povo", `/moeda/[code]`, idiomas por status): pode ser mergeado a qualquer momento
+   (campos opcionais), mas só mostra os dados depois do passo 4. Depois: `npm run smoke` e screenshots contra produção.
+6. **Ajustes de produção da spec 019 (dono)**: conferir réplicas/workers no FastAPI Cloud e `DB_POOL_SIZE`/`DB_MAX_OVERFLOW`/`DB_POOL_TIMEOUT`
+   (spec 019, "O que o dono deve conferir"); rodar uma vez `python scripts/load_test.py https://atlas-api.fastapicloud.dev 48`;
+   para espelhar imagens no Supabase Storage, definir `IMAGE_BUCKET_URL` e `SUPABASE_SERVICE_KEY` e rodar o ETL de imagens.
+
+### Próximas fases (depois do acima), detalhes nas seções abaixo
+- P4 resto: 016 história (agora em **texto corrido por período**, ver P4.5) e 018 ideologias. Contrato v1.2 parte B.
+- P4.5: cantores/divas pop em Pessoas (grupo "Música"), resumos por IA (escrever spec 022; executor carrega a skill `claude-api`).
+- P5: 008 notícias (GDELT + Jev) e "acontecendo agora"; 006 v1.2 slider esquerda/direita.
+- P6: 010 música, 011 vídeos (incl. Prof. Ricardo Marcílio), Plonk It falsos negativos.
+- P7: viagem no tempo com Cliopatria + estilos de mapa por época.
+- Backlog B1-B14 (terceira rodada): economia/produção, bolsas, blocos (UE, BRICS...), Nobel, esportes, história da bandeira,
+  radar aéreo/satélites, tecnologia/chips, grafo "quem produz o quê".
+
+### Pequenos pendentes
+- Readout do topo mostra nome em inglês ("Brazil", "Estado em Brazil"): usar o nome pt-BR da API.
+- Revisão humana: `atlas-api/content/glossary.yaml`, `regimes.yaml`, textos de `geo/src/lib/explanations.ts` (17 de ~22 escritos pelo agente).
+- Favoritos de moedas salvos no navegador (B3) não feitos.
+
 ## Checklist dos pedidos
 
 ### Lista 1 (2026-11-11)
