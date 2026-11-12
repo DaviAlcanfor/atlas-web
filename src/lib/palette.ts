@@ -7,7 +7,7 @@ export const palette = {
   ocean: '#061321',
   oceanRim: '#0f3446',
   atmosphere: '#2f8fa3',
-  panel: 'rgba(5, 14, 23, 0.88)',
+  panel: 'rgba(5, 14, 23, 0.96)',
   panelSolid: '#07111b',
   // data (ice cyan family)
   ice: '#8fdbe3', // land dots, primary data

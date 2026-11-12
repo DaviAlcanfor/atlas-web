@@ -132,7 +132,7 @@ describe('glossary', () => {
 describe('CountryPanel v1.1 sections', () => {
   it('BR shows leaders (credit + licence), people with filter + attribution, and clues', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="BR" name="Brasil" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="BR" name="Brasil" inApi onClose={() => {}} />);
     expect(await screen.findByRole('heading', { name: /Governantes/ })).toBeTruthy();
     expect(screen.getAllByText(/Foto: .* · CC BY 2\.0/).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /mostrar mais/ })).toBeTruthy();
@@ -148,7 +148,7 @@ describe('CountryPanel v1.1 sections', () => {
   });
   it('RS (no leaders, no people, no clues) shows none of the new sections and no error', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="RS" name="Sérvia" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="RS" name="Sérvia" inApi onClose={() => {}} />);
     expect(await screen.findByText('Capital: Belgrado')).toBeTruthy();
     await new Promise((r) => setTimeout(r, 400));
     for (const h of [/Governantes/, /Pessoas importantes/]) expect(screen.queryByRole('heading', { name: h })).toBeNull();

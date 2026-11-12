@@ -16,7 +16,7 @@ describe('selection <-> path (spec 020)', () => {
   });
   it('the panel renders server-fetched data at once, without a loading state', () => {
     const br = COUNTRIES.find((c) => c.iso2 === 'BR')!;
-    render(<CountryPanel iso2="BR" name="Brasil" inApi initial={br} wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="BR" name="Brasil" inApi initial={br} onClose={() => {}} />);
     expect(screen.getByText('Capital: Brasília')).toBeTruthy();
     expect(screen.queryByLabelText('Carregando dados do país')).toBeNull();
   });

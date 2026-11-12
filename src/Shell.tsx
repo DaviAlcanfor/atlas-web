@@ -24,10 +24,8 @@ const NO_TERMS: never[] = [];
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
-  wide: boolean;
-  toggleWide: () => void;
 }
-const ShellContext = createContext<ShellCtx>({ data: null, wide: false, toggleWide: () => {} });
+const ShellContext = createContext<ShellCtx>({ data: null });
 
 export function Shell({ children }: { children: ReactNode }) {
   return <AtlasProvider><Chrome>{children}</Chrome></AtlasProvider>;
@@ -42,11 +40,9 @@ function Chrome({ children }: { children: ReactNode }) {
   const { data, error, apiError } = useAtlasData(wantGlobe);
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
-  const [wide, setWide] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [stateName, setStateName] = useState<string | null>(null); // hovered state/province of the selected country
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
-  const toggleWide = useCallback(() => setWide((w) => !w), []);
   useEffect(() => setStateName(null), [selectedCountry]);
 
   const active = hoveredCountry ?? selectedCountry;
@@ -58,7 +54,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const hoverFlag = hoveredCountry && data?.knownIds.has(hoveredCountry) ? flagPreviewUrl(hoveredCountry) : undefined;
 
   return (
-    <ShellContext.Provider value={{ data, wide, toggleWide }}>
+    <ShellContext.Provider value={{ data }}>
       <GlossaryProvider terms={terms} countryName={countryName} onPickCountry={setSelectedCountry}>
         {stateName && selectedName ? (
           <InfoCard label={`Estado em ${selectedName}`} name={stateName} />
@@ -115,7 +111,7 @@ function Chrome({ children }: { children: ReactNode }) {
  * country; undefined = the server could not ask, so the panel fetches in the browser).
  */
 export function CountryRoute({ slug, initial }: { slug: string; initial: CountryDetail | null | undefined }) {
-  const { data, wide, toggleWide } = useContext(ShellContext);
+  const { data } = useContext(ShellContext);
   const { selectedCountry, setSelectedCountry } = useAtlas();
   const id = selectionFromPath(`/pais/${slug}`) ?? slug;
   // A click updates the selection before the new page arrives; the old panel steps aside instead of showing stale data.
@@ -124,7 +120,7 @@ export function CountryRoute({ slug, initial }: { slug: string; initial: Country
   const inApi = initial !== undefined ? initial !== null : data ? data.knownIds.has(id) : true;
   return (
     <CountryPanel key={id} iso2={id} name={initial?.name ?? polygonName ?? id} inApi={inApi} initial={initial ?? undefined}
-      wide={wide} onToggleWide={toggleWide} onClose={() => setSelectedCountry(null)} />
+      onClose={() => setSelectedCountry(null)} />
   );
 }
 

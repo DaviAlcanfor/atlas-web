@@ -64,19 +64,19 @@ describe('real client', () => {
 describe('CountryPanel', () => {
   it('shows data, "no data" for missing fields, and escapes API text', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="RS" name="Sérvia" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="RS" name="Sérvia" inApi onClose={() => {}} />);
     expect(await screen.findByText('Capital: Belgrado')).toBeTruthy();
     expect(screen.getByRole('link', { name: /Google Notícias/ })).toBeTruthy();
     expect(screen.getAllByText('sem dados').length).toBeGreaterThan(3); // regime, languages, population...
   });
   it('says "No data yet" without calling the API when the country is not in the API', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="XX" name="Somaliland" inApi={false} wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="XX" name="Somaliland" inApi={false} onClose={() => {}} />);
     expect(screen.getByText('Ainda não há dados para este território.')).toBeTruthy();
   });
   it('flags events without a source as unverified', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="AT" name="Austria" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="AT" name="Austria" inApi onClose={() => {}} />);
     expect(await screen.findByText(/Não verificado/)).toBeTruthy();
     expect(screen.getAllByText('sem fonte').length).toBe(5);
   });

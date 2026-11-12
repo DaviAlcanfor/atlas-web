@@ -5,8 +5,6 @@ import type { CountryDetail, Event, PolityDetail, Source } from '../api/types';
 import { useAsync } from '../hooks/useAsync';
 import { kindColor } from '../lib/palette';
 import { plonkitUrl } from '../lib/plonkit';
-import { ArrowsInLineHorizontal } from '@phosphor-icons/react/dist/csr/ArrowsInLineHorizontal';
-import { ArrowsOutLineHorizontal } from '@phosphor-icons/react/dist/csr/ArrowsOutLineHorizontal';
 import { X } from '@phosphor-icons/react/dist/csr/X';
 import { CountUp } from './CountUp';
 import { LabelIcon } from './icons';
@@ -22,8 +20,6 @@ interface Props {
   name: string; // from the polygon, shown while loading and when the API has nothing
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
   initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
-  wide: boolean;
-  onToggleWide: () => void;
   onClose: () => void;
 }
 
@@ -66,7 +62,7 @@ function Skeleton() {
   );
 }
 
-export function CountryPanel({ iso2, name, inApi, initial, wide, onToggleWide, onClose }: Props) {
+export function CountryPanel({ iso2, name, inApi, initial, onClose }: Props) {
   // Not in the API's list (e.g. polygons without an ISO code) or already loaded on the server: nothing to fetch (key null = idle).
   const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
   const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
@@ -84,16 +80,13 @@ export function CountryPanel({ iso2, name, inApi, initial, wide, onToggleWide, o
   }
 
   return (
-    <aside lang="pt-BR" className={`panel bracketed${wide ? ' panel--wide' : ''}`} aria-label={`Detalhes de ${title}`}>
+    <aside lang="pt-BR" className="panel bracketed" aria-label={`Detalhes de ${title}`}>
       <header className="panel__head">
         <div className="panel__title">
           <span className="panel__code">{iso2}</span>
           <h2>{title}</h2>
         </div>
         <div className="panel__actions">
-          <button className="icon-btn" onClick={onToggleWide} aria-pressed={wide} aria-label={wide ? 'Reduzir painel' : 'Expandir painel até metade da tela'}>
-            {wide ? <ArrowsInLineHorizontal size={16} weight="light" aria-hidden="true" /> : <ArrowsOutLineHorizontal size={16} weight="light" aria-hidden="true" />}
-          </button>
           <button className="icon-btn" onClick={onClose} aria-label="Fechar painel"><X size={16} weight="light" aria-hidden="true" /></button>
         </div>
       </header>
