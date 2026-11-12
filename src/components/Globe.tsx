@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
-import { createDotMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
+import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
 import { palette } from '../lib/palette';
 import { api } from '../api';
 import type { CapitalCoord } from '../api/types';
-import { atlasTexture, createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
+import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
 import { flagPngUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
+import { STREETVIEW } from '../lib/streetview';
 import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
@@ -17,6 +18,8 @@ const ALT_BASE = 0.004;
 const ALT_SELECTED = 0.015;
 const ALT_LINE = 0.0042;
 const ALT_ADMIN1 = ALT_SELECTED + 0.0003; // on the raised selected cap, under its outline
+const ALT_STATE_HOVER = ALT_SELECTED + 0.0002; // hovered state overlay: just over the selected cap
+const LIGHT_OFFSET = 0.1; // degrees: the light admin-1 stroke sits ~1px beside the dark one
 const MIN_ALTITUDE = 0.15;
 const START = { lat: 35, lng: -15, altitude: 0.92 }; // spec said altitude ~1.8; reference screenshot 2 measures ~0.92
 
@@ -31,8 +34,10 @@ const INTRO_MS = 600;
 const DOTS = {
   dim: { color: palette.iceDim, radius: 0.24 }, // no content
   content: { color: palette.ice, radius: 0.3 },
+  mid: { color: palette.iceMid, radius: 0.28 }, // GeoGuessr layer: restricted coverage
   hoverDim: { color: palette.iceBright, radius: 0.26 },
   hover: { color: palette.iceBright, radius: 0.32 },
+  stateHover: { color: palette.iceBright, radius: 0.4, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
   selected: { color: palette.iceBright, radius: 0.3, spacing: DOT_SPACING * 0.7 }, // denser + brighter (/2 goes sub-pixel at the default zoom)
   selectedDim: { color: palette.ice, radius: 0.28, spacing: DOT_SPACING * 0.7 },
 };
@@ -91,6 +96,7 @@ interface Props {
   onHover: (id: string | null) => void;
   onSelect: (id: string | null) => void;
   onHoverState?: (name: string | null) => void; // state/province under the pointer, inside the selected country (spec 005)
+  showStates: boolean; // draw + hover the selected country's divisions (the "Estados" button)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
 }
@@ -100,6 +106,7 @@ interface Admin1 {
   states: Feature<Geometry, { name: string }>[];
   bounds: ReturnType<typeof geoBounds>[];
   line: LineSegments | null;
+  light: LineSegments | null; // same lines, shifted ~1px and drawn light (the dark one alone vanishes on flags/dots)
 }
 
 /** bbox-filtered point-in-polygon; bounds[i] = geoBounds(items[i]). */
@@ -144,7 +151,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -167,11 +174,13 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       ocean: createOceanMaterial(),
       dim: createDotMaterial(DOTS.dim, shared),
       content: createDotMaterial(DOTS.content, shared),
+      mid: createDotMaterial(DOTS.mid, shared),
       hoverDim: createDotMaterial(DOTS.hoverDim, shared),
       hover: createDotMaterial(DOTS.hover, shared),
       selected: createDotMaterial(DOTS.selected, shared),
       selectedDim: createDotMaterial(DOTS.selectedDim, shared),
       flag: createFlagMaterial(DOTS.selected, shared),
+      stateHover: createDotOverlayMaterial(DOTS.stateHover, shared),
     }),
     [shared],
   );
@@ -244,7 +253,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         const t0 = performance.now();
         const fade = () => {
           const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / 300);
-          mix.value = FLAG_MIX * k;
+          mix.value = FLAG_LAYER_MIX * k;
           if (k < 1) raf = requestAnimationFrame(fade);
         };
         fade();
@@ -336,7 +345,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   useEffect(() => {
     markers.forEach((b, id) => {
       const regime = regimes.get(id);
-      b.classList.toggle('has-content', layer !== 'regime' && apiIds.has(id));
+      const sv = STREETVIEW[id];
+      b.classList.toggle('has-content', layer === 'geoguessr' ? sv === 'full' : layer !== 'regime' && apiIds.has(id));
+      b.classList.toggle('is-partial', layer === 'geoguessr' && sv === 'partial');
       b.classList.toggle('is-hover', id === hoveredId);
       b.classList.toggle('is-selected', id === selectedId);
       // in the regime layer the marker takes the regime color unless hovered/selected (their CSS classes win)
@@ -362,6 +373,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
           states,
           bounds: states.map((f) => geoBounds(f)),
           line: borders ? buildLines(borders.geometry.coordinates, palette.admin1Line, ALT_ADMIN1) : null,
+          light: borders
+            ? buildLines(borders.geometry.coordinates.map((l) => l.map(([x, y]) => [x! + LIGHT_OFFSET, y! - LIGHT_OFFSET])), palette.admin1Light, ALT_ADMIN1 + 0.0002)
+            : null,
         });
       })
       .catch(() => {}); // e.g. dev server answering index.html for a missing file
@@ -369,6 +383,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       live = false;
     };
   }, [selectedId]);
+
+  const [hoverState, setHoverState] = useState<Admin1['states'][number] | null>(null);
+  useEffect(() => setHoverState(null), [selectedId, showStates]);
 
   const baseLines = useMemo(
     () => [graticule, buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)],
@@ -393,9 +410,15 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     return buildLines(c.coordinates, palette.signal, ALT_SELECTED + 0.001);
   }, [ring, reduced]);
 
+  // outline of the hovered state, bright, so it reads even where the fill overlay has little to lighten (white flag stripes)
+  const stateOutline = useMemo(() => {
+    const g = hoverState?.geometry;
+    const polys = g?.type === 'Polygon' ? [g.coordinates] : g?.type === 'MultiPolygon' ? g.coordinates : [];
+    return polys.length ? buildLines(polys.flat(), palette.iceBright, ALT_STATE_HOVER + 0.0003) : null;
+  }, [hoverState]);
   const lineObjects = useMemo(
-    () => [...baseLines, ...(admin1?.line ? [admin1.line] : []), ...(staticRing ? [staticRing] : [])],
-    [baseLines, admin1, staticRing],
+    () => [...baseLines, ...(showStates && admin1?.line ? [admin1.line, admin1.light!] : []), ...(stateOutline ? [stateOutline] : []), ...(staticRing ? [staticRing] : [])],
+    [baseLines, admin1, showStates, stateOutline, staticRing],
   );
 
   // Only the selected country's outline uses the (slow, per-object) paths layer, for its thicker stroke.
@@ -422,6 +445,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [features, bounds],
   );
 
+  const polygons = useMemo(() => (hoverState ? [...features, hoverState as unknown as CountryFeature] : features), [features, hoverState]);
+
   const ptr = useRef({ down: false, moved: false, x: 0, y: 0, raf: 0 });
   const onPointerDown = (e: React.PointerEvent) => {
     ptr.current = { ...ptr.current, down: true, moved: false, x: e.clientX, y: e.clientY };
@@ -439,7 +464,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       const pt = pointAt(clientX, clientY);
       const f = pt && findIn(features, bounds, pt);
       onHover(f ? idOf(f) : null);
-      const st = pt && f && admin1 && admin1.id === idOf(f) ? findIn(admin1.states, admin1.bounds, pt) : undefined;
+      const st = showStates && pt && f && admin1 && admin1.id === idOf(f) ? findIn(admin1.states, admin1.bounds, pt) : undefined;
+      setHoverState((prev) => (prev === st ? prev : st ?? null));
       onHoverState?.(st?.properties.name ?? null);
     });
   };
@@ -491,10 +517,12 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
 
   const capMaterial = useCallback(
     (d: object) => {
+      if (d === hoverState) return mats.stateHover;
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
       const regime = regimes.get(id);
-      const filled = layer === 'regime' ? !!regime : apiIds.has(id);
+      const sv = layer === 'geoguessr' ? STREETVIEW[id] : undefined;
+      const filled = layer === 'regime' ? !!regime : layer === 'geoguessr' ? !!sv : apiIds.has(id);
       if (id === selectedId && id === flagId) {
         mats.flag.uniforms.uDot!.value.set(filled ? DOTS.selected.color : DOTS.selectedDim.color);
         return mats.flag;
@@ -507,12 +535,16 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (id === selectedId) return filled ? mats.selected : mats.selectedDim;
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
+      if (sv === 'partial') return mats.mid;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState],
   );
 
-  const polygonAltitude = useCallback((d: object) => (idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE), [selectedId]);
+  const polygonAltitude = useCallback(
+    (d: object) => (d === hoverState ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE),
+    [selectedId, hoverState],
+  );
 
   return (
     <div
@@ -524,6 +556,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       onPointerUp={onPointerUp}
       onPointerLeave={() => {
         onHover(null);
+        setHoverState(null);
         onHoverState?.(null);
       }}
     >
@@ -538,7 +571,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         atmosphereColor={palette.atmosphere}
         atmosphereAltitude={0.12}
         onGlobeReady={onReady}
-        polygonsData={features}
+        polygonsData={polygons}
         enablePointerInteraction={false}
         polygonCapMaterial={capMaterial}
         polygonSideColor={noSide}

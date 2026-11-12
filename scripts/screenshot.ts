@@ -14,7 +14,7 @@ page.on('pageerror', (e) => errors.push(String(e)));
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
 
 await page.goto(url);
-await page.waitForSelector('canvas:not(.stars)', { timeout: 45000 }).catch(() => console.log('NO CANVAS; errors:', errors));
+await page.waitForFunction('!!window.__globe', undefined, { timeout: 60000 }).catch(() => console.log('NO CANVAS; errors:', errors));
 await page.waitForTimeout(4000); // triangulation + fonts
 await page.screenshot({ path: `${out}/render-view2.png` }); // initial view = reference screenshot 2
 await page.evaluate('window.__globe.pointOfView({ lat: 48, lng: 14, altitude: 0.22 }, 0)');

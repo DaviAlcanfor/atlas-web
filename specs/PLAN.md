@@ -37,14 +37,21 @@ testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo
 | Figuras mais importantes do país | 007 | P1 feito (em mocks até P0) |
 | Ideologias: pensadores e figuras de cada lado, o que fizeram | 018 | P4 |
 
-## P0 - Publicar o que já está pronto (dono; bloqueado para agentes pelo modo automático)
-1. Banco de produção (Supabase), na pasta `atlas-api`:
-   `DATABASE_URL=<SUPABASE_DATABASE_URL do .env> PYTHONPATH=src .venv/Scripts/python.exe -m alembic upgrade head` (0002 → 0006)
-   depois `... -m atlas_api.cli import-content` e `... -m atlas_api.cli import-facts` (usam `data_out/*.json` já gerados localmente).
-2. `fastapi cloud deploy` (de dentro de `atlas-api`, branch `feat/v1.1-phase-b`).
-3. Conferir: `curl https://atlas-api.fastapicloud.dev/v1/glossary`, `/v1/countries/BR/leaders`, `/v1/countries/BR/people`.
-4. Mergear atlas-api PR #4 e atlas-web PR #1 (o PR do web é seguro antes do passo 1). Depois: `cd geo && npm run smoke`.
-Para liberar isto para agentes no futuro: adicionar regras de permissão para `alembic upgrade`, `fastapi cloud deploy` e `gh pr merge`.
+## P0 - Publicar a v1.1 - FEITO (2026-11-12)
+API v1.1 no ar (banco migrado 0002 → 0006 e dados importados depois de um incidente de 503, ver "Lições"); front v1.1 + Next.js
++ camada de bandeiras no ar (atlas-web PRs #1, #4, #5).
+
+## Lições operacionais (ler antes de publicar qualquer coisa)
+- **Ordem de deploy da API**: o merge na `main` do atlas-api publica no FastAPI Cloud na hora. Migração do banco de produção ANTES do merge.
+  Rodar a partir de um checkout da `main`/do PR (git worktree), nunca de uma branch com migrações mais novas, e com revisão explícita
+  (`alembic upgrade 0006`, não `head`). Ensaiar antes num banco local descartável (`CREATE DATABASE atlas_rehearsal`).
+- **PRs sempre com base `main`**, um por vez. PRs empilhados (base = branch de outro PR) foram mergeados nas branches erradas e o código
+  não chegou à `main` (incidente de 2026-11-12).
+- **Modo automático bloqueia** migração de produção, deploy e `gh pr merge` mesmo com aprovação em chat; com pedido explícito do dono na
+  hora ("roda você") a migração passou. Alternativa: script `.ps1` ensaiado para o dono rodar. Scripts para o Windows PowerShell 5.1
+  devem ser só ASCII (ele lê arquivo sem BOM como ANSI e corrompe "Área de Trabalho").
+- **Build do Next.js** chama a API para 196 páginas: manter concorrência 4 (48 simultâneas derrubaram a API; spec 019 item 5).
+- **Limite de uso**: rodar no máximo 2 subagentes Opus ao mesmo tempo; ao bater o limite, retomar o mesmo agente (SendMessage).
 
 ## P1 - Front da v1.1 (dados que a API já tem) - Sonnet - FEITO (2026-11-12, branch `feat/v1.1-front`)
 Todas as 7 tarefas abaixo implementadas e verificadas em mocks (campos novos opcionais no zod; endpoints novos degradam para "seção oculta"). Pendente: `npm run smoke` e screenshots BR/JP/US contra a produção depois do P0.
@@ -59,6 +66,10 @@ Todas as 7 tarefas abaixo implementadas e verificadas em mocks (campos novos opc
 | Todos os países ativos + prévia de bandeira no hover | 014 parte 1 | |
 Verificar: typecheck, build, vitest, screenshots BR/JP/US, `npm run smoke` depois do deploy.
 
+## P1.5 - Polimento 021 - FEITO (2026-11-12, branch `feat/polish-round`, spec [021](021-polish-round.md))
+Estados com linha dupla + botão + hover, fronteiras mais fortes, paleta categórica de regime (validada), bandeiras nítidas (w160), ⓘ em todos os rótulos,
+camada GeoGuessr (Street View, Wikipedia CC BY-SA), tela de carregamento com progresso real, painel 540 px e mais opaco.
+
 ## P2 - Migração para Next.js (Opus) - FEITO (2026-11-12, branch `feat/nextjs`, spec [020](020-nextjs.md))
 ADR-001 aprovado. Next.js 16.4.6 App Router: `/`, `/pais/[iso2]` (196 páginas SSG + ISR 1 h, metadata/OG por país), `/glossario`
 (servidor); globo no layout (não remonta); hash antigo redirecionado; `NEXT_PUBLIC_API_URL`; tipos gerados do OpenAPI
@@ -70,6 +81,8 @@ Pendente do dono: Vercel (ver spec 020, "Vercel"); a API caiu com a rajada de re
 Drag no swiftshader: mediana +3%, p95 +10% vs Padrão (meta < 15%).
 
 ## P4 - Conteúdo do país (API Opus, web Sonnet). Contrato v1.2 parte A
+API parte A FEITA na branch `feat/v1.2-data` (019, 017, 015, 009; CR-003 com o texto do contrato); falta: aplicar CR-003, migrar produção
+(ver "Lições"), PR, e o front de 017/015/009. Depois: 016 e 018.
 Ordem (cada uma API → web): 019 (correções: data_version, Dinamarca, imagens no Storage, várias capitais) → 017 idiomas →
 015 perfil do povo → 009 moeda/câmbio/economia → 016 história expandida → 018 ideologias.
 Aplicar no início desta fase o contrato v1.2 com os deltas de 009, 015, 016, 017, 018 (texto exato nas specs da API).
@@ -78,9 +91,46 @@ Aplicar no início desta fase o contrato v1.2 com os deltas de 009, 015, 016, 01
 008 notícias (spike GDELT + Jev com 200 manchetes rotuladas antes de ligar o job; secrets `TYPESAFE_API_KEY`, `DATABASE_URL` no GitHub),
 006 v1.2 espectro político (V-Party + ParlGov + Party Facts; um marcador por partido da coalizão).
 
+## P4.5 - Pedidos de 2026-11-12 (segunda rodada)
+| Pedido | Spec | Executor | Situação |
+|---|---|---|---|
+| Estados visíveis + botão; fronteiras mais fortes; cores de regime distinguíveis; bandeiras sem borrão; ⓘ em todo rótulo + animação do tooltip; camada GeoGuessr (cobertura Street View); carregamento com % e mensagens; painel mais opaco, maior, sem expandir | web 021 | Sonnet | em andamento |
+| Cantores e cantoras em "Pessoas importantes" (grupo "Música" por ocupação do Pantheon: SINGER, MUSICIAN, COMPOSER, CONDUCTOR...) | API 007 (parâmetro `group=music`) + web 007 | Sonnet | a fazer |
+| Resumo por IA de cada parte (política, economia, sociedade): gerado no ETL só a partir dos dados da API, com rótulo "gerado por IA" e fontes; "maioria de direita/esquerda" só com dado de espectro (006 v1.2); exportações via WDI (TX.VAL.FUEL.ZS.UN etc.). O executor carrega a skill `claude-api` antes de escolher modelo/SDK | API 022 (a escrever) + web | Opus | a fazer |
+| História em texto corrido por período (condensada do artigo "História de X" da Wikipedia, CC BY-SA, com citação), marcos como apoio | API/web 016 (ampliar) | Opus | a fazer |
+
+## Backlog - pedidos de 2026-11-12 (terceira rodada), ainda sem spec
+Fontes são hipóteses: ler termos e licença antes de qualquer código (regra do AGENTS.md da API). Itens que só ampliam uma spec existente
+estão marcados com ela.
+
+| # | Pedido | Fonte provável | Nota / spec |
+|---|---|---|---|
+| B1 | Economia: PIB e **o que o país produz** | WDI (PIB, setores NV.AGR/NV.IND/NV.SRV % do PIB), BACI/CEPII (comércio por produto, base do OEC; checar licença), UN Comtrade (API com chave e limites), FAOSTAT (produção agrícola, CC BY 4.0) | amplia 009 |
+| B2 | Bolsa de cada país (estado atual do índice principal: Ibovespa, S&P 500, Nikkei...) | Yahoo Finance **não tem API oficial** (bibliotecas raspam e violam os termos). Candidatas: Stooq (CSV grátis), Alpha Vantage (chave, 25 req/dia), Twelve Data, Financial Modeling Prep. Cotação com atraso, rotulada | nova spec; job diário |
+| B3 | Câmbio personalizável | Já na 009 (até 4 moedas, base 100); acrescentar troca da moeda base e favoritos salvos no navegador | amplia 009 |
+| B4 | Quem faz parte de UE, BRICS, G7, G20, OTAN, Mercosul, OPEP, ASEAN, UA... | O P463 do Wikidata só é completo para a ONU: lista curada `content/organizations.yaml` com membros e datas de entrada/saída (fonte por organização: sites oficiais/Wikipedia). Camada no globo por organização | amplia 004 (glossário) |
+| B5 | Música: **divas pop** do país | Wikidata: pessoas P21 feminino, ocupação cantora, gênero P136 pop, P27 país, ordenadas por sitelinks; cruzar com Pantheon | amplia 010 e 007 |
+| B6 | Geopolítica do mundo + **vídeos do Prof. Ricardo Marcílio** | YouTube Data API (lista de uploads do canal; achar o channel id), embed com facade (spec 011); ligar vídeo a países por título + Jev (spec 008). Só link/embed, nunca baixar | amplia 008/011 |
+| B7 | **Prêmios Nobel** por país | Nobel Prize API v2.1 (api.nobelprize.org; dados abertos, conferir licença): laureados por país de nascimento/afiliação | nova spec, seção do painel |
+| B8 | Melhores esportes do país | Medalhas olímpicas por esporte (Wikidata/Olympedia; checar licença), ranking FIFA; "esportes em que o país mais ganha" | nova spec |
+| B9 | História da bandeira | Wikidata P41 com qualificadores de data (bandeiras históricas) + Commons; liga com P7 (bandeira da época) | amplia 002/012 |
+| B10 | IDH, natalidade, crescimento | IDH (UNDP), SP.DYN.CBRT.IN (natalidade), SP.POP.GROW (crescimento populacional), NY.GDP.MKTP.KD.ZG | amplia 015 |
+| B11 | "Acontecendo agora" (atualidades) | Feed de 008 + Wikipedia Current events + eventos naturais (USGS terremotos, domínio público; NASA EONET) como pontos pulsando no globo | amplia 008 |
+| B12 | Radar aéreo, satélites | Aviões: OpenSky Network API (grátis para uso não comercial, limites; ler termos). Satélites: CelesTrak (TLE) + `satellite.js` para posição no globo (camada de objetos do react-globe.gl) | nova spec, camada do globo |
+| B13 | Tecnologia e indústria: aeronáutica, chips, memória RAM, o que produz em tecnologia | Comércio por código HS (BACI/Comtrade): 8542 circuitos integrados, 8471 computadores, 8802/8803 aeronaves e partes; WDI TX.VAL.TECH.MF.ZS (alta tecnologia % das exportações) | nova spec, junto de B1 |
+| B14 | **Grafo** "quem produz o quê" (comida, chips, petróleo...) e quem vende para quem | BACI/FAOSTAT: grafo produto ↔ países; no globo como arcos (arcsData) do exportador ao importador; página com grafo de força | nova spec, depende de B1/B13 |
+
 ## P6 - Extras
-010 música (Wikidata P495 + Last.fm, ler termos), 011 vídeos (curadoria manual), 012 viagem no tempo (depende de importar snapshots
-históricos; decidir historical-basemaps GPL-3.0 vs CShapes 2.0), 003 parte 1 (rever falsos negativos do Plonk It: ex. Peru).
+010 música (Wikidata P495 + Last.fm, ler termos), 011 vídeos (curadoria manual), 003 parte 1 (rever falsos negativos do Plonk It: ex. Peru).
+
+## P7 - Viagem no tempo (pesquisa feita em 2026-11-12) - Opus
+Fonte escolhida: **Cliopatria** (Seshat), CC BY 4.0, 3400 a.C.-2024, 1600+ entidades com faixas de anos e ID do Wikidata por polígono
+(descartadas: historical-basemaps GPL-3.0 e só 54 retratos; CShapes 2.0 não comercial). Detalhes, pipeline e contrato v2:
+`atlas-api/specs/012-historical-series.md`; slider, painel histórico e **estilos de mapa por época** (manuscrito, carta náutica,
+atlas impresso, Guerra Fria, Signal): `specs/012-time-travel.md`.
+Ordem: API `etl cliopatria` (~130 retratos TopoJSON ≤ 600 KB, Supabase Storage `atlas-geometry`) → polities/links por Wikidata →
+fatos das entidades antigas (bandeira, capital, governo, governantes com datas) → contrato v2 (CR-004) → web slider + camada histórica →
+temas por época → séries históricas (Maddison, V-Dem, OWID).
 
 ## Pendências de conteúdo que precisam de humano
 - Revisar `atlas-api/content/glossary.yaml` e `regimes.yaml` (rascunhos).

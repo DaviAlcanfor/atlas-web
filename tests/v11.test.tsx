@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { isNotFound, createClient } from '../src/api/client';
 import { createMockApi } from '../src/api/mocks/adapter';
@@ -76,12 +76,23 @@ describe('Tooltip', () => {
     const tip = screen.getByRole('tooltip', { hidden: true });
     expect(btn.getAttribute('aria-describedby')).toBe(tip.id);
     expect(tip.className).not.toContain('is-open');
-    fireEvent.mouseEnter(btn.parentElement!);
-    expect(tip.className).toContain('is-open');
-    fireEvent.keyDown(document, { key: 'Escape' });
-    expect(tip.className).not.toContain('is-open');
-    fireEvent.focus(btn);
-    expect(tip.className).toContain('is-open');
+    vi.useFakeTimers();
+    try {
+      fireEvent.mouseEnter(btn.parentElement!);
+      act(() => { vi.advanceTimersByTime(200); });
+      expect(tip.className).not.toContain('is-open'); // 250 ms opening delay (spec 021)
+      act(() => { vi.advanceTimersByTime(60); });
+      expect(tip.className).toContain('is-open');
+      fireEvent.keyDown(document, { key: 'Escape' });
+      expect(tip.className).not.toContain('is-open');
+      fireEvent.focus(btn);
+      act(() => { vi.advanceTimersByTime(260); });
+      expect(tip.className).toContain('is-open');
+      fireEvent.blur(btn);
+      expect(tip.className).not.toContain('is-open');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 
@@ -132,7 +143,7 @@ describe('glossary', () => {
 describe('CountryPanel v1.1 sections', () => {
   it('BR shows leaders (credit + licence), people with filter + attribution, and clues', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="BR" name="Brasil" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
+    render(<CountryPanel iso2="BR" name="Brasil" inApi onClose={() => {}} />);
     expect(await screen.findByRole('heading', { name: /Governantes/ })).toBeTruthy();
     expect(screen.getAllByText(/Foto: .* · CC BY 2\.0/).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /mostrar mais/ })).toBeTruthy();
@@ -148,8 +159,8 @@ describe('CountryPanel v1.1 sections', () => {
   });
   it('RS (no leaders, no people, no clues) shows none of the new sections and no error', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="RS" name="Sérvia" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
-    expect(await screen.findByText('Capital: Belgrado')).toBeTruthy();
+    render(<CountryPanel iso2="RS" name="Sérvia" inApi onClose={() => {}} />);
+    expect(await screen.findByText((_, el) => el?.tagName === 'LI' && el.textContent === 'Capital: Belgrado')).toBeTruthy();
     await new Promise((r) => setTimeout(r, 400));
     for (const h of [/Governantes/, /Pessoas importantes/]) expect(screen.queryByRole('heading', { name: h })).toBeNull();
     expect(screen.queryByText('Pistas')).toBeNull(); // GeoGuessr stays (Plonk It guide) but without the clues block

@@ -5,12 +5,20 @@ import { createPortal } from 'react-dom';
  * Hover + keyboard-focus tooltip (spec 004). The trigger is a render prop so the caller's own focusable element
  * receives `aria-describedby`. The bubble is portaled to <body> with fixed coordinates: the panel clips overflow and its
  * backdrop-filter would otherwise trap `position: fixed`. Shown above the trigger, flips below when there is no room.
- * Esc closes it. Reused by specs 009/017.
+ * Esc closes it. Opens after OPEN_DELAY ms so passing the pointer over labels does not flicker (spec 021). Reused by specs 009/017.
  */
+const OPEN_DELAY = 250;
+
 export function Tooltip({ text, children }: { text: string; children: (aria: { 'aria-describedby': string }) => ReactNode }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const [mounted, setMounted] = useState(false); // the bubble is portaled to <body>: not during server rendering (the panel is server-rendered)
+  useEffect(() => setMounted(true), []);
+  const timer = useRef(0);
+  const show = () => { clearTimeout(timer.current); timer.current = window.setTimeout(() => setOpen(true), OPEN_DELAY); };
+  const hide = () => { clearTimeout(timer.current); setOpen(false); };
+  useEffect(() => () => clearTimeout(timer.current), []);
   const anchor = useRef<HTMLSpanElement>(null);
   const bubble = useRef<HTMLSpanElement>(null);
 
@@ -30,9 +38,9 @@ export function Tooltip({ text, children }: { text: string; children: (aria: { '
   }, [open]);
 
   return (
-    <span ref={anchor} className="tip-anchor" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}>
+    <span ref={anchor} className="tip-anchor" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
       {children({ 'aria-describedby': id })}
-      {createPortal(
+      {mounted && createPortal(
         <span ref={bubble} id={id} role="tooltip" className={`tip${open && pos ? ' is-open' : ''}`} style={pos ?? undefined}>{text}</span>,
         document.body,
       )}

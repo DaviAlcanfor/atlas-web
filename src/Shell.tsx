@@ -10,6 +10,7 @@ import type { CountryDetail, GlossaryTerm } from './api/types';
 import { CountryPanel } from './components/CountryPanel';
 import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
+import { LoadingScreen } from './components/LoadingScreen';
 import { LayerToggle } from './components/LayerToggle';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
@@ -24,10 +25,8 @@ const NO_TERMS: never[] = [];
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
-  wide: boolean;
-  toggleWide: () => void;
 }
-const ShellContext = createContext<ShellCtx>({ data: null, wide: false, toggleWide: () => {} });
+const ShellContext = createContext<ShellCtx>({ data: null });
 
 export function Shell({ children }: { children: ReactNode }) {
   return <AtlasProvider><Chrome>{children}</Chrome></AtlasProvider>;
@@ -39,14 +38,15 @@ function Chrome({ children }: { children: ReactNode }) {
   const globeRoute = usePathname() !== '/glossario';
   const [wantGlobe, setWantGlobe] = useState(globeRoute);
   useEffect(() => { if (globeRoute) setWantGlobe(true); }, [globeRoute]);
-  const { data, error, apiError } = useAtlasData(wantGlobe);
+  const { data, error, apiError, progress } = useAtlasData(wantGlobe);
+  const [chunkReady, setChunkReady] = useState(false); // the globe's code (three.js chunk) has arrived
+  useEffect(() => { if (wantGlobe) void import('./components/Globe').then(() => setChunkReady(true)); }, [wantGlobe]);
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
-  const [wide, setWide] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
+  const [showStates, setShowStates] = useState(true); // spec 021: the selected country's divisions
   const [stateName, setStateName] = useState<string | null>(null); // hovered state/province of the selected country
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
-  const toggleWide = useCallback(() => setWide((w) => !w), []);
   useEffect(() => setStateName(null), [selectedCountry]);
 
   const active = hoveredCountry ?? selectedCountry;
@@ -58,18 +58,20 @@ function Chrome({ children }: { children: ReactNode }) {
   const hoverFlag = hoveredCountry && data?.knownIds.has(hoveredCountry) ? flagPreviewUrl(hoveredCountry) : undefined;
 
   return (
-    <ShellContext.Provider value={{ data, wide, toggleWide }}>
+    <ShellContext.Provider value={{ data }}>
       <GlossaryProvider terms={terms} countryName={countryName} onPickCountry={setSelectedCountry}>
         {stateName && selectedName ? (
           <InfoCard label={`Estado em ${selectedName}`} name={stateName} />
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
         )}
-        {wantGlobe && !error && !globeReady && (
-          <div className="loading-screen" role="status" aria-live="polite">
-            <span className="spinner spinner--big" aria-hidden="true" />
-            <p>{data ? 'Desenhando o globo…' : 'Carregando mapas e países…'}</p>
-          </div>
+        {wantGlobe && !error && (
+          <LoadingScreen
+            target={0.4 * progress.geo + 0.15 * (progress.countries ? 1 : 0) + 0.15 * (chunkReady ? 1 : 0)}
+            rendering={!!data}
+            done={globeReady}
+            countries={progress.countries}
+          />
         )}
         {error && (
           <p className="load-error" role="alert">
@@ -95,10 +97,12 @@ function Chrome({ children }: { children: ReactNode }) {
               onHover={setHoveredCountry}
               onSelect={setSelectedCountry}
               onHoverState={setStateName}
+              showStates={showStates}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
-            <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}>
+            <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
+              states={selectedCountry ? { on: showStates, toggle: () => setShowStates((s) => !s) } : undefined}>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
             </LayerToggle>
           </>
@@ -115,7 +119,7 @@ function Chrome({ children }: { children: ReactNode }) {
  * country; undefined = the server could not ask, so the panel fetches in the browser).
  */
 export function CountryRoute({ slug, initial }: { slug: string; initial: CountryDetail | null | undefined }) {
-  const { data, wide, toggleWide } = useContext(ShellContext);
+  const { data } = useContext(ShellContext);
   const { selectedCountry, setSelectedCountry } = useAtlas();
   const id = selectionFromPath(`/pais/${slug}`) ?? slug;
   // A click updates the selection before the new page arrives; the old panel steps aside instead of showing stale data.
@@ -124,7 +128,7 @@ export function CountryRoute({ slug, initial }: { slug: string; initial: Country
   const inApi = initial !== undefined ? initial !== null : data ? data.knownIds.has(id) : true;
   return (
     <CountryPanel key={id} iso2={id} name={initial?.name ?? polygonName ?? id} inApi={inApi} initial={initial ?? undefined}
-      wide={wide} onToggleWide={toggleWide} onClose={() => setSelectedCountry(null)} />
+      onClose={() => setSelectedCountry(null)} />
   );
 }
 

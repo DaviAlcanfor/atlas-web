@@ -2,9 +2,10 @@ import { geoArea, geoBounds } from 'd3-geo';
 import type { Geometry, Polygon } from 'geojson';
 import { CanvasTexture, LinearFilter, ShaderMaterial, SRGBColorSpace, TextureLoader, Vector4, type Texture } from 'three';
 import { DOT_GLSL, DOT_VERT, dotUniforms, type DotOpts, type DotShared } from './dotMaterial';
-import { flagPreviewUrl } from './url';
+import { flagAtlasUrl } from './url';
 
-export const FLAG_MIX = 0.6;
+export const FLAG_MIX = 0.6; // selected country: flag weight over the dots
+export const FLAG_LAYER_MIX = 0.74; // flag layer (spec 021): fewer dots showing through, closer to the selected country's crispness
 
 /** The polygon with the largest area (the mainland), or undefined for non-polygon geometry. */
 export function largestPolygon(g: Geometry): Polygon | undefined {
@@ -78,10 +79,11 @@ export function loadFlag(pngUrl: string): Promise<Texture> {
   return t;
 }
 
-// Flag layer (spec 014 part 2): every country's w80 flag stretched into an 80x80 cell of one canvas (16 columns).
+// Flag layer (spec 014 part 2, sharpened in spec 021): every country's w160 flag at its real aspect ratio, shelf-packed into one
+// canvas up to ATLAS_W wide (4096 = safe on every GPU; ~200 flags need ~1000-1300 px of height, so one texture is enough).
 // The canvas is kept for the session (re-entering the layer is instant); the GPU texture is made/disposed per activation.
-const CELL = 80;
-const COLS = 16;
+const ATLAS_W = 4096;
+const PAD = 2; // px of gutter between cells (the half-texel inset below keeps linear filtering inside the flag)
 export interface FlagAtlas {
   canvas: HTMLCanvasElement;
   cells: Map<string, Vector4>; // iso2 -> uCell; flags that failed to load are missing (= plain dots)
@@ -96,34 +98,48 @@ export function loadFlagAtlas(ids: string[]): Promise<FlagAtlas> {
 }
 
 async function buildAtlas(ids: string[]): Promise<FlagAtlas> {
-  const canvas = document.createElement('canvas');
-  canvas.width = COLS * CELL;
-  canvas.height = Math.max(1, Math.ceil(ids.length / COLS)) * CELL;
-  const ctx = canvas.getContext('2d')!;
-  const { width: W, height: H } = canvas;
-  const cells = new Map<string, Vector4>();
+  const imgs: (HTMLImageElement | undefined)[] = new Array(ids.length);
   let next = 0;
   const worker = async () => {
     while (next < ids.length) {
       const i = next++;
-      const url = flagPreviewUrl(ids[i]);
+      const url = flagAtlasUrl(ids[i]);
       if (!url) continue;
       const img = new Image();
       img.crossOrigin = 'anonymous'; // flagcdn sends ACAO: *; without it the canvas would be tainted
       img.src = url;
       try {
         await img.decode();
+        imgs[i] = img;
       } catch {
-        continue; // skip: that country keeps its dots
+        /* skip: that country keeps its dots */
       }
-      const x = (i % COLS) * CELL;
-      const y = Math.floor(i / COLS) * CELL;
-      ctx.drawImage(img, x, y, CELL, CELL);
-      // half-texel inset so linear filtering never reads the neighbour cell; canvas y down -> texture v up (flipY)
-      cells.set(ids[i]!, new Vector4((x + 0.5) / W, 1 - (y + CELL - 0.5) / H, (CELL - 1) / W, (CELL - 1) / H));
     }
   };
   await Promise.all(Array.from({ length: 8 }, worker)); // 8 requests at a time
+  // shelf packing, in id order: a row ends when the next flag does not fit
+  const place: { i: number; x: number; y: number }[] = [];
+  let x = 0, y = 0, rowH = 0;
+  imgs.forEach((img, i) => {
+    if (!img) return;
+    if (x + img.naturalWidth > ATLAS_W) [x, y, rowH] = [0, y + rowH + PAD, 0];
+    place.push({ i, x, y });
+    x += img.naturalWidth + PAD;
+    rowH = Math.max(rowH, img.naturalHeight);
+  });
+  const canvas = document.createElement('canvas');
+  canvas.width = ATLAS_W;
+  canvas.height = Math.max(1, y + rowH);
+  const ctx = canvas.getContext('2d')!;
+  const { width: W, height: H } = canvas;
+  const cells = new Map<string, Vector4>();
+  for (const p of place) {
+    const img = imgs[p.i]!;
+    const { naturalWidth: w, naturalHeight: h } = img;
+    ctx.drawImage(img, p.x, p.y, w, h);
+    // half-texel inset so linear filtering never reads the neighbour cell; canvas y down -> texture v up (flipY)
+    cells.set(ids[p.i]!, new Vector4((p.x + 0.5) / W, 1 - (p.y + h - 0.5) / H, (w - 1) / W, (h - 1) / H));
+  }
   return { canvas, cells };
 }
 
