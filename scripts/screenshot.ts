@@ -1,5 +1,5 @@
 // Captures the globe at the reference size (screenshot 2: 1061x773) and measures frame rate while dragging.
-// Usage: npm run dev (other terminal), then: npm run shot -- <out-dir> [url]
+// Usage: npm run dev (or build + start) in another terminal, then: npm run shot -- <out-dir> [url]
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
@@ -37,21 +37,21 @@ const avg = sorted[Math.floor(sorted.length / 2)]!;
 const p95 = sorted[Math.floor(sorted.length * 0.95)]!;
 console.log(`drag frames: ${frames.length}, median ${avg.toFixed(1)} ms (${(1000 / avg).toFixed(0)} fps), p95 ${p95.toFixed(1)} ms`);
 
-// interaction checks: hover Austria, click it, check card text, hash and fly-to
+// interaction checks: hover Austria, click it, check card text, path (/pais/at) and fly-to
 const at = await page.evaluate<{ x: number; y: number }>('window.__globe.getScreenCoords(47.5, 14.1)');
 await page.mouse.move(at.x, at.y);
 await page.waitForTimeout(800);
 console.log('hover card:', JSON.stringify(await page.locator('.info-card').innerText()));
 await page.mouse.click(at.x, at.y);
 await page.waitForTimeout(2500);
-console.log('after click card:', JSON.stringify(await page.locator('.info-card').innerText()), '| hash:', await page.evaluate('location.hash'));
+console.log('after click card:', JSON.stringify(await page.locator('.info-card').innerText()), '| path:', await page.evaluate('location.pathname'));
 await page.mouse.move(5, 5);
 await page.waitForTimeout(800);
 await page.screenshot({ path: `${out}/render-selected.png` });
 // micro-state marker click (Liechtenstein)
 await page.getByRole('button', { name: 'Liechtenstein' }).click({ force: true });
 await page.waitForTimeout(2500);
-console.log('marker click card:', JSON.stringify(await page.locator('.info-card').innerText()), '| hash:', await page.evaluate('location.hash'));
+console.log('marker click card:', JSON.stringify(await page.locator('.info-card').innerText()), '| path:', await page.evaluate('location.pathname'));
 await page.screenshot({ path: `${out}/render-marker.png` });
 // 400px width: horizontal scroll?
 await page.setViewportSize({ width: 400, height: 800 });

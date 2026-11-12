@@ -45,9 +45,15 @@ export const PolityDetail = PolitySummary.extend({
   updated_at: Str,
 });
 export const Marker = z.object({ lat: z.number(), lng: z.number() });
+// v1.1 additions are `.optional()`: production serves v1.0 until the API is redeployed, and a 1.0 answer must still parse.
+export const CapitalCoord = z.object({ name: Str, lat: z.number(), lng: z.number() });
+export const Clues = z.object({
+  driving_side: z.enum(['left', 'right']).nullable(), calling_code: NStr, tld: NStr, plate_code: NStr, scripts: z.array(Str),
+});
 export const CountrySummary = z.object({
   iso2: Str, polity_id: Str, name: Str, capital: NStr, region: NStr, regime: NStr,
   has_content: z.boolean(), marker: Marker.nullable(),
+  regime_id: NStr.optional(), capital_coords: z.array(CapitalCoord).optional(),
 });
 export const CountryDetail = z.object({
   iso2: Str, polity_id: Str, name: Str, official_name: NStr, capital: NStr, flag_url: NStr, region: NStr, regime: NStr, summary: NStr,
@@ -60,6 +66,7 @@ export const CountryDetail = z.object({
   timeline: z.array(Event),
   sources: z.array(Source),
   updated_at: Str,
+  regime_id: NStr.optional(), clues: Clues.nullable().optional(),
 });
 export const SnapshotInfo = z.object({
   year: Year, geometry_url: Str, feature_count: z.number().int(), link_coverage: z.number().min(0).max(1),
@@ -81,3 +88,22 @@ export const Meta = z.object({
   counts: z.object({ countries: z.number().int(), polities: z.number().int(), events: z.number().int() }),
 });
 export const ProblemJson = z.object({ type: Str, title: Str, status: z.number(), detail: Str });
+
+// ---- v1.1 ----
+export const Image = z.object({ url: Str, credit: Str, license: Str });
+export const GlossaryKind = z.enum(['regime', 'system', 'region', 'membership', 'currency', 'other']);
+export const GlossaryTerm = z.object({
+  id: Str, kind: GlossaryKind, label: Str, short: Str, body: Str, icon: NStr, examples: z.array(Str), sources: z.array(Source),
+});
+export const GlossaryList = z.object({ items: z.array(GlossaryTerm) });
+export const Leader = z.object({
+  person_id: Str, name: Str, role: z.enum(['head_of_state', 'head_of_government']), office: NStr, start: NStr, end: NStr,
+  party: z.object({ id: Str, name: Str }).nullable(), image: Image.nullable(), wikipedia_url: NStr,
+});
+export const LeaderList = z.object({ items: z.array(Leader) });
+export const PersonDomain = z.enum(['arts', 'business_law', 'exploration', 'humanities', 'institutions', 'public_figure', 'science_technology', 'sports']);
+export const Person = z.object({
+  id: Str, name: Str, occupation: NStr, domain: PersonDomain.nullable(), birth_year: z.number().int().nullable(), death_year: z.number().int().nullable(),
+  image: Image.nullable(), wikipedia_url: NStr, rank: z.number().int(),
+});
+export const PeopleList = z.object({ items: z.array(Person), method: Str, source: Source });

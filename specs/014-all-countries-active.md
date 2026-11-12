@@ -1,5 +1,5 @@
 # 014 - Todos os países com cara de clicáveis + camada de bandeiras
-Status: approved | Repos: web | Contrato: não muda | Executor: Sonnet (parte 1), Opus (parte 2)
+Status: parte 1 done, parte 2 approved | Repos: web | Contrato: não muda | Executor: Sonnet (parte 1), Opus (parte 2)
 
 ## Por quê
 Os 196 países têm dados na API (todos têm `flag_url`, regime em 153, governantes em 196), mas no globo os que não têm
@@ -23,5 +23,5 @@ Os 196 países têm dados na API (todos têm `flag_url`, regime em 153, governan
   (three-globe cria uma geometria por polígono). Medir frame time antes/depois (meta: < 15% pior no swiftshader).
 
 ## Tarefas
-- [ ] parte 1: material ativo para todos os `apiIds`; renomear toggle; prévia de bandeira no hover; screenshots
+- [x] parte 1: material ativo para todos os `apiIds`; toggle "Padrão"; prévia de bandeira (`flagPreviewUrl`, ISO2 validado) no readout do hover; screenshots (em mock só 9 países são conhecidos, então só eles ficam ativos)
 - [ ] parte 2: atlas de bandeiras + material da camada; medir performance; screenshots

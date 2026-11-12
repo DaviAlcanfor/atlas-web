@@ -45,6 +45,9 @@ export const regimePalette = ['#d6f6f8', '#8fdbe3', '#5cb8c4', '#3b93a1', '#2a73
 
 const kebab = (s: string) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 
+/** Tokens as CSS custom properties; the root layout puts them on <html> at render time (no flash, works without JS). */
+export const cssVars = (): Record<string, string> => Object.fromEntries(Object.entries(palette).map(([k, v]) => [`--c-${kebab(k)}`, v]));
+
 export function applyCssVars(root: HTMLElement = document.documentElement) {
-  for (const [k, v] of Object.entries(palette)) root.style.setProperty(`--c-${kebab(k)}`, v);
+  for (const [k, v] of Object.entries(cssVars())) root.style.setProperty(k, v);
 }

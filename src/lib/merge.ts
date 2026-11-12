@@ -18,5 +18,7 @@ export function mergeCountries(features: CountryFeature[], countries: CountrySum
       ? { ...f, properties: { ...f.properties, micro: true, lat: marker.lat, lng: marker.lng } }
       : { ...f, properties: { ...f.properties, micro: false } };
   });
-  return { features: merged, contentIds, knownIds, regimes };
+  const capitals = new Map(countries.flatMap((c) => (c.capital_coords?.length ? [[c.iso2, c.capital_coords] as const] : []))); // v1.1
+  const names = new Map(countries.map((c) => [c.iso2, c.name])); // pt-BR names (the polygons carry English ones)
+  return { features: merged, contentIds, knownIds, regimes, capitals, names };
 }

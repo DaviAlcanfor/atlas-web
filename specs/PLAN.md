@@ -11,30 +11,30 @@ testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo
 ### Lista 1 (2026-11-11)
 | Pedido | Spec | API | Web | Situação |
 |---|---|---|---|---|
-| Como funciona o governo, não só o nome | 004 | feito (glossário, 21 verbetes rascunho) | falta | P1 |
-| Popup com explicação + catálogo de todos os termos | 004 | feito (`/v1/glossary`) | falta | P1 |
+| Como funciona o governo, não só o nome | 004 | feito (glossário, 21 verbetes rascunho) | feito em mocks (P1) | P1 feito; vale em produção após P0 |
+| Popup com explicação + catálogo de todos os termos | 004 | feito (`/v1/glossary`) | feito em mocks (P1) | P1 feito; vale em produção após P0 |
 | Moeda: página para comparar com dólar etc. | 009 | falta | falta | P4 (ampliado com economia) |
-| Estados dos países / capital no mapa | 005 | capital feito | estados feito; capital falta | P1 |
+| Estados dos países / capital no mapa | 005 | capital feito | estados e capital feitos (capital em mocks) | P1 feito |
 | Ícone para regime, moeda, região etc. | 004/013 | n/a | feito | pronto |
 | Timeline estilizada em linha | 001 | n/a | feito | pronto |
-| Pessoas importantes | 007 | feito (Pantheon, 196 países) | falta | P1 |
+| Pessoas importantes | 007 | feito (Pantheon, 196 países) | feito em mocks (P1) | P1 feito; vale em produção após P0 |
 | Aba música | 010 | falta | falta | P6 |
-| Tooltip/hover explicando cada info | 004 | feito | falta | P1 |
+| Tooltip/hover explicando cada info | 004 | feito | feito em mocks (P1) | P1 feito; vale em produção após P0 |
 | Slider político esquerda-direita | 006 v1.2 | falta (fonte: V-Party + ParlGov) | falta | P5 |
-| Histórico de governantes | 006 | feito (10.645 mandatos) | falta | P1 |
+| Histórico de governantes | 006 | feito (10.645 mandatos) | feito em mocks (P1) | P1 feito; vale em produção após P0 |
 | Vídeos de história no YouTube | 011 | falta | falta | P6 |
 
 ### Lista 2 (2026-11-12)
 | Pedido | Spec | Situação |
 |---|---|---|
-| Todos os países com cara de clicáveis + bandeiras | 014 | P1 (parte 1), P3 (camada de bandeiras) |
+| Todos os países com cara de clicáveis + bandeiras | 014 | P1 parte 1 feita; P3 (camada de bandeiras) |
 | Moeda clicável/hover, câmbio, estado da moeda e da economia, comparar países | 009 | P4 |
 | Página de notícias geopolíticas do mundo, filtro com Jev | 008 | P5 |
 | Avaliação de stack para crescer | ADR-001 | feito (este repo, `specs/ADR-001-stack.md`), aguarda decisão |
 | Mais informações sobre como vive o povo | 015 | P4 |
 | História mais elaborada e expansível | 016 | P4 |
 | Idiomas: oficiais e outros (indígenas, imigração, sinais) com cores diferentes | 017 | P4 |
-| Figuras mais importantes do país | 007 | P1 (API pronta) |
+| Figuras mais importantes do país | 007 | P1 feito (em mocks até P0) |
 | Ideologias: pensadores e figuras de cada lado, o que fizeram | 018 | P4 |
 
 ## P0 - Publicar o que já está pronto (dono; bloqueado para agentes pelo modo automático)
@@ -46,7 +46,8 @@ testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo
 4. Mergear atlas-api PR #4 e atlas-web PR #1 (o PR do web é seguro antes do passo 1). Depois: `cd geo && npm run smoke`.
 Para liberar isto para agentes no futuro: adicionar regras de permissão para `alembic upgrade`, `fastapi cloud deploy` e `gh pr merge`.
 
-## P1 - Front da v1.1 (dados que a API já tem) - Sonnet
+## P1 - Front da v1.1 (dados que a API já tem) - Sonnet - FEITO (2026-11-12, branch `feat/v1.1-front`)
+Todas as 7 tarefas abaixo implementadas e verificadas em mocks (campos novos opcionais no zod; endpoints novos degradam para "seção oculta"). Pendente: `npm run smoke` e screenshots BR/JP/US contra a produção depois do P0.
 | Tarefa | Spec | Notas |
 |---|---|---|
 | zod + mocks v1.1 a partir de `atlas-api` (`GET` reais ou `openapi.generated.json`) | 004-007 | campos novos opcionais no schema até P0 sair |
@@ -58,9 +59,11 @@ Para liberar isto para agentes no futuro: adicionar regras de permissão para `a
 | Todos os países ativos + prévia de bandeira no hover | 014 parte 1 | |
 Verificar: typecheck, build, vitest, screenshots BR/JP/US, `npm run smoke` depois do deploy.
 
-## P2 - Decisão de stack (dono) e migração (Opus)
-Se o ADR-001 for aceito: migrar para Next.js App Router + tipos gerados do OpenAPI **antes** de P4/P5 (páginas novas).
-Se não: seguir com rotas por hash. Spec da migração a escrever quando houver decisão (`specs/020-nextjs.md`).
+## P2 - Migração para Next.js (Opus) - FEITO (2026-11-12, branch `feat/nextjs`, spec [020](020-nextjs.md))
+ADR-001 aprovado. Next.js 16.4.6 App Router: `/`, `/pais/[iso2]` (196 páginas SSG + ISR 1 h, metadata/OG por país), `/glossario`
+(servidor); globo no layout (não remonta); hash antigo redirecionado; `NEXT_PUBLIC_API_URL`; tipos gerados do OpenAPI
+(`npm run api:types`) + checagem zod x OpenAPI no `tsc`. First Load JS 236 kB gzip (antes: bundle único de 707 kB gzip / 2,5 MB).
+Pendente do dono: Vercel (ver spec 020, "Vercel"); a API caiu com a rajada de requisições do build (ver spec 020, "Achados").
 
 ## P3 - Camada de bandeiras - Opus
 014 parte 2 (atlas de texturas no shader). Medir performance.

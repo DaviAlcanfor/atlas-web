@@ -3,7 +3,9 @@ import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
 import { createDotMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
 import { palette } from '../lib/palette';
 import { api } from '../api';
-import { createFlagMaterial, FLAG_MIX, flagBox, flagPngUrl, largestPolygon, loadFlag } from '../lib/flagMaterial';
+import type { CapitalCoord } from '../api/types';
+import { createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag } from '../lib/flagMaterial';
+import { flagPngUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D } from 'three';
@@ -80,8 +82,8 @@ function buildLines(paths: number[][][], color: string, alt = ALT_LINE): LineSeg
 interface Props {
   features: CountryFeature[];
   lines: Lines;
-  contentIds: Set<string>;
-  apiIds: Set<string>; // countries the API knows (only these are asked for a flag)
+  apiIds: Set<string>; // countries the API knows: active dots + flag requests (spec 014). Others stay dim.
+  capitals: Map<string, CapitalCoord[]>; // iso2 -> capital coordinates (contract v1.1); the selected country's get a star (spec 005)
   layer: LayerId;
   regimes: Map<string, string>; // iso2 -> regime text (only countries where the API has one)
   hoveredId: string | null;
@@ -108,9 +110,17 @@ function findIn<T extends Feature>(items: T[], bounds: ReturnType<typeof geoBoun
   });
 }
 
+// html layer items: micro-state markers (CountryFeature) and the selected country's capital stars
+interface CapitalDatum {
+  el: HTMLElement;
+  lat: number;
+  lng: number;
+}
+const isCapital = (d: object): d is CapitalDatum => 'el' in d;
+
 // module-level accessors: three-globe re-digests a layer whenever an accessor prop changes identity
-const markerLat = (d: object) => (d as CountryFeature).properties.lat;
-const markerLng = (d: object) => (d as CountryFeature).properties.lng;
+const markerLat = (d: object) => (isCapital(d) ? d.lat : (d as CountryFeature).properties.lat);
+const markerLng = (d: object) => (isCapital(d) ? d.lng : (d as CountryFeature).properties.lng);
 const pathLat = (p: unknown) => (p as number[])[1]!;
 const pathLng = (p: unknown) => (p as number[])[0]!;
 const pathAlt = (p: unknown) => (p as number[])[2]!;
@@ -133,7 +143,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -202,17 +212,22 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
     };
   }, [selectedId, features, apiIds, mats]);
 
-  const select = useCallback(
-    (f: CountryFeature | undefined) => {
-      if (!f) return;
-      onSelect(idOf(f));
+  // Camera flies to whatever becomes selected: a click, a marker, the URL path or a glossary example (spec 004).
+  const select = useCallback((f: CountryFeature | undefined) => f && onSelect(idOf(f)), [onSelect]);
+  const flyTo = useCallback(
+    (id: string | null) => {
+      const f = id ? features.find((x) => idOf(x) === id) : undefined;
       const g = globe.current;
+      if (!f || !g) return;
       const ms = reducedMotion() ? 0 : 900;
-      g?.pointOfView({ lat: f.properties.lat, lng: f.properties.lng, altitude: 0.9 }, ms);
-      if (!ms) requestAnimationFrame(() => g?.controls().update());
+      g.pointOfView({ lat: f.properties.lat, lng: f.properties.lng, altitude: 0.9 }, ms);
+      if (!ms) requestAnimationFrame(() => g.controls().update());
     },
-    [onSelect],
+    [features],
   );
+  useEffect(() => flyTo(selectedId), [selectedId, flyTo]);
+  const initialFly = useRef(() => {}); // onReady resets the camera to START; a country already selected (URL path) must win
+  initialFly.current = () => flyTo(selectedId);
 
   // Micro-state markers: real <button>s so they are keyboard-focusable. Created once; styled via classes.
   const markers = useMemo(() => {
@@ -229,7 +244,23 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
   const microFeatures = useMemo(() => features.filter((f) => markers.has(idOf(f))), [features, markers]);
 
   // must be referentially stable: three-globe rebuilds every marker whenever the htmlElement prop changes identity
-  const markerElement = useCallback((d: object) => markers.get(idOf(d as CountryFeature))!, [markers]);
+  const markerElement = useCallback((d: object) => (isCapital(d) ? d.el : markers.get(idOf(d as CountryFeature))!), [markers]);
+
+  // Capital star + label for the selected country (spec 005). Elements are built here, once per selection, so the htmlElement accessor stays stable.
+  // Micro-states are skipped: their marker already sits on the capital.
+  const capitalData = useMemo<CapitalDatum[]>(() => {
+    if (!selectedId || markers.has(selectedId)) return [];
+    return (capitals.get(selectedId) ?? []).map((c) => {
+      const el = document.createElement('div');
+      el.className = 'capital';
+      const label = document.createElement('span');
+      label.className = 'capital__label';
+      label.textContent = c.name; // textContent: API text never becomes markup
+      el.append(label);
+      return { el, lat: c.lat, lng: c.lng };
+    });
+  }, [capitals, selectedId, markers]);
+  const htmlData = useMemo(() => [...microFeatures, ...capitalData], [microFeatures, capitalData]);
 
   const latest = useRef({ onHover, select, features });
   latest.current = { onHover, select, features };
@@ -253,13 +284,13 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
   useEffect(() => {
     markers.forEach((b, id) => {
       const regime = regimes.get(id);
-      b.classList.toggle('has-content', layer === 'content' && contentIds.has(id));
+      b.classList.toggle('has-content', layer === 'content' && apiIds.has(id));
       b.classList.toggle('is-hover', id === hoveredId);
       b.classList.toggle('is-selected', id === selectedId);
       // in the regime layer the marker takes the regime color unless hovered/selected (their CSS classes win)
       b.style.background = layer === 'regime' && regime && id !== hoveredId && id !== selectedId ? colors.get(regime) ?? '' : '';
     });
-  }, [markers, contentIds, layer, regimes, colors, hoveredId, selectedId]);
+  }, [markers, apiIds, layer, regimes, colors, hoveredId, selectedId]);
 
   // States/provinces of the selected country (spec 005): lazy per-country file; missing file or any error = no internal borders.
   // Removing the LineSegments from customLayerData makes three-globe dispose its geometry and material.
@@ -268,7 +299,7 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
     setAdmin1(null);
     if (!selectedId || !/^[A-Z]{2}$/.test(selectedId)) return;
     let live = true;
-    fetch(`${import.meta.env.BASE_URL}data/admin1/${selectedId}.geojson`)
+    fetch(`/data/admin1/${selectedId}.geojson`)
       .then((r) => (r.ok ? (r.json() as Promise<FeatureCollection<Geometry, { name?: string }>>) : null))
       .then((fc) => {
         if (!live || !fc) return;
@@ -374,7 +405,8 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
     const g = globe.current;
     if (!g) return;
     g.pointOfView(START, 0);
-    if (import.meta.env.DEV) (window as unknown as { __globe: GlobeMethods }).__globe = g; // for scripts/screenshot.ts
+    initialFly.current();
+    (window as unknown as { __globe: GlobeMethods }).__globe = g; // for scripts/screenshot.ts (camera control in production builds too)
     const c = g.controls();
     c.autoRotate = false;
     c.enableDamping = true;
@@ -410,7 +442,7 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
       const regime = regimes.get(id);
-      const filled = layer === 'regime' ? !!regime : contentIds.has(id);
+      const filled = layer === 'regime' ? !!regime : apiIds.has(id);
       if (id === selectedId && id === flagId) {
         mats.flag.uniforms.uDot!.value.set(filled ? DOTS.selected.color : DOTS.selectedDim.color);
         return mats.flag;
@@ -420,7 +452,7 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
       if (hov) return mats.hover;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [contentIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats],
   );
 
   const polygonAltitude = useCallback((d: object) => (idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE), [selectedId]);
@@ -467,7 +499,7 @@ export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hov
         customThreeObjectUpdate={noop}
         pathTransitionDuration={0}
         pathResolution={2}
-        htmlElementsData={microFeatures}
+        htmlElementsData={htmlData}
         htmlLat={markerLat}
         htmlLng={markerLng}
         htmlAltitude={0.01}

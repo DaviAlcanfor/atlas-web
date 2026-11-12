@@ -2,7 +2,7 @@ import { ApiError, parse } from '../client';
 import * as S from '../schemas';
 import type { AtlasApi } from '../types';
 import { nearestYear } from '../../lib/snapshots';
-import { COUNTRIES, COUNTRY_SUMMARIES, LINKS, POLITIES, SNAPSHOTS } from './fixtures';
+import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
 const norm = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
@@ -31,6 +31,18 @@ export function createMockApi(delayMs = 150): AtlasApi {
       const p = POLITIES.find((x) => x.id === id);
       if (!p) throw notFound(`Unknown polity ${id}`);
       return parse(S.PolityDetail, p, `mock /v1/polities/${id}`);
+    }),
+    glossary: () => wait(() => parse(S.GlossaryList, { items: GLOSSARY }, 'mock /v1/glossary').items),
+    leaders: (iso2) => wait(() => {
+      if (!COUNTRIES.some((x) => x.iso2 === iso2)) throw notFound(`Unknown country ${iso2}`);
+      return parse(S.LeaderList, { items: LEADERS[iso2] ?? [] }, `mock leaders ${iso2}`).items;
+    }),
+    people: (iso2, domain, limit = 10) => wait(() => {
+      if (!COUNTRIES.some((x) => x.iso2 === iso2)) throw notFound(`Unknown country ${iso2}`);
+      const p = PEOPLE[iso2];
+      if (!p) throw notFound(`No people for ${iso2}`); // mocks only carry BR and JP
+      const items = p.items.filter((x) => !domain || x.domain === domain).slice(0, limit);
+      return parse(S.PeopleList, { ...p, items }, `mock people ${iso2}`);
     }),
     search: (q) => wait(() => {
       if (q.trim().length < 2) throw new ApiError(422, 'Unprocessable Entity', 'q must have at least 2 characters');

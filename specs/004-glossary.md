@@ -1,5 +1,5 @@
 # 004 — Glossário: tooltips, popups e ícones
-Status: draft (ícones done) | Contrato: v1.1 | API: atlas-api/specs/004-glossary.md
+Status: done (web, em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 | API: atlas-api/specs/004-glossary.md
 
 ## Por quê
 O painel diz *o que* é o regime, não *como funciona*. Quero tooltip curto no hover, explicação completa no clique,
@@ -30,8 +30,10 @@ Região e organização não têm id no contrato: casar pelo texto (`label` === 
 
 ## Tarefas
 - [x] ícones nos blocos do painel: SVG inline em `src/components/icons.tsx` (rótulo do bloco → ícone), sem dependência nova
-- [ ] zod + mock do glossário
-- [ ] `Tooltip`, `GlossaryDialog`, página `#/glossary`
+- [x] zod + mock do glossário (`GlossaryTerm` em `src/api/schemas.ts`; mock com os 21 verbetes reais em `src/api/mocks/v11.json`); `api.glossary()` carregado uma vez junto com `/v1/countries`, falha = sem ⓘ (sem banner)
+- [x] `Tooltip` (`src/components/Tooltip.tsx`: hover + foco, `aria-describedby`, Esc, vira abaixo se não couber, portal em `<body>`), `Term` (ⓘ + clique), `GlossaryDialog` e `GlossaryPage` (`src/glossary.tsx`); ligado em Regime (por `regime_id`), Região e Organizações (por rótulo)
+- [x] rota `#/glossario` (nome em pt-BR; não `#/glossary`), link "Glossário" sob o toggle de camada; só aparece se o glossário carregou
+- [x] clique num exemplo seleciona o país e a câmera voa (o voo agora acompanha `selectedId`, também por hash)
 
 ## Decisões abertas
 1. Ícones: SVG inline (recomendado, zero dependência) ou `lucide-react`?

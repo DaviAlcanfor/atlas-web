@@ -10,6 +10,10 @@ import { ArrowsOutLineHorizontal } from '@phosphor-icons/react/dist/csr/ArrowsOu
 import { X } from '@phosphor-icons/react/dist/csr/X';
 import { CountUp } from './CountUp';
 import { LabelIcon } from './icons';
+import { CurrentLeaders, LeadersSection, PeopleSection } from './PeopleSections';
+import { Section } from './Section';
+import { Term } from './Term';
+import { splitLeaders } from '../lib/leaders';
 import { day, safeHref } from '../lib/url';
 import { formatRange, formatYear } from '../lib/years';
 
@@ -17,6 +21,7 @@ interface Props {
   iso2: string;
   name: string; // from the polygon, shown while loading and when the API has nothing
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
+  initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
   wide: boolean;
   onToggleWide: () => void;
   onClose: () => void;
@@ -38,20 +43,11 @@ function SourceNote({ ids, sources }: { ids: string[]; sources: Source[] }) {
   return <p className="src">Fonte: {used.map((s) => s.title).join('; ')}</p>;
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="psec">
-      <h3><LabelIcon label={title} />{title}</h3>
-      {children}
-    </section>
-  );
-}
-
-function Chips({ items }: { items: string[] }) {
+function Chips({ items, render }: { items: string[]; render?: (t: string) => ReactNode }) {
   if (!items.length) return <NoData />;
   return (
     <ul className="chips">
-      {items.map((t) => <li key={t}>{t}</li>)}
+      {items.map((t) => <li key={t}>{render ? render(t) : t}</li>)}
     </ul>
   );
 }
@@ -70,9 +66,10 @@ function Skeleton() {
   );
 }
 
-export function CountryPanel({ iso2, name, inApi, wide, onToggleWide, onClose }: Props) {
-  // Not in the API's list (e.g. polygons without an ISO code): nothing to fetch (key null = idle).
-  const state = useAsync(() => api.country(iso2), inApi ? iso2 : null);
+export function CountryPanel({ iso2, name, inApi, initial, wide, onToggleWide, onClose }: Props) {
+  // Not in the API's list (e.g. polygons without an ISO code) or already loaded on the server: nothing to fetch (key null = idle).
+  const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
+  const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
   const title = state.status === 'ok' ? state.data.name : name;
 
   let body: ReactNode;
@@ -110,6 +107,20 @@ function Details({ c }: { c: CountryDetail }) {
   const density = pop && c.area_km2 ? pop.value / c.area_km2 : null;
   const flag = safeHref(c.flag_url);
   const plonk = plonkitUrl(c.iso2);
+  // v1.1 endpoints: production may still be v1.0, so an error (404, network) just means "no leaders" and the sections stay hidden.
+  const leadersState = useAsync(() => api.leaders(c.iso2), c.iso2);
+  const leaders = leadersState.status === 'ok' ? leadersState.data : [];
+  const current = splitLeaders(leaders).current;
+  const clues = c.clues;
+  const clueRows: [string, string][] = clues
+    ? ([
+        ['Lado da direção', clues.driving_side === 'left' ? 'esquerda' : clues.driving_side === 'right' ? 'direita' : ''],
+        ['DDI', clues.calling_code ?? ''],
+        ['Domínio', clues.tld ?? ''],
+        ['Placa', clues.plate_code ?? ''],
+        [clues.scripts.length > 1 ? 'Alfabetos' : 'Alfabeto', clues.scripts.join(', ')],
+      ] as [string, string][]).filter(([, v]) => v)
+    : [];
   const newsHref =`https://news.google.com/search?q=${encodeURIComponent(c.name)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
   return (
@@ -119,7 +130,7 @@ function Details({ c }: { c: CountryDetail }) {
         <div>
           {c.official_name && <p className="official">{c.official_name}</p>}
           <ul className="tags">
-            {c.region && <li>{c.region}</li>}
+            {c.region && <li><Term label={c.region}>{c.region}</Term></li>}
             {c.capital && <li>Capital: {c.capital}</li>}
           </ul>
         </div>
@@ -131,7 +142,7 @@ function Details({ c }: { c: CountryDetail }) {
           foot={pop && <>{pop.year !== null && `em ${pop.year}. `}<SourceNote ids={[pop.source_id]} sources={c.sources} /></>} />
         <Stat label="Área" value={c.area_km2 !== null && <CountUp value={c.area_km2} format={fmtKm2} />} />
         <Stat label="Densidade" value={density !== null && <CountUp value={density} format={fmtDensity} />} foot="calculada: população ÷ área" />
-        <Stat label="Regime" value={c.regime} small foot={c.regime && 'texto não verificado'} />
+        <Stat label="Regime" value={c.regime && <Term id={c.regime_id}>{c.regime}</Term>} small foot={c.regime && !c.regime_id && 'texto não verificado'} />
       </div>
 
       <Section title="Idiomas">
@@ -141,18 +152,22 @@ function Details({ c }: { c: CountryDetail }) {
         <Chips items={c.currencies.map((x) => `${x.name}${x.symbol ? ` (${x.symbol})` : ''}`)} />
       </Section>
       <Section title="Organizações">
-        <Chips items={c.memberships} />
+        <Chips items={c.memberships} render={(m) => <Term label={m}>{m}</Term>} />
       </Section>
 
       <Section title="Política hoje">
-        {c.politics && (c.politics.system || c.politics.note) ? (
+        {(c.politics && (c.politics.system || c.politics.note)) || current.length ? (
           <div className="card">
-            {c.politics.system && <p>{c.politics.system}</p>}
-            {c.politics.note && <p className="note">{c.politics.note}</p>}
-            <p className="src">{c.politics.updated_at ? `Atualizado em ${day(c.politics.updated_at)}` : 'Data de atualização: sem dados'}</p>
+            <CurrentLeaders items={current} />
+            {c.politics?.system && <p>{c.politics.system}</p>}
+            {c.politics?.note && <p className="note">{c.politics.note}</p>}
+            {c.politics && <p className="src">{c.politics.updated_at ? `Atualizado em ${day(c.politics.updated_at)}` : 'Data de atualização: sem dados'}</p>}
           </div>
         ) : <NoData />}
       </Section>
+
+      <LeadersSection items={leaders} />
+      <PeopleSection iso2={c.iso2} />
 
       <Section title="História">
         <Timeline events={c.timeline} sources={c.sources} />
@@ -166,10 +181,22 @@ function Details({ c }: { c: CountryDetail }) {
         <a className="news-link" href={newsHref} target="_blank" rel="noreferrer noopener">Ver notícias sobre {c.name} no Google Notícias ↗</a>
       </Section>
 
-      {plonk && (
+      {(plonk || clueRows.length > 0) && (
         <Section title="GeoGuessr">
-          <a className="news-link" href={plonk} target="_blank" rel="noreferrer noopener">Guia Plonk It de {c.name} ↗</a>
-          <p className="src">Plonk It é um guia da comunidade de GeoGuessr; o Atlas só aponta para ele.</p>
+          {plonk && (
+            <>
+              <a className="news-link" href={plonk} target="_blank" rel="noreferrer noopener">Guia Plonk It de {c.name} ↗</a>
+              <p className="src">Plonk It é um guia da comunidade de GeoGuessr; o Atlas só aponta para ele.</p>
+            </>
+          )}
+          {clueRows.length > 0 && (
+            <>
+              <h4 className="subhead"><LabelIcon label="Pistas" />Pistas</h4>
+              <dl className="clues">
+                {clueRows.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+              </dl>
+            </>
+          )}
         </Section>
       )}
 
