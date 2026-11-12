@@ -4,6 +4,7 @@ import type { AtlasApi } from '../types';
 import { nearestYear } from '../../lib/snapshots';
 import { LANGUAGES_SPOKEN } from './languages';
 import v12 from './v12.json';
+import history from './history.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
@@ -71,6 +72,11 @@ export function createMockApi(delayMs = 150): AtlasApi {
         })),
       }));
       return parse(S.EconomyCompare, { countries, indicators, sources: base.sources }, 'mock compare');
+    }),
+    history: (iso2) => wait(() => {
+      const h = (history as Record<string, unknown>)[iso2]; // BR, JP, ML from the local API (spec 016 stage 1)
+      if (!h) throw notFound(`No history for ${iso2}`);
+      return parse(S.CountryHistory, h, `mock history ${iso2}`);
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];

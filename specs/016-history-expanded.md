@@ -22,5 +22,11 @@ GET /v1/countries/{iso2}/history                 -> { periods: Period[], sources
 GET /v1/countries/{iso2}/history/{period_id}     -> { period: Period, events: EventDetail[] }
 ```
 
+## Fase 1 (2026-11-12): resumo da história, CR-004
+Seção História: resumo em texto corrido (3 linhas + "ler o resumo inteiro"), depois "Períodos" como `<details>` nativos com anos,
+depois os marcos curados de sempre. Fonte com link para a revisão exata da Wikipédia (CC BY-SA 4.0). Endpoint ausente/erro = some.
+Componente `src/components/HistorySummary.tsx`; mock `src/api/mocks/history.json` (BR, JP, ML da API local).
+
 ## Tarefas
+- [x] fase 1: resumo + períodos (CR-004)
 - [ ] zod + mocks; `PeriodList` (acordeão, `aria-expanded`), reusar `Timeline`; detalhe do evento; filtro por tipo

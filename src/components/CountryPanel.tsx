@@ -14,6 +14,7 @@ import { CurrentLeaders, LeadersSection, PeopleSection } from './PeopleSections'
 import { CurrencyChip } from './CurrencyChip';
 import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
+import { HistorySummary } from './HistorySummary';
 import { Section } from './Section';
 import { Term } from './Term';
 import { splitLeaders } from '../lib/leaders';
@@ -178,6 +179,8 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
       <PeopleSection iso2={c.iso2} />
 
       <Section title="História">
+        <HistorySummary iso2={c.iso2} />
+        {c.timeline.length > 0 && <p className="sub">Marcos</p>}
         <Timeline events={c.timeline} sources={c.sources} />
       </Section>
 
