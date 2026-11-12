@@ -1,30 +1,43 @@
-# 012 — Viagem no tempo
-Status: draft | Contrato: v1.0 (fronteiras, já existe) + v2 (séries) | API: atlas-api/specs/012-historical-series.md
+# 012 - Viagem no tempo e mapa com estilo da época
+Status: approved | Contrato: v2 | API: atlas-api/specs/012-historical-series.md (fontes pesquisadas: Cliopatria CC BY 4.0) | Executor: Opus
 
 ## Por quê
-Slider de ano no topo que troca o mapa para as fronteiras da época e os dados para os daquele ano.
-É a fase 3 do `TODO.md`, ampliada com dados históricos.
+Um "relógio do tempo": slider de ano que troca o mapa para as fronteiras daquela época, mostra cada entidade como era, e muda o
+**estilo do mapa** para lembrar a cartografia do período.
 
 ## Requisitos
-- Slider no topo (abaixo do card "Atlas"), com ticks nos `snapshot_years` e leitura do ano ("1914", "300 a.C.").
-  Teclado: setas ±1 ano, PageUp/PageDown ±10, Home/End.
-- QUANDO solto o slider ENTÃO o mapa troca para o snapshot mais próximo e mostra "fronteiras de 1914 (−6 anos)".
-- QUANDO clico num território histórico ENTÃO painel histórico: nome da época, linhagem, timeline (componente da 001).
-- Parte 2 (v2): seletor de métrica (população, regime, PIB per capita) → mapa coroplético daquele ano; ano sem dado = cinza "sem dado".
-- Ano no URL (`#year=1914`), como a seleção.
+- Slider no topo (régua com séculos, ticks nos anos de retrato, leitura "1815" / "300 a.C."); arrastar mostra o ano; soltar carrega o retrato
+  mais próximo ("fronteiras de 1815"). Teclado: setas ±1 retrato, PageUp/PageDown ±1 século, Home/End. Botão "hoje" volta ao presente.
+  URL: `?ano=1815` (preservado em `/pais/...` e compartilhável).
+- Mapa: entidades daquele ano com a mesma matriz de pontos, cor estável por entidade (hash do `wikidata`); terra sem entidade registrada
+  em pontos apagados com rótulo "sem Estado registrado nesta fonte" no hover. Transição entre retratos: cross-fade de 400 ms.
+- Painel histórico ao clicar: nome da época, bandeira da época, capital, forma de governo, governante naquele ano, antecessores/sucessores
+  (link para o país moderno), resumo e link Wikipedia. Fronteiras antigas são aproximadas: aviso fixo no painel.
+- Pré-carregar os retratos vizinhos ao soltar o slider; cache em memória dos últimos 6.
+- Atribuição no rodapé: "Fronteiras históricas: Cliopatria (Seshat Global History Databank), CC BY 4.0, simplificadas".
 
-## Bloqueio
-`GET /v1/meta` → `snapshot_years: []`. Sem snapshots importados na API e sem arquivos em `public/data/historical/`, o slider
-não tem o que mostrar. Licença GPL-3.0 do historical-basemaps precisa de decisão (ver `TODO.md`).
+## Estilos por época
+O tema "Signal" vira o tema do presente; cada época troca tokens de cor, o shader da terra, a gratícula e o fundo.
+Implementação: `src/lib/eras.ts` com `{ id, from, to, palette, land: 'dots'|'ink'|'hatch'|'flat', graticule, background }`;
+uniforms do `dotMaterial` ganham um modo (pontos / traço de tinta / hachura / chapado) e texturas procedurais (ruído de papel em shader,
+sem imagens externas). Troca animada (cross-fade de tokens, 600 ms; sem animação com movimento reduzido).
 
-## Contract delta consumido (parte 2)
-```
-Metric { id, label, unit, description, kind: "number"|"category", categories, sources }
-GET /v1/metrics; GET /v1/map?metric=&year= -> { year, metric, items: [{ polity_id, value, source_id }] }
-GET /v1/polities/{id}/series/{metric}      -> { items: [{ year, value, precision, source_id }] }
-```
+| Época | Estilo | Terra | Grade | Fundo |
+|---|---|---|---|---|
+| até 1500 | manuscrito | traço de tinta sépia irregular, sem preenchimento forte | nenhuma | pergaminho escuro com ruído |
+| 1500-1800 | carta náutica | hachura fina em tinta, costas reforçadas | linhas de rumo + rosa dos ventos no oceano | papel envelhecido |
+| 1800-1945 | atlas impresso | cores chapadas de litografia, bordas em tinta | gratícula 10° fina | papel claro amarelado |
+| 1945-1991 | Guerra Fria | contorno azul de planta técnica | gratícula forte | azul de planta |
+| 1991-hoje | Signal (atual) | matriz de pontos ciano | gratícula 10° | abismo |
+
+Contraste mínimo AA para texto do painel em todos os temas (o painel mantém fundo próprio).
+
+## Contract delta consumido (v2)
+Ver a spec da API: `geometry_url` TopoJSON (pode ser URL absoluta), feições `{ name, wikidata, polity_id }`,
+`PolityDetail += { wikidata, flag, capital, government }`, `GET /v1/polities/{id}/leaders?year=`.
 
 ## Tarefas
-- [ ] decisão de licença + arquivos históricos em `public/data/historical/`
-- [ ] slider (`<input type="range">` estilizado: acessível de graça) + troca de camada + painel histórico
-- [ ] parte 2: seletor de métrica + coroplético (após v2)
+- [ ] slider + estado `ano` na URL + carregamento/cache de retratos (TopoJSON via `topojson-client`, versão fixa)
+- [ ] camada histórica no globo (mesmo picking point-in-polygon) + painel histórico
+- [ ] temas por época (`eras.ts`, modos do shader, cross-fade) + screenshots de cada época
+- [ ] atribuição; testes de formatação de anos e de escolha do retrato mais próximo

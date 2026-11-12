@@ -12,6 +12,7 @@ export const palette = {
   // data (ice cyan family)
   ice: '#8fdbe3', // land dots, primary data
   iceBright: '#d6f6f8', // hovered / focused data
+  iceMid: '#5aa8b3', // in between: partial coverage in the GeoGuessr layer
   iceDim: '#2f6873', // land without content
   landFill: '#0a1f2b', // under the dots
   grid: 'rgba(110, 200, 214, 0.10)', // graticule

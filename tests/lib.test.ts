@@ -61,3 +61,11 @@ describe('mergeCountries', () => {
     expect(features[1]!.properties.micro).toBe(false); // input not mutated
   });
 });
+
+describe('parseCoverage (spec 021)', () => {
+  it('reads the three markup levels and strips refs and links', async () => {
+    const { parseCoverage } = await import('../scripts/streetview-parse');
+    const wt = `x\n===Current coverage===\n{|\n|-\n! Country !! Continent\n|-\n|'''Albania'''*<ref name="a">{{cite web|url=x}}</ref>|| Europe ||\n|-\n|'''Afghanistan'''<ref>r</ref>\n|Asia\n|-\n| [[Narnia|Narnia land]] || Asia ||\n|-\n| '''Vietnam*'''<ref name=v/>|| Asia ||\n|}\n=== Future coverage ===`;
+    expect(parseCoverage(wt)).toEqual([['Albania', 'full'], ['Afghanistan', 'partial'], ['Narnia land', 'limited'], ['Vietnam', 'full']]);
+  });
+});

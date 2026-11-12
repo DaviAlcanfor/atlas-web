@@ -45,6 +45,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
   background: var(--c-ice-dim); border: 1px solid var(--c-abyss); transform: rotate(45deg); transition: transform 0.15s var(--ease-out);
 }
 .marker.has-content { background: var(--c-ice); }
+.marker.is-partial { background: var(--c-ice-mid); }
 .marker.is-hover { transform: rotate(45deg) scale(1.4); background: var(--c-ice-bright); }
 .marker.is-selected { background: var(--c-signal); transform: rotate(45deg) scale(1.5); }
 
@@ -64,7 +65,8 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .legend li { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
 .legend i { width: 8px; height: 8px; flex: none; transform: rotate(45deg); }
 .legend__n { margin-left: auto; padding-left: 12px; font: 400 11px/1 var(--f-mono); color: var(--c-text-faint); }
-.legend__warn { color: var(--c-text-faint); font-size: 11px; }
+.legend__warn a { color: var(--c-ice); }
+.legend li.legend__warn { display: block; color: var(--c-text-faint); font-size: 11px; }
 .legend__none { background: var(--c-ice-dim); }
 
 /* ---------- country panel ---------- */

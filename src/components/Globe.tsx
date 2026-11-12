@@ -10,6 +10,7 @@ import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
+import { STREETVIEW } from '../lib/streetview';
 import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
@@ -33,6 +34,7 @@ const INTRO_MS = 600;
 const DOTS = {
   dim: { color: palette.iceDim, radius: 0.24 }, // no content
   content: { color: palette.ice, radius: 0.3 },
+  mid: { color: palette.iceMid, radius: 0.28 }, // GeoGuessr layer: restricted coverage
   hoverDim: { color: palette.iceBright, radius: 0.26 },
   hover: { color: palette.iceBright, radius: 0.32 },
   stateHover: { color: palette.iceBright, radius: 0.34, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
@@ -172,6 +174,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       ocean: createOceanMaterial(),
       dim: createDotMaterial(DOTS.dim, shared),
       content: createDotMaterial(DOTS.content, shared),
+      mid: createDotMaterial(DOTS.mid, shared),
       hoverDim: createDotMaterial(DOTS.hoverDim, shared),
       hover: createDotMaterial(DOTS.hover, shared),
       selected: createDotMaterial(DOTS.selected, shared),
@@ -342,7 +345,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   useEffect(() => {
     markers.forEach((b, id) => {
       const regime = regimes.get(id);
-      b.classList.toggle('has-content', layer !== 'regime' && apiIds.has(id));
+      const sv = STREETVIEW[id];
+      b.classList.toggle('has-content', layer === 'geoguessr' ? sv === 'full' : layer !== 'regime' && apiIds.has(id));
+      b.classList.toggle('is-partial', layer === 'geoguessr' && sv === 'partial');
       b.classList.toggle('is-hover', id === hoveredId);
       b.classList.toggle('is-selected', id === selectedId);
       // in the regime layer the marker takes the regime color unless hovered/selected (their CSS classes win)
@@ -509,7 +514,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
       const regime = regimes.get(id);
-      const filled = layer === 'regime' ? !!regime : apiIds.has(id);
+      const sv = layer === 'geoguessr' ? STREETVIEW[id] : undefined;
+      const filled = layer === 'regime' ? !!regime : layer === 'geoguessr' ? !!sv : apiIds.has(id);
       if (id === selectedId && id === flagId) {
         mats.flag.uniforms.uDot!.value.set(filled ? DOTS.selected.color : DOTS.selectedDim.color);
         return mats.flag;
@@ -522,6 +528,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (id === selectedId) return filled ? mats.selected : mats.selectedDim;
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
+      if (sv === 'partial') return mats.mid;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
     [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState],

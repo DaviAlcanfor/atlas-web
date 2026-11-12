@@ -13,7 +13,8 @@
     "test": "vitest run",
     "shot": "tsx scripts/screenshot.ts",
     "smoke": "tsx scripts/smoke.ts",
-    "plonkit": "tsx scripts/plonkit-slugs.ts"
+    "plonkit": "tsx scripts/plonkit-slugs.ts",
+    "streetview": "tsx scripts/streetview-coverage.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",

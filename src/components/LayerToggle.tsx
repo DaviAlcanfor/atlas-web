@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { regimeGroups } from '../lib/regimes';
+import { STREETVIEW, STREETVIEW_SOURCE } from '../lib/streetview';
 import type { LayerId } from '../types';
 
 interface Props {
@@ -15,7 +16,10 @@ const LAYERS: { id: LayerId; label: string }[] = [
   { id: 'content', label: 'Padrão' },
   { id: 'regime', label: 'Regime político' },
   { id: 'flags', label: 'Bandeiras' },
+  { id: 'geoguessr', label: 'GeoGuessr' },
 ];
+
+const svCount = (l: string) => Object.values(STREETVIEW).filter((v) => v === l).length;
 
 export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, children }: Props) {
   const groups = regimeGroups(regimes);
@@ -35,6 +39,16 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ch
       </div>
       {layer === 'flags' && flagsLoading && (
         <p className="legend" role="status"><span className="spinner" aria-hidden="true" /> Carregando bandeiras…</p>
+      )}
+      {layer === 'geoguessr' && (
+        <ul className="legend">
+          <li><i style={{ background: 'var(--c-ice)' }} />Street View público<span className="legend__n">{svCount('full')}</span></li>
+          <li><i style={{ background: 'var(--c-ice-mid)' }} />Cobertura restrita<span className="legend__n">{svCount('partial')}</span></li>
+          <li><i className="legend__none" />sem cobertura oficial</li>
+          <li className="legend__warn">
+            Fonte: <a href={STREETVIEW_SOURCE.url} target="_blank" rel="noreferrer noopener">{STREETVIEW_SOURCE.title}</a> · {STREETVIEW_SOURCE.license} · consultado em {STREETVIEW_SOURCE.retrieved}
+          </li>
+        </ul>
       )}
       {layer === 'regime' && (
         <ul className="legend">
