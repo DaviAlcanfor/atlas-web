@@ -45,5 +45,13 @@ export function createClient(baseUrl: string): AtlasApi {
     snapshotLinks: (year) => get(`/v1/snapshots/${year}/links`, S.SnapshotLinks),
     polity: (id) => get(`/v1/polities/${q(id)}`, S.PolityDetail),
     search: async (text) => (await get(`/v1/search?q=${q(text)}`, S.SearchResults)).items,
+    glossary: async () => (await get('/v1/glossary', S.GlossaryList)).items,
+    leaders: async (iso2) => (await get(`/v1/countries/${q(iso2)}/leaders`, S.LeaderList)).items,
+    people: (iso2, domain, limit) => {
+      const p = new URLSearchParams();
+      if (domain) p.set('domain', domain);
+      if (limit) p.set('limit', String(limit));
+      return get(`/v1/countries/${q(iso2)}/people${p.size ? `?${p}` : ''}`, S.PeopleList);
+    },
   };
 }

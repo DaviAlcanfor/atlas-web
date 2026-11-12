@@ -1,5 +1,5 @@
 # 003 — GeoGuessr: Plonk It e pistas do país
-Status: parte 1 done, parte 2 draft | Contrato: parte 2 em v1.1 | API: atlas-api/specs/003-geo-clues.md
+Status: done (parte 2 em mocks até a API v1.1 ir ao ar) | Contrato: parte 2 em v1.1 | API: atlas-api/specs/003-geo-clues.md
 
 ## Por quê
 Ter à mão o "meta" de GeoGuessr de cada país.
@@ -21,4 +21,4 @@ Ter à mão o "meta" de GeoGuessr de cada país.
 ## Tarefas
 - [x] parte 1: `npm run plonkit` (`scripts/plonkit-slugs.ts`) gera `src/lib/plonkit.ts`
 - [x] parte 1: seção "GeoGuessr" no `CountryPanel`
-- [ ] parte 2: zod + mock + bloco "Pistas" (após contrato v1.1)
+- [x] parte 2: zod (`clues` opcional) + mock + bloco "Pistas" dentro da seção GeoGuessr (linhas sem dado omitidas; a seção aparece com só as pistas se não houver guia Plonk It)

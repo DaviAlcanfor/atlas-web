@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { regimeColors } from '../lib/regimes';
 import type { LayerId } from '../types';
 
@@ -5,14 +6,15 @@ interface Props {
   layer: LayerId;
   onChange: (l: LayerId) => void;
   regimes: Map<string, string>;
+  children?: ReactNode; // extra chrome under the toggle (glossary link)
 }
 
 const LAYERS: { id: LayerId; label: string }[] = [
-  { id: 'content', label: 'Com conteúdo' },
+  { id: 'content', label: 'Padrão' },
   { id: 'regime', label: 'Regime político' },
 ];
 
-export function LayerToggle({ layer, onChange, regimes }: Props) {
+export function LayerToggle({ layer, onChange, regimes, children }: Props) {
   const colors = regimeColors(regimes);
   return (
     <div className="layer-toggle">
@@ -32,6 +34,7 @@ export function LayerToggle({ layer, onChange, regimes }: Props) {
           {colors.size > 0 && <li className="legend__warn">Texto de regime não verificado (seed legado).</li>}
         </ul>
       )}
+      {children}
     </div>
   );
 }

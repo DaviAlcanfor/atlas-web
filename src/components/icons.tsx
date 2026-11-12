@@ -2,7 +2,9 @@
 // Panel block icons (spec 004 web part, design system in spec 013): Phosphor, weight "light", one family only.
 import { Bank } from '@phosphor-icons/react/dist/csr/Bank';
 import { BookOpen } from '@phosphor-icons/react/dist/csr/BookOpen';
+import { Compass } from '@phosphor-icons/react/dist/csr/Compass';
 import { Coins } from '@phosphor-icons/react/dist/csr/Coins';
+import { Crown } from '@phosphor-icons/react/dist/csr/Crown';
 import { GitBranch } from '@phosphor-icons/react/dist/csr/GitBranch';
 import { GlobeHemisphereWest } from '@phosphor-icons/react/dist/csr/GlobeHemisphereWest';
 import { GridFour } from '@phosphor-icons/react/dist/csr/GridFour';
@@ -13,6 +15,7 @@ import { Ruler } from '@phosphor-icons/react/dist/csr/Ruler';
 import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
 import { Translate } from '@phosphor-icons/react/dist/csr/Translate';
 import { Users } from '@phosphor-icons/react/dist/csr/Users';
+import { UsersThree } from '@phosphor-icons/react/dist/csr/UsersThree';
 import type { Icon } from '@phosphor-icons/react/lib';
 
 /** Panel block label -> icon. Labels not listed get no icon. */
@@ -30,6 +33,9 @@ const LABEL_ICON: Readonly<Record<string, Icon>> = {
   'GeoGuessr': MapPin,
   'Fontes': BookOpen,
   'Linhagem': GitBranch,
+  'Governantes': Crown,
+  'Pessoas importantes': UsersThree,
+  'Pistas': Compass,
 };
 
 export function LabelIcon({ label }: { label: string }) {

@@ -1,5 +1,5 @@
 # 007 — Pessoas importantes
-Status: draft | Contrato: v1.1 | API: atlas-api/specs/007-notable-people.md
+Status: done (web, em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 | API: atlas-api/specs/007-notable-people.md
 
 ## Requisitos
 - Seção "Pessoas": até 20, com foto (crédito), nome, ocupação, anos de vida, link Wikipedia; filtro por área
@@ -14,4 +14,4 @@ GET /v1/countries/{iso2}/people?domain=&limit= -> { items: Person[], method: str
 ```
 
 ## Tarefas
-- [ ] zod + mock; `PeopleList` com filtro (botões `aria-pressed`, como o `LayerToggle`)
+- [x] zod + mock; `PeopleSection` com filtro por área (botões `aria-pressed`), até 10 cartões (foto com crédito, nome, ocupação em pt-BR via `src/lib/occupations.ts`, anos, Wikipedia), `method` e atribuição CC BY-SA da `source`. Busca 1 vez os 50 primeiros e filtra no cliente (os botões só mostram áreas presentes); o filtro age sobre esses 50, não sobre todo o país. Sem dados/erro = seção oculta.

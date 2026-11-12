@@ -16,6 +16,14 @@ export type SnapshotNearest = z.infer<typeof S.SnapshotNearest>;
 export type SnapshotLinks = z.infer<typeof S.SnapshotLinks>;
 export type SearchResults = z.infer<typeof S.SearchResults>;
 export type Meta = z.infer<typeof S.Meta>;
+export type CapitalCoord = z.infer<typeof S.CapitalCoord>;
+export type Clues = z.infer<typeof S.Clues>;
+export type Image = z.infer<typeof S.Image>;
+export type GlossaryTerm = z.infer<typeof S.GlossaryTerm>;
+export type Leader = z.infer<typeof S.Leader>;
+export type Person = z.infer<typeof S.Person>;
+export type PersonDomain = z.infer<typeof S.PersonDomain>;
+export type People = z.infer<typeof S.PeopleList>;
 
 /** Everything the UI needs from the API. Real client and mock adapter both implement it. */
 export interface AtlasApi {
@@ -25,4 +33,9 @@ export interface AtlasApi {
   snapshotLinks(year: number): Promise<SnapshotLinks>;
   polity(id: string): Promise<PolityDetail>;
   search(q: string): Promise<SearchResults['items']>;
+  // v1.1: production may still be v1.0 (404), so callers treat any failure as "no data" and hide the section.
+  glossary(): Promise<GlossaryTerm[]>;
+  leaders(iso2: string): Promise<Leader[]>;
+  /** `limit` defaults to the API's 10. */
+  people(iso2: string, domain?: PersonDomain, limit?: number): Promise<People>;
 }
