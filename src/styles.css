@@ -1,8 +1,8 @@
 /* Design system "Signal" (specs/013-design-system.md). Colors only from --c-* tokens (src/lib/palette.ts).
    Shape: square, 1px hairlines, corner brackets instead of shadows. Type: Geist + Geist Mono (numbers, codes, labels). */
 :root {
-  --f-sans: 'Geist', system-ui, sans-serif;
-  --f-mono: 'Geist Mono', ui-monospace, monospace;
+  --f-sans: var(--font-geist), system-ui, sans-serif; /* next/font (app/layout.tsx) */
+  --f-mono: var(--font-geist-mono), ui-monospace, monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --r: 2px; /* only buttons/inputs */
   /* z-index scale */
@@ -10,7 +10,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body, #root { margin: 0; height: 100%; overflow: hidden; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
 body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(--f-sans); -webkit-font-smoothing: antialiased; }
 :focus-visible { outline: 1px solid var(--c-focus); outline-offset: 3px; }
 

@@ -4,9 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "dev": "next dev -p 5173",
+    "build": "next build",
+    "start": "next start -p 5173",
+    "typecheck": "tsc --noEmit",
+    "api:types": "tsx scripts/api-types.ts",
     "data": "tsx scripts/build-data.ts",
     "test": "vitest run",
     "shot": "tsx scripts/screenshot.ts",
@@ -15,6 +17,7 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",
+    "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-globe.gl": "2.38.0",
@@ -36,11 +39,11 @@
     "d3-geo": "3.1.1",
     "i18n-iso-countries": "7.14.0",
     "jsdom": "31.0.0",
+    "openapi-typescript": "6.7.6",
     "playwright": "1.65.0",
     "topojson-client": "3.1.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.7",
     "vitest": "5.1.0",
     "world-atlas": "2.0.2"
   }

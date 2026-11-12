@@ -59,9 +59,11 @@ Todas as 7 tarefas abaixo implementadas e verificadas em mocks (campos novos opc
 | Todos os países ativos + prévia de bandeira no hover | 014 parte 1 | |
 Verificar: typecheck, build, vitest, screenshots BR/JP/US, `npm run smoke` depois do deploy.
 
-## P2 - Decisão de stack (dono) e migração (Opus)
-Se o ADR-001 for aceito: migrar para Next.js App Router + tipos gerados do OpenAPI **antes** de P4/P5 (páginas novas).
-Se não: seguir com rotas por hash. Spec da migração a escrever quando houver decisão (`specs/020-nextjs.md`).
+## P2 - Migração para Next.js (Opus) - FEITO (2026-11-12, branch `feat/nextjs`, spec [020](020-nextjs.md))
+ADR-001 aprovado. Next.js 16.4.6 App Router: `/`, `/pais/[iso2]` (196 páginas SSG + ISR 1 h, metadata/OG por país), `/glossario`
+(servidor); globo no layout (não remonta); hash antigo redirecionado; `NEXT_PUBLIC_API_URL`; tipos gerados do OpenAPI
+(`npm run api:types`) + checagem zod x OpenAPI no `tsc`. First Load JS 236 kB gzip (antes: bundle único de 707 kB gzip / 2,5 MB).
+Pendente do dono: Vercel (ver spec 020, "Vercel"); a API caiu com a rajada de requisições do build (ver spec 020, "Achados").
 
 ## P3 - Camada de bandeiras - Opus
 014 parte 2 (atlas de texturas no shader). Medir performance.

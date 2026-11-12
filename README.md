@@ -5,31 +5,34 @@ Globo 3D interativo onde cada país carrega história, política atual e fatos, 
 > **Status:** fase 1 de 5 (globo) entregue; fase 2 (API + mocks + painel) em andamento. Veja [TODO.md](TODO.md) para o que falta e [AGENTS.md](AGENTS.md) para as convenções do projeto.
 
 ## Stack
-TypeScript (strict) · Vite · React 19 (hooks) · `react-globe.gl` 2.38 (three-globe / three 0.187) · `zod` · `vitest` · Playwright (screenshots). Site estático, sem Next.js.
+TypeScript (strict) · Next.js 16 (App Router) · React 19 (hooks) · `react-globe.gl` 2.38 (three-globe / three 0.187) · `zod` · `vitest` · Playwright (screenshots).
+Rotas: `/` (globo), `/pais/br` (país, pré-gerado com ISR), `/glossario`. Ver [specs/020-nextjs.md](specs/020-nextjs.md).
 
 ## Como rodar
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm run build      # typecheck + build de produção
+npm run build      # next build (inclui typecheck)
+npm start          # servidor de produção em http://localhost:5173
+npm run api:types  # regenera src/api/openapi.gen.ts a partir do OpenAPI da API
 npm test           # vitest (testes ainda a escrever)
 npm run data       # regenera public/data/ a partir do world-atlas
 npm run shot -- <pasta>   # screenshots + medição de fps (precisa do dev server rodando)
 ```
 Opções do `shot`: `HEADED=1 GPU=1` usa a GPU real em vez do renderizador por software.
 
-> Windows: se o caminho do projeto tiver `&`, o `npx` falha. Chame as ferramentas por `node node_modules/<pacote>/...`.
+> Windows: se o caminho do projeto tiver `&`, o `npx` falha. Chame as ferramentas por `node node_modules/<pacote>/...` (Next: `node node_modules/next/dist/bin/next`).
 
 ## Dados: três peças
 | Peça | O que é | Onde |
 |---|---|---|
 | **Geometria** | Natural Earth 50m (via `world-atlas`), chaveada por ISO 3166-1 alpha-2. Kosovo = `XK` (não oficial). Historical-basemaps entra na fase 3. | `public/data/modern.geojson`, `lines.json` |
-| **Dados** | Fatos, texto curado (história, política atual), vínculos de snapshots e busca vêm **somente da Atlas API** (repo separado; contrato em `contract/CONTRACT.md`). O app não chama REST Countries nem World Bank e não tem chaves. Sem `VITE_API_URL`, usa mocks em memória (`src/api/mocks/`). | `src/api/` |
+| **Dados** | Fatos, texto curado (história, política atual), vínculos de snapshots e busca vêm **somente da Atlas API** (repo separado; contrato em `contract/CONTRACT.md`). O app não chama REST Countries nem World Bank e não tem chaves. Sem `NEXT_PUBLIC_API_URL`, usa mocks em memória (`src/api/mocks/`). | `src/api/` |
 | **Código** | App React + globo. | `src/` |
 
 "País com conteúdo" (cor creme) e a posição dos marcadores de micro-estados vêm de `GET /v1/countries` (`has_content`, `marker`). Dado ausente = "no data"; nada é inventado.
 
-Variável de ambiente: `VITE_API_URL` (ex.: `https://atlas-api.fastapicloud.dev`). A API precisa liberar a origem do app em `CORS_ORIGINS`.
+Variável de ambiente: `NEXT_PUBLIC_API_URL` (ex.: `https://atlas-api.fastapicloud.dev`). A API precisa liberar a origem do app em `CORS_ORIGINS`.
 
 ### ETL (`scripts/build-data.ts`)
 Converte `world-atlas/countries-50m` em:
@@ -45,15 +48,17 @@ Fase 3 (ainda não implementado).
 
 ## Estrutura
 ```
-scripts/        build-data.ts, screenshot.ts
+app/            rotas do Next (layout com o globo, /pais/[iso2], /glossario)
+scripts/        build-data.ts, api-types.ts, screenshot.ts, smoke.ts
 contract/       CONTRACT.md (congelado), CHANGE_REQUESTS.md
 public/data/    modern.geojson, lines.json (e historical/ na fase 3)
 src/
-  api/          client, schemas zod, tipos, mocks
+  api/          client, schemas zod, tipos (gerados do OpenAPI + checagem), mocks
   components/   Globe, InfoCard, CountryPanel, LayerToggle
   hooks/        useAtlasData, useAsync
   lib/          palette (tokens de design), hatchMaterial (shaders), stars
-  state.tsx     contexto único + sincronização com o hash da URL (#c=AT)
+  Shell.tsx     o "chrome" no layout raiz: globo (next/dynamic, ssr: false), painel, glossário
+  state.tsx     contexto único; seleção = caminho da URL (/pais/at); redireciona #c=AT antigo
 ```
 
 ## Visual

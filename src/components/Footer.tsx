@@ -4,7 +4,7 @@ import { isMock } from '../api';
 export function Footer() {
   return (
     <>
-      {/* Never let fake data pass as real: a build without VITE_API_URL is visibly marked. */}
+      {/* Never let fake data pass as real: a build without NEXT_PUBLIC_API_URL is visibly marked. */}
       {isMock && <div className="mock-badge" role="note">DADOS DE TESTE (mock)</div>}
       <footer className="footer">
         Fronteiras: Natural Earth (domínio público). Fronteiras históricas: historical-basemaps (GPL-3.0). TODO: texto de atribuição e aviso de licença.

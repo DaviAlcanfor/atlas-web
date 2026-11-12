@@ -7,3 +7,7 @@ dist
 *.log
 shots*
 .cache
+
+.next
+next-env.d.ts
+*.tsbuildinfo
