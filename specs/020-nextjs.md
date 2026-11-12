@@ -82,7 +82,12 @@ sem divisão de código. E o contrato duplicado à mão (zod) deriva. Ver ADR-00
   linhas certas). `npm run api:types -- --check` acusa arquivo gerado desatualizado.
 - Verificação (Playwright 1440x900, `scratchpad/p2/`): BR -> JP por clique no globo troca a URL para `/pais/jp`, mesmo `<canvas>`,
   sem recarregar; `/#c=BR` -> `/pais/br`; `/#/glossario` -> `/glossario`; diálogo do glossário abre; "Voltar ao globo" monta o
-  globo; zero erros de console. vitest 34/34 (inclui `tests/routes.test.tsx`).
+  globo. vitest 34/34 (inclui `tests/routes.test.tsx`).
+  - API real (`next start` :5173): build com 196 páginas de país, todas com o painel no HTML, em 21 s, e a API seguiu de pé
+    (`/v1/health` 200 logo depois). `/pais/br`: título "Brasil · Atlas", `og:image` = flagcdn w640 BR, bandeira no globo e no
+    painel. Únicos erros de console: 404 de `/v1/glossary`, `/leaders`, `/people` (produção ainda é v1.0, P0 pendente; as seções
+    ficam ocultas e o `/glossario` diz "não está disponível agora", como planejado).
+  - Mock (`next dev` :5180, `NEXT_PUBLIC_API_URL=`): mesmos fluxos, selo "DADOS DE TESTE", zero erros de console.
 - Decisões: o seletor de ano (`y=` no hash) foi descartado (não havia slider). `window.__globe` fica exposto também em produção
   (os scripts de screenshot controlam a câmera por ele). O shell do glossário tem `GlossaryProvider` próprio com os termos e nomes
   vindos do servidor.
