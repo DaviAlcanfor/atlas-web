@@ -2,6 +2,7 @@ import { ApiError, parse } from '../client';
 import * as S from '../schemas';
 import type { AtlasApi } from '../types';
 import { nearestYear } from '../../lib/snapshots';
+import { LANGUAGES_SPOKEN } from './languages';
 import v12 from './v12.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
@@ -16,7 +17,7 @@ export function createMockApi(delayMs = 150): AtlasApi {
     country: (iso2) => wait(() => {
       const c = COUNTRIES.find((x) => x.iso2 === iso2);
       if (!c) throw notFound(`Unknown country ${iso2}`);
-      return parse(S.CountryDetail, c, `mock /v1/countries/${iso2}`);
+      return parse(S.CountryDetail, { ...c, languages_spoken: LANGUAGES_SPOKEN[iso2] ?? c.languages_spoken }, `mock /v1/countries/${iso2}`);
     }),
     nearestSnapshot: (year) => wait(() => {
       const n = nearestYear(SNAPSHOTS.map((s) => s.year), year);

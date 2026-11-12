@@ -394,3 +394,18 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .chip-plain { display: inline-block; font-size: 13px; padding: 4px 10px; border: 1px solid var(--c-line-strong); border-radius: var(--r); }
 .ind .tip-anchor { display: block; min-width: 0; }
 .ind__head { padding-top: 1px; }
+
+/* ---------- languages (spec 017) ---------- */
+.lang-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0 0 10px; padding: 0; font: 400 11px/1 var(--f-mono); color: var(--c-text-dim); }
+.lang-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.chips li.lang-li, .lang-chips li { padding: 0; border: 0; }
+.lang { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; font-size: 13px; color: var(--c-text); text-decoration: none; border: 1px solid var(--c-line-strong); border-radius: var(--r); cursor: help; }
+.panel a.lang { color: var(--c-text); }
+.lang--sample { padding: 1px 6px; font-size: 11px; cursor: default; }
+.lang--official { color: var(--c-abyss); background: var(--c-ice); border-color: var(--c-ice); font-weight: 500; }
+.panel a.lang--official { color: var(--c-abyss); }
+.lang--co_official { border-color: var(--c-ice); }
+.lang--indigenous { border-style: dashed; }
+.lang--immigrant { border-style: dotted; border-width: 2px; padding: 3px 9px; }
+.lang--historical { opacity: 0.55; }
+.lang:hover:not(.lang--sample), .lang:focus-visible { border-color: var(--c-ice-bright); }

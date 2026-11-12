@@ -90,3 +90,16 @@ describe('v1.2 mocks', () => {
     await expect(api.profile('ZZ')).rejects.toThrow();
   });
 });
+
+import { languageTip, sortLanguages, statusesIn } from '../src/lib/languages';
+describe('languages', () => {
+  it('orders by status, builds hover text and legend', async () => {
+    const br = (await createMockApi(0).country('BR')).languages_spoken!;
+    const shuffled = [...br].reverse();
+    expect(sortLanguages(shuffled)[0]!.status).toBe('official');
+    expect(statusesIn(br)).toEqual(['official', 'co_official', 'indigenous', 'immigrant', 'sign', 'historical']);
+    const nheengatu = br.find((l) => l.name === 'nheengatu')!;
+    expect(languageTip(nheengatu)).toContain('Onde: São Gabriel da Cachoeira');
+    expect(languageTip({ ...nheengatu, speakers: { value: 12000, year: 2010 } })).toContain('Falantes: 12.000 (2010)');
+  });
+});
