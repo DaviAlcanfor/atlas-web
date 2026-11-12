@@ -1,3 +1,5 @@
+import { palette } from './palette';
+
 // Procedural starfield: no image files. Seeded so it doesn't flicker on resize.
 function mulberry32(a: number) {
   return () => {
@@ -17,10 +19,11 @@ export function drawStars(canvas: HTMLCanvasElement, w: number, h: number) {
   if (!ctx) return;
   ctx.scale(dpr, dpr);
   const rand = mulberry32(42);
-  const n = Math.round((w * h) / 2600);
+  ctx.fillStyle = palette.text;
+  const n = Math.round((w * h) / 4200);
   for (let i = 0; i < n; i++) {
-    const r = 0.3 + rand() * 0.8;
-    ctx.fillStyle = `rgba(200,215,255,${0.12 + rand() * 0.45})`;
+    const r = 0.3 + rand() * 0.6;
+    ctx.globalAlpha = 0.06 + rand() * 0.3; // subtle: the globe is the subject
     ctx.beginPath();
     ctx.arc(rand() * w, rand() * h, r, 0, Math.PI * 2);
     ctx.fill();

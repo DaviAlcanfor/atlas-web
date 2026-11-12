@@ -1,9 +1,15 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import { api } from '../api';
 import { isNotFound } from '../api/client';
 import type { CountryDetail, Event, PolityDetail, Source } from '../api/types';
 import { useAsync } from '../hooks/useAsync';
 import { kindColor } from '../lib/palette';
+import { plonkitUrl } from '../lib/plonkit';
+import { ArrowsInLineHorizontal } from '@phosphor-icons/react/dist/csr/ArrowsInLineHorizontal';
+import { ArrowsOutLineHorizontal } from '@phosphor-icons/react/dist/csr/ArrowsOutLineHorizontal';
+import { X } from '@phosphor-icons/react/dist/csr/X';
+import { CountUp } from './CountUp';
+import { LabelIcon } from './icons';
 import { day, safeHref } from '../lib/url';
 import { formatRange, formatYear } from '../lib/years';
 
@@ -17,6 +23,10 @@ interface Props {
 }
 
 const nf = (n: number) => n.toLocaleString('pt-BR');
+// Stable formatters for CountUp (module scope so its effect does not restart on every render).
+const fmtInt = (n: number) => nf(Math.round(n));
+const fmtKm2 = (n: number) => `${nf(Math.round(n))} km²`;
+const fmtDensity = (n: number) => `${nf(Math.round(n))} hab/km²`;
 const NoData = () => <span className="nodata">sem dados</span>;
 const KIND_LABEL: Record<Event['kind'], string> = {
   political: 'política', war: 'guerra', treaty: 'tratado', cultural: 'cultura', economic: 'economia', other: 'outro',
@@ -28,19 +38,19 @@ function SourceNote({ ids, sources }: { ids: string[]; sources: Source[] }) {
   return <p className="src">Fonte: {used.map((s) => s.title).join('; ')}</p>;
 }
 
-function Section({ title, accent, children }: { title: string; accent: string; children: ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="psec" style={{ '--accent': accent } as CSSProperties}>
-      <h3>{title}</h3>
+    <section className="psec">
+      <h3><LabelIcon label={title} />{title}</h3>
       {children}
     </section>
   );
 }
 
-function Chips({ items, accent }: { items: string[]; accent: string }) {
+function Chips({ items }: { items: string[] }) {
   if (!items.length) return <NoData />;
   return (
-    <ul className="chips" style={{ '--accent': accent } as CSSProperties}>
+    <ul className="chips">
       {items.map((t) => <li key={t}>{t}</li>)}
     </ul>
   );
@@ -77,14 +87,17 @@ export function CountryPanel({ iso2, name, inApi, wide, onToggleWide, onClose }:
   }
 
   return (
-    <aside lang="pt-BR" className={`panel${wide ? ' panel--wide' : ''}`} aria-label={`Detalhes de ${title}`}>
+    <aside lang="pt-BR" className={`panel bracketed${wide ? ' panel--wide' : ''}`} aria-label={`Detalhes de ${title}`}>
       <header className="panel__head">
-        <h2>{title}</h2>
+        <div className="panel__title">
+          <span className="panel__code">{iso2}</span>
+          <h2>{title}</h2>
+        </div>
         <div className="panel__actions">
           <button className="icon-btn" onClick={onToggleWide} aria-pressed={wide} aria-label={wide ? 'Reduzir painel' : 'Expandir painel até metade da tela'}>
-            {wide ? '⇥' : '⇤'}
+            {wide ? <ArrowsInLineHorizontal size={16} weight="light" aria-hidden="true" /> : <ArrowsOutLineHorizontal size={16} weight="light" aria-hidden="true" />}
           </button>
-          <button className="icon-btn" onClick={onClose} aria-label="Fechar painel">×</button>
+          <button className="icon-btn" onClick={onClose} aria-label="Fechar painel"><X size={16} weight="light" aria-hidden="true" /></button>
         </div>
       </header>
       {body}
@@ -96,7 +109,8 @@ function Details({ c }: { c: CountryDetail }) {
   const pop = c.population;
   const density = pop && c.area_km2 ? pop.value / c.area_km2 : null;
   const flag = safeHref(c.flag_url);
-  const newsHref = `https://news.google.com/search?q=${encodeURIComponent(c.name)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+  const plonk = plonkitUrl(c.iso2);
+  const newsHref =`https://news.google.com/search?q=${encodeURIComponent(c.name)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
   return (
     <>
@@ -113,24 +127,24 @@ function Details({ c }: { c: CountryDetail }) {
       {c.summary && <p className="lead">{c.summary}</p>}
 
       <div className="stats">
-        <Stat label="População" accent="var(--c-accent-teal)" value={pop ? nf(pop.value) : null}
-          foot={pop && <>{pop.year !== null && `em ${pop.year} · `}<SourceNote ids={[pop.source_id]} sources={c.sources} /></>} />
-        <Stat label="Área" accent="var(--c-accent-amber)" value={c.area_km2 !== null ? `${nf(Math.round(c.area_km2))} km²` : null} />
-        <Stat label="Densidade" accent="var(--c-accent-green)" value={density !== null ? `${nf(Math.round(density))} hab/km²` : null} foot="calculada: população ÷ área" />
-        <Stat label="Regime" accent="var(--c-accent-violet)" value={c.regime} small foot={c.regime && 'texto não verificado'} />
+        <Stat label="População" value={pop && <CountUp value={pop.value} format={fmtInt} />}
+          foot={pop && <>{pop.year !== null && `em ${pop.year}. `}<SourceNote ids={[pop.source_id]} sources={c.sources} /></>} />
+        <Stat label="Área" value={c.area_km2 !== null && <CountUp value={c.area_km2} format={fmtKm2} />} />
+        <Stat label="Densidade" value={density !== null && <CountUp value={density} format={fmtDensity} />} foot="calculada: população ÷ área" />
+        <Stat label="Regime" value={c.regime} small foot={c.regime && 'texto não verificado'} />
       </div>
 
-      <Section title="Idiomas" accent="var(--c-accent-teal)">
-        <Chips items={c.languages.map((l) => l.name)} accent="var(--c-accent-teal)" />
+      <Section title="Idiomas">
+        <Chips items={c.languages.map((l) => l.name)} />
       </Section>
-      <Section title="Moedas" accent="var(--c-accent-amber)">
-        <Chips items={c.currencies.map((x) => `${x.name}${x.symbol ? ` (${x.symbol})` : ''}`)} accent="var(--c-accent-amber)" />
+      <Section title="Moedas">
+        <Chips items={c.currencies.map((x) => `${x.name}${x.symbol ? ` (${x.symbol})` : ''}`)} />
       </Section>
-      <Section title="Organizações" accent="var(--c-accent-violet)">
-        <Chips items={c.memberships} accent="var(--c-accent-violet)" />
+      <Section title="Organizações">
+        <Chips items={c.memberships} />
       </Section>
 
-      <Section title="Política hoje" accent="var(--c-accent-coral)">
+      <Section title="Política hoje">
         {c.politics && (c.politics.system || c.politics.note) ? (
           <div className="card">
             {c.politics.system && <p>{c.politics.system}</p>}
@@ -140,19 +154,26 @@ function Details({ c }: { c: CountryDetail }) {
         ) : <NoData />}
       </Section>
 
-      <Section title="História" accent="var(--c-accent-violet)">
+      <Section title="História">
         <Timeline events={c.timeline} sources={c.sources} />
       </Section>
 
       <Lineage polityId={c.polity_id} />
 
-      <Section title="Notícias" accent="var(--c-accent-coral)">
+      <Section title="Notícias">
         {/* The Atlas API has no news endpoint yet (contract v1.0); we only link out, we never fetch or invent news. */}
         <p className="note">A API do Atlas ainda não fornece notícias.</p>
         <a className="news-link" href={newsHref} target="_blank" rel="noreferrer noopener">Ver notícias sobre {c.name} no Google Notícias ↗</a>
       </Section>
 
-      <Section title="Fontes" accent="var(--c-label)">
+      {plonk && (
+        <Section title="GeoGuessr">
+          <a className="news-link" href={plonk} target="_blank" rel="noreferrer noopener">Guia Plonk It de {c.name} ↗</a>
+          <p className="src">Plonk It é um guia da comunidade de GeoGuessr; o Atlas só aponta para ele.</p>
+        </Section>
+      )}
+
+      <Section title="Fontes">
         {c.sources.length ? (
           <ul className="sources">
             {c.sources.map((s) => {
@@ -173,30 +194,49 @@ function Details({ c }: { c: CountryDetail }) {
   );
 }
 
-function Stat({ label, value, accent, foot, small }: { label: string; value: string | null; accent: string; foot?: ReactNode; small?: boolean }) {
+function Stat({ label, value, foot, small }: { label: string; value: ReactNode; foot?: ReactNode; small?: boolean }) {
   return (
-    <div className="stat" style={{ '--accent': accent } as CSSProperties}>
-      <span className="stat__label">{label}</span>
-      <span className={`stat__value${small ? ' stat__value--small' : ''}`}>{value ?? <NoData />}</span>
+    <div className="stat">
+      <span className="stat__label"><LabelIcon label={label} />{label}</span>
+      <span className={`stat__value${small ? ' stat__value--small' : ''}`}>{value || <NoData />}</span>
       {value && foot && <span className="stat__foot">{foot}</span>}
     </div>
   );
 }
 
-function Timeline({ events, sources }: { events: Event[]; sources: Source[] }) {
+const LONG_SUMMARY = 220; // characters; longer summaries start collapsed
+
+function LongText({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  if (text.length <= LONG_SUMMARY) return <p className="note">{text}</p>;
+  return (
+    <>
+      <p className={`note${open ? '' : ' clamp'}`}>{text}</p>
+      <button className="more-btn" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'ler menos' : 'ler mais'}</button>
+    </>
+  );
+}
+
+export function Timeline({ events, sources }: { events: Event[]; sources: Source[] }) {
   if (!events.length) return <NoData />;
+  const kinds = [...new Set(events.map((e) => e.kind))];
   return (
     <>
       {events.some((e) => !e.source_ids.length) && (
         <p className="warn">Não verificado: eventos marcados “sem fonte” ainda não têm fonte na API. Não os trate como história estabelecida.</p>
       )}
+      {kinds.length > 1 && (
+        <ul className="kind-legend" aria-label="Legenda das cores">
+          {kinds.map((k) => <li key={k} style={{ '--accent': kindColor[k] } as CSSProperties}>{KIND_LABEL[k]}</li>)}
+        </ul>
+      )}
       <ol className="timeline">
         {events.map((e) => (
-          <li key={e.id} style={{ '--accent': kindColor[e.kind] } as CSSProperties}>
+          <li key={e.id} className={e.year_end !== null ? 'is-span' : undefined} style={{ '--accent': kindColor[e.kind] } as CSSProperties}>
             <span className="year">{e.year_end !== null ? formatRange(e.year_start, e.year_end, e.precision, e.precision) : formatYear(e.year_start, e.precision)}</span>
             <span className="kind">{KIND_LABEL[e.kind]}</span>
             <p className="ev-title">{e.title}</p>
-            {e.summary && <p className="note">{e.summary}</p>}
+            {e.summary && <LongText text={e.summary} />}
             {!e.source_ids.length && <span className="badge">sem fonte</span>}
           </li>
         ))}
@@ -215,10 +255,10 @@ function Lineage({ polityId }: { polityId: string }) {
   if (!p.predecessors.length && !p.successors.length && !wiki && p.names.length < 2) return null;
   const links = (xs: PolityDetail['predecessors']) => xs.map((l) => `${l.name} (${formatYear(l.year)})`);
   return (
-    <Section title="Linhagem" accent="var(--c-accent-green)">
-      {p.predecessors.length > 0 && <><p className="sub">Antecessores</p><Chips items={links(p.predecessors)} accent="var(--c-accent-green)" /></>}
-      {p.successors.length > 0 && <><p className="sub">Sucessores</p><Chips items={links(p.successors)} accent="var(--c-accent-green)" /></>}
-      {p.names.length > 1 && <><p className="sub">Nomes ao longo do tempo</p><Chips items={p.names.map((n) => `${n.name} (${formatRange(n.from_year, n.to_year)})`)} accent="var(--c-accent-green)" /></>}
+    <Section title="Linhagem">
+      {p.predecessors.length > 0 && <><p className="sub">Antecessores</p><Chips items={links(p.predecessors)} /></>}
+      {p.successors.length > 0 && <><p className="sub">Sucessores</p><Chips items={links(p.successors)} /></>}
+      {p.names.length > 1 && <><p className="sub">Nomes ao longo do tempo</p><Chips items={p.names.map((n) => `${n.name} (${formatRange(n.from_year, n.to_year)})`)} /></>}
       {wiki && <a className="news-link" href={wiki} target="_blank" rel="noreferrer noopener">Wikipedia: {p.wikipedia!.title} ↗</a>}
     </Section>
   );

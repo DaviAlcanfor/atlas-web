@@ -9,9 +9,12 @@
     "preview": "vite preview",
     "data": "tsx scripts/build-data.ts",
     "test": "vitest run",
-    "shot": "tsx scripts/screenshot.ts"
+    "shot": "tsx scripts/screenshot.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "plonkit": "tsx scripts/plonkit-slugs.ts"
   },
   "dependencies": {
+    "@phosphor-icons/react": "2.1.10",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-globe.gl": "2.38.0",

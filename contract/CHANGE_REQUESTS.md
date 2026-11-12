@@ -30,3 +30,7 @@
 - **Today (web):** the section states that the API has no news yet and links out to a Google News search for the country (a link only; nothing is fetched or invented).
 - **Proposed fix:** `GET /v1/countries/{iso2}/news?limit=` -> `{ items: [{ id, title, url, source_name, published_at, language }] }`, fetched/cached server side (keys stay on the API).
 - **Status:** open.
+- **Superseded (2026-11-11)** by the workspace spec `../specs/008-news.md`.
+
+## Production CORS (2026-11-11)
+- Vercel (https://atlas-web-ruddy.vercel.app) was blocked: API `CORS_ORIGINS` held only localhost. Added on FastAPI Cloud; verified with `npm run smoke`.

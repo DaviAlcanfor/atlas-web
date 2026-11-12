@@ -8,6 +8,7 @@ Stack: TypeScript (strict) + Vite + React (function components/hooks) + `react-g
 - `npm run build` — typecheck + production build
 - `npm test` — vitest
 - `npm run data` — ETL for modern geometry (`scripts/build-data.ts`)
+- `npm run smoke [-- <url>]` — headless check of a deployed build (default: production): API OK, no error banner, no console errors
 - `npm run shot -- <out-dir>` — Playwright screenshots + drag frame-rate probe (needs dev server running; `HEADED=1 GPU=1` for real GPU)
 - Windows note: the project path contains `&`, so `npx` fails; call tools via `node node_modules/<pkg>/...`.
   `vitest` additionally crashes ("reading 'config'") when run from a path containing `&`: run it through a junction, e.g. `mklink /J %TEMP%\atlasjunc "<project path>"` and `cd` there.
@@ -39,7 +40,18 @@ The API is a separate repo ("atlas-api"). Its contract is `contract/CONTRACT.md`
 ## Performance notes (globe)
 - Hover/click picking uses `toGlobeCoords` + `d3-geo` point-in-polygon, not mesh raycasting (was ~15 ms/frame).
 - Borders are two merged `LineSegments` (not the paths layer); `htmlElement` props must stay referentially stable.
-- Hatch is a `ShaderMaterial` using `gl_FragCoord` (screen-space stripes).
+- Land is a dot-matrix `ShaderMaterial` (`src/lib/dotMaterial.ts`) laid out in lat/lng; one material per state, shared `uIntro`/`uZoom` uniforms.
+- `ReactGlobe` accessor props must be stable (module-level or `useCallback`): a new function identity re-digests the layer.
+
+## Specs (spec-driven)
+New features start in `specs/NNN-slug.md` (index + template: `specs/README.md`), numbered like the API repo's `specs/` so both halves match.
+Status: draft -> approved (only the user approves) -> in progress -> done. No feature code for a `draft` spec.
+New API fields are used only after the contract is updated; until then build on mock fixtures shaped like the spec's "Contract delta".
+
+## Production
+Vercel: https://atlas-web-ruddy.vercel.app (API: https://atlas-api.fastapicloud.dev). A new front domain must be added to the API's
+`CORS_ORIGINS` on FastAPI Cloud (see the API repo's AGENTS.md); "Failed to fetch" with 200s in the API log = CORS.
+After each deploy: `npm run smoke`.
 
 ## Phases
 1. Globe matching the reference screenshots (in review)

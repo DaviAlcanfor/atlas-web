@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Jomala","wikidataid":null},"geometry":{"type":"MultiPolygon","coordinates":[[[[19.91,60.1],[19.75,60.1],[19.94,60.19],[20.05,60.1],[19.91,60.1]]]]}},{"type":"Feature","properties":{},"geometry":{"type":"MultiLineString","coordinates":[[[19.97,60.09],[19.91,60.1]]]}}]}
