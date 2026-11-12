@@ -65,7 +65,7 @@ describe('CountryPanel', () => {
   it('shows data, "no data" for missing fields, and escapes API text', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
     render(<CountryPanel iso2="RS" name="Sérvia" inApi onClose={() => {}} />);
-    expect(await screen.findByText('Capital: Belgrado')).toBeTruthy();
+    expect(await screen.findByText((_, el) => el?.tagName === 'LI' && el.textContent === 'Capital: Belgrado')).toBeTruthy();
     expect(screen.getByRole('link', { name: /Google Notícias/ })).toBeTruthy();
     expect(screen.getAllByText('sem dados').length).toBeGreaterThan(3); // regime, languages, population...
   });

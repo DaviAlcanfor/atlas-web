@@ -140,9 +140,13 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .term { display: inline; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: help; text-decoration: underline dotted var(--c-line-strong); text-underline-offset: 4px; }
 .term:hover { text-decoration-color: var(--c-ice); }
 .term__i { margin-left: 4px; vertical-align: -1px; color: var(--c-ice); }
-.tip { position: fixed; z-index: var(--z-overlay); top: 0; left: 0; width: max-content; max-width: min(280px, calc(100vw - 16px)); padding: 8px 10px; visibility: hidden; pointer-events: none;
+.tip { opacity: 0; transform: translateY(4px); position: fixed; z-index: var(--z-overlay); top: 0; left: 0; width: max-content; max-width: min(280px, calc(100vw - 16px)); padding: 8px 10px; visibility: hidden; pointer-events: none;
   font: 400 12px/1.45 var(--f-sans); color: var(--c-text); background: var(--c-panel-solid); border: 1px solid var(--c-line-strong); }
-.tip.is-open { visibility: visible; }
+.tip.is-open { visibility: visible; opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) { .tip { transition: opacity 140ms ease-out, transform 140ms ease-out; } }
+.hint { display: inline-grid; place-items: center; padding: 2px; border: 0; background: none; color: var(--c-text-faint); cursor: help; text-transform: none; }
+.hint:hover, .hint:focus-visible { color: var(--c-ice); }
+.tags .hint { vertical-align: -2px; }
 .chip-btn { font: inherit; font-size: 13px; padding: 4px 10px; color: var(--c-text); background: none; border: 1px solid var(--c-line-strong); border-radius: var(--r); cursor: pointer; transition: border-color 0.15s, background-color 0.15s; }
 .chip-btn:hover { border-color: var(--c-ice); background: rgba(143, 219, 227, 0.06); }
 .chrome-link { align-self: flex-start; padding: 6px 2px; font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; color: var(--c-text-dim); text-underline-offset: 4px; }

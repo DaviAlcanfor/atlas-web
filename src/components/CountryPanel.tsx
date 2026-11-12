@@ -6,6 +6,7 @@ import { useAsync } from '../hooks/useAsync';
 import { kindColor } from '../lib/palette';
 import { plonkitUrl } from '../lib/plonkit';
 import { X } from '@phosphor-icons/react/dist/csr/X';
+import { Hint } from './Hint';
 import { CountUp } from './CountUp';
 import { LabelIcon } from './icons';
 import { CurrentLeaders, LeadersSection, PeopleSection } from './PeopleSections';
@@ -123,8 +124,8 @@ function Details({ c }: { c: CountryDetail }) {
         <div>
           {c.official_name && <p className="official">{c.official_name}</p>}
           <ul className="tags">
-            {c.region && <li><Term label={c.region}>{c.region}</Term></li>}
-            {c.capital && <li>Capital: {c.capital}</li>}
+            {c.region && <li>Região<Hint k="Região" />: <Term label={c.region}>{c.region}</Term></li>}
+            {c.capital && <li>Capital<Hint k="Capital" />: {c.capital}</li>}
           </ul>
         </div>
       </div>
@@ -184,7 +185,7 @@ function Details({ c }: { c: CountryDetail }) {
           )}
           {clueRows.length > 0 && (
             <>
-              <h4 className="subhead"><LabelIcon label="Pistas" />Pistas</h4>
+              <h4 className="subhead"><LabelIcon label="Pistas" />Pistas<Hint k="Pistas" /></h4>
               <dl className="clues">
                 {clueRows.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
               </dl>
@@ -217,7 +218,7 @@ function Details({ c }: { c: CountryDetail }) {
 function Stat({ label, value, foot, small }: { label: string; value: ReactNode; foot?: ReactNode; small?: boolean }) {
   return (
     <div className="stat">
-      <span className="stat__label"><LabelIcon label={label} />{label}</span>
+      <span className="stat__label"><LabelIcon label={label} />{label}<Hint k={label} /></span>
       <span className={`stat__value${small ? ' stat__value--small' : ''}`}>{value || <NoData />}</span>
       {value && foot && <span className="stat__foot">{foot}</span>}
     </div>
