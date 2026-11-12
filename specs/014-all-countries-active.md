@@ -1,5 +1,5 @@
 # 014 - Todos os países com cara de clicáveis + camada de bandeiras
-Status: parte 1 done, parte 2 approved | Repos: web | Contrato: não muda | Executor: Sonnet (parte 1), Opus (parte 2)
+Status: done (parte 1 e parte 2) | Repos: web | Contrato: não muda | Executor: Sonnet (parte 1), Opus (parte 2)
 
 ## Por quê
 Os 196 países têm dados na API (todos têm `flag_url`, regime em 153, governantes em 196), mas no globo os que não têm
@@ -24,4 +24,31 @@ Os 196 países têm dados na API (todos têm `flag_url`, regime em 153, governan
 
 ## Tarefas
 - [x] parte 1: material ativo para todos os `apiIds`; toggle "Padrão"; prévia de bandeira (`flagPreviewUrl`, ISO2 validado) no readout do hover; screenshots (em mock só 9 países são conhecidos, então só eles ficam ativos)
-- [ ] parte 2: atlas de bandeiras + material da camada; medir performance; screenshots
+- [x] parte 2: atlas de bandeiras + material da camada; medir performance; screenshots
+
+## Resultado (parte 2)
+Feito em 2026-11-12 (P3, branch `feat/flag-layer`).
+- Toggle: "Padrão | Regime político | Bandeiras" (`LayerId = 'flags'`). Ao ligar a camada, `loadFlagAtlas` (`src/lib/flagMaterial.ts`)
+  baixa `https://flagcdn.com/w80/<iso2>.png` de cada país que a API conhece (8 por vez, falha = país fica só com pontos) e desenha cada
+  bandeira esticada numa célula 80x80 de um canvas 1280 x (80 x linhas) (16 colunas; 196 países = 13 linhas, 1280x1040).
+  O canvas fica em memória na sessão (religar a camada é instantâneo); a `CanvasTexture` (sem mipmaps, mesma razão da spec 002) e os
+  materiais são criados a cada ativação e descartados ao sair (com 1 s de atraso, depois do three-globe trocar os materiais).
+- Material: o mesmo shader da spec 002 (`createFlagMaterial`), com um uniform novo `uCell` (célula no atlas, recuada meio texel para o
+  filtro linear não ler a vizinha). Em vez de atributos de vértice, **um material por país** compartilhando os mesmos uniforms de
+  textura/mix/intro/zoom: o three.js compila um só programa (mesmo código) e por país só troca `uBox`/`uCell`. As draw calls não mudam
+  (o three-globe já faz um mesh por país) e evita mexer nas geometrias que o three-globe cria. Medido abaixo: dentro da meta.
+- bbox = maior polígono (`flagBox`, com a volta no antimeridiano); ilhas/exclaves fora dela ficam com pontos normais.
+- Carregando: o globo fica com a cara da camada Padrão e o toggle mostra "Carregando bandeiras…" (`role=status`). Depois, fade de 300 ms
+  (sem fade com `prefers-reduced-motion`). Hover: pontos mais claros (`iceBright`) sobre a bandeira.
+- País selecionado: continua a bandeira w640 da spec 002 (pontos mais densos) por cima; enquanto ela carrega, fica a do atlas.
+- Performance (swiftshader, 1061x773, vista inicial, drag de 120 passos, `next dev`, 3 rodadas alternadas, mediana / p95 do frame):
+  Padrão 183 / 200, 200 / 233, 200 / 217 ms; Bandeiras (todos os ~180 países com bandeira) 200 / 267, 200 / 217, 200 / 233 ms.
+  Média: mediana +3% (194 -> 200 ms), p95 +10% (217 -> 239 ms). Meta (< 15%) cumprida; nada otimizado além disso.
+  Atlas pronto em ~7 s na primeira vez (196 PNGs, swiftshader + rede do sandbox), ~0,5 s ao religar.
+
+### Limites
+- Bandeiras são esticadas para a bbox do maior polígono (ex.: Rússia vira faixas largas; Chile e Noruega bem deformados), como na spec 002.
+- Só o maior polígono recebe bandeira: Alasca, Chukotka (leste do antimeridiano), Vanua Levu (Fiji), Córsega, Guiana Francesa ficam com pontos.
+- w80 esticado em países grandes fica borrado nas bordas internas da bandeira (ok visto de longe; o selecionado usa w640).
+- Micro-estados (marcadores) não mostram bandeira.
+- Em mock só os ~9 países das fixtures têm bandeira (os demais não são "conhecidos").

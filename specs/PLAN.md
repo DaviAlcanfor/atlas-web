@@ -27,7 +27,7 @@ testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo
 ### Lista 2 (2026-11-12)
 | Pedido | Spec | Situação |
 |---|---|---|
-| Todos os países com cara de clicáveis + bandeiras | 014 | P1 parte 1 feita; P3 (camada de bandeiras) |
+| Todos os países com cara de clicáveis + bandeiras | 014 | Feito (parte 1 em P1, parte 2 em P3) |
 | Moeda clicável/hover, câmbio, estado da moeda e da economia, comparar países | 009 | P4 |
 | Página de notícias geopolíticas do mundo, filtro com Jev | 008 | P5 |
 | Avaliação de stack para crescer | ADR-001 | feito (este repo, `specs/ADR-001-stack.md`), aguarda decisão |
@@ -65,8 +65,9 @@ ADR-001 aprovado. Next.js 16.4.6 App Router: `/`, `/pais/[iso2]` (196 páginas S
 (`npm run api:types`) + checagem zod x OpenAPI no `tsc`. First Load JS 236 kB gzip (antes: bundle único de 707 kB gzip / 2,5 MB).
 Pendente do dono: Vercel (ver spec 020, "Vercel"); a API caiu com a rajada de requisições do build (ver spec 020, "Achados").
 
-## P3 - Camada de bandeiras - Opus
-014 parte 2 (atlas de texturas no shader). Medir performance.
+## P3 - Camada de bandeiras - Opus - FEITO (2026-11-12, branch `feat/flag-layer`, spec [014](014-all-countries-active.md))
+014 parte 2: camada "Bandeiras" com atlas w80 (canvas 1280x1040, 8 downloads por vez) e um material por país no mesmo programa.
+Drag no swiftshader: mediana +3%, p95 +10% vs Padrão (meta < 15%).
 
 ## P4 - Conteúdo do país (API Opus, web Sonnet). Contrato v1.2 parte A
 Ordem (cada uma API → web): 019 (correções: data_version, Dinamarca, imagens no Storage, várias capitais) → 017 idiomas →

@@ -23,7 +23,7 @@ Regras:
 | 011 | [Vídeos de história](011-history-videos.md) | sim | approved |
 | 012 | [Viagem no tempo](012-time-travel.md) | sim | approved |
 | 013 | [Design system "Signal"](013-design-system.md) | não | done |
-| 014 | [Todos os países ativos + camada de bandeiras](014-all-countries-active.md) | não | approved |
+| 014 | [Todos os países ativos + camada de bandeiras](014-all-countries-active.md) | não | done |
 | 015 | [Perfil: como vive o povo](015-country-profile.md) | sim | approved |
 | 016 | [História expandida](016-history-expanded.md) | sim | approved |
 | 017 | [Idiomas oficiais e outros](017-languages.md) | sim | approved |

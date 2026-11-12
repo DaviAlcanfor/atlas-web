@@ -43,6 +43,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
   const [wide, setWide] = useState(false);
+  const [flagsLoading, setFlagsLoading] = useState(false);
   const [stateName, setStateName] = useState<string | null>(null); // hovered state/province of the selected country
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
   const toggleWide = useCallback(() => setWide((w) => !w), []);
@@ -95,8 +96,9 @@ function Chrome({ children }: { children: ReactNode }) {
               onSelect={setSelectedCountry}
               onHoverState={setStateName}
               onReady={onGlobeReady}
+              onFlagsLoading={setFlagsLoading}
             />
-            <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes}>
+            <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
             </LayerToggle>
           </>

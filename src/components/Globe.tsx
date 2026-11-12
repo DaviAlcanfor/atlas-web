@@ -4,11 +4,11 @@ import { createDotMaterial, createOceanMaterial, DOT_SPACING, type DotShared } f
 import { palette } from '../lib/palette';
 import { api } from '../api';
 import type { CapitalCoord } from '../api/types';
-import { createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag } from '../lib/flagMaterial';
+import { atlasTexture, createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
 import { flagPngUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
-import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D } from 'three';
+import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
 import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
@@ -92,6 +92,7 @@ interface Props {
   onSelect: (id: string | null) => void;
   onHoverState?: (name: string | null) => void; // state/province under the pointer, inside the selected country (spec 005)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
+  onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
 }
 
 interface Admin1 {
@@ -143,7 +144,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -211,6 +212,57 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       cancelAnimationFrame(raf);
     };
   }, [selectedId, features, apiIds, mats]);
+
+  // Flag layer (spec 014 part 2): one atlas texture shared by one material per country (same program; only uBox/uCell differ).
+  // Until the atlas is ready the layer looks like the default one. Leaving the layer disposes the texture and materials.
+  const [flagMats, setFlagMats] = useState<Map<string, ShaderMaterial> | null>(null);
+  useEffect(() => {
+    if (layer !== 'flags') return;
+    let live = true;
+    let raf = 0;
+    let tex: Texture | undefined;
+    const made = new Map<string, ShaderMaterial>();
+    onFlagsLoading?.(true);
+    loadFlagAtlas(features.map(idOf).filter((id) => apiIds.has(id)))
+      .then(({ canvas, cells }) => {
+        if (!live) return;
+        tex = atlasTexture(canvas);
+        const flag = { value: tex };
+        const mix = { value: 0 }; // shared: one write fades every country in
+        for (const f of features) {
+          const id = idOf(f);
+          const cell = cells.get(id);
+          const box = cell && flagBox(f.geometry);
+          if (!box) continue;
+          const m = createFlagMaterial(DOTS.content, shared);
+          Object.assign(m.uniforms, { uFlag: flag, uMix: mix });
+          m.uniforms.uBox!.value = box;
+          m.uniforms.uCell!.value = cell;
+          made.set(id, m);
+        }
+        setFlagMats(made);
+        const t0 = performance.now();
+        const fade = () => {
+          const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / 300);
+          mix.value = FLAG_MIX * k;
+          if (k < 1) raf = requestAnimationFrame(fade);
+        };
+        fade();
+      })
+      .catch(() => {})
+      .finally(() => live && onFlagsLoading?.(false));
+    return () => {
+      live = false;
+      cancelAnimationFrame(raf);
+      onFlagsLoading?.(false);
+      setFlagMats(null);
+      // after three-globe has swapped the caps back to the dot materials (a disposed texture still in use would be re-uploaded)
+      setTimeout(() => {
+        tex?.dispose();
+        made.forEach((m) => m.dispose());
+      }, 1000);
+    };
+  }, [layer, features, apiIds, shared, onFlagsLoading]);
 
   // Camera flies to whatever becomes selected: a click, a marker, the URL path or a glossary example (spec 004).
   const select = useCallback((f: CountryFeature | undefined) => f && onSelect(idOf(f)), [onSelect]);
@@ -284,7 +336,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   useEffect(() => {
     markers.forEach((b, id) => {
       const regime = regimes.get(id);
-      b.classList.toggle('has-content', layer === 'content' && apiIds.has(id));
+      b.classList.toggle('has-content', layer !== 'regime' && apiIds.has(id));
       b.classList.toggle('is-hover', id === hoveredId);
       b.classList.toggle('is-selected', id === selectedId);
       // in the regime layer the marker takes the regime color unless hovered/selected (their CSS classes win)
@@ -447,12 +499,17 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         mats.flag.uniforms.uDot!.value.set(filled ? DOTS.selected.color : DOTS.selectedDim.color);
         return mats.flag;
       }
+      const fm = layer === 'flags' ? flagMats?.get(id) : undefined;
+      if (fm) {
+        fm.uniforms.uDot!.value.set(hov || id === selectedId ? DOTS.hover.color : DOTS.content.color);
+        return fm; // also the selected country while its spec-002 flag (w640) loads
+      }
       if (id === selectedId) return filled ? mats.selected : mats.selectedDim;
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats],
   );
 
   const polygonAltitude = useCallback((d: object) => (idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE), [selectedId]);
