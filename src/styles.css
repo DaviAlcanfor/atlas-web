@@ -308,7 +308,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .ind__foot { grid-column: 1 / -1; font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
 .ruler { grid-column: 1 / -1; position: relative; height: 10px; margin: 3px 0 1px; }
 .ruler::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: var(--c-line-strong); }
-.ruler::after { content: ''; position: absolute; left: 0; top: 1px; height: 7px; width: 1px; background: var(--c-line-strong); }
+.ruler { background: linear-gradient(var(--c-line-strong), var(--c-line-strong)) left center / 1px 7px no-repeat, linear-gradient(var(--c-line-strong), var(--c-line-strong)) right center / 1px 7px no-repeat; }
 .ruler__median { position: absolute; top: 0; width: 1px; height: 9px; background: var(--c-text-dim); }
 .ruler__dot { position: absolute; top: 1px; width: 7px; height: 7px; margin-left: -3px; border-radius: 50%; background: var(--c-ice); border: 1px solid var(--c-abyss); }
 .ind__body:hover .ruler__dot, .ind__body:focus-visible .ruler__dot { background: var(--c-signal); }
@@ -392,3 +392,5 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 }
 .chips li.chips__li { padding: 0; border: 0; }
 .chip-plain { display: inline-block; font-size: 13px; padding: 4px 10px; border: 1px solid var(--c-line-strong); border-radius: var(--r); }
+.ind .tip-anchor { display: block; min-width: 0; }
+.ind__head { padding-top: 1px; }

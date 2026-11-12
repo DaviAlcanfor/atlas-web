@@ -33,10 +33,10 @@ export function IndicatorRow({ i, sources }: { i: ProfileIndicator; sources: Sou
   );
   return (
     <li className="ind">
-      <div className="ind__head"><Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></div>
       {tip ? (
         <Tooltip text={tip}>{(aria) => <div className="ind__body" tabIndex={0} role="group" aria-label={`${i.label}: ${text} ${note}`.trim()} {...aria}>{row}</div>}</Tooltip>
       ) : <div className="ind__body">{row}</div>}
+      <div className="ind__head"><Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></div>
     </li>
   );
 }
