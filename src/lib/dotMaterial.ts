@@ -74,6 +74,23 @@ export const createDotMaterial = (opts: DotOpts, shared: DotShared) =>
       }`,
   });
 
+/** Transparent dot overlay (hovered state): dots + a faint tint, so whatever is underneath (flag, dots) still shows through. */
+export const createDotOverlayMaterial = (opts: DotOpts, shared: DotShared, tint = 0.16) =>
+  new ShaderMaterial({
+    uniforms: { ...dotUniforms(opts, shared), uFill: { value: new Color(0x000000) } },
+    vertexShader: DOT_VERT,
+    transparent: true,
+    depthWrite: false,
+    fragmentShader: /* glsl */ `
+      ${DOT_GLSL}
+      void main() {
+        vec3 c = dotColor(latLng()); // uFill is black: what remains is the dots (+ halo)
+        float a = clamp(max(c.r, max(c.g, c.b)) / max(uDot.r, max(uDot.g, uDot.b)), 0.0, 1.0);
+        gl_FragColor = vec4(uDot, max(a, ${tint.toFixed(2)}));
+        #include <colorspace_fragment>
+      }`,
+  });
+
 // Flat ocean with a soft fresnel lift at the limb (the atmosphere shell adds the outer glow).
 export const createOceanMaterial = () =>
   new ShaderMaterial({

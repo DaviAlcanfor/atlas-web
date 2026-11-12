@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { regimeColors } from '../lib/regimes';
+import { regimeGroups } from '../lib/regimes';
 import type { LayerId } from '../types';
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
   onChange: (l: LayerId) => void;
   regimes: Map<string, string>;
   flagsLoading?: boolean; // the flag layer's atlas is still downloading
+  states?: { on: boolean; toggle: () => void }; // "Estados" button; only while a country is selected
   children?: ReactNode; // extra chrome under the toggle (glossary link)
 }
 
@@ -16,27 +17,36 @@ const LAYERS: { id: LayerId; label: string }[] = [
   { id: 'flags', label: 'Bandeiras' },
 ];
 
-export function LayerToggle({ layer, onChange, regimes, flagsLoading, children }: Props) {
-  const colors = regimeColors(regimes);
+export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, children }: Props) {
+  const groups = regimeGroups(regimes);
   return (
     <div className="layer-toggle">
+      <div className="layer-toggle__row">
       <div className="layer-toggle__group" role="group" aria-label="Camada do mapa">
         {LAYERS.map((l) => (
           <button key={l.id} aria-pressed={layer === l.id} onClick={() => onChange(l.id)}>{l.label}</button>
         ))}
+      </div>
+      {states && (
+        <div className="layer-toggle__group">
+          <button aria-pressed={states.on} onClick={states.toggle}>Estados</button>
+        </div>
+      )}
       </div>
       {layer === 'flags' && flagsLoading && (
         <p className="legend" role="status"><span className="spinner" aria-hidden="true" /> Carregando bandeiras…</p>
       )}
       {layer === 'regime' && (
         <ul className="legend">
-          {colors.size === 0 && <li>Sem dados de regime</li>}
-          {[...colors].map(([regime, color]) => (
-            <li key={regime}><i style={{ background: color }} />{regime}</li>
+          {groups.length === 0 && <li>Sem dados de regime</li>}
+          {groups.map((g) => (
+            <li key={g.label} title={g.members.length > 1 ? g.members.join(', ') : undefined}>
+              <i style={{ background: g.color }} />{g.label}<span className="legend__n">{g.count}</span>
+            </li>
           ))}
           <li><i className="legend__none" />sem dados</li>
           {/* TODO: remove once the API sources its regime text (today it comes from an unverified legacy seed) */}
-          {colors.size > 0 && <li className="legend__warn">Texto de regime não verificado (seed legado).</li>}
+          {groups.length > 0 && <li className="legend__warn">Texto de regime não verificado (seed legado).</li>}
         </ul>
       )}
       {children}

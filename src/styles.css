@@ -50,6 +50,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 
 /* ---------- layer switch (bottom-left segmented control) ---------- */
 .layer-toggle { position: fixed; z-index: var(--z-chrome); left: 24px; bottom: 40px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; max-width: 320px; }
+.layer-toggle__row { display: flex; gap: 8px; flex-wrap: wrap; }
 .layer-toggle__group { display: flex; border: 1px solid var(--c-line-strong); border-radius: var(--r); background: var(--c-panel); }
 .layer-toggle button, .icon-btn {
   font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; padding: 9px 12px; cursor: pointer; white-space: nowrap; color: var(--c-text-dim);
@@ -62,6 +63,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .legend { list-style: none; margin: 0; padding: 10px 12px; font-size: 12px; border: 1px solid var(--c-line); background: var(--c-panel); }
 .legend li { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
 .legend i { width: 8px; height: 8px; flex: none; transform: rotate(45deg); }
+.legend__n { margin-left: auto; padding-left: 12px; font: 400 11px/1 var(--f-mono); color: var(--c-text-faint); }
 .legend__warn { color: var(--c-text-faint); font-size: 11px; }
 .legend__none { background: var(--c-ice-dim); }
 

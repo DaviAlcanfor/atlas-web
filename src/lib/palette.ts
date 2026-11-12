@@ -15,9 +15,10 @@ export const palette = {
   iceDim: '#2f6873', // land without content
   landFill: '#0a1f2b', // under the dots
   grid: 'rgba(110, 200, 214, 0.10)', // graticule
-  border: 'rgba(120, 212, 224, 0.38)', // country borders
-  coast: 'rgba(120, 212, 224, 0.55)',
-  admin1Line: 'rgba(6, 19, 33, 0.85)', // internal borders, drawn over the selected (bright or flag-tinted) country
+  border: 'rgba(130, 222, 233, 0.62)', // country borders (spec 021: readable over ocean, dots and flags)
+  coast: 'rgba(130, 222, 233, 0.78)',
+  admin1Line: 'rgba(3, 9, 16, 0.92)', // internal borders: dark stroke...
+  admin1Light: 'rgba(214, 246, 248, 0.7)', // ...plus a light one beside it, so they read on any background
   line: 'rgba(143, 219, 227, 0.16)', // UI hairlines
   lineStrong: 'rgba(143, 219, 227, 0.42)',
   // text
@@ -40,8 +41,12 @@ export const kindColor = {
   other: 'var(--c-text-faint)',
 } as const;
 
-// Fills for the "Political regime" layer: a single cyan ramp (one hue, varying lightness), assigned in sorted order.
-export const regimePalette = ['#d6f6f8', '#8fdbe3', '#5cb8c4', '#3b93a1', '#2a737f', '#7aa9b0', '#b4cfd3', '#4f7f88'] as const;
+// Fills for the "Political regime" layer (spec 021): 8 categorical hues (blue, orange, aqua, amber, magenta, green, violet, red), given in
+// fixed order to the regimes with most countries. Validated with the dataviz skill (dark mode, surface landFill #0a1f2b): lightness band,
+// chroma floor, adjacent CVD dE 8.4 (protan), normal-vision dE 19.3, contrast >= 3:1. All-pairs CVD cannot clear the floor for 8 hues on a
+// map, so the legend (swatch + name + count) and the hover readout are the secondary encoding. Rare regimes fold into a neutral "Outros".
+export const regimePalette = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#008300', '#9085e9', '#e66767'] as const;
+export const regimeOther = '#8da4ad'; // not a data hue: neutral gray for the folded regimes
 
 const kebab = (s: string) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 
