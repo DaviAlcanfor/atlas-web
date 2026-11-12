@@ -1,7 +1,8 @@
 import { geoArea, geoBounds } from 'd3-geo';
 import type { Geometry, Polygon } from 'geojson';
-import { LinearFilter, ShaderMaterial, SRGBColorSpace, TextureLoader, Vector4, type Texture } from 'three';
+import { CanvasTexture, LinearFilter, ShaderMaterial, SRGBColorSpace, TextureLoader, Vector4, type Texture } from 'three';
 import { DOT_GLSL, DOT_VERT, dotUniforms, type DotOpts, type DotShared } from './dotMaterial';
+import { flagPreviewUrl } from './url';
 
 export const FLAG_MIX = 0.6;
 
@@ -30,12 +31,12 @@ export function flagBox(g: Geometry): Vector4 | null {
 // Outside that bbox (other islands/exclaves) the flag weight is 0 -> plain dots.
 const FRAG = /* glsl */ `
 ${DOT_GLSL}
-uniform sampler2D uFlag; uniform vec4 uBox; uniform float uMix;
+uniform sampler2D uFlag; uniform vec4 uBox; uniform vec4 uCell; uniform float uMix; // uCell: [u0, v0, du, dv] of the flag in uFlag (atlas)
 void main() {
   vec2 ll = latLng();
   vec2 uv = vec2(mod(ll.y - uBox.x + 720.0, 360.0) / uBox.z, (ll.x - uBox.y) / uBox.w);
   float inside = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
-  vec3 flag = texture2D(uFlag, clamp(uv, 0.0, 1.0)).rgb;
+  vec3 flag = texture2D(uFlag, uCell.xy + clamp(uv, 0.0, 1.0) * uCell.zw).rgb;
   gl_FragColor = vec4(mix(dotColor(ll), flag, uMix * inside), 1.0);
   #include <colorspace_fragment>
 }
@@ -43,7 +44,7 @@ void main() {
 
 export const createFlagMaterial = (dots: DotOpts, shared: DotShared) =>
   new ShaderMaterial({
-    uniforms: { ...dotUniforms(dots, shared), uFlag: { value: null }, uBox: { value: new Vector4(0, 0, 1, 1) }, uMix: { value: 0 } },
+    uniforms: { ...dotUniforms(dots, shared), uFlag: { value: null }, uBox: { value: new Vector4(0, 0, 1, 1) }, uCell: { value: new Vector4(0, 0, 1, 1) }, uMix: { value: 0 } },
     vertexShader: DOT_VERT,
     fragmentShader: FRAG,
   });
@@ -75,4 +76,61 @@ export function loadFlag(pngUrl: string): Promise<Texture> {
     cache.set(pngUrl, t);
   }
   return t;
+}
+
+// Flag layer (spec 014 part 2): every country's w80 flag stretched into an 80x80 cell of one canvas (16 columns).
+// The canvas is kept for the session (re-entering the layer is instant); the GPU texture is made/disposed per activation.
+const CELL = 80;
+const COLS = 16;
+export interface FlagAtlas {
+  canvas: HTMLCanvasElement;
+  cells: Map<string, Vector4>; // iso2 -> uCell; flags that failed to load are missing (= plain dots)
+}
+const atlases = new Map<string, Promise<FlagAtlas>>();
+
+export function loadFlagAtlas(ids: string[]): Promise<FlagAtlas> {
+  const key = ids.join();
+  let p = atlases.get(key);
+  if (!p) atlases.set(key, (p = buildAtlas(ids)));
+  return p;
+}
+
+async function buildAtlas(ids: string[]): Promise<FlagAtlas> {
+  const canvas = document.createElement('canvas');
+  canvas.width = COLS * CELL;
+  canvas.height = Math.max(1, Math.ceil(ids.length / COLS)) * CELL;
+  const ctx = canvas.getContext('2d')!;
+  const { width: W, height: H } = canvas;
+  const cells = new Map<string, Vector4>();
+  let next = 0;
+  const worker = async () => {
+    while (next < ids.length) {
+      const i = next++;
+      const url = flagPreviewUrl(ids[i]);
+      if (!url) continue;
+      const img = new Image();
+      img.crossOrigin = 'anonymous'; // flagcdn sends ACAO: *; without it the canvas would be tainted
+      img.src = url;
+      try {
+        await img.decode();
+      } catch {
+        continue; // skip: that country keeps its dots
+      }
+      const x = (i % COLS) * CELL;
+      const y = Math.floor(i / COLS) * CELL;
+      ctx.drawImage(img, x, y, CELL, CELL);
+      // half-texel inset so linear filtering never reads the neighbour cell; canvas y down -> texture v up (flipY)
+      cells.set(ids[i]!, new Vector4((x + 0.5) / W, 1 - (y + CELL - 0.5) / H, (CELL - 1) / W, (CELL - 1) / H));
+    }
+  };
+  await Promise.all(Array.from({ length: 8 }, worker)); // 8 requests at a time
+  return { canvas, cells };
+}
+
+export function atlasTexture(canvas: HTMLCanvasElement): Texture {
+  const tex = new CanvasTexture(canvas);
+  tex.colorSpace = SRGBColorSpace;
+  tex.minFilter = LinearFilter; // no mipmaps: same reason as loadFlag (stretched UVs + antimeridian wrap)
+  tex.generateMipmaps = false;
+  return tex;
 }

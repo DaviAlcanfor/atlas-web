@@ -49,10 +49,10 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .marker.is-selected { background: var(--c-signal); transform: rotate(45deg) scale(1.5); }
 
 /* ---------- layer switch (bottom-left segmented control) ---------- */
-.layer-toggle { position: fixed; z-index: var(--z-chrome); left: 24px; bottom: 40px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; max-width: 260px; }
+.layer-toggle { position: fixed; z-index: var(--z-chrome); left: 24px; bottom: 40px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; max-width: 320px; }
 .layer-toggle__group { display: flex; border: 1px solid var(--c-line-strong); border-radius: var(--r); background: var(--c-panel); }
 .layer-toggle button, .icon-btn {
-  font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; padding: 9px 12px; cursor: pointer; color: var(--c-text-dim);
+  font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; padding: 9px 12px; cursor: pointer; white-space: nowrap; color: var(--c-text-dim);
   border: 0; border-radius: var(--r); background: transparent; transition: color 0.15s, background-color 0.15s, transform 0.1s;
 }
 .layer-toggle button + button { border-left: 1px solid var(--c-line); }

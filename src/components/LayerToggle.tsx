@@ -6,15 +6,17 @@ interface Props {
   layer: LayerId;
   onChange: (l: LayerId) => void;
   regimes: Map<string, string>;
+  flagsLoading?: boolean; // the flag layer's atlas is still downloading
   children?: ReactNode; // extra chrome under the toggle (glossary link)
 }
 
 const LAYERS: { id: LayerId; label: string }[] = [
   { id: 'content', label: 'Padrão' },
   { id: 'regime', label: 'Regime político' },
+  { id: 'flags', label: 'Bandeiras' },
 ];
 
-export function LayerToggle({ layer, onChange, regimes, children }: Props) {
+export function LayerToggle({ layer, onChange, regimes, flagsLoading, children }: Props) {
   const colors = regimeColors(regimes);
   return (
     <div className="layer-toggle">
@@ -23,6 +25,9 @@ export function LayerToggle({ layer, onChange, regimes, children }: Props) {
           <button key={l.id} aria-pressed={layer === l.id} onClick={() => onChange(l.id)}>{l.label}</button>
         ))}
       </div>
+      {layer === 'flags' && flagsLoading && (
+        <p className="legend" role="status"><span className="spinner" aria-hidden="true" /> Carregando bandeiras…</p>
+      )}
       {layer === 'regime' && (
         <ul className="legend">
           {colors.size === 0 && <li>Sem dados de regime</li>}
