@@ -189,3 +189,21 @@ describe('spec 023 helpers', () => {
     expect(hemisphere(-15)[1]).toMatch(/ao norte na maior parte do ano$/);
   });
 });
+
+describe('history summary (spec 016 stage 1)', () => {
+  it('BR: summary, periods with years, Wikipedia revision credited', async () => {
+    const { HistorySummary } = await import('../src/components/HistorySummary');
+    render(<HistorySummary iso2="BR" />);
+    expect(await screen.findByRole('button', { name: 'ler o resumo inteiro' })).toBeTruthy();
+    expect(screen.getByText('Império')).toBeTruthy();
+    expect(screen.getByText('1822 - 1889')).toBeTruthy();
+    expect(screen.getByText('até 1500')).toBeTruthy();
+    expect(screen.getByRole('link', { name: /História do Brasil \(revisão \d+\)/ }).getAttribute('href')).toMatch(/oldid=\d+$/);
+  });
+  it('a country without data renders nothing', async () => {
+    const { HistorySummary } = await import('../src/components/HistorySummary');
+    const { container } = render(<HistorySummary iso2="RS" />);
+    await new Promise((r) => setTimeout(r, 400));
+    expect(container.textContent).toBe('');
+  });
+});

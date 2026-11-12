@@ -148,3 +148,7 @@ export const CurrencyDetail = z.object({
 export const CurrencyHistory = z.object({
   base: Str, vs: z.array(Str), items: z.array(z.object({ date: Str, rates: z.record(Str, z.number()) })), source: Source,
 });
+
+// ---- v1.3 proposal (spec 016 stage 1, CR-004): condensed pt.wikipedia history. Not in production yet: any failure = section hidden. ----
+export const Period = z.object({ id: Str, title: Str, year_start: Year.nullable(), year_end: Year.nullable(), summary: Str, event_count: z.number().int() });
+export const CountryHistory = z.object({ summary: NStr, periods: z.array(Period), sources: z.array(Source) });

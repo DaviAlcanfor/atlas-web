@@ -18,6 +18,10 @@ export interface paths {
     /** Get Economy */
     get: operations["get_economy_v1_countries__iso2__economy_get"];
   };
+  "/v1/countries/{iso2}/history": {
+    /** Get History */
+    get: operations["get_history_v1_countries__iso2__history_get"];
+  };
   "/v1/countries/{iso2}/leaders": {
     /** List Leaders */
     get: operations["list_leaders_v1_countries__iso2__leaders_get"];
@@ -186,6 +190,15 @@ export interface components {
       indicators: components["schemas"]["EconomyIndicator"][];
       /** Sources */
       sources: components["schemas"]["Source"][];
+    };
+    /** CountryHistory */
+    CountryHistory: {
+      /** Periods */
+      periods: components["schemas"]["Period"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Summary */
+      summary: string | null;
     };
     /** CountryList */
     CountryList: {
@@ -495,6 +508,21 @@ export interface components {
       id: string;
       /** Name */
       name: string;
+    };
+    /** Period */
+    Period: {
+      /** Event Count */
+      event_count: number;
+      /** Id */
+      id: string;
+      /** Summary */
+      summary: string;
+      /** Title */
+      title: string;
+      /** Year End */
+      year_end: number | null;
+      /** Year Start */
+      year_start: number | null;
     };
     /** Person */
     Person: {
@@ -855,6 +883,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["CountryEconomy"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get History */
+  get_history_v1_countries__iso2__history_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryHistory"];
         };
       };
       /** @description Validation Error */

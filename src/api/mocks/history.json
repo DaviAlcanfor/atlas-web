@@ -1,0 +1,243 @@
+{
+ "BR": {
+  "summary": "História do Brasil começa com a chegada dos primeiros humanos na América do Sul há pelo menos 22 000 anos AP. Em fins do século XV, quando do Tratado de Tordesilhas, toda a área hoje conhecida como Brasil era habitada por comunidades seminômades que subsistiam da caça, pesca, coleta e agricultura. Em 22 de abril de 1500, Pedro Álvares Cabral, capitão-mor de expedição portuguesa a caminho das Índias, chegou, na hoje conhecida, Porto Seguro na Bahia, tornando a região colônia do Reino de Portugal.",
+  "periods": [
+   {
+    "id": "br-1",
+    "title": "Período pré-colonial",
+    "year_start": null,
+    "year_end": 1500,
+    "summary": "Entre os primeiros vestígios de presença humana no território brasileiro é datada de 13 mil anos atrás, com a chegada das primeiras populações paleoindígenas na Amazônia. Esses primeiros humanos conviveram com a megafauna pleistocênica do Brasil, que incluía preguiças-gigantes, tigres-dente-de-sabre e mastodontes.\n\nNo início do período Holoceno (cerca de 11,5 mil anos atrás), diversas tradições líticas de povos caçadores-coletores habitavam o Brasil, como a Tradição Projétil Rabo de Peixe, Tradição Itaparica, Tradição Ibicuí e a Tradição Umbu.",
+    "event_count": 0
+   },
+   {
+    "id": "br-2",
+    "title": "Período Colonial",
+    "year_start": 1500,
+    "year_end": 1815,
+    "summary": "O período compreendido entre a chegada dos europeus ao Brasil em 1500, (chamado pelos portugueses de Achamento do Brasil), até a Independência do Brasil, é chamado, no Brasil, de Período Colonial. Os portugueses, porém, chamam este período de A Construção do Brasil, e o estendem até 1825 quando Portugal reconheceu a independência do Brasil.",
+    "event_count": 0
+   },
+   {
+    "id": "br-3",
+    "title": "Reino",
+    "year_start": 1815,
+    "year_end": 1822,
+    "summary": "No contexto das negociações do Congresso de Viena, o Brasil foi elevado à condição de Reino dentro do Estado português, que assumiu a designação oficial de Reino Unido de Portugal, Brasil e Algarves em 16 de dezembro de 1815. A carta de lei foi publicada na Gazeta do Rio de Janeiro de 10 de janeiro de 1816, oficializando o ato. O Rio de Janeiro, por conseguinte, subia à categoria de Corte e capital, as antigas capitanias passaram a ser denominadas províncias (hoje, os estados). No mesmo ano, a rainha Maria I morreu e D. João foi coroado rei como João VI.",
+    "event_count": 0
+   },
+   {
+    "id": "br-4",
+    "title": "Império",
+    "year_start": 1822,
+    "year_end": 1889,
+    "summary": "Após a declaração da independência, o Brasil foi governado por Dom Pedro I até o ano de 1831, período chamado de Primeiro Reinado, quando abdicou em favor de seu filho, Dom Pedro II, então com cinco anos de idade.",
+    "event_count": 0
+   },
+   {
+    "id": "br-5",
+    "title": "República",
+    "year_start": 1889,
+    "year_end": null,
+    "summary": "Em 15 de novembro de 1889, o Marechal Deodoro da Fonseca decretou o fim do período imperial em um golpe militar de Estado sob a forma de uma quartelada quase sem força política e nenhum apoio popular, e o início de um período republicano ditatorial, destituindo o último imperador brasileiro, D. Pedro II, que teve de partir em exílio para a Europa. O nome do país mudou de Império do Brasil para Estados Unidos do Brasil. A primeira constituição da República do Brasil foi feita dia 15 de novembro de 1890.",
+    "event_count": 0
+   }
+  ],
+  "sources": [
+   {
+    "id": "wikipedia-pt",
+    "title": "Wikipédia: História do Brasil (revisão 73212581)",
+    "url": "https://pt.wikipedia.org/w/index.php?oldid=73212581",
+    "license": "CC BY-SA 4.0",
+    "retrieved_at": "2026-11-12T21:22:52.458703+00:00"
+   }
+  ]
+ },
+ "JP": {
+  "summary": "A história do Japão (japonês: 日本の歴史 ou 日本史, Hepburn: Nihon no rekishi / Nihonshi) é a sequência de eventos ocorridos no arquipélago japonês, com o surgimento de factos únicos influenciados pela sua natureza geográfica enquanto nação insular, assim como por eventos inculcados por influência do império Chinês que definiram a sua língua, a sua escrita e também a sua cultura política. Por outro lado, o Japão foi ainda influenciado pelo Ocidente, convertendo-se numa nação industrial, mas manteve os laços com a tradição cultural do país. Exerceu uma influência significativa e expansão territorial na região do Pacífico, mas após a Segunda Guerra Mundial estacou.",
+  "periods": [
+   {
+    "id": "jp-1",
+    "title": "Período paleolítico japonês",
+    "year_start": null,
+    "year_end": null,
+    "summary": "A data aproximada do início do período paleolítico é motivo de alguma controvérsia, embora seja geralmente aceita que este período se defina entre 50 000/35 000 AP, quando o arquipélago estava em contacto com o resto do continente, mas devido à natureza ácida dos solos, não foram encontrados esqueletos em estado de preservação. No auge deste período, por volta de -18.000, o nível do mar estava 130 a 140 metros mais baixo do que hoje e o território estava conectado entre Kyūshū e a Coreia, bem como entre Hokkaidō, Sakhalin e a Sibéria. Os primeiros homo sapiens compartilhavam terras com animais de grande porte, incluindo mamutes.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-2",
+    "title": "Período Jomon",
+    "year_start": null,
+    "year_end": null,
+    "summary": "A transição do paleolítico para o período Jomon (縄文時代, Jōmon-jidai) teve início com a introdução da cerâmica na região a par de culturas agrícolas ainda incipientes. A primeira civilização japonesa Jomon ocupou as ilhas nipónicas em finais da quarta glaciação por volta de 14 mil AEC. Durante os primeiros dez mil anos desde o aparecimento dos primeiros povos, aproximadamente entre 11 000 e 500 AEC, a sobrevivência dos habitantes dependia principalmente da caça, pesca e colecta.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-3",
+    "title": "Período Yayoi",
+    "year_start": null,
+    "year_end": null,
+    "summary": "A cultura do período Yayoi (弥生時代, Yayoi jidai) caracteriza-se por ter sido a fase de implementação de métodos de cultivo de arroz — técnica importada da China a partir da Coreia, e estende-se até ao século III — e do trabalho em metal, apesar de, em arqueologia, ser classificado segundo a identificação de determinados artefactos, especialmente de diversos estilos de cerâmica. A cultura Yayoi, nomeada em homenagem a um tipo de cerâmica específico desse período, desenvolveu-se de 800 a.C. no oeste do arquipélago e inicialmente coexistiu com a cultura Jōmon até cerca de 400 a.C., a data inicial tradicionalmente aceita.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-4",
+    "title": "Período Kofun",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Kofun data entre 250 e 300, com a construção do primeiro kofun, e 538 e 552, época em que se considera que o budismo foi introduzido no Japão. Vários historiadores e arqueólogos, como Charles T. Keally, prorrogam o prazo até 710, por forma a que os períodos Asuka e Hakuhō sejam considerados subperíodos do Kofun.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-5",
+    "title": "Período Asuka",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Asuka (飛鳥時代, Asuka jidai) teve início com a introdução do budismo no Japão, no ano 552. A introdução do budismo esteve na origem de uma série de conflitos por todo o país. Em 538 ou 552, o imperador Kinmei recebeu uma estátua de Buda, bem como sutras, do rei coreano de Baekje. Apesar de contradizer os sistemas de crenças locais, esta nova espiritualidade religiosa foi bem acolhida, tal como o taoísmo e o confucionismo.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-6",
+    "title": "Período Hakuhō",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Após a morte do príncipe Shōtoku em 621, surgiu dentro da corte um novo clã chamado Soga, que foi gradualmente tomando o controlo político, o que constituiu uma forte ameaça para o governo imperial. Em 645, face à urgência da situação, o príncipe Naka no Ōe (626-672), conjuntamente com outros membros, organizou um grupo e assassinou o líder do clã, Soga no Iruka, em plena audiência com a Imperatriz Kogyoku (Incidente de Isshi). A imperatriz abdicou do trono em favor do seu segundo filho, o Imperador Kōtoku (596-654), ao mesmo tempo que o clã Soga foi debelado.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-7",
+    "title": "Período Nara",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Nara (奈良時代, Nara-jidai) teve origem em 710, quando a capital foi transferida para Heijō-kyō - próxima da província de Nara - prolongando-se até finais de 794, quando a capital foi novamente transferida para Heian-kyō, atual Quioto. A nova capital foi inspirada em Changan, antiga capital da China durante a dinastia Tang. Neste período, o governo financiou a construção de inúmeros templos na capital e na província, com o intuito de obter apoio religioso. Assim, a implementação em definitivo do budismo e do confucionismo foi imposta. A influência cultural chinesa tornou-se mais evidente, refletindo-se na literatura.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-8",
+    "title": "Período Heian",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Heian (平安時代, Heian jidai) teve início em 794, indo até 1185, com o estabelecimento do primeiro regime xogum na história do país - Xogunato Kamakura.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-9",
+    "title": "Período Kamakura",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Em 1192, Minamoto no Yoritomo auto-proclamou-se xogum - denominação esta que até então tinha sido apenas temporária, e tornou-se um título militar de alto nível. Com isto foi instituiu o xogunato enquanto figura permanente, que duraria cerca de 700 anos até à restauração Meiji. Com o novo ideal xogum, o imperador converteu-se num mero espectador quanto às questões políticas e económicas do país, enquanto que os samurais se tornaram efectivos.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-10",
+    "title": "Restauração Kemmu",
+    "year_start": null,
+    "year_end": null,
+    "summary": "No início do século XIV o clã Hōjō, que se encontrava em decadência, enfrentou uma tentativa de restauração imperial, agora sob a figura do imperador Go-Daigo (1318-1339). Tendo conhecimento de tais eventos políticos, o clã Hōjō enviou um exército de Kamakura, para impedir o sucesso do imperador. Frente a esta situação Go-Daigo fugiu para Kasagi, levando a regalia imperial com ele. O imperador Go-Daigo procurou refugio por entre os monges guerreiros que o acolheram e se prepararam para um possível ataque inimigo.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-11",
+    "title": "Período Muromachi",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Muromachi (室町時代, Muromachi-jidai) envolve a era do xogunato Ashikaga (足利幕府, Ashikaga bakufu), sob o regime militar feudal que se encontrava em vigor desde 1336 até 1573. O referente período deve o seu nome à área onde o terceiro xogum Yoshimitsu havia estabelecido a sua residência. Depois de ter auxiliado o imperador Go-Daigo a conquistar novamente o seu trono, Ashikaga Takauji acreditava receber uma recompensa substancial pelos seus serviços. No entanto, por considerar que a retribuição não seria o suficiente e tendo em conta a insatisfação da classe samurai com este novo governo, decidiu então revoltar-se.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-12",
+    "title": "Desenvolvimento cultural e contacto com o ocidente",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Apesar do proeminente estado de guerra, o desenvolvimento de vários factores culturais no Japão foi evidente neste período na arquitetura, pintura, música e poesia. O terceiro xogum Yoshimitsu foi um importante promotor das artes no Japão, aspecto este fulcral que estimulou a origem da cultura Kitayama durante o seu reinado, que perdurou entre a segunda metade do século XIV e inícios do século XV. Este período ficou marcado pelo surgimento dos teatros Noh e Kyogen e pela distinta construção do pavilhão Kinkaku-ji (em japonês 金閣寺, Templo do Pavilhão Dourado).",
+    "event_count": 0
+   },
+   {
+    "id": "jp-13",
+    "title": "Período Azuchi-Momoyama",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Em 1573 Oda Nobunaga (1534 - 1582) marchou em direção a Kyoto para derrotar o xogum Ashikaga Yoshiaki. Este acontecimento marcou o início do que é denominado de período Azuchi-Momoyama (安土桃山時代,, Azuchi Momoyama jidai), o qual recebeu o nome de dois emblemáticos castelos da época, nomeadamente os castelos Azuchi-jō e Fushimi-Momoyama. Uma semana depois, após conseguir a retirada do xogum Yoshiaki, Oda Nobunaga convenceu o imperador a alterar o nome da era para Tenshō enquanto símbolo do estabelecimento de um novo sistema político. Da mesma forma, o imperador concedeu-lhe o título de Udaijin (太政大臣; lit.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-14",
+    "title": "Período Edo",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O Período Edo (江戸時代, Edo-jidai), também conhecido como Período Tokugawa (徳川時代, Tokugawa-jidai) é um período da história do Japão que se estende desde 1603 até 1868. Esta época define o Xogunato Tokugawa, também denominado pelo seu nome original japonês Edo bakufu (江戸幕府), o qual foi o último xogunato que deteve poder no Japão.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-15",
+    "title": "Período Meiji",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Com a queda do xogunato, o imperador foi erigido enquanto símbolo de unidade nacional e deu início a uma série de reformas significativamente radicais. A primeira consistiu na promulgação da Carta de juramento (五箇条の御誓文, Gokajō no Goseimon) de 1868, que teve como objetivo elevar a moral e obter apoio financeiro para o novo governo.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-16",
+    "title": "Período Taishō",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Meiji terminou com a morte do imperador em 1912 e com a subsequente ascensão ao trono do imperador Taishō. O novo imperador tinha vários problemas de saúde, - homem débil tanto física como mentalmente - pelo que, durante o seu mandato, este manteve-se longe de questões políticas. As decisões do governo recaíram sobre a Dieta e o seu secretariado. Consequência da sua deficiência, o seu filho Hirohito foi nomeado \"Príncipe Regente\" em 1921.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-17",
+    "title": "Período Shōwa",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Em 25 de dezembro de 1926, após um breve reinado, o imperador Taishō morreu e o príncipe regente foi empossado como o novo imperador do Japão, começando assim o período Shōwa.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-18",
+    "title": "Período Heisei",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O Período Heisei começou a 8 de janeiro de 1989, um dia depois da morte do imperador Shōwa, com a subsequente ascensão ao trono do príncipe Akihito. Durante esta época a bolha financeira e imobiliária do Japão eclodiu, e em finais de 1987, os preços das acções do sector imobiliário ficaram inflacionados e, juntamente com as taxas de juros baixas, desenvolveu-se uma bolha especulativa.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-19",
+    "title": "Abdicação de Akihito",
+    "year_start": null,
+    "year_end": null,
+    "summary": "Em 8 de agosto de 2016, o imperador Akihito anunciou problemas de saúde ao público por meio de um discurso em canal aberto, demonstrando intenção de abdicar.\n\nEm seguida, começaram os preparativos para permitir tal abdicação por meio de uma emenda legislativa. Em 8 de junho de 2017, a Dieta do Japão aprovou a emenda e deu sinal verde ao governo para fazer os preparativos para a transição imperial, a primeira em dois séculos. A abdicação ocorreu em 30 de abril de 2019, quando Akihito assumiria o título de \"imperador emérito\" (Jōkō) e no dia seguinte o príncipe herdeiro Naruhito assumiu o título de imperador, encerrando a era Heisei.",
+    "event_count": 0
+   },
+   {
+    "id": "jp-20",
+    "title": "Período Reiwa",
+    "year_start": null,
+    "year_end": null,
+    "summary": "O período Reiwa começou a 1 de maio de 2019, com a ascensão de Naruhito como o 126º Imperador do Japão, apesar de a sua coroação ter ocorrido oficialmente em 22 de outubro.\n\nEsta era começou politicamente com o poder consolidado de Shinzo Abe, que governou o Japão continuamente desde 2012. Em 4 de julho de 2019, o país entrou numa guerra comercial com a Coreia do Sul, depois que este país deu luz verde para pessoas processarem extraterritorialmente as empresas japonesas por danos durante o período de ocupação.",
+    "event_count": 0
+   }
+  ],
+  "sources": [
+   {
+    "id": "wikipedia-pt",
+    "title": "Wikipédia: História do Japão (revisão 71717530)",
+    "url": "https://pt.wikipedia.org/w/index.php?oldid=71717530",
+    "license": "CC BY-SA 4.0",
+    "retrieved_at": "2026-11-12T21:22:57.238896+00:00"
+   }
+  ]
+ },
+ "ML": {
+  "summary": "O território do atual Mali foi sede de grandes impérios da África Ocidental, que controlavam o comércio de sal, ouro, matérias prima, além de prata e bronze. Estes reinos careciam tanto de fronteiras geopolíticas quanto de identidades étnicas. Um destes grandes impérios foi o Império do Gana, fundada pelos soninquês, que falavam mandê. O reino se expandiu por toda África Ocidental desde o século VIII até 1078, quando foi conquistado pelos almorávidas.\n\nO Império do Mali se formou na parte superior do Rio Níger e chegou à sua força máxima em meados do século XIV. Sob o reinado do Império do Mali, as antigas cidades de Djené e Tombuctu foram importantes centros de comércio e de aprendizagem islâmica. O reino entrou em declínio e, posteriormente, foi resultado de conflitos internos, e até ser substituído pelo Império Songai. O povo songai é originário do noroeste da atual Nigéria, cujo império tinha sido há muito tempo uma potência na África Ocidental sob o controle do Império de Mali.",
+  "periods": [],
+  "sources": [
+   {
+    "id": "wikipedia-pt",
+    "title": "Wikipédia: Mali (revisão 73310910)",
+    "url": "https://pt.wikipedia.org/w/index.php?oldid=73310910",
+    "license": "CC BY-SA 4.0",
+    "retrieved_at": "2026-11-12T21:22:58.570161+00:00"
+   }
+  ]
+ }
+}

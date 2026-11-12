@@ -21,6 +21,7 @@ export type Clues = z.infer<typeof S.Clues>;
 export type Image = z.infer<typeof S.Image>;
 export type GlossaryTerm = z.infer<typeof S.GlossaryTerm>;
 export type Leader = z.infer<typeof S.Leader>;
+export type CountryHistory = z.infer<typeof S.CountryHistory>;
 export type Person = z.infer<typeof S.Person>;
 export type PersonDomain = z.infer<typeof S.PersonDomain>;
 export type People = z.infer<typeof S.PeopleList>;
@@ -54,4 +55,6 @@ export interface AtlasApi {
   currency(code: string): Promise<CurrencyDetail>;
   /** `vs`: 1-4 codes. `from`/`to`: YYYY-MM-DD (default: last year). */
   currencyHistory(code: string, vs: string[], from?: string, to?: string): Promise<CurrencyHistory>;
+  // v1.3 proposal (spec 016 stage 1): any failure = section hidden.
+  history(iso2: string): Promise<CountryHistory>;
 }
