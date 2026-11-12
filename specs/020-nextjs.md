@@ -1,5 +1,5 @@
 # 020 - Migração para Next.js App Router + tipos gerados do OpenAPI
-Status: in progress | Contrato: não muda (v1.0 em produção, v1.1 local) | Decisão: [ADR-001](ADR-001-stack.md) (aprovado)
+Status: done | Contrato: não muda (v1.0 em produção, v1.1 local) | Decisão: [ADR-001](ADR-001-stack.md) (aprovado)
 
 ## Por quê
 Rotas por hash e bundle único de 500 kB+ não servem às páginas de conteúdo que vêm (P4/P5): sem SEO, sem prévia de link,
@@ -55,20 +55,48 @@ sem divisão de código. E o contrato duplicado à mão (zod) deriva. Ver ADR-00
 ### Testes e scripts
 - vitest continua (jsdom, alias `@/`), `vite.config.ts` some; `vitest.config.ts` força `NEXT_PUBLIC_API_URL=''`.
 - `scripts/smoke.ts` e `scripts/screenshot.ts` usam rotas por caminho.
-- `npm run build` = `tsc --noEmit && next build`.
+- `npm run build` = `next build` (o Next 16 roda o `tsc` local do projeto, compatível com TypeScript 7); `npm run typecheck` = só `tsc`.
 
 ### Vercel
 `vercel.json` com `"framework": "nextjs"` (sobrescreve o preset "Vite" do painel) e saída padrão do Next.
 
 ## Tarefas
-- [ ] spec (este arquivo)
-- [ ] Next 16.4.6 + `app/` (layout, `/`, `/pais/[iso2]`, `/glossario`), shell com globo dinâmico, estado no caminho, redirect do hash
-- [ ] env `NEXT_PUBLIC_API_URL`, AGENTS.md, README
-- [ ] `npm run api:types` + arquivo gerado + checagem de deriva zod x OpenAPI
-- [ ] fontes `next/font/google`, tokens CSS no `<html>`
-- [ ] vitest sem Vite; scripts Playwright por caminho; remover Vite
-- [ ] `vercel.json`
-- [ ] build (tabela de rotas), typecheck, vitest, screenshots real + mock, `PLAN.md`
+- [x] spec (este arquivo)
+- [x] Next 16.4.6 + `app/` (layout, `/`, `/pais/[iso2]`, `/glossario`), shell com globo dinâmico, estado no caminho, redirect do hash
+- [x] env `NEXT_PUBLIC_API_URL`, AGENTS.md, README
+- [x] `npm run api:types` + arquivo gerado + checagem de deriva zod x OpenAPI
+- [x] fontes `next/font/google`, tokens CSS no `<html>`
+- [x] vitest sem Vite; scripts Playwright por caminho; remover Vite
+- [x] `vercel.json`
+- [x] build (tabela de rotas), typecheck, vitest, screenshots real + mock, `PLAN.md`
 
 ## Resultado
-(preenchido ao terminar)
+- Rotas: `○ /`, `○ /glossario` (ISR 1 h), `● /pais/[iso2]` (196 países da API pré-gerados, ISR 1 h; `dynamicParams` padrão:
+  país novo é gerado na primeira visita). `generateMetadata`: título "Brasil · Atlas", description = resumo, OG/Twitter com a
+  bandeira em PNG (flagcdn w640).
+- Tamanho (gzip, medido nos `<script>` do HTML de cada rota): **First Load JS 236 kB** (774 kB sem compressão) em todas as rotas,
+  contra o bundle único do Vite de **707 kB gzip / 2,5 MB**. O globo (three.js + react-globe.gl) virou um chunk à parte de
+  552 kB gzip, carregado depois da hidratação; `/glossario` aberto direto não baixa o globo nem os mapas (2,4 MB de GeoJSON).
+  As fixtures de mock (152 kB) só são carregadas em modo mock (import dinâmico).
+- Contrato: `src/api/contract-check.ts` cobre 26 schemas; testado quebrando `Marker.lng` e `CountryDetail.clues` (tsc falhou nas
+  linhas certas). `npm run api:types -- --check` acusa arquivo gerado desatualizado.
+- Verificação (Playwright 1440x900, `scratchpad/p2/`): BR -> JP por clique no globo troca a URL para `/pais/jp`, mesmo `<canvas>`,
+  sem recarregar; `/#c=BR` -> `/pais/br`; `/#/glossario` -> `/glossario`; diálogo do glossário abre; "Voltar ao globo" monta o
+  globo; zero erros de console. vitest 34/34 (inclui `tests/routes.test.tsx`).
+- Decisões: o seletor de ano (`y=` no hash) foi descartado (não havia slider). `window.__globe` fica exposto também em produção
+  (os scripts de screenshot controlam a câmera por ele). O shell do glossário tem `GlossaryProvider` próprio com os termos e nomes
+  vindos do servidor.
+
+## Achados
+- **A API cai com a rajada do build.** Os dois primeiros `next build` (6 workers x 8 páginas = ~48 chamadas simultâneas) deixaram
+  `atlas-api.fastapicloud.dev` sem responder (até `/v1/health`, 524 do Cloudflare) por dezenas de minutos. Do lado do front:
+  `experimental.cpus = 2` e `staticGenerationMaxConcurrency = 2` (4 chamadas em voo) e timeout de 10 s nas chamadas do servidor
+  (página sai sem dados e o navegador busca de novo; API fora no build = nenhuma página de país pré-gerada, geradas sob demanda).
+  Do lado da API (fora deste repo): investigar pool de conexões / workers; 50 GETs simultâneos não deveriam derrubá-la.
+- Em modo mock, os exemplos do diálogo no `/glossario` mostram códigos (KP, LA) porque as fixtures só têm 9 países.
+
+## Vercel
+`vercel.json` com `"framework": "nextjs"` sobrescreve o preset do painel. No painel do projeto (Settings > Build and Deployment),
+se estiverem com override: desligar o override de **Output Directory** (`dist`) e de **Build Command** / **Install Command**
+(o padrão do Next usa `.next`). Settings > Environment Variables: se existir `VITE_API_URL` no painel, trocar por
+`NEXT_PUBLIC_API_URL` (opcional: o valor já está no `.env.production` commitado). Node.js 20+ (já é o padrão).
