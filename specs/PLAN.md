@@ -13,11 +13,12 @@ API v1.1 (glossário, regime de 153 países, governantes, pessoas, pistas, capit
 Next.js (`/pais/[iso2]`, `/glossario`), bandeira do país, estados, timeline, ícones, camada Bandeiras, polimento 021 (estados com botão,
 fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr, carregamento com %, painel 540 px).
 
-### URGENTE (2026-11-12, noite): produção da API com 503
-O PR #5 da API (v1.2) foi mergeado às 20:29 sem a migração 0007-0010: `/v1/countries*` responde 503 ("relation capitals does not exist"),
-`/v1/health` diz ok. Ensaio feito (0006 -> 0010 + imports, todos os endpoints 200). O dono roda, da pasta `atlas`:
-`powershell -ExecutionPolicy Bypass -File .ix-prod-0010.ps1` (worktree `atlas-api-deploy` em `origin/main` já criado, `data_out` copiado).
-Os passos 2-5 abaixo ficaram para trás (o merge já aconteceu); sobra o 1 (idiomas) e o 6.
+### Feito em 2026-11-12, noite
+- 503 da API resolvido: o dono rodou `fix-prod-0010.ps1` (produção em 0010 com dados v1.2). Smoke do site OK.
+- Rodada 023 no ar (PR #8).
+- **Resumo da história (016 fase 1)**: API PR #6 + web PR #9. Ordem: rodar `fix-prod-0011.ps1` (pasta `atlas`, ensaiado; o worktree
+  `atlas-api-deploy` já está no commit do PR #6) -> mergear API #6 -> conferir `/v1/countries/BR/history` -> mergear web #9 (pode ir antes:
+  a parte nova só aparece quando o endpoint existir). Colar o CR-004 (contrato v1.3) no CONTRACT.md dos dois repos.
 
 ### Rodada 023 (2026-11-12, noite): web, branch `feat/polish-2`
 Feito: spec [023](023-polish-round-2.md). Rascunhos para aprovação: [024 estados](024-subdivisions-data.md), [025 chatbot](025-chatbot.md).
