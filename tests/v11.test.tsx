@@ -1,3 +1,4 @@
+import type { GlossaryTerm } from '../src/api/types';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { isNotFound, createClient } from '../src/api/client';
@@ -125,15 +126,16 @@ describe('glossary', () => {
     );
     expect(screen.getByRole('button', { name: /América do Sul/ })).toBeTruthy();
   });
-  it('catalog page groups by kind and filters locally', () => {
+  it('catalog page groups by theme and filters locally', () => {
     render(
       <GlossaryProvider terms={GLOSSARY} countryName={names} onPickCountry={() => {}}>
         <GlossaryPage terms={GLOSSARY} onBack={() => {}} />
       </GlossaryProvider>,
     );
-    expect(screen.getByText('Regime político')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /Repúblicas/ })).toBeTruthy();
+    expect(screen.getByRole('navigation', { name: 'Índice do glossário' })).toBeTruthy(); // spec 023
     fireEvent.change(screen.getByLabelText('Buscar no glossário'), { target: { value: 'teocracia' } });
-    expect(screen.queryByText('Região')).toBeNull();
+    expect(screen.queryByRole('heading', { name: /Regiões do mundo/ })).toBeNull();
     expect(screen.getByText('Teocracia')).toBeTruthy();
     fireEvent.change(screen.getByLabelText('Buscar no glossário'), { target: { value: 'zzzz' } });
     expect(screen.getByText('Nenhum termo encontrado.')).toBeTruthy();
@@ -143,19 +145,21 @@ describe('glossary', () => {
 describe('CountryPanel v1.1 sections', () => {
   it('BR shows leaders (credit + licence), people with filter + attribution, and clues', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
-    render(<CountryPanel iso2="BR" name="Brasil" inApi onClose={() => {}} />);
+    render(<CountryPanel iso2="BR" name="Brasil" inApi lat={-10} onClose={() => {}} />);
     expect(await screen.findByRole('heading', { name: /Governantes/ })).toBeTruthy();
     expect(screen.getAllByText(/Foto: .* · CC BY 2\.0/).length).toBeGreaterThan(0);
-    expect(screen.getByRole('button', { name: /mostrar mais/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /ver todos os anteriores/ })).toBeTruthy(); // spec 023: only 3 predecessors before expanding
     expect(await screen.findByRole('heading', { name: /Pessoas importantes/ })).toBeTruthy();
     expect(screen.getAllByText('Jogador de futebol').length).toBeGreaterThan(0); // Pelé, translated
     const sports = screen.getByRole('button', { name: 'Esportes' });
     fireEvent.click(sports);
     expect(sports.getAttribute('aria-pressed')).toBe('true');
     expect(screen.queryByText('Escritor')).toBeNull();
-    expect(screen.getByText(/CC BY-SA 4\.0/)).toBeTruthy();
+    expect(screen.getAllByText(/CC BY-SA 4\.0/).length).toBeGreaterThan(0);
     expect(screen.getByText('Pistas')).toBeTruthy();
     expect(screen.getByText('+55')).toBeTruthy();
+    expect(screen.getByText('cobertura pública')).toBeTruthy(); // spec 023: Street View + hemisphere rows
+    expect(screen.getByText(/^sul: ao meio-dia o sol fica ao norte/)).toBeTruthy();
   });
   it('RS (no leaders, no people, no clues) shows none of the new sections and no error', async () => {
     const { CountryPanel } = await import('../src/components/CountryPanel');
@@ -163,7 +167,25 @@ describe('CountryPanel v1.1 sections', () => {
     expect(await screen.findByText((_, el) => el?.tagName === 'LI' && el.textContent === 'Capital: Belgrado')).toBeTruthy();
     await new Promise((r) => setTimeout(r, 400));
     for (const h of [/Governantes/, /Pessoas importantes/]) expect(screen.queryByRole('heading', { name: h })).toBeNull();
-    expect(screen.queryByText('Pistas')).toBeNull(); // GeoGuessr stays (Plonk It guide) but without the clues block
+    expect(screen.queryByText('DDI')).toBeNull(); // no API clues; the Street View row (spec 023) still shows
+    expect(screen.getByText('Street View')).toBeTruthy();
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
+describe('spec 023 helpers', () => {
+  it('byTheme splits regimes into families, A-Z, and drops empty themes', async () => {
+    const { byTheme } = await import('../src/glossary');
+    const t = (id: string, kind: GlossaryTerm['kind'], label: string) => ({ id, kind, label, short: '', body: '', icon: null, examples: [], sources: [] });
+    const g = byTheme([t('teocracia', 'regime', 'Teocracia'), t('republica-popular', 'regime', 'República popular'), t('republica', 'regime', 'República'),
+      t('monarquia-absoluta', 'regime', 'Monarquia absoluta'), t('onu', 'membership', 'ONU')]);
+    expect(g.map((x) => x.theme.id)).toEqual(['republicas', 'monarquias', 'excecao', 'organizacoes']);
+    expect(g[0]!.items.map((x) => x.label)).toEqual(['República', 'República popular']);
+  });
+  it('hemisphere clue', async () => {
+    const { hemisphere } = await import('../src/components/CountryPanel');
+    expect(hemisphere(0)[1]).toMatch(/Equador/);
+    expect(hemisphere(48)[1]).toBe('norte: ao meio-dia o sol fica ao sul');
+    expect(hemisphere(-15)[1]).toMatch(/ao norte na maior parte do ano$/);
   });
 });

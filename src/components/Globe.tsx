@@ -2,10 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
 import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
 import { palette } from '../lib/palette';
-import { api } from '../api';
 import type { CapitalCoord } from '../api/types';
 import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
-import { flagPngUrl } from '../lib/url';
+import { flagLargeUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
@@ -15,11 +14,10 @@ import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geoj
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
 const ALT_BASE = 0.004;
-const ALT_SELECTED = 0.015;
+const ALT_SELECTED = 0.008; // spec 023: less relief (was 0.015)
 const ALT_LINE = 0.0042;
 const ALT_ADMIN1 = ALT_SELECTED + 0.0003; // on the raised selected cap, under its outline
 const ALT_STATE_HOVER = ALT_SELECTED + 0.0002; // hovered state overlay: just over the selected cap
-const LIGHT_OFFSET = 0.1; // degrees: the light admin-1 stroke sits ~1px beside the dark one
 const MIN_ALTITUDE = 0.15;
 const START = { lat: 35, lng: -15, altitude: 0.92 }; // spec said altitude ~1.8; reference screenshot 2 measures ~0.92
 
@@ -37,7 +35,7 @@ const DOTS = {
   mid: { color: palette.iceMid, radius: 0.28 }, // GeoGuessr layer: restricted coverage
   hoverDim: { color: palette.iceBright, radius: 0.26 },
   hover: { color: palette.iceBright, radius: 0.32 },
-  stateHover: { color: palette.iceBright, radius: 0.4, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
+  stateHover: { color: palette.iceBright, radius: 0.34, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
   selected: { color: palette.iceBright, radius: 0.3, spacing: DOT_SPACING * 0.7 }, // denser + brighter (/2 goes sub-pixel at the default zoom)
   selectedDim: { color: palette.ice, radius: 0.28, spacing: DOT_SPACING * 0.7 },
 };
@@ -105,8 +103,7 @@ interface Admin1 {
   id: string; // country the data belongs to
   states: Feature<Geometry, { name: string }>[];
   bounds: ReturnType<typeof geoBounds>[];
-  line: LineSegments | null;
-  light: LineSegments | null; // same lines, shifted ~1px and drawn light (the dark one alone vanishes on flags/dots)
+  line: LineSegments | null; // one thin translucent light stroke (spec 023: the spec-021 double line read too thick)
 }
 
 /** bbox-filtered point-in-polygon; bounds[i] = geoBounds(items[i]). */
@@ -192,15 +189,11 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     setFlagId(null);
     const f = features.find((x) => idOf(x) === selectedId);
     const box = f && flagBox(f.geometry);
-    if (!selectedId || !box || !apiIds.has(selectedId)) return;
+    const url = flagLargeUrl(selectedId);
+    if (!url || !box) return;
     let live = true;
     let raf = 0;
-    api
-      .country(selectedId)
-      .then((d) => {
-        const url = flagPngUrl(d.flag_url);
-        return url ? loadFlag(url) : null;
-      })
+    loadFlag(url)
       .then((tex) => {
         if (!live || !tex) return;
         const u = mats.flag.uniforms;
@@ -220,7 +213,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       live = false;
       cancelAnimationFrame(raf);
     };
-  }, [selectedId, features, apiIds, mats]);
+  }, [selectedId, features, mats]);
 
   // Flag layer (spec 014 part 2): one atlas texture shared by one material per country (same program; only uBox/uCell differ).
   // Until the atlas is ready the layer looks like the default one. Leaving the layer disposes the texture and materials.
@@ -232,7 +225,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     let tex: Texture | undefined;
     const made = new Map<string, ShaderMaterial>();
     onFlagsLoading?.(true);
-    loadFlagAtlas(features.map(idOf).filter((id) => apiIds.has(id)))
+    loadFlagAtlas(features.map(idOf).filter((id) => /^[A-Z]{2}$/.test(id))) // by ISO2, not the API list: flags survive an API outage
       .then(({ canvas, cells }) => {
         if (!live) return;
         tex = atlasTexture(canvas);
@@ -271,7 +264,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         made.forEach((m) => m.dispose());
       }, 1000);
     };
-  }, [layer, features, apiIds, shared, onFlagsLoading]);
+  }, [layer, features, shared, onFlagsLoading]);
 
   // Camera flies to whatever becomes selected: a click, a marker, the URL path or a glossary example (spec 004).
   const select = useCallback((f: CountryFeature | undefined) => f && onSelect(idOf(f)), [onSelect]);
@@ -373,9 +366,6 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
           states,
           bounds: states.map((f) => geoBounds(f)),
           line: borders ? buildLines(borders.geometry.coordinates, palette.admin1Line, ALT_ADMIN1) : null,
-          light: borders
-            ? buildLines(borders.geometry.coordinates.map((l) => l.map(([x, y]) => [x! + LIGHT_OFFSET, y! - LIGHT_OFFSET])), palette.admin1Light, ALT_ADMIN1 + 0.0002)
-            : null,
         });
       })
       .catch(() => {}); // e.g. dev server answering index.html for a missing file
@@ -417,7 +407,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     return polys.length ? buildLines(polys.flat(), palette.iceBright, ALT_STATE_HOVER + 0.0003) : null;
   }, [hoverState]);
   const lineObjects = useMemo(
-    () => [...baseLines, ...(showStates && admin1?.line ? [admin1.line, admin1.light!] : []), ...(stateOutline ? [stateOutline] : []), ...(staticRing ? [staticRing] : [])],
+    () => [...baseLines, ...(showStates && admin1?.line ? [admin1.line] : []), ...(stateOutline ? [stateOutline] : []), ...(staticRing ? [staticRing] : [])],
     [baseLines, admin1, showStates, stateOutline, staticRing],
   );
 

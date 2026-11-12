@@ -30,6 +30,9 @@ Regras:
 | 018 | [Ideologias e pensadores](018-ideologies.md) | sim | approved |
 | 020 | [Migração para Next.js + tipos do OpenAPI](020-nextjs.md) | não | done |
 | 021 | [Rodada de polimento (estados, fronteiras, regime, bandeiras, ⓘ, GeoGuessr, carregamento, painel)](021-polish-round.md) | não | done |
+| 023 | [Polimento 2 (estados finos e opcionais, bandeiras sem API, favicon, governantes, glossário por tema, painel)](023-polish-round-2.md) | não | done |
+| 024 | [Estados: bandeira e dados por subdivisão](024-subdivisions-data.md) | sim | draft |
+| 025 | [Chatbot do Atlas](025-chatbot.md) | sim | draft |
 
 Plano de execução e checklist: [PLAN.md](PLAN.md). Avaliação de stack: [ADR-001-stack.md](ADR-001-stack.md).
 

@@ -45,16 +45,15 @@ function Chrome({ children }: { children: ReactNode }) {
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
-  const [showStates, setShowStates] = useState(true); // spec 021: the selected country's divisions
+  const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
   const [stateName, setStateName] = useState<string | null>(null); // hovered state/province of the selected country
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
   useEffect(() => setStateName(null), [selectedCountry]);
 
   const active = hoveredCountry ?? selectedCountry;
-  const name = data?.features.find((f) => idOf(f) === active)?.properties.NAME;
-  const selectedName = data?.features.find((f) => idOf(f) === selectedCountry)?.properties.NAME;
-
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
+  const name = active ? countryName(active) : undefined; // pt-BR name from the API, Natural Earth's English one as fallback
+  const selectedName = selectedCountry ? countryName(selectedCountry) : undefined;
   const terms = data?.glossary ?? NO_TERMS;
   const hoverFlag = hoveredCountry && data?.knownIds.has(hoveredCountry) ? flagPreviewUrl(hoveredCountry) : undefined;
 
@@ -86,6 +85,7 @@ function Chrome({ children }: { children: ReactNode }) {
         )}
         {data && (
           <>
+            <div className={selectedCountry && globeRoute ? 'globe-slot globe-slot--panel' : 'globe-slot'}>
             <Globe
               features={data.features}
               lines={data.lines}
@@ -102,6 +102,7 @@ function Chrome({ children }: { children: ReactNode }) {
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
+            </div>
             <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => setShowStates((s) => !s) } : undefined}>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
@@ -125,10 +126,11 @@ export function CountryRoute({ slug, initial }: { slug: string; initial: Country
   const id = selectionFromPath(`/pais/${slug}`) ?? slug;
   // A click updates the selection before the new page arrives; the old panel steps aside instead of showing stale data.
   if (selectedCountry !== id) return null;
-  const polygonName = data?.features.find((f) => idOf(f) === id)?.properties.NAME;
+  const feature = data?.features.find((f) => idOf(f) === id);
+  const polygonName = feature?.properties.NAME;
   const inApi = initial !== undefined ? initial !== null : data ? data.knownIds.has(id) : true;
   return (
-    <CountryPanel key={id} iso2={id} name={initial?.name ?? polygonName ?? id} inApi={inApi} initial={initial ?? undefined}
+    <CountryPanel key={id} iso2={id} name={initial?.name ?? polygonName ?? id} inApi={inApi} initial={initial ?? undefined} lat={feature?.properties.lat}
       onClose={() => setSelectedCountry(null)} />
   );
 }

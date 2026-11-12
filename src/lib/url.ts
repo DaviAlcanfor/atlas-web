@@ -13,6 +13,9 @@ export const flagPreviewUrl = (iso2: string | null | undefined): string | undefi
 /** w160 flag for the flag layer's atlas (spec 021): 160 px wide at the flag's real aspect ratio. */
 export const flagAtlasUrl = (iso2: string | null | undefined): string | undefined =>
   iso2 && /^[A-Z]{2}$/.test(iso2) ? `https://flagcdn.com/w160/${iso2.toLowerCase()}.png` : undefined;
+/** w640 flag for the selected country's backdrop (spec 002), straight from the ISO2 so it does not wait on the API. */
+export const flagLargeUrl = (iso2: string | null | undefined): string | undefined =>
+  iso2 && /^[A-Z]{2}$/.test(iso2) ? `https://flagcdn.com/w640/${iso2.toLowerCase()}.png` : undefined;
 /** flagcdn SVG URL from the API -> its PNG variant (WebGL can't sample SVG; OG cards prefer PNG). Anything else -> null (no flag). */
 export function flagPngUrl(flagUrl: string | null | undefined): string | null {
   try {

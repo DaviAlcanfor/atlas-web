@@ -5,6 +5,7 @@ import type { CountryDetail, Event, PolityDetail, Source } from '../api/types';
 import { useAsync } from '../hooks/useAsync';
 import { kindColor } from '../lib/palette';
 import { plonkitUrl } from '../lib/plonkit';
+import { STREETVIEW } from '../lib/streetview';
 import { X } from '@phosphor-icons/react/dist/csr/X';
 import { Hint } from './Hint';
 import { CountUp } from './CountUp';
@@ -24,6 +25,7 @@ interface Props {
   name: string; // from the polygon, shown while loading and when the API has nothing
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
   initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
+  lat?: number; // latitude of the country's label point (globe data); feeds the hemisphere clue
   onClose: () => void;
 }
 
@@ -66,7 +68,7 @@ function Skeleton() {
   );
 }
 
-export function CountryPanel({ iso2, name, inApi, initial, onClose }: Props) {
+export function CountryPanel({ iso2, name, inApi, initial, lat, onClose }: Props) {
   // Not in the API's list (e.g. polygons without an ISO code) or already loaded on the server: nothing to fetch (key null = idle).
   const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
   const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
@@ -80,7 +82,7 @@ export function CountryPanel({ iso2, name, inApi, initial, onClose }: Props) {
   } else if (state.status !== 'ok') {
     body = <Skeleton />;
   } else {
-    body = <Details c={state.data} />;
+    body = <Details c={state.data} lat={lat} />;
   }
 
   return (
@@ -99,7 +101,7 @@ export function CountryPanel({ iso2, name, inApi, initial, onClose }: Props) {
   );
 }
 
-function Details({ c }: { c: CountryDetail }) {
+function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
   const pop = c.population;
   const density = pop && c.area_km2 ? pop.value / c.area_km2 : null;
   const flag = safeHref(c.flag_url);
@@ -118,6 +120,11 @@ function Details({ c }: { c: CountryDetail }) {
         [clues.scripts.length > 1 ? 'Alfabetos' : 'Alfabeto', clues.scripts.join(', ')],
       ] as [string, string][]).filter(([, v]) => v)
     : [];
+  const sv = STREETVIEW[c.iso2];
+  const geoRows: [string, string][] = [
+    ['Street View', sv === 'full' ? 'cobertura pública' : sv === 'partial' ? 'cobertura restrita' : 'sem cobertura oficial'],
+    ...(lat !== undefined ? [hemisphere(lat)] : []),
+  ];
   const newsHref =`https://news.google.com/search?q=${encodeURIComponent(c.name)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
   return (
@@ -182,7 +189,7 @@ function Details({ c }: { c: CountryDetail }) {
         <a className="news-link" href={newsHref} target="_blank" rel="noreferrer noopener">Ver notícias sobre {c.name} no Google Notícias ↗</a>
       </Section>
 
-      {(plonk || clueRows.length > 0) && (
+      {(plonk || clueRows.length > 0 || geoRows.length > 0) && (
         <Section title="GeoGuessr">
           {plonk && (
             <>
@@ -190,14 +197,11 @@ function Details({ c }: { c: CountryDetail }) {
               <p className="src">Plonk It é um guia da comunidade de GeoGuessr; o Atlas só aponta para ele.</p>
             </>
           )}
-          {clueRows.length > 0 && (
-            <>
-              <h4 className="subhead"><LabelIcon label="Pistas" />Pistas<Hint k="Pistas" /></h4>
-              <dl className="clues">
-                {clueRows.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-              </dl>
-            </>
-          )}
+          <h4 className="subhead"><LabelIcon label="Pistas" />Pistas<Hint k="Pistas" /></h4>
+          <dl className="clues">
+            {[...geoRows, ...clueRows].map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+          </dl>
+          <p className="src">Street View: Wikipedia, “Google Street View coverage” (CC BY-SA 4.0). Hemisfério: calculado pela posição do país no mapa.</p>
         </Section>
       )}
 
@@ -220,6 +224,13 @@ function Details({ c }: { c: CountryDetail }) {
       </Section>
     </>
   );
+}
+
+/** Hemisphere clue from the label point's latitude: in GeoGuessr the sun at midday points to the equator. */
+export function hemisphere(lat: number): [string, string] {
+  if (Math.abs(lat) < 10) return ['Hemisfério', 'perto do Equador: sol quase a pino ao meio-dia'];
+  const most = Math.abs(lat) < 23.44 ? ' na maior parte do ano' : ''; // inside the tropics the sun crosses overhead in summer
+  return lat > 0 ? ['Hemisfério', `norte: ao meio-dia o sol fica ao sul${most}`] : ['Hemisfério', `sul: ao meio-dia o sol fica ao norte${most}`];
 }
 
 function Stat({ label, value, foot, small }: { label: string; value: ReactNode; foot?: ReactNode; small?: boolean }) {
