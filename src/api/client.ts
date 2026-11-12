@@ -54,5 +54,15 @@ export function createClient(baseUrl: string, timeoutMs?: number): AtlasApi {
       if (limit) p.set('limit', String(limit));
       return get(`/v1/countries/${q(iso2)}/people${p.size ? `?${p}` : ''}`, S.PeopleList);
     },
+    profile: (iso2) => get(`/v1/countries/${q(iso2)}/profile`, S.CountryProfile),
+    economy: (iso2) => get(`/v1/countries/${q(iso2)}/economy`, S.CountryEconomy),
+    compareEconomy: (countries, ids) => get(`/v1/economy/compare?countries=${countries.map(q).join(',')}${ids?.length ? `&ids=${ids.map(q).join(',')}` : ''}`, S.EconomyCompare),
+    currency: (code) => get(`/v1/currencies/${q(code)}`, S.CurrencyDetail),
+    currencyHistory: (code, vs, from, to) => {
+      const p = new URLSearchParams({ vs: vs.join(',') });
+      if (from) p.set('from', from);
+      if (to) p.set('to', to);
+      return get(`/v1/currencies/${q(code)}/history?${p}`, S.CurrencyHistory);
+    },
   };
 }

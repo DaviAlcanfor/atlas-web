@@ -55,6 +55,13 @@ export const CountrySummary = z.object({
   has_content: z.boolean(), marker: Marker.nullable(),
   regime_id: NStr.optional(), capital_coords: z.array(CapitalCoord).optional(),
 });
+// v1.2 (optional until production is migrated)
+export const LanguageStatus = z.enum(['official', 'co_official', 'indigenous', 'immigrant', 'sign', 'historical']);
+export const LanguageSpoken = z.object({
+  code: NStr, name: Str, status: LanguageStatus, where: NStr,
+  speakers: z.object({ value: z.number().int(), year: z.number().int().nullable() }).nullable(),
+  family: NStr, endangerment: NStr, wikipedia_url: NStr,
+});
 export const CountryDetail = z.object({
   iso2: Str, polity_id: Str, name: Str, official_name: NStr, capital: NStr, flag_url: NStr, region: NStr, regime: NStr, summary: NStr,
   languages: z.array(z.object({ code: Str, name: Str })),
@@ -67,6 +74,7 @@ export const CountryDetail = z.object({
   sources: z.array(Source),
   updated_at: Str,
   regime_id: NStr.optional(), clues: Clues.nullable().optional(),
+  languages_spoken: z.array(LanguageSpoken).optional(),
 });
 export const SnapshotInfo = z.object({
   year: Year, geometry_url: Str, feature_count: z.number().int(), link_coverage: z.number().min(0).max(1),
@@ -107,3 +115,36 @@ export const Person = z.object({
   image: Image.nullable(), wikipedia_url: NStr, rank: z.number().int(),
 });
 export const PeopleList = z.object({ items: z.array(Person), method: Str, source: Source });
+
+// ---- v1.2 part A (profile, languages, currency, economy). Production serves v1.1 until migrated: every v1.2 field/endpoint is optional for callers. ----
+export const ProfileIndicator = z.object({
+  id: Str, label: Str, unit: Str, value: z.number(), year: z.number().int(), source_id: Str,
+  rank: z.number().int().nullable(), rank_of: z.number().int().nullable(),
+  world: z.object({ min: z.number(), median: z.number(), max: z.number() }).nullable(),
+  region_avg: z.number().nullable(),
+});
+const Share = z.object({ label: Str, share: z.number() });
+export const CountryProfile = z.object({
+  groups: z.array(z.object({ id: z.enum(['life', 'society', 'income', 'environment']), indicators: z.array(ProfileIndicator) })),
+  composition: z.object({ religion: z.array(Share).nullable(), ethnicity: z.array(Share).nullable(), year: z.number().int().nullable(), source_id: NStr }),
+  sources: z.array(Source),
+});
+const Point = z.object({ year: z.number().int(), value: z.number() });
+export const CountryEconomy = z.object({
+  indicators: z.array(z.object({ id: Str, label: Str, unit: Str, value: z.number().nullable(), year: z.number().int().nullable(), source_id: Str, series: z.array(Point) })),
+  sources: z.array(Source),
+});
+export const EconomyCompare = z.object({
+  countries: z.array(Str),
+  indicators: z.array(z.object({ id: Str, label: Str, unit: Str, values: z.record(Str, z.object({ value: z.number(), year: z.number().int() }).nullable()) })),
+  sources: z.array(Source),
+});
+export const CurrencyDetail = z.object({
+  code: Str, name: Str, symbol: NStr, countries: z.array(Str),
+  rates: z.object({ date: Str, base: Str, items: z.array(z.object({ code: Str, rate: z.number() })) }).nullable(),
+  stats: z.object({ change_1y: z.number().nullable(), change_5y: z.number().nullable(), volatility_1y: z.number().nullable(), max_drawdown_1y: z.number().nullable() }).nullable(),
+  sources: z.array(Source),
+});
+export const CurrencyHistory = z.object({
+  base: Str, vs: z.array(Str), items: z.array(z.object({ date: Str, rates: z.record(Str, z.number()) })), source: Source,
+});

@@ -14,6 +14,10 @@ export interface paths {
     /** Get Country */
     get: operations["get_country_v1_countries__iso2__get"];
   };
+  "/v1/countries/{iso2}/economy": {
+    /** Get Economy */
+    get: operations["get_economy_v1_countries__iso2__economy_get"];
+  };
   "/v1/countries/{iso2}/leaders": {
     /** List Leaders */
     get: operations["list_leaders_v1_countries__iso2__leaders_get"];
@@ -21,6 +25,22 @@ export interface paths {
   "/v1/countries/{iso2}/people": {
     /** List People */
     get: operations["list_people_v1_countries__iso2__people_get"];
+  };
+  "/v1/countries/{iso2}/profile": {
+    /** Get Profile */
+    get: operations["get_profile_v1_countries__iso2__profile_get"];
+  };
+  "/v1/currencies/{code}": {
+    /** Get Currency */
+    get: operations["get_currency_v1_currencies__code__get"];
+  };
+  "/v1/currencies/{code}/history": {
+    /** Currency History */
+    get: operations["currency_history_v1_currencies__code__history_get"];
+  };
+  "/v1/economy/compare": {
+    /** Compare */
+    get: operations["compare_v1_economy_compare_get"];
   };
   "/v1/glossary": {
     /** List Glossary */
@@ -31,7 +51,11 @@ export interface paths {
     get: operations["get_glossary_term_v1_glossary__id__get"];
   };
   "/v1/health": {
-    /** Health */
+    /**
+     * Health
+     * @description Never queues behind a busy pool: if every connection is in use it answers db="error" at
+     * once (the DB may be fine, but this process cannot reach it right now).
+     */
     get: operations["health_v1_health_get"];
   };
   "/v1/meta": {
@@ -90,6 +114,30 @@ export interface components {
       /** Tld */
       tld: string | null;
     };
+    /** CompareIndicator */
+    CompareIndicator: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Unit */
+      unit: string;
+      /** Values */
+      values: {
+        [key: string]: components["schemas"]["YearValue"] | null;
+      };
+    };
+    /** CompositionOut */
+    CompositionOut: {
+      /** Ethnicity */
+      ethnicity: components["schemas"]["Share"][] | null;
+      /** Religion */
+      religion: components["schemas"]["Share"][] | null;
+      /** Source Id */
+      source_id: string | null;
+      /** Year */
+      year: number | null;
+    };
     /** CountryDetail */
     CountryDetail: {
       /** Area Km2 */
@@ -105,6 +153,8 @@ export interface components {
       iso2: string;
       /** Languages */
       languages: components["schemas"]["Language"][];
+      /** Languages Spoken */
+      languages_spoken: components["schemas"]["LanguageSpoken"][];
       /** Memberships */
       memberships: string[];
       /** Name */
@@ -130,10 +180,25 @@ export interface components {
       /** Updated At */
       updated_at: string;
     };
+    /** CountryEconomy */
+    CountryEconomy: {
+      /** Indicators */
+      indicators: components["schemas"]["EconomyIndicator"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
     /** CountryList */
     CountryList: {
       /** Items */
       items: components["schemas"]["CountrySummary"][];
+    };
+    /** CountryProfile */
+    CountryProfile: {
+      composition: components["schemas"]["CompositionOut"];
+      /** Groups */
+      groups: components["schemas"]["ProfileGroup"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
     };
     /** CountrySummary */
     CountrySummary: {
@@ -174,6 +239,68 @@ export interface components {
       name: string;
       /** Symbol */
       symbol: string | null;
+    };
+    /** CurrencyDetail */
+    CurrencyDetail: {
+      /** Code */
+      code: string;
+      /** Countries */
+      countries: string[];
+      /** Name */
+      name: string;
+      rates: components["schemas"]["Rates"] | null;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      stats: components["schemas"]["CurrencyStats"] | null;
+      /** Symbol */
+      symbol: string | null;
+    };
+    /** CurrencyHistory */
+    CurrencyHistory: {
+      /** Base */
+      base: string;
+      /** Items */
+      items: components["schemas"]["HistoryItem"][];
+      source: components["schemas"]["Source"];
+      /** Vs */
+      vs: string[];
+    };
+    /** CurrencyStats */
+    CurrencyStats: {
+      /** Change 1Y */
+      change_1y: number | null;
+      /** Change 5Y */
+      change_5y: number | null;
+      /** Max Drawdown 1Y */
+      max_drawdown_1y: number | null;
+      /** Volatility 1Y */
+      volatility_1y: number | null;
+    };
+    /** EconomyCompare */
+    EconomyCompare: {
+      /** Countries */
+      countries: string[];
+      /** Indicators */
+      indicators: components["schemas"]["CompareIndicator"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
+    /** EconomyIndicator */
+    EconomyIndicator: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Series */
+      series: components["schemas"]["Point"][];
+      /** Source Id */
+      source_id: string;
+      /** Unit */
+      unit: string;
+      /** Value */
+      value: number | null;
+      /** Year */
+      year: number | null;
     };
     /** Event */
     Event: {
@@ -240,6 +367,15 @@ export interface components {
        */
       status: "ok";
     };
+    /** HistoryItem */
+    HistoryItem: {
+      /** Date */
+      date: string;
+      /** Rates */
+      rates: {
+        [key: string]: number;
+      };
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -260,6 +396,27 @@ export interface components {
       code: string;
       /** Name */
       name: string;
+    };
+    /** LanguageSpoken */
+    LanguageSpoken: {
+      /** Code */
+      code: string | null;
+      /** Endangerment */
+      endangerment: string | null;
+      /** Family */
+      family: string | null;
+      /** Name */
+      name: string;
+      speakers: components["schemas"]["Speakers"] | null;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: "official" | "co_official" | "indigenous" | "immigrant" | "sign" | "historical";
+      /** Where */
+      where: string | null;
+      /** Wikipedia Url */
+      wikipedia_url: string | null;
     };
     /** Leader */
     Leader: {
@@ -367,6 +524,13 @@ export interface components {
       method: string;
       source: components["schemas"]["Source"];
     };
+    /** Point */
+    Point: {
+      /** Value */
+      value: number;
+      /** Year */
+      year: number;
+    };
     /** Politics */
     Politics: {
       /** Note */
@@ -455,6 +619,54 @@ export interface components {
       /** Year */
       year: number | null;
     };
+    /** ProfileGroup */
+    ProfileGroup: {
+      /**
+       * Id
+       * @enum {string}
+       */
+      id: "life" | "society" | "income" | "environment";
+      /** Indicators */
+      indicators: components["schemas"]["ProfileIndicator"][];
+    };
+    /** ProfileIndicator */
+    ProfileIndicator: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Rank */
+      rank: number | null;
+      /** Rank Of */
+      rank_of: number | null;
+      /** Region Avg */
+      region_avg: number | null;
+      /** Source Id */
+      source_id: string;
+      /** Unit */
+      unit: string;
+      /** Value */
+      value: number;
+      world: components["schemas"]["WorldStats"] | null;
+      /** Year */
+      year: number;
+    };
+    /** RateItem */
+    RateItem: {
+      /** Code */
+      code: string;
+      /** Rate */
+      rate: number;
+    };
+    /** Rates */
+    Rates: {
+      /** Base */
+      base: string;
+      /** Date */
+      date: string;
+      /** Items */
+      items: components["schemas"]["RateItem"][];
+    };
     /** SearchItem */
     SearchItem: {
       /** End Year */
@@ -477,6 +689,13 @@ export interface components {
     SearchResults: {
       /** Items */
       items: components["schemas"]["SearchItem"][];
+    };
+    /** Share */
+    Share: {
+      /** Label */
+      label: string;
+      /** Share */
+      share: number;
     };
     /** SnapshotInfo */
     SnapshotInfo: {
@@ -534,6 +753,13 @@ export interface components {
       /** Url */
       url: string | null;
     };
+    /** Speakers */
+    Speakers: {
+      /** Value */
+      value: number;
+      /** Year */
+      year: number | null;
+    };
     /** ValidationError */
     ValidationError: {
       /** Context */
@@ -553,6 +779,22 @@ export interface components {
       title: string;
       /** Url */
       url: string;
+    };
+    /** WorldStats */
+    WorldStats: {
+      /** Max */
+      max: number;
+      /** Median */
+      median: number;
+      /** Min */
+      min: number;
+    };
+    /** YearValue */
+    YearValue: {
+      /** Value */
+      value: number;
+      /** Year */
+      year: number;
     };
   };
   responses: never;
@@ -591,6 +833,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["CountryDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Economy */
+  get_economy_v1_countries__iso2__economy_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryEconomy"];
         };
       };
       /** @description Validation Error */
@@ -652,6 +916,103 @@ export interface operations {
       };
     };
   };
+  /** Get Profile */
+  get_profile_v1_countries__iso2__profile_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryProfile"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Currency */
+  get_currency_v1_currencies__code__get: {
+    parameters: {
+      path: {
+        code: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CurrencyDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Currency History */
+  currency_history_v1_currencies__code__history_get: {
+    parameters: {
+      query?: {
+        /** @description up to 4 ISO 4217 codes, comma-separated */
+        vs?: string | null;
+        from?: string | null;
+        to?: string | null;
+      };
+      path: {
+        code: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CurrencyHistory"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Compare */
+  compare_v1_economy_compare_get: {
+    parameters: {
+      query: {
+        /** @description 2 to 5 ISO2 codes, comma-separated */
+        countries: string;
+        /** @description indicator ids, comma-separated; default all */
+        ids?: string | null;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["EconomyCompare"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** List Glossary */
   list_glossary_v1_glossary_get: {
     responses: {
@@ -685,7 +1046,11 @@ export interface operations {
       };
     };
   };
-  /** Health */
+  /**
+   * Health
+   * @description Never queues behind a busy pool: if every connection is in use it answers db="error" at
+   * once (the DB may be fine, but this process cannot reach it right now).
+   */
   health_v1_health_get: {
     responses: {
       /** @description Successful Response */
