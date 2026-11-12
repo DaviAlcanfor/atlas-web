@@ -11,7 +11,7 @@ describe('profile helpers', () => {
   });
   it('formats units', () => {
     expect(formatIndicator({ id: 'x', unit: '% da população', value: 88.1773 })).toEqual({ text: '88,2%', note: 'da população' });
-    expect(formatIndicator({ id: 'HDR.HDI', unit: 'índice', value: 0.76 }).text).toBe('0,760');
+    expect(formatIndicator({ id: 'HDR.HDI', unit: '0-1', value: 0.76 }).text).toBe('0,760');
     expect(formatIndicator({ id: 'NY.GDP.PCAP.PP.CD', unit: 'US$ internacionais correntes', value: 23433.3 }).text).toBe('US$ 23.433');
   });
   it('ruler position is clamped', () => {
@@ -41,7 +41,7 @@ describe('currency helpers', () => {
     expect(signedPct(null)).toBeNull();
   });
   it('base 100 at the first available date, no interpolation', () => {
-    const items = [
+    const items: { date: string; rates: Record<string, number> }[] = [
       { date: '2025-01-01', rates: { USD: 0.2, EUR: 0.1 } },
       { date: '2025-01-02', rates: { USD: 0.1 } }, // EUR missing: no point
       { date: '2025-01-03', rates: { USD: 0.3, EUR: 0.2 } },

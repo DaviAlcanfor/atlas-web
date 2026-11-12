@@ -28,7 +28,7 @@ export function formatIndicator(i: Pick<ProfileIndicator, 'id' | 'unit' | 'value
   const u = i.unit.trim();
   if (u.startsWith('%')) return { text: `${n}%`, note: u.slice(1).replace(/^[\s(]+|[)\s]+$/g, '') };
   if (u.startsWith('US$')) return { text: `US$ ${n}`, note: '' };
-  if (!u || u === 'índice') return { text: n, note: '' };
+  if (!u || /^0-\d+$/.test(u)) return { text: n, note: '' };
   return { text: n, note: u };
 }
 

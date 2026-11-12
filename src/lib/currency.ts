@@ -104,3 +104,8 @@ export function fmtEconomy(unit: string, v: number): string {
   if (u.startsWith('US$')) return `US$ ${n}`;
   return n;
 }
+
+/** `from` sent to the API: "máx" = 29 years back (the API accepts up to 30; older ECB data is not needed for a chart). */
+export function apiFrom(to: string, range: '1a' | '5a' | 'max'): string {
+  return windowFrom(to, range) ?? (() => { const d = new Date(`${to}T00:00:00Z`); d.setUTCFullYear(d.getUTCFullYear() - 29); return d.toISOString().slice(0, 10); })();
+}
