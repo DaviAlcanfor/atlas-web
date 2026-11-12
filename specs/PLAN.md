@@ -18,13 +18,13 @@ fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr,
    travava (duas execuções da manhã ficaram 8 h paradas; foram encerradas) e foi relançado às 17:01. Conferir se gerou
    `data_out/languages.json`; se travar de novo, investigar `_cached` em `etl/wikidata/languages.py` (provável espera de limite de taxa
    do Wikidata sem teto). Depois: `-m atlas_api.cli import-facts` no banco local, conferir BR (Nheengatu, Guarani, Libras, Hunsrik,
-   Talian), regerar amostras com `scratchpad/samples_v12a.py` e trocar o mock feito à mão `geo/src/api/mocks/languages.ts` pelos dados reais.
+   Talian), regerar amostras com `atlas-api/scripts/samples_v12a.py <saida.json>` e trocar o mock feito à mão `geo/src/api/mocks/languages.ts` pelos dados reais.
 2. **atlas-api, branch `feat/v1.2-data`**: tem 3 commits (019, 017, 015, 009, CR-003) + 2 arquivos sem commit: `contract/CONTRACT.md`
    (v1.2 parte A já aplicada, idêntica à do web) e `specs/012-historical-series.md` (pesquisa do Cliopatria). Commitar, rodar
    pytest + ruff + mypy, push e abrir PR para `main`. **Não mergear ainda.**
 3. **Ensaiar a migração 0006 → 0010** (0007 capitals, 0008 country_languages, 0009 indicators, 0010 fx) num banco local descartável a partir
    de um worktree da branch do PR, com `alembic upgrade 0010` + `import-content` + `import-facts` (usa `data_out/`: wikidata, worldbank,
-   undp, fx, languages, leaders, pantheon). Gerar um `.ps1` só ASCII como o de 2026-11-12 (ver "Lições").
+   undp, fx, languages, leaders, pantheon). Usar o modelo `atlas-api/scripts/prod-migrate-example.ps1` (worktree `atlas-api-deploy`, `$revision = 0010`).
 4. **Produção** (dono, ou agente se o dono disser "roda você"): rodar o script na produção, **depois** mergear o PR da API (o merge publica).
    Conferir `/v1/countries/BR/profile`, `/v1/countries/BR/economy`, `/v1/currencies/BRL`, `languages_spoken` em `/v1/countries/BR`.
 5. **atlas-web PR #7** (front v1.2: "Como vive o povo", `/moeda/[code]`, idiomas por status): pode ser mergeado a qualquer momento
