@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ApiError, ContractError, createClient } from '../src/api/client';
 import { createMockApi } from '../src/api/mocks/adapter';
@@ -79,5 +79,21 @@ describe('CountryPanel', () => {
     render(<CountryPanel iso2="AT" name="Austria" inApi wide={false} onToggleWide={() => {}} onClose={() => {}} />);
     expect(await screen.findByText(/Não verificado/)).toBeTruthy();
     expect(screen.getAllByText('sem fonte').length).toBe(5);
+  });
+});
+
+describe('Timeline (spec 001)', () => {
+  const e = (id: string, kind: 'war' | 'treaty', year_end: number | null, summary: string) =>
+    ({ id, year_start: 1914, year_end, precision: 'exact' as const, title: id, summary, kind, source_ids: ['s'] });
+  it('shows a legend for 2+ kinds, marks ranges and collapses long summaries', async () => {
+    const { Timeline } = await import('../src/components/CountryPanel');
+    const { container } = render(<Timeline sources={[]} events={[e('a', 'war', 1918, 'x'.repeat(300)), e('b', 'treaty', null, 'short')]} />);
+    expect(screen.getByLabelText('Legenda das cores').querySelectorAll('li').length).toBe(2);
+    expect(container.querySelectorAll('li.is-span').length).toBe(1);
+    const more = screen.getByRole('button', { name: 'ler mais' });
+    expect(container.querySelector('.clamp')).toBeTruthy();
+    fireEvent.click(more);
+    expect(more.getAttribute('aria-expanded')).toBe('true');
+    expect(container.querySelector('.clamp')).toBeNull();
   });
 });

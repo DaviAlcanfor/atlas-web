@@ -21,6 +21,6 @@ export function formatYear(year: number, precision: Precision = 'exact'): string
   }
 }
 
-/** "1815 – 1914" style range; end null = ongoing. */
+/** "1815 - 1914" style range; end null = ongoing. */
 export const formatRange = (start: number, end: number | null, sp: Precision = 'exact', ep: Precision = 'exact') =>
-  `${formatYear(start, sp)} – ${end === null ? 'presente' : formatYear(end, ep)}`;
+  `${formatYear(start, sp)} - ${end === null ? 'presente' : formatYear(end, ep)}`;

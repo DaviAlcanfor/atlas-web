@@ -1,16 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
-import { createHatchMaterial, createOceanMaterial, createSolidMaterial } from '../lib/hatchMaterial';
+import { createDotMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
 import { palette } from '../lib/palette';
+import { api } from '../api';
+import { createFlagMaterial, FLAG_MIX, flagBox, flagPngUrl, largestPolygon, loadFlag } from '../lib/flagMaterial';
 import { drawStars } from '../lib/stars';
-import { geoBounds, geoContains } from 'd3-geo';
-import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments } from 'three';
+import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
+import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D } from 'three';
 import { regimeColors } from '../lib/regimes';
+import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
 const ALT_BASE = 0.004;
 const ALT_SELECTED = 0.015;
 const ALT_LINE = 0.0042;
+const ALT_ADMIN1 = ALT_SELECTED + 0.0003; // on the raised selected cap, under its outline
 const MIN_ALTITUDE = 0.15;
 const START = { lat: 35, lng: -15, altitude: 0.92 }; // spec said altitude ~1.8; reference screenshot 2 measures ~0.92
 
@@ -19,12 +23,43 @@ interface PathDatum {
 }
 
 const GLOBE_RADIUS = 100; // three-globe constant
+const INTRO_MS = 600;
+
+// Dot looks per state (radius = fraction of the spacing). One material per state, shared by every country in it.
+const DOTS = {
+  dim: { color: palette.iceDim, radius: 0.24 }, // no content
+  content: { color: palette.ice, radius: 0.3 },
+  hoverDim: { color: palette.iceBright, radius: 0.26 },
+  hover: { color: palette.iceBright, radius: 0.32 },
+  selected: { color: palette.iceBright, radius: 0.3, spacing: DOT_SPACING * 0.7 }, // denser + brighter (/2 goes sub-pixel at the default zoom)
+  selectedDim: { color: palette.ice, radius: 0.28, spacing: DOT_SPACING * 0.7 },
+};
+
+/** Line color token -> three material params (three's Color ignores the alpha of rgba()). */
+function lineParams(c: string) {
+  const m = /^rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)$/.exec(c);
+  const opacity = m ? Number(m[4]) : 1;
+  return { color: m ? `rgb(${m[1]}, ${m[2]}, ${m[3]})` : c, opacity, transparent: opacity < 1, depthWrite: opacity === 1 };
+}
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ');
+const SIGNAL_RGB = rgb(palette.signal);
+const ringColor = () => (t: number) => `rgba(${SIGNAL_RGB}, ${1 - t * t})`;
+interface RingDatum {
+  lat: number;
+  lng: number;
+  r: number; // pulse max radius, degrees: past the border, where red reads on dark land
+  n: number;
+}
+// 3 pulses, then stop: three-globe asks for the period once per emitted ring; <= 0 = no more rings.
+const ringPeriod = (d: object) => (++(d as RingDatum).n < 3 ? 1100 : 0);
+const ringRadius = (d: object) => (d as RingDatum).r;
+const ringSpeed = (d: object) => (d as RingDatum).r / 1.6; // each pulse takes 1.6 s
 
 // One merged LineSegments per line set = 1 draw call (the paths layer makes 1 object per line: ~1500, too slow).
 // raycast is disabled: hover is handled by the polygons, and raycasting 100k line points per pointer move was costly.
-function buildLines(paths: number[][][], color: string): LineSegments {
+function buildLines(paths: number[][][], color: string, alt = ALT_LINE): LineSegments {
   const pos: number[] = [];
-  const r = GLOBE_RADIUS * (1 + ALT_LINE);
+  const r = GLOBE_RADIUS * (1 + alt);
   const xyz = (lng: number, lat: number) => {
     const phi = ((90 - lat) * Math.PI) / 180;
     const theta = ((90 - lng) * Math.PI) / 180;
@@ -37,7 +72,7 @@ function buildLines(paths: number[][][], color: string): LineSegments {
   }
   const geo = new BufferGeometry();
   geo.setAttribute('position', new Float32BufferAttribute(pos, 3));
-  const mesh = new LineSegments(geo, new LineBasicMaterial({ color }));
+  const mesh = new LineSegments(geo, new LineBasicMaterial(lineParams(color)));
   mesh.raycast = () => {};
   return mesh;
 }
@@ -46,13 +81,51 @@ interface Props {
   features: CountryFeature[];
   lines: Lines;
   contentIds: Set<string>;
+  apiIds: Set<string>; // countries the API knows (only these are asked for a flag)
   layer: LayerId;
   regimes: Map<string, string>; // iso2 -> regime text (only countries where the API has one)
   hoveredId: string | null;
   selectedId: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string | null) => void;
+  onHoverState?: (name: string | null) => void; // state/province under the pointer, inside the selected country (spec 005)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
+}
+
+interface Admin1 {
+  id: string; // country the data belongs to
+  states: Feature<Geometry, { name: string }>[];
+  bounds: ReturnType<typeof geoBounds>[];
+  line: LineSegments | null;
+}
+
+/** bbox-filtered point-in-polygon; bounds[i] = geoBounds(items[i]). */
+function findIn<T extends Feature>(items: T[], bounds: ReturnType<typeof geoBounds>[], pt: [number, number]): T | undefined {
+  return items.find((f, i) => {
+    const [[w, s], [e, n]] = bounds[i]!;
+    const inLng = w! <= e! ? pt[0] >= w! && pt[0] <= e! : pt[0] >= w! || pt[0] <= e!; // w > e = crosses antimeridian
+    return inLng && pt[1] >= s! && pt[1] <= n! && geoContains(f, pt);
+  });
+}
+
+// module-level accessors: three-globe re-digests a layer whenever an accessor prop changes identity
+const markerLat = (d: object) => (d as CountryFeature).properties.lat;
+const markerLng = (d: object) => (d as CountryFeature).properties.lng;
+const pathLat = (p: unknown) => (p as number[])[1]!;
+const pathLng = (p: unknown) => (p as number[])[0]!;
+const pathAlt = (p: unknown) => (p as number[])[2]!;
+const pathColor = () => palette.iceBright;
+const noSide = () => '';
+const asObject = (d: object) => d as Object3D;
+const noop = () => {};
+
+/** 10° graticule sampled every 1° (d3's geoGraticule draws meridians as 90° chords, which cut through the globe). */
+function graticule10(): number[][][] {
+  const deg = (a: number, b: number, step: number) => Array.from({ length: Math.round((b - a) / step) + 1 }, (_, i) => a + i * step);
+  return [
+    ...deg(-180, 170, 10).map((lng) => deg(-80, 80, 1).map((lat) => [lng, lat])),
+    ...deg(-80, 80, 10).map((lat) => deg(-180, 180, 1).map((lng) => [lng, lat])),
+  ];
 }
 
 const setMarkerVisible = (el: object, visible: boolean) => {
@@ -60,7 +133,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, selectedId, onHover, onSelect, onReady: onReadyProp }: Props) {
+export function Globe({ features, lines, contentIds, apiIds, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, onReady: onReadyProp }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -77,17 +150,57 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     if (stars.current) drawStars(stars.current, size.w, size.h);
   }, [size]);
 
+  const shared = useMemo<DotShared>(() => ({ intro: { value: 0 }, zoom: { value: 1 } }), []); // uniforms shared by every land material
   const mats = useMemo(
     () => ({
       ocean: createOceanMaterial(),
-      hatch: createHatchMaterial(palette.landBase),
-      hatchHover: createHatchMaterial(palette.landHover),
-      content: createSolidMaterial(palette.cream),
-      hover: createSolidMaterial(palette.creamHover),
-      selected: createSolidMaterial(palette.creamSelected),
+      dim: createDotMaterial(DOTS.dim, shared),
+      content: createDotMaterial(DOTS.content, shared),
+      hoverDim: createDotMaterial(DOTS.hoverDim, shared),
+      hover: createDotMaterial(DOTS.hover, shared),
+      selected: createDotMaterial(DOTS.selected, shared),
+      selectedDim: createDotMaterial(DOTS.selectedDim, shared),
+      flag: createFlagMaterial(DOTS.selected, shared),
     }),
-    [],
+    [shared],
   );
+  const graticule = useMemo(() => buildLines(graticule10(), palette.grid), []);
+
+  // Flag backdrop (spec 002): the selected country's flag, blended over its largest polygon. Any failure = no flag.
+  const [flagId, setFlagId] = useState<string | null>(null); // country whose flag mats.flag currently holds
+  useEffect(() => {
+    setFlagId(null);
+    const f = features.find((x) => idOf(x) === selectedId);
+    const box = f && flagBox(f.geometry);
+    if (!selectedId || !box || !apiIds.has(selectedId)) return;
+    let live = true;
+    let raf = 0;
+    api
+      .country(selectedId)
+      .then((d) => {
+        const url = flagPngUrl(d.flag_url);
+        return url ? loadFlag(url) : null;
+      })
+      .then((tex) => {
+        if (!live || !tex) return;
+        const u = mats.flag.uniforms;
+        u.uFlag!.value = tex;
+        u.uBox!.value = box;
+        const t0 = performance.now();
+        const fade = () => {
+          const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / 300);
+          u.uMix!.value = FLAG_MIX * k;
+          if (k < 1) raf = requestAnimationFrame(fade);
+        };
+        fade();
+        setFlagId(selectedId);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+      cancelAnimationFrame(raf);
+    };
+  }, [selectedId, features, apiIds, mats]);
 
   const select = useCallback(
     (f: CountryFeature | undefined) => {
@@ -133,7 +246,10 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     return () => cleanups.forEach((c) => c());
   }, [markers]);
   const colors = useMemo(() => regimeColors(regimes), [regimes]);
-  const regimeMats = useMemo(() => new Map([...colors].map(([k, c]) => [k, createSolidMaterial(c)])), [colors]);
+  const regimeMats = useMemo(
+    () => new Map([...colors].map(([k, c]) => [k, createDotMaterial({ color: c, radius: DOTS.content.radius }, shared)])),
+    [colors, shared],
+  );
   useEffect(() => {
     markers.forEach((b, id) => {
       const regime = regimes.get(id);
@@ -145,31 +261,80 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     });
   }, [markers, contentIds, layer, regimes, colors, hoveredId, selectedId]);
 
-  const lineObjects = useMemo(() => [buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)], [lines]);
+  // States/provinces of the selected country (spec 005): lazy per-country file; missing file or any error = no internal borders.
+  // Removing the LineSegments from customLayerData makes three-globe dispose its geometry and material.
+  const [admin1, setAdmin1] = useState<Admin1 | null>(null);
+  useEffect(() => {
+    setAdmin1(null);
+    if (!selectedId || !/^[A-Z]{2}$/.test(selectedId)) return;
+    let live = true;
+    fetch(`${import.meta.env.BASE_URL}data/admin1/${selectedId}.geojson`)
+      .then((r) => (r.ok ? (r.json() as Promise<FeatureCollection<Geometry, { name?: string }>>) : null))
+      .then((fc) => {
+        if (!live || !fc) return;
+        const states = fc.features.filter((f): f is Feature<Geometry, { name: string }> => !!f.properties?.name);
+        const borders = fc.features.find((f): f is Feature<MultiLineString, { name?: string }> => f.geometry.type === 'MultiLineString');
+        setAdmin1({
+          id: selectedId,
+          states,
+          bounds: states.map((f) => geoBounds(f)),
+          line: borders ? buildLines(borders.geometry.coordinates, palette.admin1Line, ALT_ADMIN1) : null,
+        });
+      })
+      .catch(() => {}); // e.g. dev server answering index.html for a missing file
+    return () => {
+      live = false;
+    };
+  }, [selectedId]);
+
+  const baseLines = useMemo(
+    () => [graticule, buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)],
+    [lines, graticule],
+  );
+
+  // Selection pulse (spec 013): 3 signal-red rings from the mainland's centroid (FR's centroid is in the Atlantic because of
+  // French Guiana), sized to it. Reduced motion: one static ring.
+  const selectedFeature = useMemo(() => features.find((f) => idOf(f) === selectedId), [features, selectedId]);
+  const ring = useMemo<RingDatum | null>(() => {
+    const main = selectedFeature && largestPolygon(selectedFeature.geometry);
+    if (!main) return null;
+    const eqRadius = (Math.sqrt(geoArea(main) / Math.PI) * 180) / Math.PI; // radius of an equal-area disc, degrees
+    const [lng, lat] = geoCentroid(main);
+    return { lat, lng, r: Math.min(12, Math.max(2, eqRadius * 1.2)), n: 0 };
+  }, [selectedFeature]);
+  const reduced = reducedMotion();
+  const ringsData = useMemo(() => (ring && !reduced ? [ring] : []), [ring, reduced]);
+  const staticRing = useMemo(() => {
+    if (!ring || !reduced) return null;
+    const c = geoCircle().center([ring.lng, ring.lat]).radius(ring.r * 0.6)();
+    return buildLines(c.coordinates, palette.signal, ALT_SELECTED + 0.001);
+  }, [ring, reduced]);
+
+  const lineObjects = useMemo(
+    () => [...baseLines, ...(admin1?.line ? [admin1.line] : []), ...(staticRing ? [staticRing] : [])],
+    [baseLines, admin1, staticRing],
+  );
 
   // Only the selected country's outline uses the (slow, per-object) paths layer, for its thicker stroke.
   const selectedRings = useMemo<PathDatum[]>(() => {
-    const sel = features.find((f) => idOf(f) === selectedId);
-    if (!sel) return [];
-    const g = sel.geometry;
+    if (!selectedFeature) return [];
+    const g = selectedFeature.geometry;
     const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
     return polys.flatMap((p) => p.map((ring) => ({ points: ring.map(([x, y]) => [x!, y!, ALT_SELECTED + 0.0005]) })));
-  }, [features, selectedId]);
+  }, [selectedFeature]);
 
   // Hover/click picking without raycasting the polygon meshes (that cost ~15 ms/frame on an integrated GPU):
   // one cheap raycast against the globe sphere -> lat/lng -> bbox-filtered point-in-polygon.
   const bounds = useMemo(() => features.map((f) => geoBounds(f)), [features]);
+  const pointAt = (clientX: number, clientY: number): [number, number] | undefined => {
+    const rect = wrap.current?.getBoundingClientRect();
+    const hit = rect && globe.current?.toGlobeCoords(clientX - rect.left, clientY - rect.top);
+    return hit ? [hit.lng, hit.lat] : undefined;
+  };
   const pick = useCallback(
     (clientX: number, clientY: number): CountryFeature | undefined => {
-      const rect = wrap.current?.getBoundingClientRect();
-      const hit = rect && globe.current?.toGlobeCoords(clientX - rect.left, clientY - rect.top);
-      if (!hit) return undefined;
-      const pt: [number, number] = [hit.lng, hit.lat];
-      return features.find((f, i) => {
-        const [[w, s], [e, n]] = bounds[i]!;
-        const inLng = w! <= e! ? pt[0] >= w! && pt[0] <= e! : pt[0] >= w! || pt[0] <= e!; // w > e = crosses antimeridian
-        return inLng && pt[1] >= s! && pt[1] <= n! && geoContains(f, pt);
-      });
+      const pt = pointAt(clientX, clientY);
+      return pt && findIn(features, bounds, pt);
     },
     [features, bounds],
   );
@@ -188,8 +353,11 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     const { clientX, clientY } = e;
     cancelAnimationFrame(p.raf);
     p.raf = requestAnimationFrame(() => {
-      const f = pick(clientX, clientY);
+      const pt = pointAt(clientX, clientY);
+      const f = pt && findIn(features, bounds, pt);
       onHover(f ? idOf(f) : null);
+      const st = pt && f && admin1 && admin1.id === idOf(f) ? findIn(admin1.states, admin1.bounds, pt) : undefined;
+      onHoverState?.(st?.properties.name ?? null);
     });
   };
   const onPointerUp = (e: React.PointerEvent) => {
@@ -213,12 +381,29 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
     c.dampingFactor = 0.1;
     c.minDistance = 100 * (1 + MIN_ALTITUDE); // GLOBE_RADIUS is 100 in three-globe
     c.maxDistance = 100 * (1 + 4);
+    // zoom LOD: dot spacing halves per zoom octave so dots keep ~the same size on screen (a whole-globe switch, no seams)
+    const relevel = () => {
+      shared.zoom.value = Math.min(1, 2 ** Math.round(Math.log2(g.pointOfView().altitude / START.altitude)));
+    };
+    c.addEventListener('change', relevel);
+    relevel();
     // programmatic camera moves don't fire 'change' by themselves; update() does, which re-hides far-side markers
     requestAnimationFrame(() => {
       c.update();
       onReadyProp?.();
     });
-  }, [onReadyProp]);
+    // entry: dots light up and the graticule fades in
+    const gratMat = graticule.material as LineBasicMaterial;
+    const gratOpacity = lineParams(palette.grid).opacity;
+    const t0 = performance.now();
+    const step = () => {
+      const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / INTRO_MS);
+      shared.intro.value = 1 - (1 - k) ** 3; // ease-out
+      gratMat.opacity = gratOpacity * k;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    step();
+  }, [onReadyProp, shared, graticule]);
 
   const capMaterial = useCallback(
     (d: object) => {
@@ -226,13 +411,19 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
       const hov = id === hoveredId;
       const regime = regimes.get(id);
       const filled = layer === 'regime' ? !!regime : contentIds.has(id);
-      if (!filled) return hov || id === selectedId ? mats.hatchHover : mats.hatch;
-      if (id === selectedId) return mats.selected;
+      if (id === selectedId && id === flagId) {
+        mats.flag.uniforms.uDot!.value.set(filled ? DOTS.selected.color : DOTS.selectedDim.color);
+        return mats.flag;
+      }
+      if (id === selectedId) return filled ? mats.selected : mats.selectedDim;
+      if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [contentIds, layer, regimes, regimeMats, hoveredId, selectedId, mats],
+    [contentIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats],
   );
+
+  const polygonAltitude = useCallback((d: object) => (idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE), [selectedId]);
 
   return (
     <div
@@ -242,7 +433,10 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-      onPointerLeave={() => onHover(null)}
+      onPointerLeave={() => {
+        onHover(null);
+        onHoverState?.(null);
+      }}
     >
       <canvas ref={stars} className="stars" aria-hidden="true" style={{ width: size.w, height: size.h }} />
       <ReactGlobe
@@ -253,32 +447,39 @@ export function Globe({ features, lines, contentIds, layer, regimes, hoveredId, 
         globeMaterial={mats.ocean}
         showAtmosphere
         atmosphereColor={palette.atmosphere}
-        atmosphereAltitude={0.25}
+        atmosphereAltitude={0.12}
         onGlobeReady={onReady}
         polygonsData={features}
         enablePointerInteraction={false}
         polygonCapMaterial={capMaterial}
-        polygonSideColor={() => ''}
-        polygonAltitude={(d) => (idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE)}
+        polygonSideColor={noSide}
+        polygonAltitude={polygonAltitude}
         polygonsTransitionDuration={0}
         pathsData={selectedRings}
         pathPoints="points"
-        pathPointLat={(p) => (p as number[])[1]!}
-        pathPointLng={(p) => (p as number[])[0]!}
-        pathPointAlt={(p) => (p as number[])[2]!}
-        pathColor={() => palette.creamSelected}
+        pathPointLat={pathLat}
+        pathPointLng={pathLng}
+        pathPointAlt={pathAlt}
+        pathColor={pathColor}
         pathStroke={0.12}
         customLayerData={lineObjects}
-        customThreeObject={(d) => d as LineSegments}
-        customThreeObjectUpdate={() => {}}
+        customThreeObject={asObject}
+        customThreeObjectUpdate={noop}
         pathTransitionDuration={0}
         pathResolution={2}
         htmlElementsData={microFeatures}
-        htmlLat={(d) => (d as CountryFeature).properties.lat}
-        htmlLng={(d) => (d as CountryFeature).properties.lng}
+        htmlLat={markerLat}
+        htmlLng={markerLng}
         htmlAltitude={0.01}
         htmlElement={markerElement}
         htmlElementVisibilityModifier={setMarkerVisible}
+        ringsData={ringsData}
+        ringAltitude={ALT_SELECTED + 0.001}
+        ringColor={ringColor}
+        ringMaxRadius={ringRadius}
+        ringPropagationSpeed={ringSpeed}
+        ringRepeatPeriod={ringPeriod}
+        ringResolution={96}
       />
     </div>
   );
