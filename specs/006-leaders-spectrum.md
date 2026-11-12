@@ -1,5 +1,5 @@
 # 006 — Governantes e espectro político
-Status: draft | Contrato: v1.1 (governantes), v1.2 (espectro) | API: atlas-api/specs/006-leaders-spectrum.md
+Status: in progress (lista feita; espectro depende do contrato v1.2) | Contrato: v1.1 (governantes), v1.2 (espectro) | API: atlas-api/specs/006-leaders-spectrum.md
 
 ## Requisitos
 - Aba/seção "Governantes": chefe de Estado e chefe de governo (uma lista só quando é a mesma pessoa), mais recente primeiro,
@@ -21,5 +21,5 @@ GET /v1/countries/{iso2}/leaders?role= -> { items: Leader[] }
 - Foto: `loading="lazy"`, crédito em `<figcaption>`; `image` null = iniciais.
 
 ## Tarefas
-- [ ] zod + mock; `LeadersList`; governo atual em "Política hoje"
+- [x] zod + mock; seção "Governantes" (`LeadersSection` em `src/components/PeopleSections.tsx`, lógica em `src/lib/leaders.ts` com testes): atuais primeiro (último mandato aberto por cargo, com início conhecido), histórico do mais recente ao mais antigo, 10 + "mostrar mais"; foto com crédito e licença, iniciais sem imagem; governo atual também em "Política hoje"
 - [ ] `SpectrumBar` (após v1.2)

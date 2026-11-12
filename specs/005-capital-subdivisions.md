@@ -1,5 +1,5 @@
 # 005 — Capital no mapa e estados/províncias
-Status: in progress (estados feitos; capital pendente do contrato v1.1) | Contrato: v1.1 (capital) | API: atlas-api/specs/005-capital-coords.md
+Status: done (capital em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 (capital) | API: atlas-api/specs/005-capital-coords.md
 
 ## Requisitos
 - Capital: QUANDO seleciono um país ENTÃO aparece uma estrela na capital com rótulo; com zoom próximo, todas as capitais.
@@ -20,7 +20,7 @@ Status: in progress (estados feitos; capital pendente do contrato v1.1) | Contra
 ## Tarefas
 - [x] estados: baixar admin-1 no `npm run data`, dividir e simplificar; medir tamanhos
 - [x] estados: camada de linhas + hover com nome
-- [ ] capital: zod + mock + camada de estrelas (após contrato v1.1)
+- [x] capital: zod (`capital_coords` opcional) + mock + estrela vermelha (`signal`) com rótulo, `htmlElement` estável no mesmo layer dos micro-estados; só do país selecionado, e não em micro-estados (o marcador já está lá). Várias capitais = várias estrelas. "Com zoom próximo, todas as capitais" fica para depois.
 
 ## Resultado (estados)
 - Licença: Natural Earth, termos em naturalearthdata.com/about/terms-of-use: "All versions of Natural Earth raster + vector map data

@@ -1,7 +1,8 @@
 // MOCK DATA for development without the API. Shapes follow contract/CONTRACT.md v1.0 exactly (validated by tests).
 // Text for AT/BR/DE/EG/JP is the user's own curated content; TR/RU/RS/polities are minimal. No numbers are invented:
 // unknown = null / empty. Snapshots 1815/1914/1945 are FAKE (no geometry file ships with them yet).
-import type { CountryDetail, CountrySummary, Event, PolityDetail, SnapshotInfo, SnapshotLinks, Source } from '../types';
+import v11 from './v11.json';
+import type { CapitalCoord, Clues, CountryDetail, CountrySummary, Event, GlossaryTerm, Leader, People, PolityDetail, SnapshotInfo, SnapshotLinks, Source } from '../types';
 
 const T = '2026-11-10T00:00:00Z';
 export const MOCK_SOURCE: Source = { id: 'mock', title: 'Mock fixture (not real API data)', url: null, license: null, retrieved_at: null };
@@ -19,7 +20,7 @@ const country = (c: Partial<CountryDetail> & Pick<CountryDetail, 'iso2' | 'polit
   timeline: [], sources: [MOCK_SOURCE], updated_at: T, ...c,
 });
 
-export const COUNTRIES: CountryDetail[] = [
+const BASE: CountryDetail[] = [
   country({ iso2: 'AT', polity_id: 'austria', name: 'Áustria', capital: 'Viena', region: 'Europa', regime: 'República parlamentar federal',
     summary: 'País alpino da Europa Central, centro do antigo Império Habsburgo.',
     languages: [{ code: 'de', name: 'Alemão' }], currencies: [{ code: 'EUR', name: 'Euro', symbol: '€' }],
@@ -59,11 +60,40 @@ export const COUNTRIES: CountryDetail[] = [
     timeline: [] }), // deliberately empty: exercises the "no timeline" state
 ];
 
+// ---- v1.1 (glossary, leaders, people, clues, capital coords). BR/JP use real API samples (v11.json); the rest is minimal. ----
+const V11: Record<string, Pick<CountryDetail, 'regime' | 'region' | 'regime_id' | 'clues' | 'memberships'> & { capital_coords: CapitalCoord[] }> = {
+  AT: { regime: 'República parlamentarista', region: 'Europa', regime_id: 'republica-parlamentarista', memberships: ['ONU', 'União Europeia'],
+    clues: { driving_side: 'right', calling_code: '+43', tld: '.at', plate_code: 'A', scripts: ['alfabeto latino'] }, capital_coords: [{ name: 'Viena', lat: 48.2082, lng: 16.3738 }] },
+  BR: { regime: 'República presidencialista', region: 'América do Sul', regime_id: 'republica-presidencialista', memberships: ['ONU'],
+    clues: v11.details.BR.clues as Clues, capital_coords: [{ name: 'Brasília', lat: -15.793888888, lng: -47.882777777 }] },
+  DE: { regime: 'República parlamentarista', region: 'Europa', regime_id: 'republica-parlamentarista', memberships: ['ONU', 'União Europeia'],
+    clues: { driving_side: 'right', calling_code: '+49', tld: '.de', plate_code: 'D', scripts: ['alfabeto latino'] }, capital_coords: [{ name: 'Berlim', lat: 52.52, lng: 13.405 }] },
+  EG: { regime: 'República semipresidencialista', region: 'África', regime_id: 'republica-semipresidencialista', memberships: ['ONU'],
+    clues: { driving_side: 'right', calling_code: '+20', tld: '.eg', plate_code: 'ET', scripts: ['alfabeto árabe'] }, capital_coords: [{ name: 'Cairo', lat: 30.0444, lng: 31.2357 }] },
+  JP: { regime: 'Monarquia constitucional', region: 'Ásia', regime_id: 'monarquia-constitucional', memberships: ['ONU'],
+    clues: v11.details.JP.clues as Clues, capital_coords: [{ name: 'Tóquio', lat: 35.6762, lng: 139.6503 }] },
+  TR: { regime: null, region: 'Ásia', regime_id: null, memberships: ['ONU'], clues: null, capital_coords: [{ name: 'Ancara', lat: 39.9334, lng: 32.8597 }] },
+  RU: { regime: null, region: 'Europa', regime_id: null, memberships: ['ONU'], clues: null, capital_coords: [{ name: 'Moscou', lat: 55.7558, lng: 37.6173 }] },
+  RS: { regime: null, region: 'Europa', regime_id: null, memberships: [], clues: null, capital_coords: [] }, // deliberately bare
+};
+export const COUNTRIES: CountryDetail[] = BASE.map((c) => {
+  const { capital_coords: _c, ...extra } = V11[c.iso2]!;
+  return { ...c, ...extra };
+});
+
+export const GLOSSARY = v11.glossary as GlossaryTerm[];
+/** Only BR and JP have leaders/people in mock mode (real samples); other countries answer [] / 404-like empty. */
+export const LEADERS = v11.leaders as Record<string, Leader[]>;
+export const PEOPLE = v11.people as Record<string, People>;
+
 /** Micro-state with no content, to exercise `marker` and the "no data yet" panel. */
-const MONACO: CountrySummary = { iso2: 'MC', polity_id: 'monaco', name: 'Mônaco', capital: 'Mônaco', region: 'Europa', regime: null, has_content: false, marker: { lat: 43.7384, lng: 7.4246 } };
+const MONACO: CountrySummary = { iso2: 'MC', polity_id: 'monaco', name: 'Mônaco', capital: 'Mônaco', region: 'Europa', regime: null, has_content: false, marker: { lat: 43.7384, lng: 7.4246 }, regime_id: null, capital_coords: [] };
 
 export const COUNTRY_SUMMARIES: CountrySummary[] = [
-  ...COUNTRIES.map((c): CountrySummary => ({ iso2: c.iso2, polity_id: c.polity_id, name: c.name, capital: c.capital, region: c.region, regime: c.regime, has_content: true, marker: null })),
+  ...COUNTRIES.map((c): CountrySummary => ({
+    iso2: c.iso2, polity_id: c.polity_id, name: c.name, capital: c.capital, region: c.region, regime: c.regime, has_content: true, marker: null,
+    regime_id: c.regime_id, capital_coords: V11[c.iso2]!.capital_coords,
+  })),
   MONACO,
 ];
 
