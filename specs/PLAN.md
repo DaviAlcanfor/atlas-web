@@ -13,6 +13,17 @@ API v1.1 (glossário, regime de 153 países, governantes, pessoas, pistas, capit
 Next.js (`/pais/[iso2]`, `/glossario`), bandeira do país, estados, timeline, ícones, camada Bandeiras, polimento 021 (estados com botão,
 fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr, carregamento com %, painel 540 px).
 
+### URGENTE (2026-11-12, noite): produção da API com 503
+O PR #5 da API (v1.2) foi mergeado às 20:29 sem a migração 0007-0010: `/v1/countries*` responde 503 ("relation capitals does not exist"),
+`/v1/health` diz ok. Ensaio feito (0006 -> 0010 + imports, todos os endpoints 200). O dono roda, da pasta `atlas`:
+`powershell -ExecutionPolicy Bypass -File .ix-prod-0010.ps1` (worktree `atlas-api-deploy` em `origin/main` já criado, `data_out` copiado).
+Os passos 2-5 abaixo ficaram para trás (o merge já aconteceu); sobra o 1 (idiomas) e o 6.
+
+### Rodada 023 (2026-11-12, noite): web, branch `feat/polish-2`
+Feito: spec [023](023-polish-round-2.md). Rascunhos para aprovação: [024 estados](024-subdivisions-data.md), [025 chatbot](025-chatbot.md).
+Backlog novo: **B15** pistas de GeoGuessr ricas (postes, placas, câmeras, faixas): Plonk It é conteúdo protegido; achar fonte aberta
+ou curar à mão com citação. **016** (resumo corrido da história) segue como próximo item de conteúdo da API.
+
 ### Pronto, mas ainda não no ar (fazer nesta ordem)
 1. **Idiomas reais (spec 017)**: o ETL `python -m etl wikidata-languages` (pasta `atlas-api`, `PYTHONPATH=src`, `.venv/Scripts/python.exe`)
    travava (duas execuções da manhã ficaram 8 h paradas; foram encerradas) e foi relançado às 17:01. Conferir se gerou
@@ -43,7 +54,6 @@ fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr,
   radar aéreo/satélites, tecnologia/chips, grafo "quem produz o quê".
 
 ### Pequenos pendentes
-- Readout do topo mostra nome em inglês ("Brazil", "Estado em Brazil"): usar o nome pt-BR da API.
 - Revisão humana: `atlas-api/content/glossary.yaml`, `regimes.yaml`, textos de `geo/src/lib/explanations.ts` (17 de ~22 escritos pelo agente).
 - Favoritos de moedas salvos no navegador (B3) não feitos.
 

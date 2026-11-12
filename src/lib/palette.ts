@@ -18,8 +18,7 @@ export const palette = {
   grid: 'rgba(110, 200, 214, 0.10)', // graticule
   border: 'rgba(130, 222, 233, 0.62)', // country borders (spec 021: readable over ocean, dots and flags)
   coast: 'rgba(130, 222, 233, 0.78)',
-  admin1Line: 'rgba(3, 9, 16, 0.92)', // internal borders: dark stroke...
-  admin1Light: 'rgba(214, 246, 248, 0.7)', // ...plus a light one beside it, so they read on any background
+  admin1Line: 'rgba(214, 246, 248, 0.42)', // internal borders: one thin translucent light stroke (spec 023)
   line: 'rgba(143, 219, 227, 0.16)', // UI hairlines
   lineStrong: 'rgba(143, 219, 227, 0.42)',
   // text

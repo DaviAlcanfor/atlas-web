@@ -9,6 +9,7 @@ import { formatYear } from '../lib/years';
 import { Section } from './Section';
 
 const PAGE = 10;
+const LEADERS_SHOWN = 3; // spec 023: only the latest predecessors; the rest is one click away
 
 /** One person: photo (with the credit + licence the contract requires) or initials, name, free-form lines, Wikipedia link. */
 function PersonRow({ name, image, wiki, lines }: { name: string; image: Image | null; wiki: string | null; lines: (string | null | undefined)[] }) {
@@ -52,12 +53,12 @@ export function CurrentLeaders({ items }: { items: Leader[] }) {
   );
 }
 
-/** Spec 006 (list only): current head(s) first, then history newest first, 10 at a time. Nothing to show = no section. */
+/** Spec 006 (list only): current head(s) first, then the 3 latest predecessors; the rest expands. Nothing to show = no section. */
 export function LeadersSection({ items }: { items: Leader[] }) {
   const [all, setAll] = useState(false);
   if (!items.length) return null;
   const { current, history } = splitLeaders(items);
-  const shown = all ? history : history.slice(0, PAGE);
+  const shown = all ? history : history.slice(0, LEADERS_SHOWN);
   return (
     <Section title="Governantes">
       {current.length > 0 && (
@@ -70,8 +71,10 @@ export function LeadersSection({ items }: { items: Leader[] }) {
         <>
           <p className="sub">Histórico</p>
           <ul className="plist">{shown.map((l, i) => <LeaderRow key={`${l.person_id}-${l.role}-${l.start ?? i}`} l={l} />)}</ul>
-          {history.length > PAGE && (
-            <button className="more-btn" aria-expanded={all} onClick={() => setAll(!all)}>{all ? 'mostrar menos' : `mostrar mais (${history.length - PAGE})`}</button>
+          {history.length > LEADERS_SHOWN && (
+            <button className="more-btn" aria-expanded={all} onClick={() => setAll(!all)}>
+              {all ? 'mostrar menos' : `ver todos os anteriores (+${history.length - LEADERS_SHOWN})`}
+            </button>
           )}
         </>
       )}
