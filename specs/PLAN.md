@@ -99,6 +99,27 @@ Aplicar no início desta fase o contrato v1.2 com os deltas de 009, 015, 016, 01
 | Resumo por IA de cada parte (política, economia, sociedade): gerado no ETL só a partir dos dados da API, com rótulo "gerado por IA" e fontes; "maioria de direita/esquerda" só com dado de espectro (006 v1.2); exportações via WDI (TX.VAL.FUEL.ZS.UN etc.). O executor carrega a skill `claude-api` antes de escolher modelo/SDK | API 022 (a escrever) + web | Opus | a fazer |
 | História em texto corrido por período (condensada do artigo "História de X" da Wikipedia, CC BY-SA, com citação), marcos como apoio | API/web 016 (ampliar) | Opus | a fazer |
 
+## Backlog - pedidos de 2026-11-12 (terceira rodada), ainda sem spec
+Fontes são hipóteses: ler termos e licença antes de qualquer código (regra do AGENTS.md da API). Itens que só ampliam uma spec existente
+estão marcados com ela.
+
+| # | Pedido | Fonte provável | Nota / spec |
+|---|---|---|---|
+| B1 | Economia: PIB e **o que o país produz** | WDI (PIB, setores NV.AGR/NV.IND/NV.SRV % do PIB), BACI/CEPII (comércio por produto, base do OEC; checar licença), UN Comtrade (API com chave e limites), FAOSTAT (produção agrícola, CC BY 4.0) | amplia 009 |
+| B2 | Bolsa de cada país (estado atual do índice principal: Ibovespa, S&P 500, Nikkei...) | Yahoo Finance **não tem API oficial** (bibliotecas raspam e violam os termos). Candidatas: Stooq (CSV grátis), Alpha Vantage (chave, 25 req/dia), Twelve Data, Financial Modeling Prep. Cotação com atraso, rotulada | nova spec; job diário |
+| B3 | Câmbio personalizável | Já na 009 (até 4 moedas, base 100); acrescentar troca da moeda base e favoritos salvos no navegador | amplia 009 |
+| B4 | Quem faz parte de UE, BRICS, G7, G20, OTAN, Mercosul, OPEP, ASEAN, UA... | O P463 do Wikidata só é completo para a ONU: lista curada `content/organizations.yaml` com membros e datas de entrada/saída (fonte por organização: sites oficiais/Wikipedia). Camada no globo por organização | amplia 004 (glossário) |
+| B5 | Música: **divas pop** do país | Wikidata: pessoas P21 feminino, ocupação cantora, gênero P136 pop, P27 país, ordenadas por sitelinks; cruzar com Pantheon | amplia 010 e 007 |
+| B6 | Geopolítica do mundo + **vídeos do Prof. Ricardo Marcílio** | YouTube Data API (lista de uploads do canal; achar o channel id), embed com facade (spec 011); ligar vídeo a países por título + Jev (spec 008). Só link/embed, nunca baixar | amplia 008/011 |
+| B7 | **Prêmios Nobel** por país | Nobel Prize API v2.1 (api.nobelprize.org; dados abertos, conferir licença): laureados por país de nascimento/afiliação | nova spec, seção do painel |
+| B8 | Melhores esportes do país | Medalhas olímpicas por esporte (Wikidata/Olympedia; checar licença), ranking FIFA; "esportes em que o país mais ganha" | nova spec |
+| B9 | História da bandeira | Wikidata P41 com qualificadores de data (bandeiras históricas) + Commons; liga com P7 (bandeira da época) | amplia 002/012 |
+| B10 | IDH, natalidade, crescimento | IDH (UNDP), SP.DYN.CBRT.IN (natalidade), SP.POP.GROW (crescimento populacional), NY.GDP.MKTP.KD.ZG | amplia 015 |
+| B11 | "Acontecendo agora" (atualidades) | Feed de 008 + Wikipedia Current events + eventos naturais (USGS terremotos, domínio público; NASA EONET) como pontos pulsando no globo | amplia 008 |
+| B12 | Radar aéreo, satélites | Aviões: OpenSky Network API (grátis para uso não comercial, limites; ler termos). Satélites: CelesTrak (TLE) + `satellite.js` para posição no globo (camada de objetos do react-globe.gl) | nova spec, camada do globo |
+| B13 | Tecnologia e indústria: aeronáutica, chips, memória RAM, o que produz em tecnologia | Comércio por código HS (BACI/Comtrade): 8542 circuitos integrados, 8471 computadores, 8802/8803 aeronaves e partes; WDI TX.VAL.TECH.MF.ZS (alta tecnologia % das exportações) | nova spec, junto de B1 |
+| B14 | **Grafo** "quem produz o quê" (comida, chips, petróleo...) e quem vende para quem | BACI/FAOSTAT: grafo produto ↔ países; no globo como arcos (arcsData) do exportador ao importador; página com grafo de força | nova spec, depende de B1/B13 |
+
 ## P6 - Extras
 010 música (Wikidata P495 + Last.fm, ler termos), 011 vídeos (curadoria manual), 003 parte 1 (rever falsos negativos do Plonk It: ex. Peru).
 
