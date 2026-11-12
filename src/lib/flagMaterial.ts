@@ -5,17 +5,6 @@ import { DOT_GLSL, DOT_VERT, dotUniforms, type DotOpts, type DotShared } from '.
 
 export const FLAG_MIX = 0.6;
 
-/** flagcdn SVG URL from the API -> its PNG variant (WebGL can't sample SVG). Anything else -> null (no flag). */
-export function flagPngUrl(flagUrl: string | null | undefined): string | null {
-  try {
-    const u = new URL(flagUrl ?? '');
-    const code = /^\/(?:w\d+\/)?([a-z]{2}(?:-[a-z0-9]+)?)\.(?:svg|png)$/.exec(u.pathname)?.[1];
-    return u.protocol === 'https:' && u.hostname === 'flagcdn.com' && code ? `https://flagcdn.com/w640/${code}.png` : null;
-  } catch {
-    return null;
-  }
-}
-
 /** The polygon with the largest area (the mainland), or undefined for non-polygon geometry. */
 export function largestPolygon(g: Geometry): Polygon | undefined {
   const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];

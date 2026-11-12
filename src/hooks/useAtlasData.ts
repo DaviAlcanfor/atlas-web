@@ -15,14 +15,18 @@ interface Data {
   glossary: GlossaryTerm[];
 }
 
-/** Static geometry (public/data) + the country list from the API ("has content", micro-state markers, regime). */
-export function useAtlasData() {
+/**
+ * Static geometry (public/data) + the country list from the API ("has content", micro-state markers, regime).
+ * `enabled = false` (pages without the globe, e.g. /glossario opened directly) loads nothing until it turns true.
+ */
+export function useAtlasData(enabled = true) {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
 
   useEffect(() => {
-    const base = import.meta.env.BASE_URL + 'data/';
+    if (!enabled) return;
+    const base = '/data/'; // public/data/
     const get = (f: string) =>
       fetch(base + f).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${f}: HTTP ${r.status}`))));
     // The API being down must not take the map with it: geometry is static, so show the globe (all hatched) plus a banner.
@@ -32,7 +36,7 @@ export function useAtlasData() {
     Promise.all([get('modern.geojson'), get('lines.json'), countries, glossary])
       .then(([geo, lines, list, terms]) => setData({ ...mergeCountries(geo.features, list), lines, glossary: terms }))
       .catch((e: Error) => setError(e.message));
-  }, []);
+  }, [enabled]);
 
   return { data, error, apiError };
 }

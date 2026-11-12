@@ -4,7 +4,8 @@ import { createDotMaterial, createOceanMaterial, DOT_SPACING, type DotShared } f
 import { palette } from '../lib/palette';
 import { api } from '../api';
 import type { CapitalCoord } from '../api/types';
-import { createFlagMaterial, FLAG_MIX, flagBox, flagPngUrl, largestPolygon, loadFlag } from '../lib/flagMaterial';
+import { createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag } from '../lib/flagMaterial';
+import { flagPngUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D } from 'three';
@@ -211,7 +212,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     };
   }, [selectedId, features, apiIds, mats]);
 
-  // Camera flies to whatever becomes selected: a click, a marker, the URL hash or a glossary example (spec 004).
+  // Camera flies to whatever becomes selected: a click, a marker, the URL path or a glossary example (spec 004).
   const select = useCallback((f: CountryFeature | undefined) => f && onSelect(idOf(f)), [onSelect]);
   const flyTo = useCallback(
     (id: string | null) => {
@@ -225,7 +226,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [features],
   );
   useEffect(() => flyTo(selectedId), [selectedId, flyTo]);
-  const initialFly = useRef(() => {}); // onReady resets the camera to START; a country already selected (URL hash) must win
+  const initialFly = useRef(() => {}); // onReady resets the camera to START; a country already selected (URL path) must win
   initialFly.current = () => flyTo(selectedId);
 
   // Micro-state markers: real <button>s so they are keyboard-focusable. Created once; styled via classes.
@@ -298,7 +299,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     setAdmin1(null);
     if (!selectedId || !/^[A-Z]{2}$/.test(selectedId)) return;
     let live = true;
-    fetch(`${import.meta.env.BASE_URL}data/admin1/${selectedId}.geojson`)
+    fetch(`/data/admin1/${selectedId}.geojson`)
       .then((r) => (r.ok ? (r.json() as Promise<FeatureCollection<Geometry, { name?: string }>>) : null))
       .then((fc) => {
         if (!live || !fc) return;
@@ -405,7 +406,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     if (!g) return;
     g.pointOfView(START, 0);
     initialFly.current();
-    if (import.meta.env.DEV) (window as unknown as { __globe: GlobeMethods }).__globe = g; // for scripts/screenshot.ts
+    (window as unknown as { __globe: GlobeMethods }).__globe = g; // for scripts/screenshot.ts (camera control in production builds too)
     const c = g.controls();
     c.autoRotate = false;
     c.enableDamping = true;

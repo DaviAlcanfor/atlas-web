@@ -21,6 +21,7 @@ interface Props {
   iso2: string;
   name: string; // from the polygon, shown while loading and when the API has nothing
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
+  initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
   wide: boolean;
   onToggleWide: () => void;
   onClose: () => void;
@@ -65,9 +66,10 @@ function Skeleton() {
   );
 }
 
-export function CountryPanel({ iso2, name, inApi, wide, onToggleWide, onClose }: Props) {
-  // Not in the API's list (e.g. polygons without an ISO code): nothing to fetch (key null = idle).
-  const state = useAsync(() => api.country(iso2), inApi ? iso2 : null);
+export function CountryPanel({ iso2, name, inApi, initial, wide, onToggleWide, onClose }: Props) {
+  // Not in the API's list (e.g. polygons without an ISO code) or already loaded on the server: nothing to fetch (key null = idle).
+  const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
+  const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
   const title = state.status === 'ok' ? state.data.name : name;
 
   let body: ReactNode;

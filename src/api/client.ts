@@ -20,13 +20,14 @@ export function parse<T extends z.ZodType>(schema: T, data: unknown, what: strin
   throw new ContractError(`Contract mismatch in ${what}: at "${first?.path.join('.') ?? ''}" ${first?.message ?? 'invalid'} (${r.error.issues.length} issue(s))`);
 }
 
-export function createClient(baseUrl: string): AtlasApi {
+/** `timeoutMs`: abort slow calls (used on the server, so a hung API cannot stall `next build` or a page render). */
+export function createClient(baseUrl: string, timeoutMs?: number): AtlasApi {
   const root = baseUrl.replace(/\/+$/, '');
   // No `cache` option on purpose: the browser's normal HTTP cache (ETag / max-age) does the caching.
   async function get<T extends z.ZodType>(path: string, schema: T): Promise<z.infer<T>> {
     let res: Response;
     try {
-      res = await fetch(root + path, { headers: { Accept: 'application/json, application/problem+json' } });
+      res = await fetch(root + path, { headers: { Accept: 'application/json, application/problem+json' }, signal: timeoutMs ? AbortSignal.timeout(timeoutMs) : undefined });
     } catch (e) {
       // A CORS block and a dead server look identical here: the browser hides the reason from JavaScript.
       throw new Error(`Network error calling ${path} (server down, or blocked by CORS): ${(e as Error).message}`);

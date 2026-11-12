@@ -1,16 +1,19 @@
 # AGENTS.md — Atlas
 
 Interactive 3D globe (country history, politics, facts) with a timeline slider that swaps to historical borders.
-Stack: TypeScript (strict) + Vite + React (function components/hooks) + `react-globe.gl` + `zod` + `vitest`. Static site, not Next.js.
+Stack: TypeScript (strict) + Next.js 16 App Router + React (function components/hooks) + `react-globe.gl` + `zod` + `vitest`
+(spec 020). Routes: `/` (globe), `/pais/[iso2]` (SSG + ISR, panel server-rendered), `/glossario`. The globe lives in the root layout
+(`src/Shell.tsx`, loaded with `next/dynamic` + `ssr: false`) so it never remounts between routes.
 
 ## Commands
-- `npm run dev` — dev server (port 5173)
-- `npm run build` — typecheck + production build
+- `npm run dev` — Next dev server (port 5173); `npm run build` + `npm start` — production build/server (port 5173)
+- `npm run build` — `next build` (type-checks the whole project with the local `tsc`); `npm run typecheck` — `tsc --noEmit` only
+- `npm run api:types [-- --check]` — regenerate `src/api/openapi.gen.ts` from `../atlas-api/openapi.generated.json` (fallback: deployed `/openapi.json`); `--check` fails if stale
 - `npm test` — vitest
 - `npm run data` — ETL for modern geometry (`scripts/build-data.ts`)
 - `npm run smoke [-- <url>]` — headless check of a deployed build (default: production): API OK, no error banner, no console errors
 - `npm run shot -- <out-dir>` — Playwright screenshots + drag frame-rate probe (needs dev server running; `HEADED=1 GPU=1` for real GPU)
-- Windows note: the project path contains `&`, so `npx` fails; call tools via `node node_modules/<pkg>/...`.
+- Windows note: the project path contains `&`, so `npx` fails; call tools via `node node_modules/<pkg>/...` (Next: `node node_modules/next/dist/bin/next`).
   `vitest` additionally crashes ("reading 'config'") when run from a path containing `&`: run it through a junction, e.g. `mklink /J %TEMP%\atlasjunc "<project path>"` and `cd` there.
 
 ## Data strategy (decision: the web app talks ONLY to the Atlas API)
@@ -26,13 +29,17 @@ The API is a separate repo ("atlas-api"). Its contract is `contract/CONTRACT.md`
 - Missing field = "no data". Never fabricate values.
 - Every fact block shows its source (from `sources`) and "updated at".
 - Client: `src/api/client.ts` (fetch, `application/problem+json` errors, browser HTTP/ETag cache left on) + zod validation of every response.
-  `VITE_API_URL` (public URL, not a secret) is committed in `.env.production` so Vercel builds hit the real API; `.env.local` for dev.
-  Mock mode: if `VITE_API_URL` is unset, an in-memory adapter (`src/api/mocks/`) returns fixtures that conform to the contract. Same components either way.
+  Used by the browser AND by the server pages (`/pais/[iso2]`, `/glossario`).
+  `NEXT_PUBLIC_API_URL` (public URL, not a secret; inlined at build time) is committed in `.env.production` so Vercel builds hit the real API; `.env.local` for dev.
+  Mock mode: if `NEXT_PUBLIC_API_URL` is unset/empty, an in-memory adapter (`src/api/mocks/`) returns fixtures that conform to the contract. Same components either way.
+- Types: `src/api/openapi.gen.ts` is GENERATED (`npm run api:types`, openapi-typescript 6.7.6), committed. `src/api/contract-check.ts`
+  asserts each zod schema's type equals the generated one, so contract drift breaks `tsc`. v1.1-only fields stay optional in zod until production is v1.1.
 - CORS blocked by the API? Do not work around it in the web app: report it (the fix is the API's `CORS_ORIGINS`).
 
 ## Conventions
-- Design tokens only in `src/lib/palette.ts` (mirrored to CSS variables). No hardcoded colors in components.
-- State: `useState`/`useReducer` + one context (`selectedCountry`, `hoveredCountry`, `layer`, `year`); selection and year mirrored in the URL hash.
+- Design tokens only in `src/lib/palette.ts` (mirrored to CSS variables on `<html>` by the root layout). Fonts: `next/font/google` (Geist, Geist Mono). No hardcoded colors in components.
+- State: `useState`/`useReducer` + one context (`selectedCountry`, `hoveredCountry`, `layer`); the selection is the URL path (`/pais/br`),
+  changed with `router.push` (no reload). Old hash URLs (`#c=BR`, `#/glossario`) are redirected client-side (`src/state.tsx`).
 - Never use `dangerouslySetInnerHTML` for data from files or APIs.
 - Pin exact dependency versions.
 - Accessibility: keyboard-focusable controls, visible focus, respect `prefers-reduced-motion`, no horizontal scroll at 400px.
@@ -49,7 +56,7 @@ Status: draft -> approved (only the user approves) -> in progress -> done. No fe
 New API fields are used only after the contract is updated; until then build on mock fixtures shaped like the spec's "Contract delta".
 
 ## Production
-Vercel: https://atlas-web-ruddy.vercel.app (API: https://atlas-api.fastapicloud.dev). A new front domain must be added to the API's
+Vercel (framework Next.js, forced by `vercel.json`): https://atlas-web-ruddy.vercel.app (API: https://atlas-api.fastapicloud.dev). A new front domain must be added to the API's
 `CORS_ORIGINS` on FastAPI Cloud (see the API repo's AGENTS.md); "Failed to fetch" with 200s in the API log = CORS.
 After each deploy: `npm run smoke`.
 
