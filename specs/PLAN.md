@@ -82,7 +82,7 @@ Drag no swiftshader: mediana +3%, p95 +10% vs Padrão (meta < 15%).
 
 ## P4 - Conteúdo do país (API Opus, web Sonnet). Contrato v1.2 parte A
 API parte A FEITA na branch `feat/v1.2-data` (019, 017, 015, 009; CR-003 com o texto do contrato); falta: aplicar CR-003, migrar produção
-(ver "Lições"), PR, e o front de 017/015/009. Depois: 016 e 018.
+(ver "Lições"), PR. Front de 017/015/009 FEITO na branch `feat/v1.2-front` (sobre mocks das amostras reais; falta rodar contra a API v1.2 e `npm run smoke` depois da migração). Depois: 016 e 018.
 Ordem (cada uma API → web): 019 (correções: data_version, Dinamarca, imagens no Storage, várias capitais) → 017 idiomas →
 015 perfil do povo → 009 moeda/câmbio/economia → 016 história expandida → 018 ideologias.
 Aplicar no início desta fase o contrato v1.2 com os deltas de 009, 015, 016, 017, 018 (texto exato nas specs da API).

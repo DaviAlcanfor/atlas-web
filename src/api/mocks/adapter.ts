@@ -2,6 +2,8 @@ import { ApiError, parse } from '../client';
 import * as S from '../schemas';
 import type { AtlasApi } from '../types';
 import { nearestYear } from '../../lib/snapshots';
+import { LANGUAGES_SPOKEN } from './languages';
+import v12 from './v12.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
@@ -15,7 +17,7 @@ export function createMockApi(delayMs = 150): AtlasApi {
     country: (iso2) => wait(() => {
       const c = COUNTRIES.find((x) => x.iso2 === iso2);
       if (!c) throw notFound(`Unknown country ${iso2}`);
-      return parse(S.CountryDetail, c, `mock /v1/countries/${iso2}`);
+      return parse(S.CountryDetail, { ...c, languages_spoken: LANGUAGES_SPOKEN[iso2] ?? c.languages_spoken }, `mock /v1/countries/${iso2}`);
     }),
     nearestSnapshot: (year) => wait(() => {
       const n = nearestYear(SNAPSHOTS.map((s) => s.year), year);
@@ -43,6 +45,45 @@ export function createMockApi(delayMs = 150): AtlasApi {
       if (!p) throw notFound(`No people for ${iso2}`); // mocks only carry BR and JP
       const items = p.items.filter((x) => !domain || x.domain === domain).slice(0, limit);
       return parse(S.PeopleList, { ...p, items }, `mock people ${iso2}`);
+    }),
+    // v1.2 part A: samples from the local API (BR/JP/DE profile+economy, BRL currency and history); anything else is a 404 = section hidden.
+    profile: (iso2) => wait(() => {
+      const p = (v12.profile as Record<string, unknown>)[iso2];
+      if (!p) throw notFound(`No profile for ${iso2}`);
+      return parse(S.CountryProfile, p, `mock profile ${iso2}`);
+    }),
+    economy: (iso2) => wait(() => {
+      const p = (v12.economy as Record<string, unknown>)[iso2];
+      if (!p) throw notFound(`No economy for ${iso2}`);
+      return parse(S.CountryEconomy, p, `mock economy ${iso2}`);
+    }),
+    compareEconomy: (countries, ids) => wait(() => {
+      if (countries.length < 2 || countries.length > 5) throw new ApiError(422, 'Unprocessable Entity', 'countries must have 2-5 items');
+      const econ = v12.economy as Record<string, { indicators: { id: string; value: number | null; year: number | null }[] }>;
+      const base = v12.compare;
+      const known = new Set([...base.countries, ...Object.keys(econ)]);
+      for (const c of countries) if (!known.has(c)) throw notFound(`Unknown country ${c}`);
+      const indicators = base.indicators.filter((i) => !ids?.length || ids.includes(i.id)).map((i) => ({
+        id: i.id, label: i.label, unit: i.unit,
+        values: Object.fromEntries(countries.map((c) => {
+          const v = (i.values as Record<string, unknown>)[c] ?? (() => { const e = econ[c]?.indicators.find((x) => x.id === i.id); return e && e.value !== null ? { value: e.value, year: e.year } : null; })();
+          return [c, v ?? null];
+        })),
+      }));
+      return parse(S.EconomyCompare, { countries, indicators, sources: base.sources }, 'mock compare');
+    }),
+    currency: (code) => wait(() => {
+      const c = (v12.currency as Record<string, unknown>)[code];
+      if (!c) throw notFound(`No country uses ${code}`);
+      return parse(S.CurrencyDetail, c, `mock currency ${code}`);
+    }),
+    currencyHistory: (code, vs, from, to) => wait(() => {
+      if (code !== v12.history.base) throw notFound(`No rates for ${code}`); // the sample is BRL only
+      const keep = vs.filter((c) => c in v12.history.items[0]!.rates);
+      if (!keep.length) throw notFound(`No rates for ${vs.join(',')}`);
+      const items = v12.history.items.filter((i) => (!from || i.date >= from) && (!to || i.date <= to))
+        .map((i) => ({ date: i.date, rates: Object.fromEntries(keep.map((c) => [c, (i.rates as Record<string, number>)[c]])) }));
+      return parse(S.CurrencyHistory, { ...v12.history, vs: keep, items }, 'mock history');
     }),
     search: (q) => wait(() => {
       if (q.trim().length < 2) throw new ApiError(422, 'Unprocessable Entity', 'q must have at least 2 characters');

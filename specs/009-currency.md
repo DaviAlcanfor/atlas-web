@@ -39,6 +39,8 @@ GET /v1/economy/compare?countries=BR,AR&ids=      -> { countries: string[], indi
 - Tooltip reaproveita o componente da spec 004.
 
 ## Tarefas
-- [ ] zod + mocks a partir das amostras da API
-- [ ] chip clicável/hover; página da moeda com câmbio + conversor + gráfico base 100
-- [ ] blocos Estado da moeda e Economia; comparação de países
+- [x] zod + mocks a partir das amostras da API
+- [x] chip clicável/hover; página da moeda com câmbio + conversor + gráfico base 100
+- [x] blocos Estado da moeda e Economia; comparação de países
+
+Feito no front (branch `feat/v1.2-front`): rota real `/moeda/[code]` (resumo no servidor, gráficos no cliente; `?vs=` e `?cmp=` espelhados na URL), SVG próprio em `src/components/charts.tsx`, lógica pura em `src/lib/currency.ts` (base 100, janelas, semanal, conversor). Janela "máx." pede 29 anos; janelas > 2 anos vêm semanais da API e a tela avisa. "Regime cambial" fica "sem dados" (sem fonte). Troca da base (B3) feita; favoritos salvos no navegador ficam para depois.

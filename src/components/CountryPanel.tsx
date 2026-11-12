@@ -10,6 +10,9 @@ import { Hint } from './Hint';
 import { CountUp } from './CountUp';
 import { LabelIcon } from './icons';
 import { CurrentLeaders, LeadersSection, PeopleSection } from './PeopleSections';
+import { CurrencyChip } from './CurrencyChip';
+import { LanguagesSection } from './Languages';
+import { ProfileSection } from './Profile';
 import { Section } from './Section';
 import { Term } from './Term';
 import { splitLeaders } from '../lib/leaders';
@@ -139,11 +142,15 @@ function Details({ c }: { c: CountryDetail }) {
         <Stat label="Regime" value={c.regime && <Term id={c.regime_id}>{c.regime}</Term>} small foot={c.regime && !c.regime_id && 'texto não verificado'} />
       </div>
 
-      <Section title="Idiomas">
-        <Chips items={c.languages.map((l) => l.name)} />
-      </Section>
+      <ProfileSection iso2={c.iso2} />
+
+      {c.languages_spoken?.length ? <LanguagesSection items={c.languages_spoken} /> : (
+        <Section title="Idiomas">
+          <Chips items={c.languages.map((l) => l.name)} />
+        </Section>
+      )}
       <Section title="Moedas">
-        <Chips items={c.currencies.map((x) => `${x.name}${x.symbol ? ` (${x.symbol})` : ''}`)} />
+        {c.currencies.length ? <ul className="chips">{c.currencies.map((x) => <li key={x.code} className="chips__li"><CurrencyChip cur={x} /></li>)}</ul> : <NoData />}
       </Section>
       <Section title="Organizações">
         <Chips items={c.memberships} render={(m) => <Term label={m}>{m}</Term>} />

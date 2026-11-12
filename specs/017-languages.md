@@ -26,4 +26,6 @@ CountryDetail.languages_spoken: [{ code: string|null, name, status: "official"|"
 `languages` (v1.0) continua igual (só oficiais), para não quebrar clientes.
 
 ## Tarefas
-- [ ] zod + mocks (Brasil com os exemplos acima); chips por status + legenda + hover; "ver todos"
+- [x] zod + mocks (Brasil com os exemplos acima); chips por status + legenda + hover; "ver todos"
+
+Feito no front (branch `feat/v1.2-front`): `src/components/Languages.tsx` + `src/lib/languages.ts`. Mock de BR/JP feito À MÃO (amostras do ETL vieram vazias), sem números de falantes inventados; trocar por amostras reais quando o ETL rodar. Sem `languages_spoken` (produção v1.1) o painel mostra os idiomas v1.0.

@@ -26,4 +26,6 @@ GET /v1/countries/{iso2}/profile -> { groups: [{ id: "life"|"society"|"income"|"
 ```
 
 ## Tarefas
-- [ ] zod + mocks; componente `IndicatorRow` (valor, régua com tick, hover de ranking); `CompositionBar`; grupos recolhíveis (`<details>`)
+- [x] zod + mocks; componente `IndicatorRow` (valor, régua com tick, hover de ranking); `CompositionBar`; grupos recolhíveis (`<details>`)
+
+Feito no front (branch `feat/v1.2-front`): `src/components/Profile.tsx` (`IndicatorRow`, `CompositionBar`, grupos `<details>`), `src/lib/profile.ts` (texto de ranking: indicadores "ruins" contam do menor valor, ex. "5º menor de 177"; composição = top 5 + "outros" somando só os grupos listados), ⓘ por indicador em `INDICATOR_EXPLANATIONS`. Endpoint ausente (produção v1.1) = seção oculta.

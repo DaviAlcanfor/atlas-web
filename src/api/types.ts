@@ -24,6 +24,14 @@ export type Leader = z.infer<typeof S.Leader>;
 export type Person = z.infer<typeof S.Person>;
 export type PersonDomain = z.infer<typeof S.PersonDomain>;
 export type People = z.infer<typeof S.PeopleList>;
+export type LanguageSpoken = z.infer<typeof S.LanguageSpoken>;
+export type LanguageStatus = z.infer<typeof S.LanguageStatus>;
+export type ProfileIndicator = z.infer<typeof S.ProfileIndicator>;
+export type CountryProfile = z.infer<typeof S.CountryProfile>;
+export type CountryEconomy = z.infer<typeof S.CountryEconomy>;
+export type EconomyCompare = z.infer<typeof S.EconomyCompare>;
+export type CurrencyDetail = z.infer<typeof S.CurrencyDetail>;
+export type CurrencyHistory = z.infer<typeof S.CurrencyHistory>;
 
 /** Everything the UI needs from the API. Real client and mock adapter both implement it. */
 export interface AtlasApi {
@@ -38,4 +46,12 @@ export interface AtlasApi {
   leaders(iso2: string): Promise<Leader[]>;
   /** `limit` defaults to the API's 10. */
   people(iso2: string, domain?: PersonDomain, limit?: number): Promise<People>;
+  // v1.2 part A: same rule, any failure = section hidden.
+  profile(iso2: string): Promise<CountryProfile>;
+  economy(iso2: string): Promise<CountryEconomy>;
+  /** 2-5 countries, in the given order; `ids` = subset of the 10 economy indicator ids (default all). */
+  compareEconomy(countries: string[], ids?: string[]): Promise<EconomyCompare>;
+  currency(code: string): Promise<CurrencyDetail>;
+  /** `vs`: 1-4 codes. `from`/`to`: YYYY-MM-DD (default: last year). */
+  currencyHistory(code: string, vs: string[], from?: string, to?: string): Promise<CurrencyHistory>;
 }
