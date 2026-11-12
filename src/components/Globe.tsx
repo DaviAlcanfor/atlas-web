@@ -4,7 +4,7 @@ import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_S
 import { palette } from '../lib/palette';
 import { api } from '../api';
 import type { CapitalCoord } from '../api/types';
-import { atlasTexture, createFlagMaterial, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
+import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
 import { flagPngUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
@@ -37,7 +37,7 @@ const DOTS = {
   mid: { color: palette.iceMid, radius: 0.28 }, // GeoGuessr layer: restricted coverage
   hoverDim: { color: palette.iceBright, radius: 0.26 },
   hover: { color: palette.iceBright, radius: 0.32 },
-  stateHover: { color: palette.iceBright, radius: 0.34, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
+  stateHover: { color: palette.iceBright, radius: 0.4, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
   selected: { color: palette.iceBright, radius: 0.3, spacing: DOT_SPACING * 0.7 }, // denser + brighter (/2 goes sub-pixel at the default zoom)
   selectedDim: { color: palette.ice, radius: 0.28, spacing: DOT_SPACING * 0.7 },
 };
@@ -253,7 +253,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         const t0 = performance.now();
         const fade = () => {
           const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / 300);
-          mix.value = FLAG_MIX * k;
+          mix.value = FLAG_LAYER_MIX * k;
           if (k < 1) raf = requestAnimationFrame(fade);
         };
         fade();
@@ -384,6 +384,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     };
   }, [selectedId]);
 
+  const [hoverState, setHoverState] = useState<Admin1['states'][number] | null>(null);
+  useEffect(() => setHoverState(null), [selectedId, showStates]);
+
   const baseLines = useMemo(
     () => [graticule, buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)],
     [lines, graticule],
@@ -407,9 +410,15 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     return buildLines(c.coordinates, palette.signal, ALT_SELECTED + 0.001);
   }, [ring, reduced]);
 
+  // outline of the hovered state, bright, so it reads even where the fill overlay has little to lighten (white flag stripes)
+  const stateOutline = useMemo(() => {
+    const g = hoverState?.geometry;
+    const polys = g?.type === 'Polygon' ? [g.coordinates] : g?.type === 'MultiPolygon' ? g.coordinates : [];
+    return polys.length ? buildLines(polys.flat(), palette.iceBright, ALT_STATE_HOVER + 0.0003) : null;
+  }, [hoverState]);
   const lineObjects = useMemo(
-    () => [...baseLines, ...(showStates && admin1?.line ? [admin1.line, admin1.light!] : []), ...(staticRing ? [staticRing] : [])],
-    [baseLines, admin1, showStates, staticRing],
+    () => [...baseLines, ...(showStates && admin1?.line ? [admin1.line, admin1.light!] : []), ...(stateOutline ? [stateOutline] : []), ...(staticRing ? [staticRing] : [])],
+    [baseLines, admin1, showStates, stateOutline, staticRing],
   );
 
   // Only the selected country's outline uses the (slow, per-object) paths layer, for its thicker stroke.
@@ -436,8 +445,6 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [features, bounds],
   );
 
-  const [hoverState, setHoverState] = useState<Admin1['states'][number] | null>(null);
-  useEffect(() => setHoverState(null), [selectedId, showStates]);
   const polygons = useMemo(() => (hoverState ? [...features, hoverState as unknown as CountryFeature] : features), [features, hoverState]);
 
   const ptr = useRef({ down: false, moved: false, x: 0, y: 0, raf: 0 });

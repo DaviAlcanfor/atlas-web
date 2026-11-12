@@ -10,6 +10,7 @@ import type { CountryDetail, GlossaryTerm } from './api/types';
 import { CountryPanel } from './components/CountryPanel';
 import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
+import { LoadingScreen } from './components/LoadingScreen';
 import { LayerToggle } from './components/LayerToggle';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
@@ -37,7 +38,9 @@ function Chrome({ children }: { children: ReactNode }) {
   const globeRoute = usePathname() !== '/glossario';
   const [wantGlobe, setWantGlobe] = useState(globeRoute);
   useEffect(() => { if (globeRoute) setWantGlobe(true); }, [globeRoute]);
-  const { data, error, apiError } = useAtlasData(wantGlobe);
+  const { data, error, apiError, progress } = useAtlasData(wantGlobe);
+  const [chunkReady, setChunkReady] = useState(false); // the globe's code (three.js chunk) has arrived
+  useEffect(() => { if (wantGlobe) void import('./components/Globe').then(() => setChunkReady(true)); }, [wantGlobe]);
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
@@ -62,11 +65,13 @@ function Chrome({ children }: { children: ReactNode }) {
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
         )}
-        {wantGlobe && !error && !globeReady && (
-          <div className="loading-screen" role="status" aria-live="polite">
-            <span className="spinner spinner--big" aria-hidden="true" />
-            <p>{data ? 'Desenhando o globo…' : 'Carregando mapas e países…'}</p>
-          </div>
+        {wantGlobe && !error && (
+          <LoadingScreen
+            target={0.4 * progress.geo + 0.15 * (progress.countries ? 1 : 0) + 0.15 * (chunkReady ? 1 : 0)}
+            rendering={!!data}
+            done={globeReady}
+            countries={progress.countries}
+          />
         )}
         {error && (
           <p className="load-error" role="alert">

@@ -66,6 +66,10 @@ Todas as 7 tarefas abaixo implementadas e verificadas em mocks (campos novos opc
 | Todos os países ativos + prévia de bandeira no hover | 014 parte 1 | |
 Verificar: typecheck, build, vitest, screenshots BR/JP/US, `npm run smoke` depois do deploy.
 
+## P1.5 - Polimento 021 - FEITO (2026-11-12, branch `feat/polish-round`, spec [021](021-polish-round.md))
+Estados com linha dupla + botão + hover, fronteiras mais fortes, paleta categórica de regime (validada), bandeiras nítidas (w160), ⓘ em todos os rótulos,
+camada GeoGuessr (Street View, Wikipedia CC BY-SA), tela de carregamento com progresso real, painel 540 px e mais opaco.
+
 ## P2 - Migração para Next.js (Opus) - FEITO (2026-11-12, branch `feat/nextjs`, spec [020](020-nextjs.md))
 ADR-001 aprovado. Next.js 16.4.6 App Router: `/`, `/pais/[iso2]` (196 páginas SSG + ISR 1 h, metadata/OG por país), `/glossario`
 (servidor); globo no layout (não remonta); hash antigo redirecionado; `NEXT_PUBLIC_API_URL`; tipos gerados do OpenAPI

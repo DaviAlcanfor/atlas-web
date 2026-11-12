@@ -13,6 +13,8 @@ export function Tooltip({ text, children }: { text: string; children: (aria: { '
   const id = useId();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const [mounted, setMounted] = useState(false); // the bubble is portaled to <body>: not during server rendering (the panel is server-rendered)
+  useEffect(() => setMounted(true), []);
   const timer = useRef(0);
   const show = () => { clearTimeout(timer.current); timer.current = window.setTimeout(() => setOpen(true), OPEN_DELAY); };
   const hide = () => { clearTimeout(timer.current); setOpen(false); };
@@ -38,7 +40,7 @@ export function Tooltip({ text, children }: { text: string; children: (aria: { '
   return (
     <span ref={anchor} className="tip-anchor" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
       {children({ 'aria-describedby': id })}
-      {createPortal(
+      {mounted && createPortal(
         <span ref={bubble} id={id} role="tooltip" className={`tip${open && pos ? ' is-open' : ''}`} style={pos ?? undefined}>{text}</span>,
         document.body,
       )}

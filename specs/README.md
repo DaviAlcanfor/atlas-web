@@ -29,6 +29,7 @@ Regras:
 | 017 | [Idiomas oficiais e outros](017-languages.md) | sim | approved |
 | 018 | [Ideologias e pensadores](018-ideologies.md) | sim | approved |
 | 020 | [Migração para Next.js + tipos do OpenAPI](020-nextjs.md) | não | done |
+| 021 | [Rodada de polimento (estados, fronteiras, regime, bandeiras, ⓘ, GeoGuessr, carregamento, painel)](021-polish-round.md) | não | done |
 
 Plano de execução e checklist: [PLAN.md](PLAN.md). Avaliação de stack: [ADR-001-stack.md](ADR-001-stack.md).
 

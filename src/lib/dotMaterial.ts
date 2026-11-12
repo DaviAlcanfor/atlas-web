@@ -75,7 +75,7 @@ export const createDotMaterial = (opts: DotOpts, shared: DotShared) =>
   });
 
 /** Transparent dot overlay (hovered state): dots + a faint tint, so whatever is underneath (flag, dots) still shows through. */
-export const createDotOverlayMaterial = (opts: DotOpts, shared: DotShared, tint = 0.16) =>
+export const createDotOverlayMaterial = (opts: DotOpts, shared: DotShared, tint = 0.3) =>
   new ShaderMaterial({
     uniforms: { ...dotUniforms(opts, shared), uFill: { value: new Color(0x000000) } },
     vertexShader: DOT_VERT,

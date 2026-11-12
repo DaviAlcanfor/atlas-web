@@ -4,7 +4,8 @@ import { CanvasTexture, LinearFilter, ShaderMaterial, SRGBColorSpace, TextureLoa
 import { DOT_GLSL, DOT_VERT, dotUniforms, type DotOpts, type DotShared } from './dotMaterial';
 import { flagAtlasUrl } from './url';
 
-export const FLAG_MIX = 0.6;
+export const FLAG_MIX = 0.6; // selected country: flag weight over the dots
+export const FLAG_LAYER_MIX = 0.74; // flag layer (spec 021): fewer dots showing through, closer to the selected country's crispness
 
 /** The polygon with the largest area (the mainland), or undefined for non-polygon geometry. */
 export function largestPolygon(g: Geometry): Polygon | undefined {
