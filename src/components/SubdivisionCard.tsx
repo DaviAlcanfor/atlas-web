@@ -13,6 +13,7 @@ export function SubdivisionCard({ name, facts, onClose }: { name: string; facts:
         ['Capital', facts.capital ?? ''],
         ['População', facts.population ? `${nf(facts.population.value)}${facts.population.year ? ` (${facts.population.year})` : ''}` : ''],
         ['Área', facts.area_km2 !== null ? `${nf(Math.round(facts.area_km2))} km²` : ''],
+        ['DDD (código de área)', facts.area_codes.join(', ')],
         ['Código', facts.code ?? ''],
       ] as [string, string][]).filter(([, v]) => v)
     : [];
@@ -30,7 +31,7 @@ export function SubdivisionCard({ name, facts, onClose }: { name: string; facts:
         <dl className="clues">{rows.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
       ) : <p className="nodata">sem dados</p>}
       <p className="src">
-        Fonte: Wikidata (CC0){flag && src && ` · bandeira: ${flag.credit} · ${flag.license}`}
+        Fonte: Wikidata (CC0){(facts?.area_codes.length ?? 0) > 0 && facts?.code?.startsWith('BR-') ? '; DDD: Anatel' : ''}{flag && src && ` · bandeira: ${flag.credit} · ${flag.license}`}
       </p>
     </section>
   );

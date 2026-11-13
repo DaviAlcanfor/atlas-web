@@ -12,7 +12,9 @@ import type { Icon } from '@phosphor-icons/react/lib';
 import { regimeOther, regimePalette } from './lib/palette';
 import { X } from '@phosphor-icons/react/dist/csr/X';
 import type { GlossaryTerm } from './api/types';
-import { safeHref } from './lib/url';
+import { flagPreviewUrl, safeHref } from './lib/url';
+
+const EXAMPLES_MAX = 8; // the API's cap per term (atlas-api queries.EXAMPLES_MAX)
 
 export const KIND_LABEL: Record<GlossaryTerm['kind'], string> = {
   regime: 'Regime político', system: 'Sistema', region: 'Região', membership: 'Organização', currency: 'Moeda', ideology: 'Corrente política', other: 'Outro',
@@ -82,8 +84,19 @@ function GlossaryDialog({ term, onClose, countryName, onPickCountry }: { term: G
             <>
               <h3>Exemplos</h3>
               <ul className="chips">
-                {term.examples.map((c) => <li key={c}><button className="chip-btn" onClick={() => onPickCountry(c)}>{countryName(c) ?? c}</button></li>)}
+                {term.examples.map((c) => {
+                  const flag = flagPreviewUrl(c);
+                  return (
+                    <li key={c}>
+                      <button className="chip-btn chip-btn--flag" onClick={() => onPickCountry(c)}>
+                        {flag && <img src={flag} alt="" width={20} height={14} loading="lazy" />}{countryName(c) ?? c}
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
+              {/* spec 026: the API sends at most EXAMPLES_MAX countries per term; at the cap the list is a sample */}
+              <p className="src">{term.examples.length >= EXAMPLES_MAX ? 'Só alguns exemplos: há mais países. ' : ''}Clique em um para abrir o painel dele.</p>
             </>
           )}
           {term.sources.length > 0 && (

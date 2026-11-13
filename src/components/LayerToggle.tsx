@@ -8,7 +8,7 @@ interface Props {
   onChange: (l: LayerId) => void;
   regimes: Map<string, string>;
   flagsLoading?: boolean; // the flag layer's atlas is still downloading
-  states?: { on: boolean; toggle: () => void }; // "Estados" button; only while a country is selected
+  states?: { on: boolean; toggle: () => void; all: boolean; setAll: (all: boolean) => void }; // "Estados" button; only while a country is selected
   children?: ReactNode; // extra chrome under the toggle (glossary link)
 }
 
@@ -34,6 +34,12 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ch
       {states && (
         <div className="layer-toggle__group">
           <button aria-pressed={states.on} onClick={states.toggle}>Estados</button>
+        </div>
+      )}
+      {states?.on && (
+        <div className="layer-toggle__group" role="group" aria-label="Bandeiras dos estados">
+          <button aria-pressed={states.all} onClick={() => states.setAll(true)}>Todas as bandeiras</button>
+          <button aria-pressed={!states.all} onClick={() => states.setAll(false)}>Só a selecionada</button>
         </div>
       )}
       </div>

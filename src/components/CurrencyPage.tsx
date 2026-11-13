@@ -14,6 +14,7 @@ import {
 } from '../lib/currency';
 import { INDICATOR_EXPLANATIONS } from '../lib/explanations';
 import { day, safeHref } from '../lib/url';
+import { Block, BlockIndex, FlagName } from './Block';
 import { Hint } from './Hint';
 import { LineChart, seriesColor, Sparkline } from './charts';
 
@@ -36,12 +37,17 @@ export function CurrencyRoute({ code, initial }: { code: string; initial: Curren
       <button className="gpage__back" onClick={back}>← Voltar</button>
       {loading ? <p className="loading-text"><span className="spinner" aria-hidden="true" /> Carregando…</p>
         : !cur ? <p className="empty">Não há dados para a moeda {code}. {initial === null ? 'Nenhum país a usa, segundo a API.' : 'A API não respondeu.'}</p>
-        : <Body cur={cur} initialVs={sp.get('vs')} initialCmp={sp.get('cmp')} />}
+        : <Body cur={cur} initialVs={sp.get('vs')} initialCmp={sp.get('cmp')} initialPais={sp.get('pais')} />}
     </main>
   );
 }
 
-function Body({ cur, initialVs, initialCmp }: { cur: CurrencyDetail; initialVs: string | null; initialCmp: string | null }) {
+const BODY_BLOCKS = [
+  { id: 'cambio', title: 'Câmbio' }, { id: 'estado', title: 'Estado da moeda' }, { id: 'economia', title: 'Economia do país' },
+  { id: 'comparar', title: 'Comparar países' }, { id: 'paises', title: 'Quem usa' },
+];
+
+function Body({ cur, initialVs, initialCmp, initialPais }: { cur: CurrencyDetail; initialVs: string | null; initialCmp: string | null; initialPais: string | null }) {
   const router = useRouter();
   const base = cur.code;
   const [vs, setVs] = useState(() => { const l = parseVs(initialVs, base); return l.length ? l : defaultVs(base); });
@@ -69,18 +75,21 @@ function Body({ cur, initialVs, initialCmp }: { cur: CurrencyDetail; initialVs: 
       <h1>{cur.name}{symbol}</h1>
       <p className="note">Usada em {cur.countries.length ? cur.countries.map(nameOf).join(', ') : 'nenhum país listado'}.</p>
       <p className="warn">Cotação de referência: não é o preço de uma casa de câmbio, de cartão ou de banco.</p>
+      <BlockIndex items={BODY_BLOCKS} />
 
       <Exchange cur={cur} vs={vs} setVs={setVs} known={known} range={range} setRange={setRange} onBase={(c) => router.push(`/moeda/${c.toLowerCase()}?vs=${vs.filter((v) => v !== c).join(',')}`)} />
       <State cur={cur} anchor={anchor} />
-      {anchor && <Economy countries={cur.countries} nameOf={nameOf} />}
-      {anchor && <Compare self={anchor} cmp={cmp} setCmp={setCmp} names={names.status === 'ok' ? names.data : []} nameOf={nameOf} />}
+      {anchor && <Economy n={3} countries={cur.countries} nameOf={nameOf} initialIso={initialPais} />}
+      {anchor && <Compare n={4} self={anchor} cmp={cmp} setCmp={setCmp} names={names.status === 'ok' ? names.data : []} nameOf={nameOf} />}
 
-      <section className="psec">
-        <h3>Países que usam {base}</h3>
+      <Block n={5} id="paises" title={`Quem usa o ${base}`} blurb="O nome abre o painel do país no globo; “economia” abre a análise econômica dele.">
         {cur.countries.length ? (
-          <ul className="chips">{cur.countries.map((c) => <li key={c}><Link href={`/pais/${c.toLowerCase()}`}>{nameOf(c)}</Link></li>)}</ul>
+          <ul className="chips">{cur.countries.map((c) => (
+            <li key={c}><Link href={`/pais/${c.toLowerCase()}`}><FlagName iso={c} name={nameOf(c)} /></Link>
+              {' '}<Link className="chips__more" href={`/economia/${c.toLowerCase()}`} aria-label={`Economia: ${nameOf(c)}`}>economia →</Link></li>
+          ))}</ul>
         ) : noData}
-      </section>
+      </Block>
       <section className="psec">
         <h3>Fontes</h3>
         <ul className="sources">
@@ -118,8 +127,7 @@ function Exchange({ cur, vs, setVs, known, range, setRange, onBase }: {
   const codes = [...known].sort();
 
   return (
-    <section className="psec">
-      <h3>Câmbio</h3>
+    <Block n={1} id="cambio" title="Câmbio" blurb="Quanto vale a moeda contra outras, o conversor e a evolução no tempo.">
       <div className="cx__chips">
         <span className="cx__base" title="Moeda base">1 {base} =</span>
         {vs.map((c, i) => {
@@ -176,7 +184,7 @@ function Exchange({ cur, vs, setVs, known, range, setRange, onBase }: {
             </p>
           </>
         )}
-    </section>
+    </Block>
   );
 }
 
@@ -219,8 +227,7 @@ function State({ cur, anchor }: { cur: CurrencyDetail; anchor: string | undefine
     ['Inflação anual', infl?.value != null ? `${infl.value.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` : null, infl?.year ? `Banco Mundial, ${infl.year}` : 'Banco Mundial'],
   ];
   return (
-    <section className="psec">
-      <h3>Estado da moeda</h3>
+    <Block n={2} id="estado" title="Estado da moeda" blurb="Como a moeda se comportou: variação, volatilidade e inflação.">
       <div className="stats">
         {tiles.map(([label, v, foot]) => (
           <div key={label} className="stat">
@@ -230,54 +237,73 @@ function State({ cur, anchor }: { cur: CurrencyDetail; anchor: string | undefine
           </div>
         ))}
       </div>
-    </section>
+    </Block>
   );
 }
 
 // ---------------------------------------------------------------- Economia do país
-function Economy({ countries, nameOf }: { countries: string[]; nameOf: (iso: string) => string }) {
-  const [iso, setIso] = useState(countries[0]!);
+// Indicators grouped so the page reads as four short topics instead of one list of ten (spec 026). Unlisted ids fall in "Outros".
+const ECON_GROUPS: [string, string[]][] = [
+  ['Atividade', ['NY.GDP.MKTP.CD', 'NY.GDP.PCAP.PP.CD', 'NY.GDP.MKTP.KD.ZG']],
+  ['Preços e emprego', ['FP.CPI.TOTL.ZG', 'SL.UEM.TOTL.ZS', 'PA.NUS.PPP']],
+  ['Dívida e contas externas', ['GC.DOD.TOTL.GD.ZS', 'BN.CAB.XOKA.GD.ZS', 'FI.RES.TOTL.CD']],
+  ['Desigualdade', ['SI.POV.GINI']],
+];
+
+function groupIndicators<T extends { id: string }>(all: T[]): [string, T[]][] {
+  const used = new Set(ECON_GROUPS.flatMap(([, ids]) => ids));
+  const groups: [string, T[]][] = ECON_GROUPS.map(([title, ids]) => [title, all.filter((i) => ids.includes(i.id))]);
+  groups.push(['Outros', all.filter((i) => !used.has(i.id))]);
+  return groups.filter(([, items]) => items.length);
+}
+
+export function Economy({ n, countries, nameOf, initialIso }: { n: number; countries: string[]; nameOf: (iso: string) => string; initialIso?: string | null }) {
+  const wanted = initialIso?.toUpperCase();
+  const [iso, setIso] = useState(wanted && countries.includes(wanted) ? wanted : countries[0]!);
   const s = useAsync(() => api.economy(iso), iso);
   return (
-    <section className="psec">
-      <h3>Economia do país</h3>
+    <Block n={n} id="economia" title="Economia do país" blurb="PIB, preços, emprego, dívida e desigualdade, com a curva dos últimos 20 anos de cada indicador.">
       {countries.length > 1 && (
         <label className="cx__sel">País <select value={iso} onChange={(e) => setIso(e.target.value)}>{countries.map((c) => <option key={c} value={c}>{nameOf(c)}</option>)}</select></label>
       )}
       {s.status === 'error' ? <p className="nodata">sem dados de economia</p> : s.status !== 'ok' ? <p className="loading-text"><span className="spinner" aria-hidden="true" /> Carregando…</p> : (
         <>
-          <ul className="econ">
-            {s.data.indicators.map((i) => (
-              <li key={i.id}>
-                <span className="econ__label">{i.label}<Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></span>
-                <span className="econ__value">{i.value !== null ? fmtEconomy(i.unit, i.value) : noData}</span>
-                <Sparkline points={i.series} label={i.label} />
-                <span className="econ__foot">{i.year ?? 'sem ano'} · {i.unit}</span>
-              </li>
-            ))}
-          </ul>
+          {groupIndicators(s.data.indicators).map(([title, items]) => (
+            <div key={title} className="econ-group">
+              <h4 className="subhead">{title}</h4>
+              <ul className="econ">
+                {items.map((i) => (
+                  <li key={i.id}>
+                    <span className="econ__label">{i.label}<Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></span>
+                    <span className="econ__value">{i.value !== null ? fmtEconomy(i.unit, i.value) : noData}</span>
+                    <Sparkline points={i.series} label={i.label} />
+                    <span className="econ__foot">{i.year ?? 'sem ano'} · {i.unit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <p className="src">Fonte: {s.data.sources.map((x) => shortSrc(x.title)).join('; ')}. Séries dos 20 anos até o último dado de cada indicador; lacunas ficam em branco.</p>
         </>
       )}
-    </section>
+    </Block>
   );
 }
 
 // ---------------------------------------------------------------- Comparar países
-function Compare({ self, cmp, setCmp, names, nameOf }: { self: string; cmp: string[]; setCmp: (c: string[]) => void; names: { iso2: string; name: string }[]; nameOf: (iso: string) => string }) {
+export function Compare({ n, self, cmp, setCmp, names, nameOf }: { n: number; self: string; cmp: string[]; setCmp: (c: string[]) => void; names: { iso2: string; name: string }[]; nameOf: (iso: string) => string }) {
   const list = [self, ...cmp];
   const r = useAsync(() => api.compareEconomy(list), cmp.length ? list.join(',') : null);
   const [copied, setCopied] = useState(false);
   const options = names.filter((c) => !list.includes(c.iso2)).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
   const copy = () => { void navigator.clipboard?.writeText(location.href).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1800); }); };
   return (
-    <section className="psec">
-      <h3>Comparar países</h3>
+    <Block n={n} id="comparar" title="Comparar países" blurb="Os mesmos indicadores lado a lado, com a bandeira de cada país.">
       <div className="cx__chips">
-        <span className="cx__chip"><b>{nameOf(self)}</b></span>
+        <span className="cx__chip"><b><FlagName iso={self} name={nameOf(self)} /></b></span>
         {cmp.map((c, i) => (
           <span key={c} className="cx__chip" style={{ borderColor: seriesColor(i + 1) }}>
-            <i style={{ background: seriesColor(i + 1) }} /><b>{nameOf(c)}</b>
+            <i style={{ background: seriesColor(i + 1) }} /><b><FlagName iso={c} name={nameOf(c)} /></b>
             <button onClick={() => setCmp(cmp.filter((x) => x !== c))} aria-label={`Remover ${nameOf(c)}`}><X size={11} aria-hidden="true" /></button>
           </span>
         ))}
@@ -302,13 +328,13 @@ function Compare({ self, cmp, setCmp, names, nameOf }: { self: string; cmp: stri
                 return (
                   <div key={i.id} className="cmp__row" role="row">
                     <span className="cmp__label" role="rowheader">{i.label}</span>
-                    {r.data.countries.map((c, n) => {
+                    {r.data.countries.map((c, k) => {
                       const v = i.values[c] ?? null;
                       return (
                         <span key={c} className="cmp__cell" role="cell">
-                          <span className="cmp__name">{c}</span>
+                          <span className="cmp__name"><FlagName iso={c} name={nameOf(c)} /></span>
                           <b>{v ? fmtEconomy(i.unit, v.value) : noData}</b>
-                          {v && <><i className="cmp__bar" style={{ width: `${(Math.abs(v.value) / max) * 100}%`, background: seriesColor(n === 0 ? 0 : n) }} /><small>{v.year}</small></>}
+                          {v && <><i className="cmp__bar" style={{ width: `${(Math.abs(v.value) / max) * 100}%`, background: seriesColor(k) }} /><small>{v.year}</small></>}
                         </span>
                       );
                     })}
@@ -319,6 +345,6 @@ function Compare({ self, cmp, setCmp, names, nameOf }: { self: string; cmp: stri
             <p className="src">Fonte: {r.data.sources.map((x) => shortSrc(x.title)).join('; ')}. Cada valor é o último ano disponível do país; os anos podem diferir. Barras: proporção do maior valor da linha (valores negativos em módulo).</p>
           </>
         )}
-    </section>
+    </Block>
   );
 }
