@@ -1,5 +1,5 @@
 # 012 - Viagem no tempo e mapa com estilo da época
-Status: approved | Contrato: v2 | API: atlas-api/specs/012-historical-series.md (fontes pesquisadas: Cliopatria CC BY 4.0) | Executor: Opus
+Status: in progress (etapa 1 feita em 2026-11-13: slider, camada histórica e painel básico; faltam fatos da época e estilos) | Contrato: v2 | API: atlas-api/specs/012-historical-series.md (fontes pesquisadas: Cliopatria CC BY 4.0) | Executor: Opus
 
 ## Por quê
 Um "relógio do tempo": slider de ano que troca o mapa para as fronteiras daquela época, mostra cada entidade como era, e muda o
@@ -37,7 +37,13 @@ Ver a spec da API: `geometry_url` TopoJSON (pode ser URL absoluta), feições `{
 `PolityDetail += { wikidata, flag, capital, government }`, `GET /v1/polities/{id}/leaders?year=`.
 
 ## Tarefas
-- [ ] slider + estado `ano` na URL + carregamento/cache de retratos (TopoJSON via `topojson-client`, versão fixa)
-- [ ] camada histórica no globo (mesmo picking point-in-polygon) + painel histórico
+- [x] slider + estado `ano` na URL + carregamento/cache de retratos. Etapa 1 (2026-11-13): `<input type="range">` nativo sobre a
+      LISTA de anos de retrato (setas, Home/End e PageUp/PageDown de graça), barra no canto inferior esquerdo em vez do topo,
+      `?ano=` na URL (um ano qualquer cai no retrato mais próximo), cache dos últimos 6. GeoJSON direto (CR-005), sem TopoJSON.
+      Não feito ainda: régua com séculos, pré-carregar vizinhos, cross-fade entre retratos, `?ano` preservado em `/pais/...`.
+- [x] camada histórica no globo (mesmo picking) + painel histórico BÁSICO: nome pt-BR, existência, "fazia parte de", Wikipédia,
+      aviso de fronteira aproximada, link para o país de hoje quando o nome coincide. Terra sem Estado registrado: pontos apagados
+      (sem o rótulo no hover). Cor estável por entidade (hash do nome). Bandeira, capital, governante e antecessores da época
+      dependem da etapa 2 da API (`etl wikidata-polities`).
 - [ ] temas por época (`eras.ts`, modos do shader, cross-fade) + screenshots de cada época
-- [ ] atribuição; testes de formatação de anos e de escolha do retrato mais próximo
+- [x] atribuição (barra do tempo e painel); testes: bordas sem duplicata, cor estável, conversão do retrato (`timeTravel.test.ts`)

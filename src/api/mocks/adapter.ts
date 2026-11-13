@@ -22,6 +22,7 @@ export function createMockApi(delayMs = 150): AtlasApi {
       if (!c) throw notFound(`Unknown country ${iso2}`);
       return parse(S.CountryDetail, { ...c, languages_spoken: LANGUAGES_SPOKEN[iso2] ?? c.languages_spoken }, `mock /v1/countries/${iso2}`);
     }),
+    snapshots: () => wait(() => parse(S.SnapshotList, { items: SNAPSHOTS }, 'mock /v1/snapshots').items),
     nearestSnapshot: (year) => wait(() => {
       const n = nearestYear(SNAPSHOTS.map((s) => s.year), year);
       if (!n) throw notFound('No snapshots');

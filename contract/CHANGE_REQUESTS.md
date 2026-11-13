@@ -38,3 +38,8 @@
 ## CR-004 (contract v1.3) applied 2026-11-13
 The owner approved everything pending (spec 026); CR-004 and its addenda 1-4 (history, subdivisions, history events, political
 currents, `Subdivision.area_codes`) are now in `CONTRACT.md` (identical in both repos). Full CR text: atlas-api `contract/CHANGE_REQUESTS.md`.
+
+## CR-005 (2026-11-13): historical snapshots from Cliopatria (spec 012 stage 1)
+Proposed in atlas-api `contract/CHANGE_REQUESTS.md` (full text there): `geometry_url` stays relative to this repo's origin
+(`/data/historical/world_<year>.geojson`, 130 files committed under `public/`), GeoJSON with properties
+`{ name, name_en, wikidata, from_year, to_year, member_of, wikipedia_url }`, `meta.year_min` = -3400. The web already reads it.
