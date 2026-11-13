@@ -15,7 +15,8 @@
     "smoke": "tsx scripts/smoke.ts",
     "plonkit": "tsx scripts/plonkit-slugs.ts",
     "streetview": "tsx scripts/streetview-coverage.ts",
-    "landmask": "tsx scripts/landmask.ts"
+    "landmask": "tsx scripts/landmask.ts",
+    "readme-shots": "tsx scripts/readme-shots.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",
