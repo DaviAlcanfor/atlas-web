@@ -1,5 +1,5 @@
 # 004 — Glossário: tooltips, popups e ícones
-Status: done (web, em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 | API: atlas-api/specs/004-glossary.md
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: v1.1 | API: atlas-api/specs/004-glossary.md
 
 ## Por quê
 O painel diz *o que* é o regime, não *como funciona*. Quero tooltip curto no hover, explicação completa no clique,

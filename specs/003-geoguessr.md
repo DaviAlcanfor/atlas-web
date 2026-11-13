@@ -1,5 +1,5 @@
 # 003 — GeoGuessr: Plonk It e pistas do país
-Status: done (parte 2 em mocks até a API v1.1 ir ao ar) | Contrato: parte 2 em v1.1 | API: atlas-api/specs/003-geo-clues.md
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: parte 2 em v1.1 | API: atlas-api/specs/003-geo-clues.md
 
 ## Por quê
 Ter à mão o "meta" de GeoGuessr de cada país.

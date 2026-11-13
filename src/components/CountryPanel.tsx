@@ -14,7 +14,7 @@ import { CurrentLeaders, LeadersSection, PeopleSection } from './PeopleSections'
 import { CurrencyChip } from './CurrencyChip';
 import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
-import { HistorySummary } from './HistorySummary';
+import { HistorySummary, KIND_LABEL } from './HistorySummary';
 import { SubdivisionCard } from './SubdivisionCard';
 import type { StateRef } from './Globe';
 import type { Subdivision } from '../api/types';
@@ -41,9 +41,6 @@ const fmtInt = (n: number) => nf(Math.round(n));
 const fmtKm2 = (n: number) => `${nf(Math.round(n))} km²`;
 const fmtDensity = (n: number) => `${nf(Math.round(n))} hab/km²`;
 const NoData = () => <span className="nodata">sem dados</span>;
-const KIND_LABEL: Record<Event['kind'], string> = {
-  political: 'política', war: 'guerra', treaty: 'tratado', cultural: 'cultura', economic: 'economia', other: 'outro',
-};
 
 function SourceNote({ ids, sources }: { ids: string[]; sources: Source[] }) {
   const used = sources.filter((s) => ids.includes(s.id));
@@ -185,9 +182,8 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
       <PeopleSection iso2={c.iso2} />
 
       <Section title="História">
-        <HistorySummary iso2={c.iso2} />
-        {c.timeline.length > 0 && <p className="sub">Marcos</p>}
-        <Timeline events={c.timeline} sources={c.sources} />
+        <HistorySummary iso2={c.iso2} curated={c.timeline}
+          renderTimeline={(events, sources) => <Timeline events={events} sources={sources.length ? sources : c.sources} />} />
       </Section>
 
       <Lineage polityId={c.polity_id} />

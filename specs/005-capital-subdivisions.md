@@ -1,5 +1,5 @@
 # 005 — Capital no mapa e estados/províncias
-Status: done (capital em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 (capital) | API: atlas-api/specs/005-capital-coords.md
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: v1.1 (capital) | API: atlas-api/specs/005-capital-coords.md
 
 ## Requisitos
 - Capital: QUANDO seleciono um país ENTÃO aparece uma estrela na capital com rótulo; com zoom próximo, todas as capitais.
