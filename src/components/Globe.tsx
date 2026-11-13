@@ -93,15 +93,24 @@ interface Props {
   selectedId: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string | null) => void;
-  onHoverState?: (name: string | null) => void; // state/province under the pointer, inside the selected country (spec 005)
+  onHoverState?: (s: StateRef | null) => void; // state/province under the pointer, inside the selected country (spec 005)
+  selectedStateId?: string | null; // spec 024: clicked state (its wikidataid); its flag covers it
+  onSelectState?: (s: StateRef | null) => void;
+  stateFlagUrl?: string; // flag image of the selected state (API, Commons thumbnail)
   showStates: boolean; // draw + hover the selected country's divisions (the "Estados" button)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
 }
 
+export interface StateRef {
+  name: string; // polygon name (Natural Earth); the API's pt-BR name wins in the UI
+  id: string | null; // wikidataid
+}
+type StateFeature = Feature<Geometry, { name: string; wikidataid?: string }>;
+
 interface Admin1 {
   id: string; // country the data belongs to
-  states: Feature<Geometry, { name: string }>[];
+  states: StateFeature[];
   bounds: ReturnType<typeof geoBounds>[];
   line: LineSegments | null; // one thin translucent light stroke (spec 023: the spec-021 double line read too thick)
 }
@@ -148,7 +157,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlagUrl, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -177,6 +186,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       selected: createDotMaterial(DOTS.selected, shared),
       selectedDim: createDotMaterial(DOTS.selectedDim, shared),
       flag: createFlagMaterial(DOTS.selected, shared),
+      stateFlag: createFlagMaterial(DOTS.selected, shared), // spec 024: the selected state's flag
       stateHover: createDotOverlayMaterial(DOTS.stateHover, shared),
     }),
     [shared],
@@ -359,7 +369,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       .then((r) => (r.ok ? (r.json() as Promise<FeatureCollection<Geometry, { name?: string }>>) : null))
       .then((fc) => {
         if (!live || !fc) return;
-        const states = fc.features.filter((f): f is Feature<Geometry, { name: string }> => !!f.properties?.name);
+        const states = fc.features.filter((f): f is StateFeature => !!f.properties?.name);
         const borders = fc.features.find((f): f is Feature<MultiLineString, { name?: string }> => f.geometry.type === 'MultiLineString');
         setAdmin1({
           id: selectedId,
@@ -427,15 +437,34 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     const hit = rect && globe.current?.toGlobeCoords(clientX - rect.left, clientY - rect.top);
     return hit ? [hit.lng, hit.lat] : undefined;
   };
-  const pick = useCallback(
-    (clientX: number, clientY: number): CountryFeature | undefined => {
-      const pt = pointAt(clientX, clientY);
-      return pt && findIn(features, bounds, pt);
-    },
-    [features, bounds],
-  );
 
-  const polygons = useMemo(() => (hoverState ? [...features, hoverState as unknown as CountryFeature] : features), [features, hoverState]);
+  // spec 024: the selected state is drawn as an extra polygon over the country, with its flag once loaded (else the hover look)
+  const selState = useMemo(
+    () => (showStates && selectedStateId ? admin1?.states.find((s) => s.properties.wikidataid === selectedStateId) : undefined),
+    [admin1, showStates, selectedStateId],
+  );
+  const [stateFlagReady, setStateFlagReady] = useState(false);
+  useEffect(() => {
+    setStateFlagReady(false);
+    const box = selState && flagBox(selState.geometry);
+    if (!stateFlagUrl || !box) return;
+    let live = true;
+    loadFlag(stateFlagUrl)
+      .then((tex) => {
+        if (!live) return;
+        const u = mats.stateFlag.uniforms;
+        u.uFlag!.value = tex;
+        u.uBox!.value = box;
+        u.uMix!.value = FLAG_MIX;
+        setStateFlagReady(true);
+      })
+      .catch(() => {}); // no flag = the state keeps the hover look
+    return () => { live = false; };
+  }, [selState, stateFlagUrl, mats]);
+  const polygons = useMemo(() => {
+    const extra = [selState, hoverState !== selState ? hoverState : undefined].filter((x): x is StateFeature => !!x);
+    return extra.length ? [...features, ...(extra as unknown as CountryFeature[])] : features;
+  }, [features, hoverState, selState]);
 
   const ptr = useRef({ down: false, moved: false, x: 0, y: 0, raf: 0 });
   const onPointerDown = (e: React.PointerEvent) => {
@@ -456,7 +485,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       onHover(f ? idOf(f) : null);
       const st = showStates && pt && f && admin1 && admin1.id === idOf(f) ? findIn(admin1.states, admin1.bounds, pt) : undefined;
       setHoverState((prev) => (prev === st ? prev : st ?? null));
-      onHoverState?.(st?.properties.name ?? null);
+      onHoverState?.(st ? { name: st.properties.name, id: st.properties.wikidataid ?? null } : null);
     });
   };
   const onPointerUp = (e: React.PointerEvent) => {
@@ -464,8 +493,11 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     const wasClick = p.down && !p.moved;
     p.down = false;
     if (!wasClick || (e.target as HTMLElement).closest('.marker')) return;
-    const f = pick(e.clientX, e.clientY);
-    if (f) select(f);
+    const pt = pointAt(e.clientX, e.clientY);
+    const f = pt && findIn(features, bounds, pt);
+    const st = showStates && pt && f && admin1 && admin1.id === idOf(f) && idOf(f) === selectedId ? findIn(admin1.states, admin1.bounds, pt) : undefined;
+    if (st) onSelectState?.({ name: st.properties.name, id: st.properties.wikidataid ?? null }); // spec 024
+    else if (f) select(f);
     else onSelect(null);
   };
 
@@ -507,6 +539,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
 
   const capMaterial = useCallback(
     (d: object) => {
+      if (d === selState) return stateFlagReady ? mats.stateFlag : mats.stateHover;
       if (d === hoverState) return mats.stateHover;
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
@@ -528,12 +561,12 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (sv === 'partial') return mats.mid;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateFlagReady],
   );
 
   const polygonAltitude = useCallback(
-    (d: object) => (d === hoverState ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE),
-    [selectedId, hoverState],
+    (d: object) => (d === selState ? ALT_STATE_HOVER + 0.0001 : d === hoverState ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE),
+    [selectedId, hoverState, selState],
   );
 
   return (

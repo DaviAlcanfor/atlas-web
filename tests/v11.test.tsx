@@ -207,3 +207,24 @@ describe('history summary (spec 016 stage 1)', () => {
     expect(container.textContent).toBe('');
   });
 });
+
+describe('subdivision card (spec 024)', () => {
+  it('shows facts, flag credit and closes', async () => {
+    const { SubdivisionCard } = await import('../src/components/SubdivisionCard');
+    const { createMockApi } = await import('../src/api/mocks/adapter');
+    const sp = (await createMockApi(0).subdivisions('BR')).items.find((x) => x.code === 'BR-SP')!;
+    let closed = false;
+    render(<SubdivisionCard name="Sao Paulo" facts={sp} onClose={() => { closed = true; }} />);
+    expect(screen.getByRole('heading', { name: 'São Paulo' })).toBeTruthy();
+    expect(screen.getByText('BR-SP')).toBeTruthy();
+    expect(screen.getByText(/bandeira: .* Public domain/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Voltar ao país' }));
+    expect(closed).toBe(true);
+  });
+  it('without API facts: polygon name and "sem dados"', async () => {
+    const { SubdivisionCard } = await import('../src/components/SubdivisionCard');
+    render(<SubdivisionCard name="Distrito X" facts={undefined} onClose={() => {}} />);
+    expect(screen.getByRole('heading', { name: 'Distrito X' })).toBeTruthy();
+    expect(screen.getByText('sem dados')).toBeTruthy();
+  });
+});

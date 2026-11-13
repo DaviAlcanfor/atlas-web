@@ -127,6 +127,14 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .kind { margin-left: 10px; font: 400 10px/1 var(--f-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-text-faint); }
 .ev-title { margin: 3px 0 !important; font-weight: 500; }
 .clamp { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.subcard { margin: 16px 0 6px; padding: 14px 16px 10px; border: 1px solid var(--c-line-strong); border-left: 2px solid var(--c-signal); background: var(--c-panel-solid); }
+.subcard__head { display: flex; align-items: center; gap: 14px; }
+.subcard__flag { width: 72px; height: 48px; object-fit: contain; flex: none; border: 1px solid var(--c-line); background: var(--c-abyss); }
+.subcard__flag--none { display: grid; place-items: center; font: 400 10px/1.2 var(--f-mono); color: var(--c-text-faint); }
+.subcard__title { flex: 1; min-width: 0; }
+.subcard__kind { font: 500 10px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-text-faint); }
+.subcard h3 { margin: 2px 0 0; font: 600 20px/1.2 var(--f-sans); }
+.subcard .clues { margin-top: 10px; }
 .hsum__text p { margin: 0 0 8px !important; }
 .hsum__text.is-short { max-height: 7.6em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
 .periods { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--c-line); }

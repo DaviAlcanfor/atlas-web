@@ -1,5 +1,5 @@
 # 024 - Estados: bandeira e dados por subdivisão
-Status: draft | Contrato: v1.3 (delta abaixo) | API: atlas-api/specs/024-subdivisions-data.md (a escrever junto)
+Status: in progress (aprovada pelo dono em 2026-11-12: "vê o que tá pendente e já vai fazendo") | Contrato: v1.3 (CR-004) | API: atlas-api/specs/024-subdivisions-data.md (a escrever junto)
 
 ## Por quê
 O dono pediu a bandeira de cada estado no globo e "informações por estado" (quebra maior que o país). Os arquivos
@@ -30,7 +30,15 @@ GET /v1/countries/{iso2}/subdivisions -> { items: [ { id: "BR-SP", wikidata_id: 
   flag: {url, credit, license}|null } ], sources: [Source] }
 ```
 
+## Fase 1 entregue (2026-11-12)
+Com "Estados" ligado: hover mostra nome pt-BR + bandeira do estado no leitor do topo; clique num estado do país selecionado cobre o
+território com a bandeira dele (material de bandeira, como a do país) e abre o cartão "Estado / província" no topo do painel
+(capital, população com ano, área, código ISO, crédito/licença da bandeira, "voltar ao país"). Sem governador: o Wikidata está
+desatualizado (ver spec da API). Fora desta fase: rota `/pais/[iso2]/[sub]`, bandeiras de TODOS os estados de uma vez, IDH/IBGE.
+
 ## Tarefas
+- [x] API: ETL, migração 0012, endpoint, testes, CR-004 (adendo)
+- [x] Web: leitor com bandeira do estado; cartão no painel; bandeira do estado selecionado no globo
 - [ ] API: ler termos (Wikidata, Commons, GDL, IBGE) e citar na spec da API
 - [ ] API: ETL `wikidata-subdivisions` (SPARQL em lotes por país, com teto de espera do limite de taxa: ver o travamento do ETL de idiomas)
 - [ ] API: migração + endpoint + testes + fixture

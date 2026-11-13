@@ -5,8 +5,11 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { CountryDetail, GlossaryTerm } from './api/types';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { api } from './api';
+import type { CountryDetail, GlossaryTerm, Subdivision } from './api/types';
+import type { StateRef } from './components/Globe';
+import { useAsync } from './hooks/useAsync';
 import { CountryPanel } from './components/CountryPanel';
 import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
@@ -25,8 +28,10 @@ const NO_TERMS: never[] = [];
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
+  state: { ref: StateRef; facts: Subdivision | undefined } | null; // spec 024: clicked state of the selected country
+  clearState: () => void;
 }
-const ShellContext = createContext<ShellCtx>({ data: null });
+const ShellContext = createContext<ShellCtx>({ data: null, state: null, clearState: () => {} });
 
 export function Shell({ children }: { children: ReactNode }) {
   return <AtlasProvider><Chrome>{children}</Chrome></AtlasProvider>;
@@ -46,9 +51,15 @@ function Chrome({ children }: { children: ReactNode }) {
   const [globeReady, setGlobeReady] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
-  const [stateName, setStateName] = useState<string | null>(null); // hovered state/province of the selected country
+  const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
+  const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
-  useEffect(() => setStateName(null), [selectedCountry]);
+  useEffect(() => { setHoverState(null); setPickedState(null); }, [selectedCountry, showStates]);
+  const clearState = useCallback(() => setPickedState(null), []);
+  // spec 024: the selected country's state facts + flags, only while "Estados" is on; any failure = polygon names, no flags
+  const subsReq = useAsync(() => api.subdivisions(selectedCountry!), selectedCountry && showStates ? selectedCountry : null);
+  const subs = useMemo(() => new Map(subsReq.status === 'ok' ? subsReq.data.items.map((x) => [x.wikidata_id, x]) : []), [subsReq]);
+  const factsOf = (s: StateRef | null) => (s?.id ? subs.get(s.id) : undefined);
 
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
@@ -58,10 +69,10 @@ function Chrome({ children }: { children: ReactNode }) {
   const hoverFlag = hoveredCountry && data?.knownIds.has(hoveredCountry) ? flagPreviewUrl(hoveredCountry) : undefined;
 
   return (
-    <ShellContext.Provider value={{ data }}>
+    <ShellContext.Provider value={{ data, state: pickedState ? { ref: pickedState, facts: factsOf(pickedState) } : null, clearState }}>
       <GlossaryProvider terms={terms} countryName={countryName} onPickCountry={setSelectedCountry}>
-        {stateName && selectedName ? (
-          <InfoCard label={`Estado em ${selectedName}`} name={stateName} />
+        {hoverState && selectedName ? (
+          <InfoCard label={`Estado em ${selectedName}`} name={factsOf(hoverState)?.name ?? hoverState.name} flagUrl={factsOf(hoverState)?.flag?.url} />
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
         )}
@@ -97,7 +108,10 @@ function Chrome({ children }: { children: ReactNode }) {
               selectedId={selectedCountry}
               onHover={setHoveredCountry}
               onSelect={setSelectedCountry}
-              onHoverState={setStateName}
+              onHoverState={setHoverState}
+              selectedStateId={pickedState?.id ?? null}
+              onSelectState={setPickedState}
+              stateFlagUrl={factsOf(pickedState)?.flag?.url}
               showStates={showStates}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
@@ -121,7 +135,7 @@ function Chrome({ children }: { children: ReactNode }) {
  * country; undefined = the server could not ask, so the panel fetches in the browser).
  */
 export function CountryRoute({ slug, initial }: { slug: string; initial: CountryDetail | null | undefined }) {
-  const { data } = useContext(ShellContext);
+  const { data, state, clearState } = useContext(ShellContext);
   const { selectedCountry, setSelectedCountry } = useAtlas();
   const id = selectionFromPath(`/pais/${slug}`) ?? slug;
   // A click updates the selection before the new page arrives; the old panel steps aside instead of showing stale data.
@@ -131,6 +145,7 @@ export function CountryRoute({ slug, initial }: { slug: string; initial: Country
   const inApi = initial !== undefined ? initial !== null : data ? data.knownIds.has(id) : true;
   return (
     <CountryPanel key={id} iso2={id} name={initial?.name ?? polygonName ?? id} inApi={inApi} initial={initial ?? undefined} lat={feature?.properties.lat}
+      subdivision={state ?? undefined} onCloseSubdivision={clearState}
       onClose={() => setSelectedCountry(null)} />
   );
 }

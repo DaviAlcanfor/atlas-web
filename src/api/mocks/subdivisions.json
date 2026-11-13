@@ -1,0 +1,1204 @@
+{
+ "BR": {
+  "items": [
+   {
+    "wikidata_id": "Q40030",
+    "code": "BR-RS",
+    "name": "Rio Grande do Sul",
+    "capital": "Porto Alegre",
+    "area_km2": 281737.9,
+    "population": {
+     "value": 10882965,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Bandeira_do_Rio_Grande_do_Sul.svg/330px-Bandeira_do_Rio_Grande_do_Sul.svg.png",
+     "credit": "Srfortes / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q42508",
+    "code": "BR-RR",
+    "name": "Roraima",
+    "capital": "Boa Vista",
+    "area_km2": 223644.5,
+    "population": {
+     "value": 636707,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Bandeira_de_Roraima.svg/330px-Bandeira_de_Roraima.svg.png",
+     "credit": "E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q39517",
+    "code": "BR-PA",
+    "name": "Pará",
+    "capital": "Belém",
+    "area_km2": 1245870.7,
+    "population": {
+     "value": 8120131,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Bandeira_do_Par%C3%A1.svg/330px-Bandeira_do_Par%C3%A1.svg.png",
+     "credit": "Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40780",
+    "code": "BR-AC",
+    "name": "Acre",
+    "capital": "Rio Branco",
+    "area_km2": 152581.0,
+    "population": {
+     "value": 830018,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Bandeira_do_Acre.svg/330px-Bandeira_do_Acre.svg.png",
+     "credit": "This work has been released into the public domain by its author, E2m. This applies worldwide. In some countries this may not be legally possible; if so: E2m grants anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40130",
+    "code": "BR-AP",
+    "name": "Amapá",
+    "capital": "Macapá",
+    "area_km2": 142814.6,
+    "population": {
+     "value": 733759,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Bandeira_do_Amap%C3%A1.svg/330px-Bandeira_do_Amap%C3%A1.svg.png",
+     "credit": "E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43319",
+    "code": "BR-MS",
+    "name": "Mato Grosso do Sul",
+    "capital": "Campo Grande",
+    "area_km2": 357145.5,
+    "population": {
+     "value": 2757013,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Bandeira_de_Mato_Grosso_do_Sul.svg/330px-Bandeira_de_Mato_Grosso_do_Sul.svg.png",
+     "credit": "E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q15499",
+    "code": "BR-PR",
+    "name": "Paraná",
+    "capital": "Curitiba",
+    "area_km2": 199314.9,
+    "population": {
+     "value": 11444380,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Bandeira_do_Paran%C3%A1.svg/330px-Bandeira_do_Paran%C3%A1.svg.png",
+     "credit": "FXXX / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q41115",
+    "code": "BR-SC",
+    "name": "Santa Catarina",
+    "capital": "Florianópolis",
+    "area_km2": 95730.7,
+    "population": {
+     "value": 7610361,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Bandeira_de_Santa_Catarina.svg/330px-Bandeira_de_Santa_Catarina.svg.png",
+     "credit": "OAlexander (talk) (colours from Manual de Identidade Visual do Governo do Estado do Santa Catarina) / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40040",
+    "code": "BR-AM",
+    "name": "Amazonas",
+    "capital": "Manaus",
+    "area_km2": 1559167.9,
+    "population": {
+     "value": 3941613,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6b/Bandeira_do_Amazonas.svg/330px-Bandeira_do_Amazonas.svg.png",
+     "credit": "This work is in the public domain in Brazil for one of the following reasons: It is a work published or commissioned by a Brazilian government (federal, state, or municipal) prior to 1983. (Law 3071/1916, art. 662; Law 5988/1973, art. 46; Law 9610/1998, art. 115) It is the text of a treaty, convention, law, decree, regulation, judicial decision, or other official enactment. (Law 9610/1998, art. 8) It is a work whose authors' rights belong to the Brazilian government (federal, state, or municipal), for which the economic rights shall be protected for a period of 70 years from the first of January of the year following that of their disclosure or that of the author's demise, whichever is later. ([1]) / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43235",
+    "code": "BR-RO",
+    "name": "Rondônia",
+    "capital": "Porto Velho",
+    "area_km2": 237765.3,
+    "population": {
+     "value": 1581196,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Bandeira_de_Rond%C3%B4nia.svg/330px-Bandeira_de_Rond%C3%B4nia.svg.png",
+     "credit": "E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q42824",
+    "code": "BR-MT",
+    "name": "Mato Grosso",
+    "capital": "Cuiabá",
+    "area_km2": 903208.0,
+    "population": {
+     "value": 3950330,
+     "year": 2026
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Bandeira_de_Mato_Grosso.svg/330px-Bandeira_de_Mato_Grosso.svg.png",
+     "credit": "SVG implementation by E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q42362",
+    "code": "BR-MA",
+    "name": "Maranhão",
+    "capital": "São Luís",
+    "area_km2": 331983.2,
+    "population": {
+     "value": 6776699,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Bandeira_do_Maranh%C3%A3o.svg/330px-Bandeira_do_Maranh%C3%A3o.svg.png",
+     "credit": "No machine-readable author provided. E2m assumed (based on copyright claims). / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q42722",
+    "code": "BR-PI",
+    "name": "Piauí",
+    "capital": "Teresina",
+    "area_km2": 251755.5,
+    "population": {
+     "value": 3271199,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Bandeira_do_Piau%C3%AD.svg/330px-Bandeira_do_Piau%C3%AD.svg.png",
+     "credit": "E2m, Giro720 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40123",
+    "code": "BR-CE",
+    "name": "Ceará",
+    "capital": "Fortaleza",
+    "area_km2": 146348.3,
+    "population": {
+     "value": 8794957,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Bandeira_do_Cear%C3%A1.svg/330px-Bandeira_do_Cear%C3%A1.svg.png",
+     "credit": "Srfortes / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43255",
+    "code": "BR-RN",
+    "name": "Rio Grande do Norte",
+    "capital": "Natal",
+    "area_km2": 53306.8,
+    "population": {
+     "value": 3302729,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Bandeira_do_Rio_Grande_do_Norte.svg/330px-Bandeira_do_Rio_Grande_do_Norte.svg.png",
+     "credit": "Giro720 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q38088",
+    "code": "BR-PB",
+    "name": "Paraíba",
+    "capital": "João Pessoa",
+    "area_km2": 56584.6,
+    "population": {
+     "value": 3974687,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Bandeira_da_Para%C3%ADba.svg/330px-Bandeira_da_Para%C3%ADba.svg.png",
+     "credit": "SVG implementation by E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40942",
+    "code": "BR-PE",
+    "name": "Pernambuco",
+    "capital": "Recife",
+    "area_km2": 98937.8,
+    "population": {
+     "value": 9058931,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Bandeira_de_Pernambuco.svg/330px-Bandeira_de_Pernambuco.svg.png",
+     "credit": "Original: Revolução Pernambucana Vector: SpinnerLaserzthe2nd, E2m, Pedro Alb Xavier / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40885",
+    "code": "BR-AL",
+    "name": "Alagoas",
+    "capital": "Maceió",
+    "area_km2": 27767.0,
+    "population": {
+     "value": 3127683,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Bandeira_de_Alagoas.svg/330px-Bandeira_de_Alagoas.svg.png",
+     "credit": "Giro720 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43783",
+    "code": "BR-SE",
+    "name": "Sergipe",
+    "capital": "Aracaju",
+    "area_km2": 22050.3,
+    "population": {
+     "value": 2210004,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Bandeira_de_Sergipe.svg/330px-Bandeira_de_Sergipe.svg.png",
+     "credit": "E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q40430",
+    "code": "BR-BA",
+    "name": "Bahia",
+    "capital": "Salvador",
+    "area_km2": 565733.0,
+    "population": {
+     "value": 14141626,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Bandeira_da_Bahia.svg/330px-Bandeira_da_Bahia.svg.png",
+     "credit": "Diocleciano Ramos / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43233",
+    "code": "BR-ES",
+    "name": "Espírito Santo",
+    "capital": "Vitória",
+    "area_km2": 46077.5,
+    "population": {
+     "value": 3833712,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Bandeira_do_Esp%C3%ADrito_Santo.svg/330px-Bandeira_do_Esp%C3%ADrito_Santo.svg.png",
+     "credit": "SVG implementation by E2m / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q41428",
+    "code": "BR-RJ",
+    "name": "Rio de Janeiro",
+    "capital": "Rio de Janeiro",
+    "area_km2": 43696.1,
+    "population": {
+     "value": 16055174,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Bandeira_do_estado_do_Rio_de_Janeiro.svg/330px-Bandeira_do_estado_do_Rio_de_Janeiro.svg.png",
+     "credit": "FORTES / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q175",
+    "code": "BR-SP",
+    "name": "São Paulo",
+    "capital": "São Paulo",
+    "area_km2": 248209.4,
+    "population": {
+     "value": 46179008,
+     "year": 2026
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Bandeira_do_estado_de_S%C3%A3o_Paulo.svg/330px-Bandeira_do_estado_de_S%C3%A3o_Paulo.svg.png",
+     "credit": "Felipe Micaroni Lalli, Giro720 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q41587",
+    "code": "BR-GO",
+    "name": "Goiás",
+    "capital": "Goiânia",
+    "area_km2": 340086.0,
+    "population": {
+     "value": 7056495,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_Goi%C3%A1s.svg/330px-Flag_of_Goi%C3%A1s.svg.png",
+     "credit": "Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q119158",
+    "code": "BR-DF",
+    "name": "Distrito Federal",
+    "capital": "Brasília",
+    "area_km2": 5760.8,
+    "population": {
+     "value": 2817381,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Bandeira_do_Distrito_Federal_%28Brasil%29.svg/330px-Bandeira_do_Distrito_Federal_%28Brasil%29.svg.png",
+     "credit": "Governo do Distrito Federal; [ Decreto 1090 de 25/08/1969 Sem Revogação Expressa https://www.sinj.df.gov.br/sinj/Diario/97b57569-dff4-35b9-878b-80769812c242/00fcaf81.pdf] / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q39109",
+    "code": "BR-MG",
+    "name": "Minas Gerais",
+    "capital": "Belo Horizonte",
+    "area_km2": 586514.0,
+    "population": {
+     "value": 20539989,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Bandeira_de_Minas_Gerais.svg/330px-Bandeira_de_Minas_Gerais.svg.png",
+     "credit": "Plovisanta / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q43695",
+    "code": "BR-TO",
+    "name": "Tocantins",
+    "capital": "Palmas",
+    "area_km2": 278420.7,
+    "population": {
+     "value": 1511460,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Bandeira_do_Tocantins.svg/330px-Bandeira_do_Tocantins.svg.png",
+     "credit": "Own work / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   }
+  ],
+  "sources": [
+   {
+    "id": "wikidata",
+    "title": "Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC0 1.0",
+    "retrieved_at": null
+   }
+  ]
+ },
+ "JP": {
+  "items": [
+   {
+    "wikidata_id": "Q15701",
+    "code": "JP-46",
+    "name": "Kagoshima",
+    "capital": "Kagoshima",
+    "area_km2": 9132.4,
+    "population": {
+     "value": 1586435,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Flag_of_Kagoshima_Prefecture.svg/330px-Flag_of_Kagoshima_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q133924",
+    "code": "JP-44",
+    "name": "Oita",
+    "capital": "Oita",
+    "area_km2": 6340.7,
+    "population": {
+     "value": 1121589,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Flag_of_Oita_Prefecture.svg/330px-Flag_of_Oita_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q123258",
+    "code": "JP-40",
+    "name": "Fukuoka",
+    "capital": "Fukuoka",
+    "area_km2": 4971.0,
+    "population": {
+     "value": 5108038,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_Fukuoka_Prefecture.svg/330px-Flag_of_Fukuoka_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q160420",
+    "code": "JP-41",
+    "name": "Saga",
+    "capital": "Saga",
+    "area_km2": 2439.6,
+    "population": {
+     "value": 809824,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Flag_of_Saga_Prefecture.svg/330px-Flag_of_Saga_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q169376",
+    "code": "JP-42",
+    "name": "Nagasaki",
+    "capital": "Nagasaki",
+    "area_km2": 4105.5,
+    "population": {
+     "value": 1307309,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Nagasaki_Prefecture.svg/330px-Flag_of_Nagasaki_Prefecture.svg.png",
+     "credit": "Original: Unknown author Vector: Alex Tora / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q130308",
+    "code": "JP-43",
+    "name": "Kumamoto",
+    "capital": "Kumamoto",
+    "area_km2": 7404.1,
+    "population": {
+     "value": 1732644,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Kumamoto_Prefecture.svg/330px-Flag_of_Kumamoto_Prefecture.svg.png",
+     "credit": "Kzaral, Xeror / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q130300",
+    "code": "JP-45",
+    "name": "Miyazaki",
+    "capital": "Miyazaki",
+    "area_km2": 7736.0,
+    "population": {
+     "value": 1061032,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Flag_of_Miyazaki_Prefecture.svg/330px-Flag_of_Miyazaki_Prefecture.svg.png",
+     "credit": "Ninane at nl.wikipedia / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q160734",
+    "code": "JP-36",
+    "name": "Tokushima",
+    "capital": "Tokushima",
+    "area_km2": 4144.9,
+    "population": {
+     "value": 721721,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_Tokushima_Prefecture.svg/330px-Flag_of_Tokushima_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht Insignia This image shows a flag, a coat of arms, a seal or some other official insignia. The use of such symbols is restricted in many countries. These restrictions are independent of the copyright status. This work is ineligible for copyright and therefore in the public domain because it consists entirely of information that is common property and contains no original authorship. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q161454",
+    "code": "JP-37",
+    "name": "Kagawa",
+    "capital": "Takamatsu",
+    "area_km2": 1861.7,
+    "population": {
+     "value": 949358,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Kagawa_Prefecture.svg/330px-Flag_of_Kagawa_Prefecture.svg.png",
+     "credit": "Zscout370, Mike Rohsopht / Wikimedia Commons",
+     "license": "CC BY-SA 3.0"
+    }
+   },
+   {
+    "wikidata_id": "Q123376",
+    "code": "JP-38",
+    "name": "Ehime",
+    "capital": "Matsuyama",
+    "area_km2": 5676.4,
+    "population": {
+     "value": 1321580,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_Ehime_Prefecture.svg/330px-Flag_of_Ehime_Prefecture.svg.png",
+     "credit": "en:User:Nameneko / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q134093",
+    "code": "JP-39",
+    "name": "Kochi",
+    "capital": "Kochi",
+    "area_km2": 7103.9,
+    "population": {
+     "value": 688870,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Kochi_Prefecture.svg/330px-Flag_of_Kochi_Prefecture.svg.png",
+     "credit": "Kochi prefecture administration Vectorized by Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q132751",
+    "code": "JP-32",
+    "name": "Shimane",
+    "capital": "Matsue",
+    "area_km2": 6707.9,
+    "population": {
+     "value": 664539,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Shimane_Prefecture.svg/330px-Flag_of_Shimane_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht Insignia This image shows a flag, a coat of arms, a seal or some other official insignia. The use of such symbols is restricted in many countries. These restrictions are independent of the copyright status. This work is ineligible for copyright and therefore in the public domain because it consists entirely of information that is common property and contains no original authorship. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q127264",
+    "code": "JP-35",
+    "name": "Yamaguchi",
+    "capital": "Yamaguchi",
+    "area_km2": 6110.9,
+    "population": {
+     "value": 1336522,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Yamaguchi_Prefecture.svg/330px-Flag_of_Yamaguchi_Prefecture.svg.png",
+     "credit": "Alex Tora, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q133935",
+    "code": "JP-31",
+    "name": "Tottori",
+    "capital": "Tottori",
+    "area_km2": 3507.1,
+    "population": {
+     "value": 549925,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Flag_of_Tottori_Prefecture.svg/330px-Flag_of_Tottori_Prefecture.svg.png",
+     "credit": "Guilherme Paula, Mike Rohsopht Insignia This image shows a flag, a coat of arms, a seal or some other official insignia. The use of such symbols is restricted in many countries. These restrictions are independent of the copyright status. This work is ineligible for copyright and therefore in the public domain because it consists entirely of information that is common property and contains no original authorship. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q130290",
+    "code": "JP-28",
+    "name": "Hyōgo",
+    "capital": "Kōbe",
+    "area_km2": 8401.0,
+    "population": {
+     "value": 5453392,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_Hyogo_Prefecture.svg/330px-Flag_of_Hyogo_Prefecture.svg.png",
+     "credit": "Guilherme Paula and Maanshen / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q120730",
+    "code": "JP-26",
+    "name": "Quioto",
+    "capital": "Quioto",
+    "area_km2": 4612.2,
+    "population": {
+     "value": 2563192,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Kyoto_Prefecture.svg/330px-Flag_of_Kyoto_Prefecture.svg.png",
+     "credit": "Emblem of Kyoto Prefecture.svg by Mike Rohsopht Flag of Kyoto Prefecture.png by Machina in the Deep-Blue Sea (based on a work by Shane Markle) This derivative work: Pchapman12345 Minor corrections: Zscout370 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q133879",
+    "code": "JP-18",
+    "name": "Fukui",
+    "capital": "Fukui",
+    "area_km2": 4189.0,
+    "population": {
+     "value": 764533,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Fukui_Prefecture.svg/330px-Flag_of_Fukui_Prefecture.svg.png",
+     "credit": "This logo image consists only of simple geometric shapes or text. It does not meet the threshold of originality needed for copyright protection, and is therefore in the public domain. Although it is free of copyright restrictions, this image may still be subject to other restrictions. See WP:PD § Fonts and typefaces or Template talk:PD-textlogo for more information. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131281",
+    "code": "JP-17",
+    "name": "Ishikawa",
+    "capital": "Kanazawa",
+    "area_km2": 4185.2,
+    "population": {
+     "value": 1132497,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Ishikawa_Prefecture.svg/330px-Flag_of_Ishikawa_Prefecture.svg.png",
+     "credit": "Kzaral / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q132929",
+    "code": "JP-16",
+    "name": "Toyama",
+    "capital": "Toyama",
+    "area_km2": 4247.2,
+    "population": {
+     "value": 1031262,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Flag_of_Toyama_Prefecture.svg/330px-Flag_of_Toyama_Prefecture.svg.png",
+     "credit": "Guilherme Paula and Maanshen / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q132705",
+    "code": "JP-15",
+    "name": "Niigata",
+    "capital": "Niigata",
+    "area_km2": 12582.5,
+    "population": {
+     "value": 2192319,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Niigata_Prefecture.svg/330px-Flag_of_Niigata_Prefecture.svg.png",
+     "credit": "UnreifeKirsche, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q125863",
+    "code": "JP-06",
+    "name": "Yamagata",
+    "capital": "Yamagata",
+    "area_km2": 9323.1,
+    "population": {
+     "value": 1063231,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Flag_of_Yamagata_Prefecture.svg/330px-Flag_of_Yamagata_Prefecture.svg.png",
+     "credit": "Zscout370 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q81863",
+    "code": "JP-05",
+    "name": "Akita",
+    "capital": "Akita",
+    "area_km2": 11637.5,
+    "population": {
+     "value": 946380,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Akita_Prefecture.svg/330px-Flag_of_Akita_Prefecture.svg.png",
+     "credit": "Monaneko, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q71699",
+    "code": "JP-02",
+    "name": "Aomori",
+    "capital": "Aomori",
+    "area_km2": 9645.6,
+    "population": {
+     "value": 1232303,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Aomori_Prefecture.svg/330px-Flag_of_Aomori_Prefecture.svg.png",
+     "credit": "Monaneko / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q48326",
+    "code": "JP-03",
+    "name": "Iwate",
+    "capital": "Morioka",
+    "area_km2": 15275.0,
+    "population": {
+     "value": 1205698,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Iwate_Prefecture.svg/330px-Flag_of_Iwate_Prefecture.svg.png",
+     "credit": "Original: Unknown author Vector: Monaneko, Zscout370, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q47896",
+    "code": "JP-04",
+    "name": "Miyagi",
+    "capital": "Sendai",
+    "area_km2": 7282.3,
+    "population": {
+     "value": 2288456,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Miyagi_Prefecture.svg/330px-Flag_of_Miyagi_Prefecture.svg.png",
+     "credit": "Monaneko, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q71707",
+    "code": "JP-07",
+    "name": "Fukushima",
+    "capital": "Fukushima",
+    "area_km2": 13784.1,
+    "population": {
+     "value": 1825325,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Fukushima_Prefecture.svg/330px-Flag_of_Fukushima_Prefecture.svg.png",
+     "credit": "Monaneko / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q83273",
+    "code": "JP-08",
+    "name": "Ibaraki",
+    "capital": "Mito",
+    "area_km2": 6097.4,
+    "population": {
+     "value": 2862372,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Flag_of_Ibaraki_Prefecture.svg/330px-Flag_of_Ibaraki_Prefecture.svg.png",
+     "credit": "Monaneko / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q80011",
+    "code": "JP-12",
+    "name": "Chiba",
+    "capital": "Chiba",
+    "area_km2": 5157.5,
+    "population": {
+     "value": 6279002,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Chiba_Prefecture.svg/330px-Flag_of_Chiba_Prefecture.svg.png",
+     "credit": "Unknown / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q1490",
+    "code": "JP-13",
+    "name": "Tóquio",
+    "capital": "Shinjuku",
+    "area_km2": 2194.1,
+    "population": {
+     "value": 14264798,
+     "year": 2022
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Flag_of_Tokyo_Metropolis.svg/330px-Flag_of_Tokyo_Metropolis.svg.png",
+     "credit": "Original: Unknown Vector: Zscout370 / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q127513",
+    "code": "JP-14",
+    "name": "Kanagawa",
+    "capital": "Yokohama",
+    "area_km2": 2416.1,
+    "population": {
+     "value": 9216009,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Flag_of_Kanagawa_Prefecture.svg/330px-Flag_of_Kanagawa_Prefecture.svg.png",
+     "credit": "Monaneko, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131320",
+    "code": "JP-22",
+    "name": "Shizuoka",
+    "capital": "Shizuoka",
+    "area_km2": 7779.6,
+    "population": {
+     "value": 3609465,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Shizuoka_Prefecture.svg/330px-Flag_of_Shizuoka_Prefecture.svg.png",
+     "credit": "Mike Rohsopht Insignia This image shows a flag, a coat of arms, a seal or some other official insignia. The use of such symbols is restricted in many countries. These restrictions are independent of the copyright status. This work is ineligible for copyright and therefore in the public domain because it consists entirely of information that is common property and contains no original authorship. / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q80434",
+    "code": "JP-23",
+    "name": "Aichi",
+    "capital": "Nagoia",
+    "area_km2": 5173.2,
+    "population": {
+     "value": 7521192,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Flag_of_Aichi_Prefecture.svg/330px-Flag_of_Aichi_Prefecture.svg.png",
+     "credit": "en:User:Nameneko / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q128196",
+    "code": "JP-24",
+    "name": "Mie",
+    "capital": "Tsu",
+    "area_km2": 5777.2,
+    "population": {
+     "value": 1768632,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Mie_Prefecture.svg/330px-Flag_of_Mie_Prefecture.svg.png",
+     "credit": "NalesnikLD, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131314",
+    "code": "JP-30",
+    "name": "Wakayama",
+    "capital": "Wakayama",
+    "area_km2": 4725.7,
+    "population": {
+     "value": 910687,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Wakayama_Prefecture.svg/330px-Flag_of_Wakayama_Prefecture.svg.png",
+     "credit": "PRiMENON, Zscout370, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q122723",
+    "code": "JP-27",
+    "name": "Osaka",
+    "capital": "Osaka",
+    "area_km2": 1905.3,
+    "population": {
+     "value": 8826684,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Osaka_Prefecture.svg/330px-Flag_of_Osaka_Prefecture.svg.png",
+     "credit": "Shane Markle (OsgoodeLawyer) , Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q132936",
+    "code": "JP-33",
+    "name": "Okayama",
+    "capital": "Okayama",
+    "area_km2": 7113.2,
+    "population": {
+     "value": 1878884,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Flag_of_Okayama_Prefecture.svg/330px-Flag_of_Okayama_Prefecture.svg.png",
+     "credit": "Kzaral / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q617375",
+    "code": "JP-34",
+    "name": "Hiroshima",
+    "capital": "Hiroshima",
+    "area_km2": 8477.0,
+    "population": {
+     "value": 2790804,
+     "year": 2021
+    },
+    "flag": null
+   },
+   {
+    "wikidata_id": "Q35581",
+    "code": null,
+    "name": "Hokkaido",
+    "capital": null,
+    "area_km2": 77984.5,
+    "population": {
+     "value": 5383579,
+     "year": 2015
+    },
+    "flag": null
+   },
+   {
+    "wikidata_id": "Q766445",
+    "code": "JP-47",
+    "name": "Okinawa",
+    "capital": "Naha",
+    "area_km2": 2281.0,
+    "population": {
+     "value": 1460652,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Okinawa_Prefecture.svg/330px-Flag_of_Okinawa_Prefecture.svg.png",
+     "credit": "Zach Harden (Zscout370)Optimized by Wrightbus / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q129499",
+    "code": "JP-10",
+    "name": "Gunma",
+    "capital": "Maebashi",
+    "area_km2": 6362.3,
+    "population": {
+     "value": 1934920,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Gunma_Prefecture.svg/330px-Flag_of_Gunma_Prefecture.svg.png",
+     "credit": "Monaneko, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q127877",
+    "code": "JP-20",
+    "name": "Nagano",
+    "capital": "Nagano",
+    "area_km2": 13585.2,
+    "population": {
+     "value": 2024073,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Nagano_Prefecture.svg/330px-Flag_of_Nagano_Prefecture.svg.png",
+     "credit": "Unknown / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q44843",
+    "code": "JP-09",
+    "name": "Tochigi",
+    "capital": "Utsunomiya",
+    "area_km2": 6408.1,
+    "population": {
+     "value": 1927754,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Flag_of_Tochigi_Prefecture.svg/330px-Flag_of_Tochigi_Prefecture.svg.png",
+     "credit": "Monaneko, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131277",
+    "code": "JP-21",
+    "name": "Gifu",
+    "capital": "Gifu",
+    "area_km2": 10621.2,
+    "population": {
+     "value": 1975397,
+     "year": 2020
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_Gifu_Prefecture.svg/330px-Flag_of_Gifu_Prefecture.svg.png",
+     "credit": "Fvasconcellos (talk · contribs). PNG version by Kzaral / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131358",
+    "code": "JP-25",
+    "name": "Shiga",
+    "capital": "Ōtsu",
+    "area_km2": 4017.4,
+    "population": {
+     "value": 1411168,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_Shiga_Prefecture.svg/330px-Flag_of_Shiga_Prefecture.svg.png",
+     "credit": "Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q128186",
+    "code": "JP-11",
+    "name": "Saitama",
+    "capital": "Saitama",
+    "area_km2": 3797.8,
+    "population": {
+     "value": 7343100,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Flag_of_Saitama_Prefecture.svg/330px-Flag_of_Saitama_Prefecture.svg.png",
+     "credit": "Monaneko, Xeror, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q132720",
+    "code": "JP-19",
+    "name": "Yamanashi",
+    "capital": "Kōfu",
+    "area_km2": 4465.4,
+    "population": {
+     "value": 803963,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Yamanashi_Prefecture.svg/330px-Flag_of_Yamanashi_Prefecture.svg.png",
+     "credit": "UnreifeKirsche, Mike Rohsopht / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   },
+   {
+    "wikidata_id": "Q131287",
+    "code": "JP-29",
+    "name": "Nara",
+    "capital": "Nara",
+    "area_km2": 3691.1,
+    "population": {
+     "value": 1319305,
+     "year": 2021
+    },
+    "flag": {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Nara_Prefecture.svg/330px-Flag_of_Nara_Prefecture.svg.png",
+     "credit": "Original: PRiMENON Vector: Wrightbus / Wikimedia Commons",
+     "license": "Public domain"
+    }
+   }
+  ],
+  "sources": [
+   {
+    "id": "wikidata",
+    "title": "Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC0 1.0",
+    "retrieved_at": null
+   }
+  ]
+ }
+}

@@ -152,3 +152,9 @@ export const CurrencyHistory = z.object({
 // ---- v1.3 proposal (spec 016 stage 1, CR-004): condensed pt.wikipedia history. Not in production yet: any failure = section hidden. ----
 export const Period = z.object({ id: Str, title: Str, year_start: Year.nullable(), year_end: Year.nullable(), summary: Str, event_count: z.number().int() });
 export const CountryHistory = z.object({ summary: NStr, periods: z.array(Period), sources: z.array(Source) });
+// ---- v1.3 proposal (spec 024, CR-004 addendum): facts + flag of each admin-1 unit, keyed by the polygons' `wikidataid`. ----
+export const Subdivision = z.object({
+  wikidata_id: Str, code: NStr, name: Str, capital: NStr, area_km2: z.number().nullable(),
+  population: z.object({ value: z.number().int(), year: z.number().int().nullable() }).nullable(), flag: Image.nullable(),
+});
+export const SubdivisionList = z.object({ items: z.array(Subdivision), sources: z.array(Source) });
