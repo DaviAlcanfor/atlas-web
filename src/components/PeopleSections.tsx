@@ -12,7 +12,7 @@ const PAGE = 10;
 const LEADERS_SHOWN = 3; // spec 023: only the latest predecessors; the rest is one click away
 
 /** One person: photo (with the credit + licence the contract requires) or initials, name, free-form lines, Wikipedia link. */
-function PersonRow({ name, image, wiki, lines }: { name: string; image: Image | null; wiki: string | null; lines: (string | null | undefined)[] }) {
+export function PersonRow({ name, image, wiki, lines }: { name: string; image: Image | null; wiki: string | null; lines: (string | null | undefined)[] }) {
   const href = safeHref(wiki);
   const src = safeHref(image?.url);
   return (

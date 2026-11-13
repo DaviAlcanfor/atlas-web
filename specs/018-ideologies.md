@@ -1,5 +1,5 @@
 # 018 - Ideias e ideologias: pensadores e figuras de cada lado
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/018-ideologies.md | Executor: Sonnet (UI), Opus (curadoria na API)
+Status: in progress (fase 1 feita em 2026-11-13; marcos e revisão dos verbetes pendentes) | Contrato: v1.2 | API: atlas-api/specs/018-ideologies.md | Executor: Sonnet (UI), Opus (curadoria na API)
 
 ## Por quê
 Entender, em cada país, conceitos como capitalismo, comunismo, socialismo, liberalismo, conservadorismo, social-democracia,
@@ -27,4 +27,7 @@ GET /v1/ideologies/{id}             -> { term: GlossaryTerm, founders: IdeologyF
 ```
 
 ## Tarefas
-- [ ] zod + mocks; seção Ideias políticas; cartão de figura; página `#/ideias/<id>`
+- [x] zod + mocks; seção "Ideias políticas" no painel (correntes em `<details>`, mesmo layout para todas, cada figura diz por que está
+  na lista: "filiado(a) ao Partido X" ou "corrente declarada"); página `/ideias/[id]` (verbete, figuras mais conhecidas no mundo,
+  onde governou); tema "Correntes políticas" no glossário com link para a página
+- [ ] marcos por corrente; revisão humana dos verbetes

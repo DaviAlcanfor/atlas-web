@@ -1,0 +1,6087 @@
+{
+ "countries": {
+  "BR": {
+   "items": [
+    {
+     "term": {
+      "id": "conservadorismo",
+      "kind": "ideology",
+      "label": "Conservadorismo",
+      "short": "Corrente que valoriza tradições, instituições estabelecidas e mudanças graduais em vez de rupturas.",
+      "body": "Defende a preservação de instituições como família, religião e nação, a ordem social e reformas lentas; as posições econômicas variam entre países e épocas.\nGanhou forma no fim do século XVIII como reação à Revolução Francesa, com Edmund Burke, e hoje dá nome a partidos de centro-direita e de direita em muitos países.\nDefensores dizem que protege o que funciona e evita experimentos sociais arriscados. Críticos dizem que dificulta mudanças necessárias e pode preservar desigualdades e exclusões antigas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-conservadorismo",
+        "title": "Conservadorismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Conservadorismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-conservatism",
+        "title": "Conservatism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Conservatism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q485946",
+       "name": "Itamar Franco",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2011,
+       "summary": "33.º presidente do Brasil (1992–1995)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg/330px-Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg",
+        "credit": "Renato Araújo/Arquivo/Agência Brasil / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Itamar_Franco",
+       "via": "party",
+       "party": {
+        "id": "Q2653155",
+        "name": "Partido Liberal"
+       }
+      },
+      {
+       "person_id": "Q236503",
+       "name": "Fernando Collor",
+       "role": "leader",
+       "birth_year": 1949,
+       "death_year": null,
+       "summary": "32.º presidente do Brasil (1990–1992)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg/330px-Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg",
+        "credit": "Ubirajara Dettimar/Presidência da República / Wikimedia Commons",
+        "license": "CC BY-SA 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fernando_Collor",
+       "via": "party",
+       "party": {
+        "id": "Q1713552",
+        "name": "Partido Democrático Social"
+       }
+      },
+      {
+       "person_id": "Q10283057",
+       "name": "Flávio Bolsonaro",
+       "role": "leader",
+       "birth_year": 1981,
+       "death_year": null,
+       "summary": "político brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg/330px-Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg",
+        "credit": "Agência Senado / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fl%C3%A1vio_Bolsonaro",
+       "via": "party",
+       "party": {
+        "id": "Q732852",
+        "name": "Progressistas"
+       }
+      },
+      {
+       "person_id": "Q455703",
+       "name": "José de Alencar",
+       "role": "leader",
+       "birth_year": 1829,
+       "death_year": 1877,
+       "summary": "escritor e romancista brasileiro",
+       "works": [
+        "Iracema",
+        "O Guarani",
+        "Ubirajara"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Jose_de_Alencar.png/330px-Jose_de_Alencar.png",
+        "credit": "Alberto Henschel / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jos%C3%A9_de_Alencar",
+       "via": "party",
+       "party": {
+        "id": "Q2016956",
+        "name": "Partido Conservador"
+       }
+      },
+      {
+       "person_id": "Q1797248",
+       "name": "Oscar Schmidt",
+       "role": "other",
+       "birth_year": 1958,
+       "death_year": 2026,
+       "summary": "basquetebolista brasileiro (1958–2026)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Oscar_Schmidt_%283x4%29.jpg/330px-Oscar_Schmidt_%283x4%29.jpg",
+        "credit": "Sérgio Savarese / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Oscar_Schmidt",
+       "via": "party",
+       "party": {
+        "id": "Q732852",
+        "name": "Progressistas"
+       }
+      },
+      {
+       "person_id": "Q349583",
+       "name": "José Alencar",
+       "role": "leader",
+       "birth_year": 1931,
+       "death_year": 2011,
+       "summary": "empresário e político brasileiro, 23.º vice-presidente do Brasil",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Jose_alencar_23_out_2007.jpg/330px-Jose_alencar_23_out_2007.jpg",
+        "credit": "Ricardo Stuckert/PR / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jos%C3%A9_Alencar",
+       "via": "party",
+       "party": {
+        "id": "Q2653155",
+        "name": "Partido Liberal"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q732852",
+       "name": "Progressistas"
+      },
+      {
+       "id": "Q2016956",
+       "name": "Partido Conservador"
+      },
+      {
+       "id": "Q1713552",
+       "name": "Partido Democrático Social"
+      },
+      {
+       "id": "Q2653155",
+       "name": "Partido Liberal"
+      },
+      {
+       "id": "Q60591850",
+       "name": "Partido Progressista Brasileiro"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "democracia-crista",
+      "kind": "ideology",
+      "label": "Democracia cristã",
+      "short": "Corrente que aplica princípios do cristianismo, sobretudo a doutrina social da Igreja, à política democrática.",
+      "body": "Defende economia de mercado com responsabilidade social, valorização da família e de comunidades intermediárias e cooperação entre classes sociais.\nGanhou força na Europa depois da Segunda Guerra Mundial, com partidos que governaram a Alemanha Ocidental e a Itália por décadas, e também teve partidos fortes na América Latina, como no Chile.\nDefensores destacam seu papel na reconstrução europeia e na integração do continente. Críticos à esquerda apontam posições conservadoras em temas de costumes; críticos laicos questionam a presença da religião na política.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-democracia-crista",
+        "title": "Democracia cristã (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Democracia_crist%C3%A3",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-christian-democracy",
+        "title": "Christian democracy (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Christian_democracy",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q10304982",
+       "name": "Jair Bolsonaro",
+       "role": "leader",
+       "birth_year": 1955,
+       "death_year": null,
+       "summary": "38.º presidente do Brasil (2019–2023)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/31_01_2022_Jair_Bolsonaro_%2851853892252%29.jpg/330px-31_01_2022_Jair_Bolsonaro_%2851853892252%29.jpg",
+        "credit": "Palácio do Planalto from Brasilia, Brasil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jair_Bolsonaro",
+       "via": "party",
+       "party": {
+        "id": "Q2731720",
+        "name": "Partido Liberal"
+       }
+      },
+      {
+       "person_id": "Q485946",
+       "name": "Itamar Franco",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2011,
+       "summary": "33.º presidente do Brasil (1992–1995)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg/330px-Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg",
+        "credit": "Renato Araújo/Arquivo/Agência Brasil / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Itamar_Franco",
+       "via": "party",
+       "party": {
+        "id": "Q2534868",
+        "name": "AGIR"
+       }
+      },
+      {
+       "person_id": "Q236503",
+       "name": "Fernando Collor",
+       "role": "leader",
+       "birth_year": 1949,
+       "death_year": null,
+       "summary": "32.º presidente do Brasil (1990–1992)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg/330px-Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg",
+        "credit": "Ubirajara Dettimar/Presidência da República / Wikimedia Commons",
+        "license": "CC BY-SA 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fernando_Collor",
+       "via": "party",
+       "party": {
+        "id": "Q2534868",
+        "name": "AGIR"
+       }
+      },
+      {
+       "person_id": "Q310123",
+       "name": "Jânio Quadros",
+       "role": "leader",
+       "birth_year": 1917,
+       "death_year": 1992,
+       "summary": "22.º presidente do Brasil (1961)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/J%C3%A2nio_Quadros%2C_presidente_do_Brasil_%281961%29.jpg/330px-J%C3%A2nio_Quadros%2C_presidente_do_Brasil_%281961%29.jpg",
+        "credit": "Agência Brasil / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/J%C3%A2nio_Quadros",
+       "via": "party",
+       "party": {
+        "id": "Q3366416",
+        "name": "Partido Democrata Cristão"
+       }
+      },
+      {
+       "person_id": "Q10283057",
+       "name": "Flávio Bolsonaro",
+       "role": "leader",
+       "birth_year": 1981,
+       "death_year": null,
+       "summary": "político brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg/330px-Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg",
+        "credit": "Agência Senado / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fl%C3%A1vio_Bolsonaro",
+       "via": "party",
+       "party": {
+        "id": "Q2731720",
+        "name": "Partido Liberal"
+       }
+      },
+      {
+       "person_id": "Q139552",
+       "name": "Clodovil Hernandes",
+       "role": "leader",
+       "birth_year": 1937,
+       "death_year": 2009,
+       "summary": "estilista, apresentador e político brasileiro (1937–2009)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Clodovil_-_2009.jpg/330px-Clodovil_-_2009.jpg",
+        "credit": "José Cruz/ABr / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Clodovil_Hernandes",
+       "via": "party",
+       "party": {
+        "id": "Q2534868",
+        "name": "AGIR"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q2731720",
+       "name": "Partido Liberal"
+      },
+      {
+       "id": "Q926973",
+       "name": "Republicanos"
+      },
+      {
+       "id": "Q2534868",
+       "name": "AGIR"
+      },
+      {
+       "id": "Q3366416",
+       "name": "Partido Democrata Cristão"
+      },
+      {
+       "id": "Q2653287",
+       "name": "Democracia Cristã"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "populismo",
+      "kind": "ideology",
+      "label": "Populismo",
+      "short": "Estilo político que opõe um \"povo\" unido a uma \"elite\" vista como corrupta ou distante.",
+      "body": "Mais um modo de fazer política do que um programa: apresenta o líder ou o partido como voz direta do povo contra as elites e pode aparecer combinado com ideias de esquerda ou de direita.\nTem exemplos no movimento agrário dos Estados Unidos no século XIX, em governos latino-americanos do século XX e em vários partidos e governos do século XXI.\nDefensores dizem que dá voz a grupos ignorados pela política tradicional. Críticos dizem que tende a enfraquecer instituições, imprensa e controles sobre o poder.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-populismo",
+        "title": "Populismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Populismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-populism",
+        "title": "Populism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Populism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q10304982",
+       "name": "Jair Bolsonaro",
+       "role": "leader",
+       "birth_year": 1955,
+       "death_year": null,
+       "summary": "38.º presidente do Brasil (2019–2023)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/31_01_2022_Jair_Bolsonaro_%2851853892252%29.jpg/330px-31_01_2022_Jair_Bolsonaro_%2851853892252%29.jpg",
+        "credit": "Palácio do Planalto from Brasilia, Brasil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jair_Bolsonaro",
+       "via": "party",
+       "party": {
+        "id": "Q2731720",
+        "name": "Partido Liberal"
+       }
+      },
+      {
+       "person_id": "Q485946",
+       "name": "Itamar Franco",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2011,
+       "summary": "33.º presidente do Brasil (1992–1995)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg/330px-Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg",
+        "credit": "Renato Araújo/Arquivo/Agência Brasil / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Itamar_Franco",
+       "via": "party",
+       "party": {
+        "id": "Q1576143",
+        "name": "Partido Trabalhista Brasileiro"
+       }
+      },
+      {
+       "person_id": "Q236503",
+       "name": "Fernando Collor",
+       "role": "leader",
+       "birth_year": 1949,
+       "death_year": null,
+       "summary": "32.º presidente do Brasil (1990–1992)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg/330px-Foto_oficial_do_presidente_Fernando_Collor_de_Melo._%2838405801411%29.jpg",
+        "credit": "Ubirajara Dettimar/Presidência da República / Wikimedia Commons",
+        "license": "CC BY-SA 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fernando_Collor",
+       "via": "party",
+       "party": {
+        "id": "Q1576143",
+        "name": "Partido Trabalhista Brasileiro"
+       }
+      },
+      {
+       "person_id": "Q197729",
+       "name": "Marques Batista de Abreu",
+       "role": "other",
+       "birth_year": 1973,
+       "death_year": null,
+       "summary": "Político e ex-jogador de futebol",
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Marques_(futebolista)",
+       "via": "party",
+       "party": {
+        "id": "Q1576143",
+        "name": "Partido Trabalhista Brasileiro"
+       }
+      },
+      {
+       "person_id": "Q10283057",
+       "name": "Flávio Bolsonaro",
+       "role": "leader",
+       "birth_year": 1981,
+       "death_year": null,
+       "summary": "político brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg/330px-Foto_oficial_do_senador_Fl%C3%A1vio_Bolsonaro_%28v._AgSen%29_%283x4%29.jpg",
+        "credit": "Agência Senado / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fl%C3%A1vio_Bolsonaro",
+       "via": "party",
+       "party": {
+        "id": "Q2731720",
+        "name": "Partido Liberal"
+       }
+      },
+      {
+       "person_id": "Q1255932",
+       "name": "José Róbson do Nascimento",
+       "role": "leader",
+       "birth_year": 1969,
+       "death_year": null,
+       "summary": "futebolista brasileiro",
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jos%C3%A9_R%C3%B3bson_do_Nascimento",
+       "via": "party",
+       "party": {
+        "id": "Q1576143",
+        "name": "Partido Trabalhista Brasileiro"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q2731720",
+       "name": "Partido Liberal"
+      },
+      {
+       "id": "Q3366792",
+       "name": "Avante"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "social-democracia",
+      "kind": "ideology",
+      "label": "Social-democracia",
+      "short": "Corrente que combina democracia e economia de mercado com Estado de bem-estar social e redistribuição de renda.",
+      "body": "Defende serviços públicos universais (saúde, educação, previdência), direitos trabalhistas, impostos progressivos e regulação dos mercados, dentro de uma democracia multipartidária.\nNasceu no movimento socialista do fim do século XIX e, ao longo do século XX, passou a buscar reformas pelo voto em vez de revolução; governou por longos períodos nos países nórdicos e em boa parte da Europa Ocidental.\nDefensores associam o modelo a baixa desigualdade e alta qualidade de vida. Críticos à direita apontam carga tributária e gasto público altos; críticos à esquerda dizem que ela abandonou a transformação do capitalismo.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-social-democracia",
+        "title": "Social-democracia (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Social-democracia",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-social-democracy",
+        "title": "Social democracy (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Social_democracy",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q37181",
+       "name": "Luiz Inácio Lula da Silva",
+       "role": "leader",
+       "birth_year": 1945,
+       "death_year": null,
+       "summary": "35.º e 39.º presidente do Brasil (2003–2011; 2023–presente)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_%28estreita%29.jpg/330px-Foto_oficial_de_Luiz_In%C3%A1cio_Lula_da_Silva_%28estreita%29.jpg",
+        "credit": "Palácio do Planalto from Brasilia, Brasil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Luiz_In%C3%A1cio_Lula_da_Silva",
+       "via": "party",
+       "party": {
+        "id": "Q657089",
+        "name": "Partido dos Trabalhadores"
+       }
+      },
+      {
+       "person_id": "Q40722",
+       "name": "Dilma Rousseff",
+       "role": "leader",
+       "birth_year": 1947,
+       "death_year": null,
+       "summary": "36.ª presidente do Brasil (2011–2016)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/04-06-2024_Reuni%C3%A3o_com_a_Presidente_do_Novo_Banco_de_Desenvolvimento_Dilma_Rousseff_%2853769684843%29_%28cropped%29.jpg/330px-04-06-2024_Reuni%C3%A3o_com_a_Presidente_do_Novo_Banco_de_Desenvolvimento_Dilma_Rousseff_%2853769684843%29_%28cropped%29.jpg",
+        "credit": "Vice-Presidência da República / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Dilma_Rousseff",
+       "via": "party",
+       "party": {
+        "id": "Q657089",
+        "name": "Partido dos Trabalhadores"
+       }
+      },
+      {
+       "person_id": "Q178649",
+       "name": "Romário",
+       "role": "leader",
+       "birth_year": 1966,
+       "death_year": null,
+       "summary": "político, ex-futebolista brasileiro e senador da República desde 2015",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Senadores_da_57%C2%AA_Legislatura_%2852689451805%29.jpg/330px-Senadores_da_57%C2%AA_Legislatura_%2852689451805%29.jpg",
+        "credit": "Agência Senado from Brasilia, Brazil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Rom%C3%A1rio",
+       "via": "party",
+       "party": {
+        "id": "Q2054789",
+        "name": "Partido Socialista Brasileiro"
+       }
+      },
+      {
+       "person_id": "Q164797",
+       "name": "Paulo Freire",
+       "role": "leader",
+       "birth_year": 1921,
+       "death_year": 2011,
+       "summary": "filósofo e educador brasileiro",
+       "works": [
+        "Pedagogia do Oprimido"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Paulo_Freire_1977.jpg/330px-Paulo_Freire_1977.jpg",
+        "credit": "Slobodan Dimitro / Wikimedia Commons",
+        "license": "CC BY-SA 3.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Paulo_Freire",
+       "via": "party",
+       "party": {
+        "id": "Q657089",
+        "name": "Partido dos Trabalhadores"
+       }
+      },
+      {
+       "person_id": "Q204825",
+       "name": "Bebeto",
+       "role": "leader",
+       "birth_year": 1964,
+       "death_year": null,
+       "summary": "futebolista brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Bebeto_brazil_%28cropped%29.jpg",
+        "credit": "Sergio Savarese from Sao Paulo City / Ipiranga, Brasil / Wikimedia Commons",
+        "license": "CC BY-SA 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Bebeto",
+       "via": "party",
+       "party": {
+        "id": "Q1414708",
+        "name": "Partido Democrático Trabalhista"
+       }
+      },
+      {
+       "person_id": "Q485946",
+       "name": "Itamar Franco",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2011,
+       "summary": "33.º presidente do Brasil (1992–1995)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg/330px-Itamar_Franco_-_Ag%C3%AAncia_Brasil_%28cropped%29.jpg",
+        "credit": "Renato Araújo/Arquivo/Agência Brasil / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Itamar_Franco",
+       "via": "party",
+       "party": {
+        "id": "Q2598527",
+        "name": "Cidadania"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q657089",
+       "name": "Partido dos Trabalhadores"
+      },
+      {
+       "id": "Q1414708",
+       "name": "Partido Democrático Trabalhista"
+      },
+      {
+       "id": "Q2054789",
+       "name": "Partido Socialista Brasileiro"
+      },
+      {
+       "id": "Q2598527",
+       "name": "Cidadania"
+      },
+      {
+       "id": "Q20061311",
+       "name": "Solidariedade"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "comunismo",
+      "kind": "ideology",
+      "label": "Comunismo",
+      "short": "Corrente que busca uma sociedade sem classes e sem propriedade privada dos meios de produção; inclui o marxismo.",
+      "body": "Baseada sobretudo nas obras de Karl Marx e Friedrich Engels, propõe abolir a propriedade privada dos meios de produção e, no fim, o próprio Estado. As vertentes marxistas-leninistas defenderam um partido único de vanguarda para chegar lá.\nGovernou a União Soviética (1917-1991), a China (desde 1949), países do Leste Europeu, Cuba, Vietnã e outros; vários desses governos promoveram industrialização rápida e alfabetização em massa.\nDefensores destacam a busca de igualdade e esses avanços sociais. Críticos e historiadores registram repressão política, campos de trabalho forçado (como o Gulag) e fomes com milhões de mortes (como na Ucrânia em 1932-1933 e na China em 1959-1961) sob esses governos.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-comunismo",
+        "title": "Comunismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Comunismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-communism",
+        "title": "Communism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Communism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q181098",
+       "name": "Paulo Roberto Jamelli Júnior",
+       "role": "other",
+       "birth_year": 1974,
+       "death_year": null,
+       "summary": "futebolista brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Jamelli_em_2014.jpg",
+        "credit": "Mtvdanilo / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Jamelli",
+       "via": "party",
+       "party": {
+        "id": "Q504000",
+        "name": "Partido Comunista do Brasil"
+       }
+      },
+      {
+       "person_id": "Q10324744",
+       "name": "Manuela d'Ávila",
+       "role": "leader",
+       "birth_year": 1981,
+       "death_year": null,
+       "summary": "jornalista e política brasileira",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Entrega_do_relat%C3%B3rio_do_GT_de_combate_ao_%C3%B3dio_para_o_Ministro_Silvio_Almeida_%2853025635428%29_%28cropped%29.jpg/330px-Entrega_do_relat%C3%B3rio_do_GT_de_combate_ao_%C3%B3dio_para_o_Ministro_Silvio_Almeida_%2853025635428%29_%28cropped%29.jpg",
+        "credit": "Manuela d'Ávila / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Manuela_d%27%C3%81vila",
+       "via": "party",
+       "party": {
+        "id": "Q504000",
+        "name": "Partido Comunista do Brasil"
+       }
+      },
+      {
+       "person_id": "Q10283063",
+       "name": "Flávio Dino",
+       "role": "leader",
+       "birth_year": 1968,
+       "death_year": null,
+       "summary": "magistrado, professor, jurista, ex-advogado, ex-político brasileiro e Ministro do Supremo Tribunal Federal",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Fl%C3%A1vio_Dino_no_voto_da_A%C3%A7%C3%A3o_Penal_%28AP%29_2668_%28cropped%29.jpg/330px-Fl%C3%A1vio_Dino_no_voto_da_A%C3%A7%C3%A3o_Penal_%28AP%29_2668_%28cropped%29.jpg",
+        "credit": "Gustavo Moreno/STF / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Fl%C3%A1vio_Dino",
+       "via": "party",
+       "party": {
+        "id": "Q504000",
+        "name": "Partido Comunista do Brasil"
+       }
+      },
+      {
+       "person_id": "Q10320247",
+       "name": "Luciana Santos",
+       "role": "leader",
+       "birth_year": 1965,
+       "death_year": null,
+       "summary": "engenheira e política brasileira",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/02.01.2023_-_Posse_de_Luciana_Santos%2C_Ministra_de_Estado_da_Ci%C3%AAncia_e_Tecnologia_%2852624169820%29_%28cropped%29.jpg/330px-02.01.2023_-_Posse_de_Luciana_Santos%2C_Ministra_de_Estado_da_Ci%C3%AAncia_e_Tecnologia_%2852624169820%29_%28cropped%29.jpg",
+        "credit": "Palácio do Planalto from Brasilia, Brasil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Luciana_Santos",
+       "via": "party",
+       "party": {
+        "id": "Q504000",
+        "name": "Partido Comunista do Brasil"
+       }
+      },
+      {
+       "person_id": "Q6511685",
+       "name": "Leci Brandão",
+       "role": "leader",
+       "birth_year": 1944,
+       "death_year": null,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Leci_Brand%C3%A3o%2C_ca._2006.jpg/330px-Leci_Brand%C3%A3o%2C_ca._2006.jpg",
+        "credit": "Fabio Pozzebom/ABr / Wikimedia Commons",
+        "license": "CC BY 3.0 br"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Leci_Brand%C3%A3o",
+       "via": "party",
+       "party": {
+        "id": "Q504000",
+        "name": "Partido Comunista do Brasil"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q2453216",
+       "name": "Partido da Causa Operária"
+      },
+      {
+       "id": "Q2453869",
+       "name": "Partido Socialista dos Trabalhadores Unificado"
+      },
+      {
+       "id": "Q5558709",
+       "name": "Partido Comunista Revolucionário"
+      },
+      {
+       "id": "Q4386807",
+       "name": "Organização Revolucionária Marxista Política Operária"
+      },
+      {
+       "id": "Q5500431",
+       "name": "Liberdade, Socialismo e Revolução"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "politica-verde",
+      "kind": "ideology",
+      "label": "Política verde",
+      "short": "Corrente que põe a proteção ambiental e a sustentabilidade no centro da política.",
+      "body": "Defende reduzir a poluição e as emissões, proteger a biodiversidade e mudar a economia para respeitar os limites do planeta, geralmente junto com democracia participativa e justiça social.\nGanhou forma nos anos 1970 e 1980, com o movimento ambientalista e partidos verdes como o alemão (1980), que depois chegou a governos de coalizão em vários países europeus.\nDefensores dizem que a crise climática exige mudanças profundas. Críticos apontam custos econômicos de medidas rápidas e divergem sobre o ritmo e os instrumentos da transição.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-politica-verde",
+        "title": "Política verde (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Pol%C3%ADtica_verde",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-green-politics",
+        "title": "Green politics (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Green_politics",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q237693",
+       "name": "Marina Silva",
+       "role": "leader",
+       "birth_year": 1958,
+       "death_year": null,
+       "summary": "ambientalista e política brasileira",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/01.01.2023_-_Posse_de_Marina_Silva%2C_Ministra_de_Estado_do_Meio_Ambiente_%2852623748361%29_%28cropped%29.jpg/330px-01.01.2023_-_Posse_de_Marina_Silva%2C_Ministra_de_Estado_do_Meio_Ambiente_%2852623748361%29_%28cropped%29.jpg",
+        "credit": "Palácio do Planalto from Brasilia, Brasil / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Marina_Silva",
+       "via": "party",
+       "party": {
+        "id": "Q1234489",
+        "name": "Partido Verde"
+       }
+      },
+      {
+       "person_id": "Q221479",
+       "name": "Gilberto Gil",
+       "role": "leader",
+       "birth_year": 1942,
+       "death_year": null,
+       "summary": "cantor, compositor, multi-instrumentista, produtor musical e político brasileiro",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/22.05.2026_-_Gilberto_Gil_%28cropped%29.jpg/330px-22.05.2026_-_Gilberto_Gil_%28cropped%29.jpg",
+        "credit": "Ricardo Stuckert / PR / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Gilberto_Gil",
+       "via": "party",
+       "party": {
+        "id": "Q1234489",
+        "name": "Partido Verde"
+       }
+      },
+      {
+       "person_id": "Q10395785",
+       "name": "Álvaro Dias",
+       "role": "leader",
+       "birth_year": 1944,
+       "death_year": null,
+       "summary": "político brasileiro, ex-deputado federal do Brasil e ex-governador do Estado do Paraná",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Foto_oficial_de_%C3%81lvaro_Dias.jpg/330px-Foto_oficial_de_%C3%81lvaro_Dias.jpg",
+        "credit": "Senado Federal do Brasi / Wikimedia Commons",
+        "license": "Attribution"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/%C3%81lvaro_Dias",
+       "via": "party",
+       "party": {
+        "id": "Q1234489",
+        "name": "Partido Verde"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q1234489",
+       "name": "Partido Verde"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "anarquismo",
+      "kind": "ideology",
+      "label": "Anarquismo",
+      "short": "Corrente que rejeita o Estado e outras formas de autoridade hierárquica e propõe organização voluntária.",
+      "body": "Propõe substituir o Estado por associações livres e cooperativas; há vertentes coletivistas, comunistas, individualistas e sindicalistas.\nSurgiu no século XIX, com Proudhon, Mikhail Bakunin e Piotr Kropotkin; teve força em sindicatos da Espanha, da Itália e da América Latina (incluindo o Brasil do início do século XX) e organizou regiões durante a Guerra Civil Espanhola.\nDefensores dizem que a autoridade concentrada gera abusos e que a cooperação voluntária é possível. Críticos dizem que, sem Estado, não há como garantir segurança e direitos, e lembram atentados cometidos por militantes anarquistas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-anarquismo",
+        "title": "Anarquismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Anarquismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-anarchism",
+        "title": "Anarchism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Anarchism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q3030431",
+       "name": "Maria Lacerda de Moura",
+       "role": "other",
+       "birth_year": 1887,
+       "death_year": 1945,
+       "summary": "Educadora, escritora, anarquista e feminista brasileira",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Mlacerda.png/330px-Mlacerda.png",
+        "credit": "Gioconda Rizzo / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Maria_Lacerda_de_Moura",
+       "via": "declared",
+       "party": null
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "fascismo",
+      "kind": "ideology",
+      "label": "Fascismo",
+      "short": "Corrente nacionalista e autoritária que defende um Estado total, um líder único e a supressão da oposição.",
+      "body": "Propõe a nação acima do indivíduo, um partido único, culto ao líder, militarismo e controle da economia e da sociedade pelo Estado, rejeitando tanto o liberalismo quanto o comunismo.\nSurgiu na Itália, com Benito Mussolini (no poder de 1922 a 1943); o nazismo alemão (1933-1945) é a vertente mais conhecida, e regimes parecidos existiram em outros países europeus nas décadas de 1930 e 1940.\nSeus defensores à época apresentavam o regime como resposta à crise e à divisão social. Historiadores registram a perseguição de opositores, guerras de agressão e o Holocausto, o genocídio de cerca de seis milhões de judeus e de outros grupos pela Alemanha nazista.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-fascismo",
+        "title": "Fascismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Fascismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-fascism",
+        "title": "Fascism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Fascism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q1797406",
+       "name": "Plínio Salgado",
+       "role": "leader",
+       "birth_year": 1895,
+       "death_year": 1975,
+       "summary": "Político, escritor, chefe nacional da Ação Integralista Brasileira",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Pl%C3%ADnio_Salgado%2C_1959.tif/lossy-page1-330px-Pl%C3%ADnio_Salgado%2C_1959.tif.jpg",
+        "credit": "Unknown / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Pl%C3%ADnio_Salgado",
+       "via": "party",
+       "party": {
+        "id": "Q4958743",
+        "name": "Ação Integralista Brasileira"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q4958743",
+       "name": "Ação Integralista Brasileira"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "nacionalismo",
+      "kind": "ideology",
+      "label": "Nacionalismo",
+      "short": "Corrente que põe a nação, sua identidade e sua soberania como valor político central.",
+      "body": "Defende que cada nação tenha seu próprio Estado e governe a si mesma, e que os interesses nacionais tenham prioridade; combina-se tanto com posições de esquerda quanto de direita.\nGanhou força no século XIX, com as unificações da Itália e da Alemanha, e no século XX moveu as independências da Ásia e da África.\nDefensores destacam a autodeterminação dos povos e a coesão social. Críticos apontam que versões exclusivistas levaram a guerras, perseguição de minorias e limpezas étnicas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-nacionalismo",
+        "title": "Nacionalismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Nacionalismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-nationalism",
+        "title": "Nationalism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Nationalism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q246903",
+       "name": "Enéas Carneiro",
+       "role": "leader",
+       "birth_year": 1938,
+       "death_year": 2007,
+       "summary": "cardiologista e político brasileiro (1938–2007)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/En%C3%A9as_Carneiro_%28cropped%29.jpg/330px-En%C3%A9as_Carneiro_%28cropped%29.jpg",
+        "credit": "Carlos Carneiro Souza / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/En%C3%A9as_Carneiro",
+       "via": "party",
+       "party": {
+        "id": "Q1636064",
+        "name": "Partido de Reedificação da Ordem Nacional"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q1636064",
+       "name": "Partido de Reedificação da Ordem Nacional"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "socialismo",
+      "kind": "ideology",
+      "label": "Socialismo",
+      "short": "Conjunto de correntes que defendem propriedade social ou coletiva dos meios de produção e menor desigualdade.",
+      "body": "Propõe que a produção seja controlada pela sociedade (Estado, cooperativas ou trabalhadores) e não por proprietários privados; vai de versões democráticas e reformistas a versões revolucionárias.\nSurgiu no século XIX, em reação às condições de trabalho da Revolução Industrial, com autores como Robert Owen, Pierre-Joseph Proudhon e Karl Marx, e influenciou sindicatos, partidos e governos no mundo todo.\nDefensores dizem que reduz a exploração e a desigualdade. Críticos apontam problemas de eficiência e de incentivo e, nas versões de partido único, a falta de liberdades políticas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-socialismo",
+        "title": "Socialismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Socialismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-socialism",
+        "title": "Socialism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Socialism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [],
+     "parties": [
+      {
+       "id": "Q4386807",
+       "name": "Organização Revolucionária Marxista Política Operária"
+      },
+      {
+       "id": "Q125440275",
+       "name": "Kuomitê"
+      }
+     ],
+     "milestones": []
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  },
+  "DE": {
+   "items": [
+    {
+     "term": {
+      "id": "comunismo",
+      "kind": "ideology",
+      "label": "Comunismo",
+      "short": "Corrente que busca uma sociedade sem classes e sem propriedade privada dos meios de produção; inclui o marxismo.",
+      "body": "Baseada sobretudo nas obras de Karl Marx e Friedrich Engels, propõe abolir a propriedade privada dos meios de produção e, no fim, o próprio Estado. As vertentes marxistas-leninistas defenderam um partido único de vanguarda para chegar lá.\nGovernou a União Soviética (1917-1991), a China (desde 1949), países do Leste Europeu, Cuba, Vietnã e outros; vários desses governos promoveram industrialização rápida e alfabetização em massa.\nDefensores destacam a busca de igualdade e esses avanços sociais. Críticos e historiadores registram repressão política, campos de trabalho forçado (como o Gulag) e fomes com milhões de mortes (como na Ucrânia em 1932-1933 e na China em 1959-1961) sob esses governos.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-comunismo",
+        "title": "Comunismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Comunismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-communism",
+        "title": "Communism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Communism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q9061",
+       "name": "Karl Marx",
+       "role": "leader",
+       "birth_year": 1818,
+       "death_year": 1883,
+       "summary": "filósofo alemão (1818–1883)",
+       "works": [
+        "Manifesto Comunista",
+        "O Capital",
+        "Ökonomisch-philosophische Manuskripte"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Karl_Marx_001_restored.jpg/330px-Karl_Marx_001_restored.jpg",
+        "credit": "John Jabez Edwin Mayall / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Karl_Marx",
+       "via": "party",
+       "party": {
+        "id": "Q642562",
+        "name": "Liga dos Comunistas"
+       }
+      },
+      {
+       "person_id": "Q34787",
+       "name": "Friedrich Engels",
+       "role": "thinker",
+       "birth_year": 1820,
+       "death_year": 1895,
+       "summary": "empresário industrial, teórico e filósofo prussiano",
+       "works": [
+        "Manifesto Comunista",
+        "Outlines of a Critique of Political Economy",
+        "A Ideologia Alemã"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Friedrich_Engels_portrait_%28cropped%29.jpg/330px-Friedrich_Engels_portrait_%28cropped%29.jpg",
+        "credit": "William Hall (1826–ca. 1898) (cropped and sepia tone removed) / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Friedrich_Engels",
+       "via": "party",
+       "party": {
+        "id": "Q642562",
+        "name": "Liga dos Comunistas"
+       }
+      },
+      {
+       "person_id": "Q7231",
+       "name": "Rosa Luxemburgo",
+       "role": "leader",
+       "birth_year": 1871,
+       "death_year": 1919,
+       "summary": "filósofa marxista polaco-alemã (1871–1919)",
+       "works": [
+        "The Accumulation of Capital",
+        "Social Reform or Revolution"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Rosa_Luxemburg.jpg/330px-Rosa_Luxemburg.jpg",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Rosa_Luxemburgo",
+       "via": "party",
+       "party": {
+        "id": "Q156607",
+        "name": "Liga Espartaquista"
+       }
+      },
+      {
+       "person_id": "Q75886",
+       "name": "Karl Liebknecht",
+       "role": "leader",
+       "birth_year": 1871,
+       "death_year": 1919,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Karl_Liebknecht_portrait_%28cropped%29.jpg/330px-Karl_Liebknecht_portrait_%28cropped%29.jpg",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Karl_Liebknecht",
+       "via": "party",
+       "party": {
+        "id": "Q156607",
+        "name": "Liga Espartaquista"
+       }
+      },
+      {
+       "person_id": "Q65917",
+       "name": "Wilhelm Pieck",
+       "role": "leader",
+       "birth_year": 1876,
+       "death_year": 1960,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Fotothek_df_ps_0000064_Bildnisse_-_Portr%C3%A4ts_%5E_Politiker.jpg/330px-Fotothek_df_ps_0000064_Bildnisse_-_Portr%C3%A4ts_%5E_Politiker.jpg",
+        "credit": "Richard Peter / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Wilhelm_Pieck",
+       "via": "party",
+       "party": {
+        "id": "Q156607",
+        "name": "Liga Espartaquista"
+       }
+      },
+      {
+       "person_id": "Q20127",
+       "name": "Wilhelm Liebknecht",
+       "role": "leader",
+       "birth_year": 1826,
+       "death_year": 1900,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/WilhelmLiebknecht.jpg/330px-WilhelmLiebknecht.jpg",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Wilhelm_Liebknecht",
+       "via": "party",
+       "party": {
+        "id": "Q642562",
+        "name": "Liga dos Comunistas"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q156607",
+       "name": "Liga Espartaquista"
+      },
+      {
+       "id": "Q642562",
+       "name": "Liga dos Comunistas"
+      },
+      {
+       "id": "Q6467504",
+       "name": "Labour Party of Iran"
+      },
+      {
+       "id": "Q878606",
+       "name": "Communist Workers Union of Germany"
+      },
+      {
+       "id": "Q15985203",
+       "name": "League of Revolutionary Workers"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "conservadorismo",
+      "kind": "ideology",
+      "label": "Conservadorismo",
+      "short": "Corrente que valoriza tradições, instituições estabelecidas e mudanças graduais em vez de rupturas.",
+      "body": "Defende a preservação de instituições como família, religião e nação, a ordem social e reformas lentas; as posições econômicas variam entre países e épocas.\nGanhou forma no fim do século XVIII como reação à Revolução Francesa, com Edmund Burke, e hoje dá nome a partidos de centro-direita e de direita em muitos países.\nDefensores dizem que protege o que funciona e evita experimentos sociais arriscados. Críticos dizem que dificulta mudanças necessárias e pode preservar desigualdades e exclusões antigas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-conservadorismo",
+        "title": "Conservadorismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Conservadorismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-conservatism",
+        "title": "Conservatism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Conservatism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q567",
+       "name": "Angela Merkel",
+       "role": "leader",
+       "birth_year": 1954,
+       "death_year": null,
+       "summary": "política alemã, chanceler da Alemanha de 2005 a 2021",
+       "works": [
+        "Freedom: Memoirs 1954–2021"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Angela_Merkel._Tallinn_Digital_Summit.jpg/330px-Angela_Merkel._Tallinn_Digital_Summit.jpg",
+        "credit": "EU2017EE Estonian Presidency / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Angela_Merkel",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q2492",
+       "name": "Konrad Adenauer",
+       "role": "leader",
+       "birth_year": 1876,
+       "death_year": 1967,
+       "summary": "político alemão, ex-chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Konrad_Adenauer_-_14._CDU-Bundesparteitag-kasf0095.JPG/330px-Konrad_Adenauer_-_14._CDU-Bundesparteitag-kasf0095.JPG",
+        "credit": "CDU, Fotograf: Peter Bouserath / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Konrad_Adenauer",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q2518",
+       "name": "Helmut Kohl",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2017,
+       "summary": "político alemão, Ex-chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Helmut_Kohl_%281996%29.jpg/330px-Helmut_Kohl_%281996%29.jpg",
+        "credit": "Christian Lambiotte / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Helmut_Kohl",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q60772",
+       "name": "Ursula von der Leyen",
+       "role": "leader",
+       "birth_year": 1958,
+       "death_year": null,
+       "summary": "política alemã, Presidente da Comissão Europeia",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Ursula_von_der_Leyen_2024.jpg/330px-Ursula_von_der_Leyen_2024.jpg",
+        "credit": "European People's Party / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Ursula_von_der_Leyen",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q566257",
+       "name": "Friedrich Merz",
+       "role": "leader",
+       "birth_year": 1955,
+       "death_year": null,
+       "summary": "político alemão, Chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/2025-02-23_Bundestagswahl_%E2%80%93_Wahlabend_CDU_by_Sandro_Halank%E2%80%93070.jpg/330px-2025-02-23_Bundestagswahl_%E2%80%93_Wahlabend_CDU_by_Sandro_Halank%E2%80%93070.jpg",
+        "credit": "Sandro Halank, Wikimedia Commons / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Friedrich_Merz",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q2542",
+       "name": "Horst Köhler",
+       "role": "leader",
+       "birth_year": 1943,
+       "death_year": 2025,
+       "summary": "político alemão, 9.º presidente da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Horst_K%C3%B6hler.jpg/330px-Horst_K%C3%B6hler.jpg",
+        "credit": "the International Monetary Fund / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Horst_K%C3%B6hler",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q49762",
+       "name": "União Democrata-Cristã"
+      },
+      {
+       "id": "Q495497",
+       "name": "Deutsche Reichspartei"
+      },
+      {
+       "id": "Q453366",
+       "name": "Family Party of Germany"
+      },
+      {
+       "id": "Q124624267",
+       "name": "Values Union"
+      },
+      {
+       "id": "Q115801973",
+       "name": "Germany Alliance"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "democracia-crista",
+      "kind": "ideology",
+      "label": "Democracia cristã",
+      "short": "Corrente que aplica princípios do cristianismo, sobretudo a doutrina social da Igreja, à política democrática.",
+      "body": "Defende economia de mercado com responsabilidade social, valorização da família e de comunidades intermediárias e cooperação entre classes sociais.\nGanhou força na Europa depois da Segunda Guerra Mundial, com partidos que governaram a Alemanha Ocidental e a Itália por décadas, e também teve partidos fortes na América Latina, como no Chile.\nDefensores destacam seu papel na reconstrução europeia e na integração do continente. Críticos à esquerda apontam posições conservadoras em temas de costumes; críticos laicos questionam a presença da religião na política.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-democracia-crista",
+        "title": "Democracia cristã (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Democracia_crist%C3%A3",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-christian-democracy",
+        "title": "Christian democracy (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Christian_democracy",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q567",
+       "name": "Angela Merkel",
+       "role": "leader",
+       "birth_year": 1954,
+       "death_year": null,
+       "summary": "política alemã, chanceler da Alemanha de 2005 a 2021",
+       "works": [
+        "Freedom: Memoirs 1954–2021"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Angela_Merkel._Tallinn_Digital_Summit.jpg/330px-Angela_Merkel._Tallinn_Digital_Summit.jpg",
+        "credit": "EU2017EE Estonian Presidency / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Angela_Merkel",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q2492",
+       "name": "Konrad Adenauer",
+       "role": "leader",
+       "birth_year": 1876,
+       "death_year": 1967,
+       "summary": "político alemão, ex-chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Konrad_Adenauer_-_14._CDU-Bundesparteitag-kasf0095.JPG/330px-Konrad_Adenauer_-_14._CDU-Bundesparteitag-kasf0095.JPG",
+        "credit": "CDU, Fotograf: Peter Bouserath / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Konrad_Adenauer",
+       "via": "party",
+       "party": {
+        "id": "Q157537",
+        "name": "Partido do Centro Alemão"
+       }
+      },
+      {
+       "person_id": "Q2518",
+       "name": "Helmut Kohl",
+       "role": "leader",
+       "birth_year": 1930,
+       "death_year": 2017,
+       "summary": "político alemão, Ex-chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Helmut_Kohl_%281996%29.jpg/330px-Helmut_Kohl_%281996%29.jpg",
+        "credit": "Christian Lambiotte / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Helmut_Kohl",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q60772",
+       "name": "Ursula von der Leyen",
+       "role": "leader",
+       "birth_year": 1958,
+       "death_year": null,
+       "summary": "política alemã, Presidente da Comissão Europeia",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Ursula_von_der_Leyen_2024.jpg/330px-Ursula_von_der_Leyen_2024.jpg",
+        "credit": "European People's Party / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Ursula_von_der_Leyen",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q566257",
+       "name": "Friedrich Merz",
+       "role": "leader",
+       "birth_year": 1955,
+       "death_year": null,
+       "summary": "político alemão, Chanceler da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/2025-02-23_Bundestagswahl_%E2%80%93_Wahlabend_CDU_by_Sandro_Halank%E2%80%93070.jpg/330px-2025-02-23_Bundestagswahl_%E2%80%93_Wahlabend_CDU_by_Sandro_Halank%E2%80%93070.jpg",
+        "credit": "Sandro Halank, Wikimedia Commons / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Friedrich_Merz",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      },
+      {
+       "person_id": "Q2542",
+       "name": "Horst Köhler",
+       "role": "leader",
+       "birth_year": 1943,
+       "death_year": 2025,
+       "summary": "político alemão, 9.º presidente da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Horst_K%C3%B6hler.jpg/330px-Horst_K%C3%B6hler.jpg",
+        "credit": "the International Monetary Fund / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Horst_K%C3%B6hler",
+       "via": "party",
+       "party": {
+        "id": "Q49762",
+        "name": "União Democrata-Cristã"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q49762",
+       "name": "União Democrata-Cristã"
+      },
+      {
+       "id": "Q49763",
+       "name": "União Social-Cristã"
+      },
+      {
+       "id": "Q124624267",
+       "name": "Values Union"
+      },
+      {
+       "id": "Q19836118",
+       "name": "Alliance  C – Christians for Germany"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "fascismo",
+      "kind": "ideology",
+      "label": "Fascismo",
+      "short": "Corrente nacionalista e autoritária que defende um Estado total, um líder único e a supressão da oposição.",
+      "body": "Propõe a nação acima do indivíduo, um partido único, culto ao líder, militarismo e controle da economia e da sociedade pelo Estado, rejeitando tanto o liberalismo quanto o comunismo.\nSurgiu na Itália, com Benito Mussolini (no poder de 1922 a 1943); o nazismo alemão (1933-1945) é a vertente mais conhecida, e regimes parecidos existiram em outros países europeus nas décadas de 1930 e 1940.\nSeus defensores à época apresentavam o regime como resposta à crise e à divisão social. Historiadores registram a perseguição de opositores, guerras de agressão e o Holocausto, o genocídio de cerca de seis milhões de judeus e de outros grupos pela Alemanha nazista.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-fascismo",
+        "title": "Fascismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Fascismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-fascism",
+        "title": "Fascism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Fascism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q57131",
+       "name": "Hans-Ulrich Rudel",
+       "role": "other",
+       "birth_year": 1916,
+       "death_year": 1982,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg/330px-Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg",
+        "credit": "Video: Kameramann des Special Film Project 186 der United States Army Air Forces (USAAF) / Screenshot: Lewenstein / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Hans-Ulrich_Rudel",
+       "via": "declared",
+       "party": null
+      },
+      {
+       "person_id": "Q2501647",
+       "name": "Ursula Haverbeck",
+       "role": "leader",
+       "birth_year": 1928,
+       "death_year": 2024,
+       "summary": null,
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Ursula_Haverbeck",
+       "via": "declared",
+       "party": null
+      },
+      {
+       "person_id": "Q68507",
+       "name": "Oswald Teichmüller",
+       "role": "other",
+       "birth_year": 1913,
+       "death_year": 1943,
+       "summary": "matemático alemão",
+       "works": [
+        "teorema de Teichmüller–Tukey",
+        "Espaço de Teichmüller",
+        "teoria p-ádica de Teichmüller"
+       ],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Oswald_Teichm%C3%BCller",
+       "via": "declared",
+       "party": null
+      },
+      {
+       "person_id": "Q57504",
+       "name": "Otto Ernst Remer",
+       "role": "leader",
+       "birth_year": 1912,
+       "death_year": 1997,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Otto_Ernst_Remer_portrait.JPG/330px-Otto_Ernst_Remer_portrait.JPG",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Otto_Ernst_Remer",
+       "via": "party",
+       "party": {
+        "id": "Q708012",
+        "name": "Partido Socialista do Reich"
+       }
+      },
+      {
+       "person_id": "Q58009",
+       "name": "Wilhelm Stuckart",
+       "role": "leader",
+       "birth_year": 1902,
+       "death_year": 1953,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Wilhelm_Stuckart_at_the_Ministries_Trial.jpg",
+        "credit": "US Army Signal Corps / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Wilhelm_Stuckart",
+       "via": "party",
+       "party": {
+        "id": "Q708012",
+        "name": "Partido Socialista do Reich"
+       }
+      },
+      {
+       "person_id": "Q69753",
+       "name": "Michael Kühnen",
+       "role": "leader",
+       "birth_year": 1955,
+       "death_year": 1991,
+       "summary": "político alemão",
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Michael_K%C3%BChnen",
+       "via": "party",
+       "party": {
+        "id": "Q882551",
+        "name": "Free German Workers' Party"
+       }
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "liberalismo",
+      "kind": "ideology",
+      "label": "Liberalismo",
+      "short": "Corrente que põe no centro as liberdades individuais, o governo limitado por leis e a igualdade perante a lei.",
+      "body": "Defende direitos individuais (expressão, religião, propriedade), separação de poderes, eleições e um Estado que respeita limites constitucionais. Há vertentes que aceitam mais ou menos intervenção do Estado na economia.\nSurgiu nos séculos XVII e XVIII, com pensadores como John Locke e Adam Smith, e inspirou as revoluções americana e francesa e muitas constituições modernas.\nDefensores veem nele a base das democracias constitucionais. Críticos à esquerda dizem que trata como iguais pessoas com recursos muito desiguais; críticos conservadores dizem que enfraquece tradições e laços comunitários.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-liberalismo",
+        "title": "Liberalismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Liberalismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-liberalism",
+        "title": "Liberalism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Liberalism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q61956",
+       "name": "Lorenz von Stein",
+       "role": "leader",
+       "birth_year": 1815,
+       "death_year": 1890,
+       "summary": "professor académico alemão",
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Lorenz_von_Stein",
+       "via": "declared",
+       "party": null
+      },
+      {
+       "person_id": "Q76432",
+       "name": "Rudolf Virchow",
+       "role": "leader",
+       "birth_year": 1821,
+       "death_year": 1902,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Rudolf_Ludwig_Karl_Virchow._Photograph_by_J._C._Schaarw%C3%A4chte_Wellcome_V0027292.jpg/330px-Rudolf_Ludwig_Karl_Virchow._Photograph_by_J._C._Schaarw%C3%A4chte_Wellcome_V0027292.jpg",
+        "credit": "Julius Cornelius Schaarwächter / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Rudolf_Virchow",
+       "via": "party",
+       "party": {
+        "id": "Q560777",
+        "name": "Partido Livre-Pensador Alemão"
+       }
+      },
+      {
+       "person_id": "Q15907132",
+       "name": "Jörg Meuthen",
+       "role": "leader",
+       "birth_year": 1961,
+       "death_year": null,
+       "summary": "professor académico alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/2019-09-01_Wahlabend_Sachsen_by_Sandro_Halank%E2%80%93003.jpg/330px-2019-09-01_Wahlabend_Sachsen_by_Sandro_Halank%E2%80%93003.jpg",
+        "credit": "Sandro Halank, Wikimedia Commons / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/J%C3%B6rg_Meuthen",
+       "via": "party",
+       "party": {
+        "id": "Q124624267",
+        "name": "Values Union"
+       }
+      },
+      {
+       "person_id": "Q70962",
+       "name": "Eugen Richter",
+       "role": "leader",
+       "birth_year": 1838,
+       "death_year": 1906,
+       "summary": null,
+       "works": [],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Eugen_Richter",
+       "via": "party",
+       "party": {
+        "id": "Q560777",
+        "name": "Partido Livre-Pensador Alemão"
+       }
+      },
+      {
+       "person_id": "Q72400",
+       "name": "Ludwig Bamberger",
+       "role": "leader",
+       "birth_year": 1823,
+       "death_year": 1899,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Ludwig_Bamberger.jpg",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Ludwig_Bamberger",
+       "via": "party",
+       "party": {
+        "id": "Q560777",
+        "name": "Partido Livre-Pensador Alemão"
+       }
+      },
+      {
+       "person_id": "Q1576999",
+       "name": "Hans-Georg Maaßen",
+       "role": "leader",
+       "birth_year": 1962,
+       "death_year": null,
+       "summary": "professor académico alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Hans-Georg_Maa%C3%9Fen_%28cropped%29.jpg/330px-Hans-Georg_Maa%C3%9Fen_%28cropped%29.jpg",
+        "credit": "Elekes Andor / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Hans-Georg_Maa%C3%9Fen",
+       "via": "party",
+       "party": {
+        "id": "Q124624267",
+        "name": "Values Union"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q124624267",
+       "name": "Values Union"
+      },
+      {
+       "id": "Q115801973",
+       "name": "Germany Alliance"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "politica-verde",
+      "kind": "ideology",
+      "label": "Política verde",
+      "short": "Corrente que põe a proteção ambiental e a sustentabilidade no centro da política.",
+      "body": "Defende reduzir a poluição e as emissões, proteger a biodiversidade e mudar a economia para respeitar os limites do planeta, geralmente junto com democracia participativa e justiça social.\nGanhou forma nos anos 1970 e 1980, com o movimento ambientalista e partidos verdes como o alemão (1980), que depois chegou a governos de coalizão em vários países europeus.\nDefensores dizem que a crise climática exige mudanças profundas. Críticos apontam custos econômicos de medidas rápidas e divergem sobre o ritmo e os instrumentos da transição.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-politica-verde",
+        "title": "Política verde (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Pol%C3%ADtica_verde",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-green-politics",
+        "title": "Green politics (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Green_politics",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q564328",
+       "name": "Annalena Baerbock",
+       "role": "leader",
+       "birth_year": 1980,
+       "death_year": null,
+       "summary": "política alemã, Presidente da Assembleia Geral das Nações Unidas",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/2024-05-27_Event%2C_Konferenz%2C_re-publica_STP_5327_by_Stepro_%28cropped%29.jpg/330px-2024-05-27_Event%2C_Konferenz%2C_re-publica_STP_5327_by_Stepro_%28cropped%29.jpg",
+        "credit": "Steffen Prößdorf / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Annalena_Baerbock",
+       "via": "party",
+       "party": {
+        "id": "Q49766",
+        "name": "Aliança 90/Os Verdes"
+       }
+      },
+      {
+       "person_id": "Q57344",
+       "name": "Joschka Fischer",
+       "role": "leader",
+       "birth_year": 1948,
+       "death_year": null,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Joschka_Fischer_%2842317733261%29.jpg/330px-Joschka_Fischer_%2842317733261%29.jpg",
+        "credit": "Heinrich-Böll-Stiftung from Berlin, Deutschland / Wikimedia Commons",
+        "license": "CC BY-SA 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Joschka_Fischer",
+       "via": "party",
+       "party": {
+        "id": "Q18761823",
+        "name": "Die Grünen"
+       }
+      },
+      {
+       "person_id": "Q153965",
+       "name": "Joseph Beuys",
+       "role": "other",
+       "birth_year": 1921,
+       "death_year": 1986,
+       "summary": "professor académico alemão (1921–1986)",
+       "works": [
+        "How to Explain Pictures to a Dead Hare"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Beuys-Feldman-Gallery.jpg/330px-Beuys-Feldman-Gallery.jpg",
+        "credit": "Ronald Feldman Fine Arts / Wikimedia Commons",
+        "license": "CC BY-SA 3.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Joseph_Beuys",
+       "via": "party",
+       "party": {
+        "id": "Q18761823",
+        "name": "Die Grünen"
+       }
+      },
+      {
+       "person_id": "Q76837",
+       "name": "Daniel Cohn-Bendit",
+       "role": "leader",
+       "birth_year": 1945,
+       "death_year": null,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Europe_Ecologie_closing_rally_regional_elections_2010-03-10_n14.jpg/330px-Europe_Ecologie_closing_rally_regional_elections_2010-03-10_n14.jpg",
+        "credit": "Marie-Lan Nguyen / Wikimedia Commons",
+        "license": "CC BY 3.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Daniel_Cohn-Bendit",
+       "via": "party",
+       "party": {
+        "id": "Q49766",
+        "name": "Aliança 90/Os Verdes"
+       }
+      },
+      {
+       "person_id": "Q109943",
+       "name": "Robert Habeck",
+       "role": "leader",
+       "birth_year": 1969,
+       "death_year": null,
+       "summary": "político e escritor alemão, Vice-chanceler da Alemanha de 2021 até 2025",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/MKr364989_Robert_Habeck_%28Gr%C3%BCne_BDK_2024%29.jpg/330px-MKr364989_Robert_Habeck_%28Gr%C3%BCne_BDK_2024%29.jpg",
+        "credit": "Martin Kraft / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Robert_Habeck",
+       "via": "party",
+       "party": {
+        "id": "Q49766",
+        "name": "Aliança 90/Os Verdes"
+       }
+      },
+      {
+       "person_id": "Q61227",
+       "name": "Petra Kelly",
+       "role": "leader",
+       "birth_year": 1947,
+       "death_year": 1992,
+       "summary": "política alemã",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Petra_Kelly.jpg/330px-Petra_Kelly.jpg",
+        "credit": "User Urning on de.wikipedia / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Petra_Kelly",
+       "via": "party",
+       "party": {
+        "id": "Q49766",
+        "name": "Aliança 90/Os Verdes"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q49766",
+       "name": "Aliança 90/Os Verdes"
+      },
+      {
+       "id": "Q49764",
+       "name": "A Esquerda"
+      },
+      {
+       "id": "Q18761823",
+       "name": "Die Grünen"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "social-democracia",
+      "kind": "ideology",
+      "label": "Social-democracia",
+      "short": "Corrente que combina democracia e economia de mercado com Estado de bem-estar social e redistribuição de renda.",
+      "body": "Defende serviços públicos universais (saúde, educação, previdência), direitos trabalhistas, impostos progressivos e regulação dos mercados, dentro de uma democracia multipartidária.\nNasceu no movimento socialista do fim do século XIX e, ao longo do século XX, passou a buscar reformas pelo voto em vez de revolução; governou por longos períodos nos países nórdicos e em boa parte da Europa Ocidental.\nDefensores associam o modelo a baixa desigualdade e alta qualidade de vida. Críticos à direita apontam carga tributária e gasto público altos; críticos à esquerda dizem que ela abandonou a transformação do capitalismo.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-social-democracia",
+        "title": "Social-democracia (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Social-democracia",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-social-democracy",
+        "title": "Social democracy (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Social_democracy",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q7231",
+       "name": "Rosa Luxemburgo",
+       "role": "leader",
+       "birth_year": 1871,
+       "death_year": 1919,
+       "summary": "filósofa marxista polaco-alemã (1871–1919)",
+       "works": [
+        "The Accumulation of Capital",
+        "Social Reform or Revolution"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Rosa_Luxemburg.jpg/330px-Rosa_Luxemburg.jpg",
+        "credit": "Unknown author / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Rosa_Luxemburgo",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q6538",
+       "name": "Günter Grass",
+       "role": "other",
+       "birth_year": 1927,
+       "death_year": 2015,
+       "summary": null,
+       "works": [
+        "O cão de Hitler",
+        "The Rat",
+        "O Tambor"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/G%C3%BCnter_Grass_auf_dem_Blauen_Sofa.jpg/330px-G%C3%BCnter_Grass_auf_dem_Blauen_Sofa.jpg",
+        "credit": "Blaues Sofa from Berlin, Deutschland / Wikimedia Commons",
+        "license": "CC BY 2.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/G%C3%BCnter_Grass",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q61053",
+       "name": "Olaf Scholz",
+       "role": "leader",
+       "birth_year": 1958,
+       "death_year": null,
+       "summary": "político alemão, Chanceler da Alemanha (2021-2025)",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Olaf_Scholz_2025.jpg/330px-Olaf_Scholz_2025.jpg",
+        "credit": "Steffen Prößdorf / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Olaf_Scholz",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q2514",
+       "name": "Willy Brandt",
+       "role": "leader",
+       "birth_year": 1913,
+       "death_year": 1992,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Bundesarchiv_B_145_Bild-F057884-0009%2C_Willy_Brandt.jpg/330px-Bundesarchiv_B_145_Bild-F057884-0009%2C_Willy_Brandt.jpg",
+        "credit": "Engelbert Reineke / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Willy_Brandt",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q2530",
+       "name": "Gerhard Schröder",
+       "role": "leader",
+       "birth_year": 1944,
+       "death_year": null,
+       "summary": "político alemão, Chanceler da Alemanha (1998-2005)",
+       "works": [
+        "Entscheidungen"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/%D0%93%D0%B5%D1%80%D1%85%D0%B0%D1%80%D0%B4_%D0%A8%D1%80%D0%B5%D0%B4%D0%B5%D1%80_%2805-12-2019%29_%28cropped%29.jpg/330px-%D0%93%D0%B5%D1%80%D1%85%D0%B0%D1%80%D0%B4_%D0%A8%D1%80%D0%B5%D0%B4%D0%B5%D1%80_%2805-12-2019%29_%28cropped%29.jpg",
+        "credit": "Пресс-служба Президента Республики Казахстан / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Gerhard_Schr%C3%B6der",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q76658",
+       "name": "Frank-Walter Steinmeier",
+       "role": "leader",
+       "birth_year": 1956,
+       "death_year": null,
+       "summary": "político alemão, Presidente da Alemanha",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Frank-Walter_Steinmeier_in_2025_%28cropped%29.jpg/330px-Frank-Walter_Steinmeier_in_2025_%28cropped%29.jpg",
+        "credit": "Press Service of the President of the Republic of Azerbaijan / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Frank-Walter_Steinmeier",
+       "via": "party",
+       "party": {
+        "id": "Q49768",
+        "name": "Partido Social-Democrata da Alemanha"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q49768",
+       "name": "Partido Social-Democrata da Alemanha"
+      },
+      {
+       "id": "Q15839584",
+       "name": "Party for Franconia"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "socialismo",
+      "kind": "ideology",
+      "label": "Socialismo",
+      "short": "Conjunto de correntes que defendem propriedade social ou coletiva dos meios de produção e menor desigualdade.",
+      "body": "Propõe que a produção seja controlada pela sociedade (Estado, cooperativas ou trabalhadores) e não por proprietários privados; vai de versões democráticas e reformistas a versões revolucionárias.\nSurgiu no século XIX, em reação às condições de trabalho da Revolução Industrial, com autores como Robert Owen, Pierre-Joseph Proudhon e Karl Marx, e influenciou sindicatos, partidos e governos no mundo todo.\nDefensores dizem que reduz a exploração e a desigualdade. Críticos apontam problemas de eficiência e de incentivo e, nas versões de partido único, a falta de liberdades políticas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-socialismo",
+        "title": "Socialismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Socialismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-socialism",
+        "title": "Socialism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Socialism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q2514",
+       "name": "Willy Brandt",
+       "role": "leader",
+       "birth_year": 1913,
+       "death_year": 1992,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Bundesarchiv_B_145_Bild-F057884-0009%2C_Willy_Brandt.jpg/330px-Bundesarchiv_B_145_Bild-F057884-0009%2C_Willy_Brandt.jpg",
+        "credit": "Engelbert Reineke / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Willy_Brandt",
+       "via": "party",
+       "party": {
+        "id": "Q689018",
+        "name": "Partido Socialista Operário da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q106533",
+       "name": "Maria Grollmuß",
+       "role": "leader",
+       "birth_year": 1896,
+       "death_year": 1944,
+       "summary": "professora alemã",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Briefmarke_Maria_Grollmu%C3%9F.jpg/330px-Briefmarke_Maria_Grollmu%C3%9F.jpg",
+        "credit": "Deutsche Post der DDR / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Maria_Grollmu%C3%9F",
+       "via": "party",
+       "party": {
+        "id": "Q689018",
+        "name": "Partido Socialista Operário da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q70215",
+       "name": "Wolfgang Leonhard",
+       "role": "leader",
+       "birth_year": 1921,
+       "death_year": 2014,
+       "summary": "professor académico alemão",
+       "works": [
+        "Child of the Revolution"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Bundesarchiv_Bild_183-1990-0625-029a%2C_Berlin%2C_Wolfgang_Leonhard.jpg/330px-Bundesarchiv_Bild_183-1990-0625-029a%2C_Berlin%2C_Wolfgang_Leonhard.jpg",
+        "credit": "Uhlemann, Thomas / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Wolfgang_Leonhard",
+       "via": "party",
+       "party": {
+        "id": "Q742912",
+        "name": "Independent Workers' Party of Germany"
+       }
+      },
+      {
+       "person_id": "Q70737",
+       "name": "Hans Mayer",
+       "role": "leader",
+       "birth_year": 1907,
+       "death_year": 2001,
+       "summary": "professor académico alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Hans_Mayer.jpg/330px-Hans_Mayer.jpg",
+        "credit": "Ludwig Garner / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Hans_Mayer",
+       "via": "party",
+       "party": {
+        "id": "Q689018",
+        "name": "Partido Socialista Operário da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q70895",
+       "name": "Theodor Liebknecht",
+       "role": "leader",
+       "birth_year": 1870,
+       "death_year": 1948,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Theodor_Liebknecht_1921.jpg/330px-Theodor_Liebknecht_1921.jpg",
+        "credit": "Free State of Prussia / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Theodor_Liebknecht",
+       "via": "party",
+       "party": {
+        "id": "Q689018",
+        "name": "Partido Socialista Operário da Alemanha"
+       }
+      },
+      {
+       "person_id": "Q75677",
+       "name": "Georg Ledebour",
+       "role": "leader",
+       "birth_year": 1850,
+       "death_year": 1947,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Georg_Ledebour.jpg",
+        "credit": "unknown / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Georg_Ledebour",
+       "via": "party",
+       "party": {
+        "id": "Q689018",
+        "name": "Partido Socialista Operário da Alemanha"
+       }
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "nacionalismo",
+      "kind": "ideology",
+      "label": "Nacionalismo",
+      "short": "Corrente que põe a nação, sua identidade e sua soberania como valor político central.",
+      "body": "Defende que cada nação tenha seu próprio Estado e governe a si mesma, e que os interesses nacionais tenham prioridade; combina-se tanto com posições de esquerda quanto de direita.\nGanhou força no século XIX, com as unificações da Itália e da Alemanha, e no século XX moveu as independências da Ásia e da África.\nDefensores destacam a autodeterminação dos povos e a coesão social. Críticos apontam que versões exclusivistas levaram a guerras, perseguição de minorias e limpezas étnicas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-nacionalismo",
+        "title": "Nacionalismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Nacionalismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-nationalism",
+        "title": "Nationalism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Nationalism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q9387",
+       "name": "Max Weber",
+       "role": "leader",
+       "birth_year": 1864,
+       "death_year": 1920,
+       "summary": "sociólogo, jurista e economista político alemão (1864–1920)",
+       "works": [
+        "A Ética Protestante e o Espírito do Capitalismo",
+        "A política como vocação",
+        "Economia e Sociedade"
+       ],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Max_Weber_in_1918.png/330px-Max_Weber_in_1918.png",
+        "credit": "Ernst Gottmann / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Max_Weber",
+       "via": "party",
+       "party": {
+        "id": "Q339110",
+        "name": "National-Social Association"
+       }
+      },
+      {
+       "person_id": "Q103955",
+       "name": "Gustav Stresemann",
+       "role": "leader",
+       "birth_year": 1878,
+       "death_year": 1929,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Bundesarchiv_Bild_146-1989-040-27%2C_Gustav_Stresemann.jpg/330px-Bundesarchiv_Bild_146-1989-040-27%2C_Gustav_Stresemann.jpg",
+        "credit": "Unknown / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Gustav_Stresemann",
+       "via": "party",
+       "party": {
+        "id": "Q339110",
+        "name": "National-Social Association"
+       }
+      },
+      {
+       "person_id": "Q21163",
+       "name": "Ferdinand Tönnies",
+       "role": "leader",
+       "birth_year": 1855,
+       "death_year": 1936,
+       "summary": "professor académico alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Ferdinand_T%C3%B6nnies.jpg/330px-Ferdinand_T%C3%B6nnies.jpg",
+        "credit": "Ferdinand Urbahns / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Ferdinand_T%C3%B6nnies",
+       "via": "party",
+       "party": {
+        "id": "Q339110",
+        "name": "National-Social Association"
+       }
+      },
+      {
+       "person_id": "Q57131",
+       "name": "Hans-Ulrich Rudel",
+       "role": "other",
+       "birth_year": 1916,
+       "death_year": 1982,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg/330px-Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg",
+        "credit": "Video: Kameramann des Special Film Project 186 der United States Army Air Forces (USAAF) / Screenshot: Lewenstein / Wikimedia Commons",
+        "license": "Public domain"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Hans-Ulrich_Rudel",
+       "via": "party",
+       "party": {
+        "id": "Q495497",
+        "name": "Deutsche Reichspartei"
+       }
+      }
+     ],
+     "parties": [
+      {
+       "id": "Q495497",
+       "name": "Deutsche Reichspartei"
+      }
+     ],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "populismo",
+      "kind": "ideology",
+      "label": "Populismo",
+      "short": "Estilo político que opõe um \"povo\" unido a uma \"elite\" vista como corrupta ou distante.",
+      "body": "Mais um modo de fazer política do que um programa: apresenta o líder ou o partido como voz direta do povo contra as elites e pode aparecer combinado com ideias de esquerda ou de direita.\nTem exemplos no movimento agrário dos Estados Unidos no século XIX, em governos latino-americanos do século XX e em vários partidos e governos do século XXI.\nDefensores dizem que dá voz a grupos ignorados pela política tradicional. Críticos dizem que tende a enfraquecer instituições, imprensa e controles sobre o poder.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-populismo",
+        "title": "Populismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Populismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-populism",
+        "title": "Populism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Populism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q87485",
+       "name": "Martin Sonneborn",
+       "role": "leader",
+       "birth_year": 1965,
+       "death_year": null,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Martin_Sonneborn.jpg/330px-Martin_Sonneborn.jpg",
+        "credit": "Alexander Klink / Wikimedia Commons",
+        "license": "CC BY 3.0"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Martin_Sonneborn",
+       "via": "party",
+       "party": {
+        "id": "Q22748",
+        "name": "Die PARTEI"
+       }
+      },
+      {
+       "person_id": "Q77462",
+       "name": "Bela B",
+       "role": "other",
+       "birth_year": 1962,
+       "death_year": null,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Bela1.jpg/330px-Bela1.jpg",
+        "credit": "Arne Müseler / Wikimedia Commons",
+        "license": "CC BY-SA 3.0 de"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Bela_B",
+       "via": "party",
+       "party": {
+        "id": "Q22748",
+        "name": "Die PARTEI"
+       }
+      },
+      {
+       "person_id": "Q70307",
+       "name": "Mark Benecke",
+       "role": "leader",
+       "birth_year": 1970,
+       "death_year": null,
+       "summary": null,
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/OB-Wahl_K%C3%B6ln_2015%2C_Wahlabend_im_Rathaus_10.jpg/330px-OB-Wahl_K%C3%B6ln_2015%2C_Wahlabend_im_Rathaus_10.jpg",
+        "credit": "Elke Wetzig / Wikimedia Commons",
+        "license": "CC BY-SA 4.0"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Mark_Benecke",
+       "via": "party",
+       "party": {
+        "id": "Q22748",
+        "name": "Die PARTEI"
+       }
+      },
+      {
+       "person_id": "Q1986007",
+       "name": "Nico Semsrott",
+       "role": "leader",
+       "birth_year": 1986,
+       "death_year": null,
+       "summary": "político alemão",
+       "works": [],
+       "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Nico-semsrott-republica-2025.jpg/330px-Nico-semsrott-republica-2025.jpg",
+        "credit": "Kaethe17 / Wikimedia Commons",
+        "license": "CC BY 4.0"
+       },
+       "wikipedia_url": "https://en.wikipedia.org/wiki/Nico_Semsrott",
+       "via": "party",
+       "party": {
+        "id": "Q22748",
+        "name": "Die PARTEI"
+       }
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "anarquismo",
+      "kind": "ideology",
+      "label": "Anarquismo",
+      "short": "Corrente que rejeita o Estado e outras formas de autoridade hierárquica e propõe organização voluntária.",
+      "body": "Propõe substituir o Estado por associações livres e cooperativas; há vertentes coletivistas, comunistas, individualistas e sindicalistas.\nSurgiu no século XIX, com Proudhon, Mikhail Bakunin e Piotr Kropotkin; teve força em sindicatos da Espanha, da Itália e da América Latina (incluindo o Brasil do início do século XX) e organizou regiões durante a Guerra Civil Espanhola.\nDefensores dizem que a autoridade concentrada gera abusos e que a cooperação voluntária é possível. Críticos dizem que, sem Estado, não há como garantir segurança e direitos, e lembram atentados cometidos por militantes anarquistas.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-anarquismo",
+        "title": "Anarquismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Anarquismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-anarchism",
+        "title": "Anarchism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Anarchism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q77141",
+       "name": "Alexander Grothendieck",
+       "role": "other",
+       "birth_year": 1928,
+       "death_year": 2014,
+       "summary": null,
+       "works": [
+        "Éléments de géométrie algébrique",
+        "topologia de Grothendieck",
+        "construção de Grothendieck"
+       ],
+       "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Alexander_Grothendieck.jpg",
+        "credit": "Konrad Jacobs, Erlangen, Copyright by MFO / Original uploader was AEDP at it.wikipedia / Wikimedia Commons",
+        "license": "CC BY-SA 2.0 de"
+       },
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Alexander_Grothendieck",
+       "via": "declared",
+       "party": null
+      },
+      {
+       "person_id": "Q213632",
+       "name": "Johann Most",
+       "role": "leader",
+       "birth_year": 1846,
+       "death_year": 1906,
+       "summary": null,
+       "works": [
+        "God Pestilence"
+       ],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Johann_Most",
+       "via": "declared",
+       "party": null
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    },
+    {
+     "term": {
+      "id": "libertarianismo",
+      "kind": "ideology",
+      "label": "Libertarianismo",
+      "short": "Corrente que busca reduzir o Estado ao mínimo para maximizar a liberdade individual, inclusive econômica.",
+      "body": "Defende mercados livres, impostos e regulações mínimos e a não interferência do Estado em escolhas pessoais; as vertentes mais radicais (anarcocapitalismo) propõem eliminar o Estado.\nGanhou força no século XX, sobretudo nos Estados Unidos, com autores como Friedrich Hayek, Murray Rothbard e Robert Nozick.\nDefensores argumentam que a liberdade econômica e a pessoal são inseparáveis e que o mercado aloca recursos melhor que o governo. Críticos apontam o risco de desigualdade, de serviços públicos insuficientes e de falhas de mercado sem correção.",
+      "icon": null,
+      "examples": [],
+      "sources": [
+       {
+        "id": "wp-pt-libertarianismo",
+        "title": "Libertarianismo (Wikipédia)",
+        "url": "https://pt.wikipedia.org/wiki/Libertarianismo",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       },
+       {
+        "id": "wp-en-libertarianism",
+        "title": "Libertarianism (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Libertarianism",
+        "license": "CC BY-SA 4.0",
+        "retrieved_at": "2026-11-13T00:00:00Z"
+       }
+      ]
+     },
+     "figures": [
+      {
+       "person_id": "Q76540",
+       "name": "Oliver Janich",
+       "role": "leader",
+       "birth_year": 1969,
+       "death_year": null,
+       "summary": "autor, jornalista e político alemão",
+       "works": [
+        "Das Kapitalismus-Komplott"
+       ],
+       "image": null,
+       "wikipedia_url": "https://pt.wikipedia.org/wiki/Oliver_Janich",
+       "via": "party",
+       "party": {
+        "id": "Q706864",
+        "name": "Partei der Vernunft"
+       }
+      }
+     ],
+     "parties": [],
+     "milestones": []
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  }
+ },
+ "details": {
+  "social-democracia": {
+   "term": {
+    "id": "social-democracia",
+    "kind": "ideology",
+    "label": "Social-democracia",
+    "short": "Corrente que combina democracia e economia de mercado com Estado de bem-estar social e redistribuição de renda.",
+    "body": "Defende serviços públicos universais (saúde, educação, previdência), direitos trabalhistas, impostos progressivos e regulação dos mercados, dentro de uma democracia multipartidária.\nNasceu no movimento socialista do fim do século XIX e, ao longo do século XX, passou a buscar reformas pelo voto em vez de revolução; governou por longos períodos nos países nórdicos e em boa parte da Europa Ocidental.\nDefensores associam o modelo a baixa desigualdade e alta qualidade de vida. Críticos à direita apontam carga tributária e gasto público altos; críticos à esquerda dizem que ela abandonou a transformação do capitalismo.",
+    "icon": null,
+    "examples": [],
+    "sources": [
+     {
+      "id": "wp-pt-social-democracia",
+      "title": "Social-democracia (Wikipédia)",
+      "url": "https://pt.wikipedia.org/wiki/Social-democracia",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     },
+     {
+      "id": "wp-en-social-democracy",
+      "title": "Social democracy (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Social_democracy",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     }
+    ]
+   },
+   "founders": [
+    {
+     "person_id": "Q8027",
+     "name": "Martin Luther King Jr.",
+     "role": "leader",
+     "birth_year": 1929,
+     "death_year": 1968,
+     "summary": "pastor batista e ativista político estadunidense (1929–1968)",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/The_Rev._Dr._Martin_Luther_King_Jr._Color_Portrait_%28high_quality%29.jpg/330px-The_Rev._Dr._Martin_Luther_King_Jr._Color_Portrait_%28high_quality%29.jpg",
+      "credit": "Associated Press / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Martin_Luther_King_Jr.",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q30487",
+     "name": "Mikhail Gorbatchov",
+     "role": "leader",
+     "birth_year": 1931,
+     "death_year": 2022,
+     "summary": "último líder da União Soviética de 1985 a 1991 (1931–2022)",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/GorbachevMS.jpg/330px-GorbachevMS.jpg",
+      "credit": "Leo Medvedev/Лев Леонидович Медведев / Wikimedia Commons",
+      "license": "CC BY-SA 4.0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Mikhail_Gorbatchov",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q189575",
+     "name": "Ion Iliescu",
+     "role": "leader",
+     "birth_year": 1930,
+     "death_year": 2025,
+     "summary": "político romeno (1930–2025); 2º e 4º presidente da Romênia",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Ion_Iliescu_%282004%29.jpg/330px-Ion_Iliescu_%282004%29.jpg",
+      "credit": "Aluísio/Vice-presidência da República / Wikimedia Commons",
+      "license": "CC BY 3.0 br"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Ion_Iliescu",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q217555",
+     "name": "Alfredo Palacio",
+     "role": "leader",
+     "birth_year": 1939,
+     "death_year": 2025,
+     "summary": "médico e político equatoriano, Ex-presidente do Equador",
+     "works": [],
+     "image": {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Alfredo_Palacio_Presidente_de_Ecuador.jpg",
+      "credit": "Ricardo Stuckert/PR / Wikimedia Commons",
+      "license": "CC BY 3.0 br"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Alfredo_Palacio",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q352422",
+     "name": "Mike Gravel",
+     "role": "leader",
+     "birth_year": 1930,
+     "death_year": 2021,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Mike_Gravel.jpg/330px-Mike_Gravel.jpg",
+      "credit": "George Rebh / Wikimedia Commons",
+      "license": "CC BY 1.0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Mike_Gravel",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q946934",
+     "name": "Huber Matos",
+     "role": "leader",
+     "birth_year": 1918,
+     "death_year": 2014,
+     "summary": "político e revolucionário cubano",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Huber_Matos_Benitez.jpg/330px-Huber_Matos_Benitez.jpg",
+      "credit": "Gabematos35 / Wikimedia Commons",
+      "license": "CC BY-SA 3.0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Huber_Matos",
+     "via": "declared",
+     "party": null
+    }
+   ],
+   "timeline": [],
+   "governed": [
+    {
+     "iso2": "AD",
+     "from_year": 1981,
+     "to_year": 1995
+    },
+    {
+     "iso2": "AD",
+     "from_year": 2009,
+     "to_year": 2017
+    },
+    {
+     "iso2": "AF",
+     "from_year": 1965,
+     "to_year": 1967
+    },
+    {
+     "iso2": "AG",
+     "from_year": 2004,
+     "to_year": 2014
+    },
+    {
+     "iso2": "AL",
+     "from_year": 1991,
+     "to_year": 1991
+    },
+    {
+     "iso2": "AL",
+     "from_year": 1997,
+     "to_year": 2005
+    },
+    {
+     "iso2": "AL",
+     "from_year": 2013,
+     "to_year": null
+    },
+    {
+     "iso2": "AO",
+     "from_year": 1975,
+     "to_year": null
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1916,
+     "to_year": 1930
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1932,
+     "to_year": 1938
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1983,
+     "to_year": 1989
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1999,
+     "to_year": 2001
+    },
+    {
+     "iso2": "AT",
+     "from_year": 1918,
+     "to_year": 1920
+    },
+    {
+     "iso2": "AT",
+     "from_year": 1945,
+     "to_year": 2000
+    },
+    {
+     "iso2": "AT",
+     "from_year": 2004,
+     "to_year": 2017
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1904,
+     "to_year": 1904
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1908,
+     "to_year": 1923
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1929,
+     "to_year": 1932
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1941,
+     "to_year": 1949
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1972,
+     "to_year": 1975
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1983,
+     "to_year": 1996
+    },
+    {
+     "iso2": "AU",
+     "from_year": 2007,
+     "to_year": 2013
+    },
+    {
+     "iso2": "AU",
+     "from_year": 2022,
+     "to_year": null
+    },
+    {
+     "iso2": "BA",
+     "from_year": 2001,
+     "to_year": 2002
+    },
+    {
+     "iso2": "BA",
+     "from_year": 2007,
+     "to_year": 2012
+    },
+    {
+     "iso2": "BA",
+     "from_year": 2019,
+     "to_year": 2023
+    },
+    {
+     "iso2": "BB",
+     "from_year": 1953,
+     "to_year": 1958
+    },
+    {
+     "iso2": "BB",
+     "from_year": 1966,
+     "to_year": null
+    },
+    {
+     "iso2": "BE",
+     "from_year": 1945,
+     "to_year": 1947
+    },
+    {
+     "iso2": "BE",
+     "from_year": 1954,
+     "to_year": 1958
+    },
+    {
+     "iso2": "BE",
+     "from_year": 2011,
+     "to_year": 2014
+    },
+    {
+     "iso2": "BF",
+     "from_year": 2015,
+     "to_year": 2022
+    },
+    {
+     "iso2": "BG",
+     "from_year": 1990,
+     "to_year": 1990
+    },
+    {
+     "iso2": "BG",
+     "from_year": 1995,
+     "to_year": 1997
+    },
+    {
+     "iso2": "BG",
+     "from_year": 2005,
+     "to_year": 2009
+    },
+    {
+     "iso2": "BG",
+     "from_year": 2014,
+     "to_year": 2014
+    },
+    {
+     "iso2": "BG",
+     "from_year": 2026,
+     "to_year": null
+    },
+    {
+     "iso2": "BO",
+     "from_year": 1989,
+     "to_year": 1993
+    },
+    {
+     "iso2": "BR",
+     "from_year": 2003,
+     "to_year": 2011
+    },
+    {
+     "iso2": "BR",
+     "from_year": 2023,
+     "to_year": null
+    },
+    {
+     "iso2": "BT",
+     "from_year": 2018,
+     "to_year": 2023
+    },
+    {
+     "iso2": "BZ",
+     "from_year": 1989,
+     "to_year": 1993
+    },
+    {
+     "iso2": "BZ",
+     "from_year": 1998,
+     "to_year": 2008
+    },
+    {
+     "iso2": "BZ",
+     "from_year": 2020,
+     "to_year": null
+    },
+    {
+     "iso2": "CD",
+     "from_year": 2001,
+     "to_year": 2021
+    },
+    {
+     "iso2": "CF",
+     "from_year": 1993,
+     "to_year": 1993
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1968,
+     "to_year": 1979
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1984,
+     "to_year": 1990
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1997,
+     "to_year": null
+    },
+    {
+     "iso2": "CI",
+     "from_year": 2000,
+     "to_year": 2011
+    },
+    {
+     "iso2": "CL",
+     "from_year": 2000,
+     "to_year": 2006
+    },
+    {
+     "iso2": "CO",
+     "from_year": 2022,
+     "to_year": 2026
+    },
+    {
+     "iso2": "CZ",
+     "from_year": 1998,
+     "to_year": 2006
+    },
+    {
+     "iso2": "CZ",
+     "from_year": 2013,
+     "to_year": 2023
+    },
+    {
+     "iso2": "DE",
+     "from_year": 1969,
+     "to_year": 1982
+    },
+    {
+     "iso2": "DE",
+     "from_year": 1998,
+     "to_year": 2005
+    },
+    {
+     "iso2": "DE",
+     "from_year": 2017,
+     "to_year": null
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1924,
+     "to_year": 1926
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1929,
+     "to_year": 1942
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1945,
+     "to_year": 1945
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1947,
+     "to_year": 1950
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1953,
+     "to_year": 1968
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1971,
+     "to_year": 1973
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1975,
+     "to_year": 1982
+    },
+    {
+     "iso2": "DK",
+     "from_year": 1993,
+     "to_year": 2001
+    },
+    {
+     "iso2": "DK",
+     "from_year": 2011,
+     "to_year": 2015
+    },
+    {
+     "iso2": "DK",
+     "from_year": 2019,
+     "to_year": null
+    },
+    {
+     "iso2": "DM",
+     "from_year": 1978,
+     "to_year": 1980
+    },
+    {
+     "iso2": "DM",
+     "from_year": 2000,
+     "to_year": null
+    },
+    {
+     "iso2": "DO",
+     "from_year": 1963,
+     "to_year": 1963
+    },
+    {
+     "iso2": "DO",
+     "from_year": 1978,
+     "to_year": 1986
+    },
+    {
+     "iso2": "DO",
+     "from_year": 2000,
+     "to_year": 2004
+    },
+    {
+     "iso2": "DO",
+     "from_year": 2012,
+     "to_year": null
+    },
+    {
+     "iso2": "EC",
+     "from_year": 1988,
+     "to_year": 1992
+    },
+    {
+     "iso2": "EC",
+     "from_year": 2007,
+     "to_year": 2021
+    },
+    {
+     "iso2": "EC",
+     "from_year": 2023,
+     "to_year": null
+    },
+    {
+     "iso2": "EE",
+     "from_year": 1994,
+     "to_year": 1995
+    },
+    {
+     "iso2": "EE",
+     "from_year": 2006,
+     "to_year": 2016
+    },
+    {
+     "iso2": "ES",
+     "from_year": 1982,
+     "to_year": 1996
+    },
+    {
+     "iso2": "ES",
+     "from_year": 2004,
+     "to_year": 2011
+    },
+    {
+     "iso2": "ES",
+     "from_year": 2018,
+     "to_year": null
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1926,
+     "to_year": 1927
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1948,
+     "to_year": 1950
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1956,
+     "to_year": 1959
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1966,
+     "to_year": 1970
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1972,
+     "to_year": 1975
+    },
+    {
+     "iso2": "FI",
+     "from_year": 1977,
+     "to_year": 2012
+    },
+    {
+     "iso2": "FI",
+     "from_year": 2019,
+     "to_year": 2023
+    },
+    {
+     "iso2": "FR",
+     "from_year": 1981,
+     "to_year": 1995
+    },
+    {
+     "iso2": "FR",
+     "from_year": 1997,
+     "to_year": 2002
+    },
+    {
+     "iso2": "FR",
+     "from_year": 2012,
+     "to_year": 2017
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1945,
+     "to_year": 1951
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1964,
+     "to_year": 1970
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1974,
+     "to_year": 1979
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1997,
+     "to_year": 2007
+    },
+    {
+     "iso2": "GB",
+     "from_year": 2024,
+     "to_year": 2026
+    },
+    {
+     "iso2": "GH",
+     "from_year": 1970,
+     "to_year": 1970
+    },
+    {
+     "iso2": "GH",
+     "from_year": 2009,
+     "to_year": 2017
+    },
+    {
+     "iso2": "GH",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "GR",
+     "from_year": 1996,
+     "to_year": 2019
+    },
+    {
+     "iso2": "GT",
+     "from_year": 1945,
+     "to_year": 1954
+    },
+    {
+     "iso2": "GT",
+     "from_year": 2008,
+     "to_year": 2012
+    },
+    {
+     "iso2": "GT",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "GW",
+     "from_year": 1998,
+     "to_year": 2004
+    },
+    {
+     "iso2": "HR",
+     "from_year": 2000,
+     "to_year": 2003
+    },
+    {
+     "iso2": "HR",
+     "from_year": 2011,
+     "to_year": 2016
+    },
+    {
+     "iso2": "HR",
+     "from_year": 2020,
+     "to_year": null
+    },
+    {
+     "iso2": "HT",
+     "from_year": 1996,
+     "to_year": 1997
+    },
+    {
+     "iso2": "HT",
+     "from_year": 2001,
+     "to_year": 2004
+    },
+    {
+     "iso2": "HU",
+     "from_year": 1919,
+     "to_year": 1919
+    },
+    {
+     "iso2": "HU",
+     "from_year": 1989,
+     "to_year": 1990
+    },
+    {
+     "iso2": "HU",
+     "from_year": 1994,
+     "to_year": 1998
+    },
+    {
+     "iso2": "HU",
+     "from_year": 2004,
+     "to_year": 2010
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1948,
+     "to_year": 1963
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1969,
+     "to_year": 1969
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1973,
+     "to_year": 1978
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1984,
+     "to_year": 1986
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1992,
+     "to_year": 1996
+    },
+    {
+     "iso2": "IL",
+     "from_year": 2021,
+     "to_year": null
+    },
+    {
+     "iso2": "IN",
+     "from_year": 1989,
+     "to_year": 1990
+    },
+    {
+     "iso2": "IQ",
+     "from_year": 2003,
+     "to_year": 2003
+    },
+    {
+     "iso2": "IQ",
+     "from_year": 2005,
+     "to_year": null
+    },
+    {
+     "iso2": "IS",
+     "from_year": 1947,
+     "to_year": 1949
+    },
+    {
+     "iso2": "IS",
+     "from_year": 1958,
+     "to_year": 1959
+    },
+    {
+     "iso2": "IS",
+     "from_year": 1979,
+     "to_year": 1980
+    },
+    {
+     "iso2": "IS",
+     "from_year": 2009,
+     "to_year": 2013
+    },
+    {
+     "iso2": "IS",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "IT",
+     "from_year": 1964,
+     "to_year": 1971
+    },
+    {
+     "iso2": "IT",
+     "from_year": 1983,
+     "to_year": 1987
+    },
+    {
+     "iso2": "IT",
+     "from_year": 1994,
+     "to_year": 1995
+    },
+    {
+     "iso2": "IT",
+     "from_year": 2001,
+     "to_year": 2006
+    },
+    {
+     "iso2": "IT",
+     "from_year": 2008,
+     "to_year": 2011
+    },
+    {
+     "iso2": "IT",
+     "from_year": 2013,
+     "to_year": 2016
+    },
+    {
+     "iso2": "JM",
+     "from_year": 1972,
+     "to_year": 2007
+    },
+    {
+     "iso2": "JM",
+     "from_year": 2012,
+     "to_year": 2016
+    },
+    {
+     "iso2": "KG",
+     "from_year": 2007,
+     "to_year": 2007
+    },
+    {
+     "iso2": "KG",
+     "from_year": 2010,
+     "to_year": 2020
+    },
+    {
+     "iso2": "KN",
+     "from_year": 1960,
+     "to_year": 1980
+    },
+    {
+     "iso2": "KN",
+     "from_year": 1995,
+     "to_year": 2015
+    },
+    {
+     "iso2": "KN",
+     "from_year": 2022,
+     "to_year": null
+    },
+    {
+     "iso2": "LC",
+     "from_year": 1960,
+     "to_year": 1964
+    },
+    {
+     "iso2": "LC",
+     "from_year": 1979,
+     "to_year": 1982
+    },
+    {
+     "iso2": "LC",
+     "from_year": 1997,
+     "to_year": 2006
+    },
+    {
+     "iso2": "LC",
+     "from_year": 2011,
+     "to_year": 2016
+    },
+    {
+     "iso2": "LC",
+     "from_year": 2021,
+     "to_year": null
+    },
+    {
+     "iso2": "LK",
+     "from_year": 1994,
+     "to_year": 2005
+    },
+    {
+     "iso2": "LR",
+     "from_year": 1990,
+     "to_year": 1994
+    },
+    {
+     "iso2": "LT",
+     "from_year": 1992,
+     "to_year": 1993
+    },
+    {
+     "iso2": "LT",
+     "from_year": 1996,
+     "to_year": 1996
+    },
+    {
+     "iso2": "LT",
+     "from_year": 2006,
+     "to_year": 2008
+    },
+    {
+     "iso2": "LT",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "LV",
+     "from_year": 1926,
+     "to_year": 1928
+    },
+    {
+     "iso2": "LV",
+     "from_year": 1931,
+     "to_year": 1933
+    },
+    {
+     "iso2": "MA",
+     "from_year": 1998,
+     "to_year": 2002
+    },
+    {
+     "iso2": "MD",
+     "from_year": 1999,
+     "to_year": 2001
+    },
+    {
+     "iso2": "MD",
+     "from_year": 2010,
+     "to_year": 2012
+    },
+    {
+     "iso2": "MD",
+     "from_year": 2016,
+     "to_year": 2019
+    },
+    {
+     "iso2": "ME",
+     "from_year": 1990,
+     "to_year": 2023
+    },
+    {
+     "iso2": "MK",
+     "from_year": 2004,
+     "to_year": 2006
+    },
+    {
+     "iso2": "MK",
+     "from_year": 2017,
+     "to_year": 2024
+    },
+    {
+     "iso2": "ML",
+     "from_year": 1992,
+     "to_year": 2002
+    },
+    {
+     "iso2": "ML",
+     "from_year": 2012,
+     "to_year": 2013
+    },
+    {
+     "iso2": "ML",
+     "from_year": 2015,
+     "to_year": 2019
+    },
+    {
+     "iso2": "MM",
+     "from_year": 1948,
+     "to_year": 1962
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1921,
+     "to_year": 1922
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1924,
+     "to_year": 1924
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1932,
+     "to_year": 1936
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1939,
+     "to_year": 1974
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1984,
+     "to_year": 2007
+    },
+    {
+     "iso2": "MN",
+     "from_year": 2009,
+     "to_year": 2012
+    },
+    {
+     "iso2": "MN",
+     "from_year": 2016,
+     "to_year": null
+    },
+    {
+     "iso2": "MR",
+     "from_year": 2008,
+     "to_year": 2014
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1947,
+     "to_year": 1950
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1955,
+     "to_year": 1958
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1971,
+     "to_year": 1989
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1996,
+     "to_year": 1998
+    },
+    {
+     "iso2": "MT",
+     "from_year": 2009,
+     "to_year": null
+    },
+    {
+     "iso2": "MU",
+     "from_year": 1968,
+     "to_year": 1982
+    },
+    {
+     "iso2": "MU",
+     "from_year": 1992,
+     "to_year": 1992
+    },
+    {
+     "iso2": "MU",
+     "from_year": 2002,
+     "to_year": 2002
+    },
+    {
+     "iso2": "MU",
+     "from_year": 2005,
+     "to_year": 2015
+    },
+    {
+     "iso2": "MU",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "MV",
+     "from_year": 2012,
+     "to_year": 2013
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1920,
+     "to_year": 1924
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1928,
+     "to_year": 1964
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1970,
+     "to_year": 1982
+    },
+    {
+     "iso2": "NA",
+     "from_year": 1990,
+     "to_year": null
+    },
+    {
+     "iso2": "NE",
+     "from_year": 1991,
+     "to_year": 1995
+    },
+    {
+     "iso2": "NE",
+     "from_year": 2011,
+     "to_year": 2023
+    },
+    {
+     "iso2": "NG",
+     "from_year": 2015,
+     "to_year": 2023
+    },
+    {
+     "iso2": "NP",
+     "from_year": 1951,
+     "to_year": 1955
+    },
+    {
+     "iso2": "NP",
+     "from_year": 1963,
+     "to_year": 1965
+    },
+    {
+     "iso2": "NP",
+     "from_year": 1975,
+     "to_year": 1977
+    },
+    {
+     "iso2": "NP",
+     "from_year": 1990,
+     "to_year": 2002
+    },
+    {
+     "iso2": "NP",
+     "from_year": 2004,
+     "to_year": 2015
+    },
+    {
+     "iso2": "NP",
+     "from_year": 2017,
+     "to_year": 2018
+    },
+    {
+     "iso2": "NP",
+     "from_year": 2021,
+     "to_year": 2022
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1935,
+     "to_year": 1949
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1957,
+     "to_year": 1960
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1972,
+     "to_year": 1975
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1984,
+     "to_year": 1990
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1999,
+     "to_year": 2008
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 2017,
+     "to_year": 2023
+    },
+    {
+     "iso2": "PA",
+     "from_year": 1978,
+     "to_year": 1982
+    },
+    {
+     "iso2": "PA",
+     "from_year": 2004,
+     "to_year": 2009
+    },
+    {
+     "iso2": "PA",
+     "from_year": 2019,
+     "to_year": 2024
+    },
+    {
+     "iso2": "PE",
+     "from_year": 1985,
+     "to_year": 1990
+    },
+    {
+     "iso2": "PE",
+     "from_year": 2006,
+     "to_year": 2016
+    },
+    {
+     "iso2": "PG",
+     "from_year": 2019,
+     "to_year": null
+    },
+    {
+     "iso2": "PH",
+     "from_year": 2022,
+     "to_year": null
+    },
+    {
+     "iso2": "PK",
+     "from_year": 1971,
+     "to_year": 1978
+    },
+    {
+     "iso2": "PK",
+     "from_year": 1988,
+     "to_year": 1990
+    },
+    {
+     "iso2": "PK",
+     "from_year": 1993,
+     "to_year": 1997
+    },
+    {
+     "iso2": "PK",
+     "from_year": 2008,
+     "to_year": 2013
+    },
+    {
+     "iso2": "PK",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1918,
+     "to_year": 1918
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1936,
+     "to_year": 1939
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1944,
+     "to_year": 1947
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1995,
+     "to_year": 1996
+    },
+    {
+     "iso2": "PT",
+     "from_year": 1976,
+     "to_year": null
+    },
+    {
+     "iso2": "PY",
+     "from_year": 1936,
+     "to_year": 1937
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1999,
+     "to_year": 2004
+    },
+    {
+     "iso2": "RO",
+     "from_year": 2012,
+     "to_year": 2015
+    },
+    {
+     "iso2": "RO",
+     "from_year": 2017,
+     "to_year": 2019
+    },
+    {
+     "iso2": "RO",
+     "from_year": 2023,
+     "to_year": 2025
+    },
+    {
+     "iso2": "RS",
+     "from_year": 1991,
+     "to_year": 2004
+    },
+    {
+     "iso2": "RS",
+     "from_year": 2012,
+     "to_year": 2012
+    },
+    {
+     "iso2": "SC",
+     "from_year": 1977,
+     "to_year": 2020
+    },
+    {
+     "iso2": "SC",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "SE",
+     "from_year": 1920,
+     "to_year": 1926
+    },
+    {
+     "iso2": "SE",
+     "from_year": 1932,
+     "to_year": 1976
+    },
+    {
+     "iso2": "SE",
+     "from_year": 1982,
+     "to_year": 1991
+    },
+    {
+     "iso2": "SE",
+     "from_year": 1994,
+     "to_year": 2006
+    },
+    {
+     "iso2": "SE",
+     "from_year": 2014,
+     "to_year": 2022
+    },
+    {
+     "iso2": "SK",
+     "from_year": 2006,
+     "to_year": 2010
+    },
+    {
+     "iso2": "SK",
+     "from_year": 2012,
+     "to_year": 2020
+    },
+    {
+     "iso2": "SK",
+     "from_year": 2023,
+     "to_year": null
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1973,
+     "to_year": 1975
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1977,
+     "to_year": 1977
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1979,
+     "to_year": 1981
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1983,
+     "to_year": 1985
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1989,
+     "to_year": 2008
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2012,
+     "to_year": 2015
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2018,
+     "to_year": 2022
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2025,
+     "to_year": 2026
+    },
+    {
+     "iso2": "SR",
+     "from_year": 1975,
+     "to_year": 1982
+    },
+    {
+     "iso2": "SR",
+     "from_year": 1988,
+     "to_year": 1996
+    },
+    {
+     "iso2": "SR",
+     "from_year": 2000,
+     "to_year": 2010
+    },
+    {
+     "iso2": "SR",
+     "from_year": 2020,
+     "to_year": 2025
+    },
+    {
+     "iso2": "TL",
+     "from_year": 2002,
+     "to_year": 2012
+    },
+    {
+     "iso2": "TL",
+     "from_year": 2015,
+     "to_year": 2018
+    },
+    {
+     "iso2": "TL",
+     "from_year": 2022,
+     "to_year": null
+    },
+    {
+     "iso2": "TN",
+     "from_year": 2020,
+     "to_year": 2020
+    },
+    {
+     "iso2": "TR",
+     "from_year": 1923,
+     "to_year": 1950
+    },
+    {
+     "iso2": "TR",
+     "from_year": 1966,
+     "to_year": 1973
+    },
+    {
+     "iso2": "TT",
+     "from_year": 1995,
+     "to_year": 2001
+    },
+    {
+     "iso2": "TT",
+     "from_year": 2010,
+     "to_year": 2015
+    },
+    {
+     "iso2": "TT",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "TZ",
+     "from_year": 1985,
+     "to_year": null
+    },
+    {
+     "iso2": "UA",
+     "from_year": 1995,
+     "to_year": 1996
+    },
+    {
+     "iso2": "VC",
+     "from_year": 2001,
+     "to_year": null
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1945,
+     "to_year": 1948
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1964,
+     "to_year": 1969
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1974,
+     "to_year": 1979
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1984,
+     "to_year": 1994
+    },
+    {
+     "iso2": "VU",
+     "from_year": 1999,
+     "to_year": 2001
+    },
+    {
+     "iso2": "VU",
+     "from_year": 2004,
+     "to_year": 2013
+    },
+    {
+     "iso2": "VU",
+     "from_year": 2015,
+     "to_year": 2017
+    },
+    {
+     "iso2": "XK",
+     "from_year": 2020,
+     "to_year": null
+    },
+    {
+     "iso2": "ZA",
+     "from_year": 1994,
+     "to_year": null
+    },
+    {
+     "iso2": "ZM",
+     "from_year": 1991,
+     "to_year": 2011
+    },
+    {
+     "iso2": "ZM",
+     "from_year": 2015,
+     "to_year": 2021
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  },
+  "comunismo": {
+   "term": {
+    "id": "comunismo",
+    "kind": "ideology",
+    "label": "Comunismo",
+    "short": "Corrente que busca uma sociedade sem classes e sem propriedade privada dos meios de produção; inclui o marxismo.",
+    "body": "Baseada sobretudo nas obras de Karl Marx e Friedrich Engels, propõe abolir a propriedade privada dos meios de produção e, no fim, o próprio Estado. As vertentes marxistas-leninistas defenderam um partido único de vanguarda para chegar lá.\nGovernou a União Soviética (1917-1991), a China (desde 1949), países do Leste Europeu, Cuba, Vietnã e outros; vários desses governos promoveram industrialização rápida e alfabetização em massa.\nDefensores destacam a busca de igualdade e esses avanços sociais. Críticos e historiadores registram repressão política, campos de trabalho forçado (como o Gulag) e fomes com milhões de mortes (como na Ucrânia em 1932-1933 e na China em 1959-1961) sob esses governos.",
+    "icon": null,
+    "examples": [],
+    "sources": [
+     {
+      "id": "wp-pt-comunismo",
+      "title": "Comunismo (Wikipédia)",
+      "url": "https://pt.wikipedia.org/wiki/Comunismo",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     },
+     {
+      "id": "wp-en-communism",
+      "title": "Communism (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Communism",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     }
+    ]
+   },
+   "founders": [
+    {
+     "person_id": "Q1394",
+     "name": "Vladimir Lenin",
+     "role": "leader",
+     "birth_year": 1870,
+     "death_year": 1924,
+     "summary": "líder fundador da União Soviética de 1922 a 1924",
+     "works": [
+      "Imperialismo, fase superior do capitalismo"
+     ],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/26/Vlad%C3%ADmir_Lenin_%28fotograf%C3%ADa_coloreada%29.jpg/330px-Vlad%C3%ADmir_Lenin_%28fotograf%C3%ADa_coloreada%29.jpg",
+      "credit": "Pavel Zhukov / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Lenin",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q34189",
+     "name": "Pablo Neruda",
+     "role": "leader",
+     "birth_year": 1904,
+     "death_year": 1973,
+     "summary": "Escritor",
+     "works": [
+      "Canto General",
+      "Vinte Poemas de Amor e uma Canção Desesperada",
+      "Arte de pájaros"
+     ],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Pablo_Neruda_1963.jpg/330px-Pablo_Neruda_1963.jpg",
+      "credit": "Unknown (Mondadori Publishers) / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Pablo_Neruda",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q83003",
+     "name": "Antonio Gramsci",
+     "role": "leader",
+     "birth_year": 1891,
+     "death_year": 1937,
+     "summary": "filósofo marxista, jornalista, crítico literário, linguista, historiador e político italiano",
+     "works": [
+      "Cadernos do Cárcere"
+     ],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Gramsci.png/330px-Gramsci.png",
+      "credit": "Unknown author / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Antonio_Gramsci",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q132964",
+     "name": "Vladimir Maiakovski",
+     "role": "other",
+     "birth_year": 1893,
+     "death_year": 1930,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Majakovszkij.jpg/330px-Majakovszkij.jpg",
+      "credit": "Unidentified photographer / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Vladimir_Maiakovski",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q130777",
+     "name": "Kazimir Malevich",
+     "role": "leader",
+     "birth_year": 1879,
+     "death_year": 1935,
+     "summary": "Artista e pintor russo",
+     "works": [
+      "Suprematist Composition: White on White",
+      "Black Square (1915)",
+      "Suprematist Composition"
+     ],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Casimir_Malevich_photo.jpg/330px-Casimir_Malevich_photo.jpg",
+      "credit": "Unknown author / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Kazimir_Malevich",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q184906",
+     "name": "Nazım Hikmet",
+     "role": "other",
+     "birth_year": 1901,
+     "death_year": 1963,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/N%C3%A2z%C4%B1m_Hikmet%2C_Berlin_1956_%281%29.jpg/330px-N%C3%A2z%C4%B1m_Hikmet%2C_Berlin_1956_%281%29.jpg",
+      "credit": "Hans-Joachim Koch / Wikimedia Commons",
+      "license": "CC BY-SA 4.0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/N%C3%A2z%C4%B1m_Hikmet",
+     "via": "declared",
+     "party": null
+    }
+   ],
+   "timeline": [],
+   "governed": [
+    {
+     "iso2": "AF",
+     "from_year": 1979,
+     "to_year": 1981
+    },
+    {
+     "iso2": "AO",
+     "from_year": 1975,
+     "to_year": null
+    },
+    {
+     "iso2": "BG",
+     "from_year": 1990,
+     "to_year": 1990
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1968,
+     "to_year": 1979
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1984,
+     "to_year": 1990
+    },
+    {
+     "iso2": "CG",
+     "from_year": 1997,
+     "to_year": null
+    },
+    {
+     "iso2": "CN",
+     "from_year": 1954,
+     "to_year": 1980
+    },
+    {
+     "iso2": "CN",
+     "from_year": 1983,
+     "to_year": null
+    },
+    {
+     "iso2": "CY",
+     "from_year": 2008,
+     "to_year": 2013
+    },
+    {
+     "iso2": "ER",
+     "from_year": 1993,
+     "to_year": null
+    },
+    {
+     "iso2": "GY",
+     "from_year": 1992,
+     "to_year": null
+    },
+    {
+     "iso2": "HU",
+     "from_year": 1953,
+     "to_year": 1955
+    },
+    {
+     "iso2": "MM",
+     "from_year": 1948,
+     "to_year": 1962
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1921,
+     "to_year": 1922
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1924,
+     "to_year": 1924
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1932,
+     "to_year": 1936
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1939,
+     "to_year": 1974
+    },
+    {
+     "iso2": "MN",
+     "from_year": 1984,
+     "to_year": 2007
+    },
+    {
+     "iso2": "MN",
+     "from_year": 2009,
+     "to_year": 2012
+    },
+    {
+     "iso2": "MN",
+     "from_year": 2016,
+     "to_year": null
+    },
+    {
+     "iso2": "NI",
+     "from_year": 1985,
+     "to_year": 1990
+    },
+    {
+     "iso2": "NI",
+     "from_year": 2007,
+     "to_year": null
+    },
+    {
+     "iso2": "NP",
+     "from_year": 2009,
+     "to_year": 2011
+    },
+    {
+     "iso2": "PE",
+     "from_year": 2021,
+     "to_year": 2022
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1980,
+     "to_year": 1980
+    },
+    {
+     "iso2": "PL",
+     "from_year": 1988,
+     "to_year": 1989
+    },
+    {
+     "iso2": "SI",
+     "from_year": 1988,
+     "to_year": 2002
+    },
+    {
+     "iso2": "SM",
+     "from_year": 1985,
+     "to_year": 1985
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2000,
+     "to_year": 2001
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2007,
+     "to_year": 2007
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2017,
+     "to_year": 2018
+    },
+    {
+     "iso2": "VE",
+     "from_year": 2013,
+     "to_year": null
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  },
+  "fascismo": {
+   "term": {
+    "id": "fascismo",
+    "kind": "ideology",
+    "label": "Fascismo",
+    "short": "Corrente nacionalista e autoritária que defende um Estado total, um líder único e a supressão da oposição.",
+    "body": "Propõe a nação acima do indivíduo, um partido único, culto ao líder, militarismo e controle da economia e da sociedade pelo Estado, rejeitando tanto o liberalismo quanto o comunismo.\nSurgiu na Itália, com Benito Mussolini (no poder de 1922 a 1943); o nazismo alemão (1933-1945) é a vertente mais conhecida, e regimes parecidos existiram em outros países europeus nas décadas de 1930 e 1940.\nSeus defensores à época apresentavam o regime como resposta à crise e à divisão social. Historiadores registram a perseguição de opositores, guerras de agressão e o Holocausto, o genocídio de cerca de seis milhões de judeus e de outros grupos pela Alemanha nazista.",
+    "icon": null,
+    "examples": [],
+    "sources": [
+     {
+      "id": "wp-pt-fascismo",
+      "title": "Fascismo (Wikipédia)",
+      "url": "https://pt.wikipedia.org/wiki/Fascismo",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     },
+     {
+      "id": "wp-en-fascism",
+      "title": "Fascism (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Fascism",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     }
+    ]
+   },
+   "founders": [
+    {
+     "person_id": "Q163366",
+     "name": "Ezra Pound",
+     "role": "thinker",
+     "birth_year": 1885,
+     "death_year": 1972,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Ezra_Pound_by_Alvin_Langdon_Coburn%2C_1913%2C_collotype_photograph%2C_from_the_National_Portrait_Gallery_-_NPG-NPG_78_14Pound-000001.jpg/330px-Ezra_Pound_by_Alvin_Langdon_Coburn%2C_1913%2C_collotype_photograph%2C_from_the_National_Portrait_Gallery_-_NPG-NPG_78_14Pound-000001.jpg",
+      "credit": "Alvin Langdon Coburn / Wikimedia Commons",
+      "license": "CC0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Ezra_Pound",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q57131",
+     "name": "Hans-Ulrich Rudel",
+     "role": "other",
+     "birth_year": 1916,
+     "death_year": 1982,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg/330px-Special_Film_Project_186_-_Hans-Ulrich_Rudel.jpg",
+      "credit": "Video: Kameramann des Special Film Project 186 der United States Army Air Forces (USAAF) / Screenshot: Lewenstein / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Hans-Ulrich_Rudel",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q549431",
+     "name": "Jorge Ubico y Castañeda",
+     "role": "leader",
+     "birth_year": 1878,
+     "death_year": 1946,
+     "summary": "presidente e ditador guatemalteco (1878–1946)",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Presidente_Jorge_Ubico_Casta%C3%B1eda.png/330px-Presidente_Jorge_Ubico_Casta%C3%B1eda.png",
+      "credit": "Gobierno de Guatemala / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Jorge_Ubico_y_Casta%C3%B1eda",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q2501647",
+     "name": "Ursula Haverbeck",
+     "role": "leader",
+     "birth_year": 1928,
+     "death_year": 2024,
+     "summary": null,
+     "works": [],
+     "image": null,
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Ursula_Haverbeck",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q68507",
+     "name": "Oswald Teichmüller",
+     "role": "other",
+     "birth_year": 1913,
+     "death_year": 1943,
+     "summary": "matemático alemão",
+     "works": [
+      "teorema de Teichmüller–Tukey",
+      "Espaço de Teichmüller",
+      "teoria p-ádica de Teichmüller"
+     ],
+     "image": null,
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Oswald_Teichm%C3%BCller",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q2548547",
+     "name": "Maurice Bardèche",
+     "role": "activist",
+     "birth_year": 1907,
+     "death_year": 1998,
+     "summary": "escritor francês",
+     "works": [],
+     "image": null,
+     "wikipedia_url": "https://en.wikipedia.org/wiki/Maurice_Bard%C3%A8che",
+     "via": "declared",
+     "party": null
+    }
+   ],
+   "timeline": [],
+   "governed": [
+    {
+     "iso2": "AL",
+     "from_year": 1924,
+     "to_year": 1924
+    },
+    {
+     "iso2": "AL",
+     "from_year": 1939,
+     "to_year": 1943
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1930,
+     "to_year": 1932
+    },
+    {
+     "iso2": "ES",
+     "from_year": 1973,
+     "to_year": 1976
+    },
+    {
+     "iso2": "SY",
+     "from_year": 1949,
+     "to_year": 1949
+    },
+    {
+     "iso2": "SY",
+     "from_year": 1953,
+     "to_year": 1954
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  },
+  "conservadorismo": {
+   "term": {
+    "id": "conservadorismo",
+    "kind": "ideology",
+    "label": "Conservadorismo",
+    "short": "Corrente que valoriza tradições, instituições estabelecidas e mudanças graduais em vez de rupturas.",
+    "body": "Defende a preservação de instituições como família, religião e nação, a ordem social e reformas lentas; as posições econômicas variam entre países e épocas.\nGanhou forma no fim do século XVIII como reação à Revolução Francesa, com Edmund Burke, e hoje dá nome a partidos de centro-direita e de direita em muitos países.\nDefensores dizem que protege o que funciona e evita experimentos sociais arriscados. Críticos dizem que dificulta mudanças necessárias e pode preservar desigualdades e exclusões antigas.",
+    "icon": null,
+    "examples": [],
+    "sources": [
+     {
+      "id": "wp-pt-conservadorismo",
+      "title": "Conservadorismo (Wikipédia)",
+      "url": "https://pt.wikipedia.org/wiki/Conservadorismo",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     },
+     {
+      "id": "wp-en-conservatism",
+      "title": "Conservatism (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Conservatism",
+      "license": "CC BY-SA 4.0",
+      "retrieved_at": "2026-11-13T00:00:00Z"
+     }
+    ]
+   },
+   "founders": [
+    {
+     "person_id": "Q11156",
+     "name": "Antonin Scalia",
+     "role": "leader",
+     "birth_year": 1936,
+     "death_year": 2016,
+     "summary": "juiz associado da Suprema Corte dos Estados Unidos",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Antonin_Scalia_Official_SCOTUS_Portrait_crop.jpg/330px-Antonin_Scalia_Official_SCOTUS_Portrait_crop.jpg",
+      "credit": "Steve Petteway, photographer, Supreme Court of the United States[1] (See [2]) / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Antonin_Scalia",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q319072",
+     "name": "Rush Limbaugh",
+     "role": "other",
+     "birth_year": 1951,
+     "death_year": 2021,
+     "summary": null,
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/State_of_the_Union_2020_%2849493531303%29.jpg/330px-State_of_the_Union_2020_%2849493531303%29.jpg",
+      "credit": "The White House from Washington, DC / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/Rush_Limbaugh",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q682310",
+     "name": "Gerrit Schimmelpenninck",
+     "role": "leader",
+     "birth_year": 1794,
+     "death_year": 1863,
+     "summary": "político neerlandês",
+     "works": [],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Gerrit_Schimmelpenninck.jpg/330px-Gerrit_Schimmelpenninck.jpg",
+      "credit": "Känsterle / Wikimedia Commons",
+      "license": "Public domain"
+     },
+     "wikipedia_url": "https://en.wikipedia.org/wiki/Gerrit_Schimmelpenninck",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q722462",
+     "name": "David Horowitz",
+     "role": "leader",
+     "birth_year": 1939,
+     "death_year": 2025,
+     "summary": "escritor conservador norte-americano",
+     "works": [
+      "David Horowitz Freedom Center",
+      "The Professors: The 101 Most Dangerous Academics in America",
+      "Academic Bill of Rights"
+     ],
+     "image": {
+      "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/David_Horowitz_by_Gage_Skidmore.jpg/330px-David_Horowitz_by_Gage_Skidmore.jpg",
+      "credit": "Gage Skidmore / Wikimedia Commons",
+      "license": "CC BY-SA 3.0"
+     },
+     "wikipedia_url": "https://pt.wikipedia.org/wiki/David_Horowitz",
+     "via": "declared",
+     "party": null
+    },
+    {
+     "person_id": "Q1395090",
+     "name": "Sezai Karakoç",
+     "role": "leader",
+     "birth_year": 1933,
+     "death_year": 2021,
+     "summary": null,
+     "works": [],
+     "image": null,
+     "wikipedia_url": "https://en.wikipedia.org/wiki/Sezai_Karako%C3%A7",
+     "via": "declared",
+     "party": null
+    }
+   ],
+   "timeline": [],
+   "governed": [
+    {
+     "iso2": "AD",
+     "from_year": 1984,
+     "to_year": 1990
+    },
+    {
+     "iso2": "AL",
+     "from_year": 1992,
+     "to_year": 1997
+    },
+    {
+     "iso2": "AL",
+     "from_year": 2002,
+     "to_year": 2017
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1880,
+     "to_year": 1904
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1906,
+     "to_year": 1916
+    },
+    {
+     "iso2": "AR",
+     "from_year": 1942,
+     "to_year": 1943
+    },
+    {
+     "iso2": "AR",
+     "from_year": 2015,
+     "to_year": 2019
+    },
+    {
+     "iso2": "AT",
+     "from_year": 1920,
+     "to_year": 1934
+    },
+    {
+     "iso2": "AT",
+     "from_year": 1964,
+     "to_year": 1970
+    },
+    {
+     "iso2": "AT",
+     "from_year": 1986,
+     "to_year": 2007
+    },
+    {
+     "iso2": "AT",
+     "from_year": 2016,
+     "to_year": null
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1932,
+     "to_year": 1939
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1941,
+     "to_year": 1941
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1966,
+     "to_year": 1972
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1975,
+     "to_year": 1983
+    },
+    {
+     "iso2": "AU",
+     "from_year": 1996,
+     "to_year": 2007
+    },
+    {
+     "iso2": "AU",
+     "from_year": 2013,
+     "to_year": 2022
+    },
+    {
+     "iso2": "BA",
+     "from_year": 2002,
+     "to_year": 2002
+    },
+    {
+     "iso2": "BG",
+     "from_year": 1997,
+     "to_year": 2002
+    },
+    {
+     "iso2": "BG",
+     "from_year": 2009,
+     "to_year": 2021
+    },
+    {
+     "iso2": "BG",
+     "from_year": 2025,
+     "to_year": 2026
+    },
+    {
+     "iso2": "BO",
+     "from_year": 1971,
+     "to_year": 1978
+    },
+    {
+     "iso2": "BO",
+     "from_year": 1997,
+     "to_year": 2001
+    },
+    {
+     "iso2": "BS",
+     "from_year": 1964,
+     "to_year": 1967
+    },
+    {
+     "iso2": "BT",
+     "from_year": 1998,
+     "to_year": 2013
+    },
+    {
+     "iso2": "CA",
+     "from_year": 1867,
+     "to_year": 1873
+    },
+    {
+     "iso2": "CA",
+     "from_year": 1878,
+     "to_year": 1894
+    },
+    {
+     "iso2": "CA",
+     "from_year": 1911,
+     "to_year": 1920
+    },
+    {
+     "iso2": "CA",
+     "from_year": 2006,
+     "to_year": 2015
+    },
+    {
+     "iso2": "CI",
+     "from_year": 1960,
+     "to_year": 2000
+    },
+    {
+     "iso2": "CI",
+     "from_year": 2005,
+     "to_year": 2007
+    },
+    {
+     "iso2": "CI",
+     "from_year": 2010,
+     "to_year": null
+    },
+    {
+     "iso2": "CL",
+     "from_year": 1831,
+     "to_year": 1861
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1830,
+     "to_year": 1831
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1841,
+     "to_year": 1845
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1858,
+     "to_year": 1862
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1886,
+     "to_year": 1894
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1900,
+     "to_year": 1904
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1908,
+     "to_year": 1908
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1914,
+     "to_year": 1930
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1938,
+     "to_year": 1942
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1946,
+     "to_year": 1951
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1957,
+     "to_year": 1958
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1962,
+     "to_year": 1966
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1970,
+     "to_year": 1974
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1982,
+     "to_year": 1986
+    },
+    {
+     "iso2": "CO",
+     "from_year": 1998,
+     "to_year": 2002
+    },
+    {
+     "iso2": "CR",
+     "from_year": 1906,
+     "to_year": 1910
+    },
+    {
+     "iso2": "CR",
+     "from_year": 1919,
+     "to_year": 1920
+    },
+    {
+     "iso2": "CR",
+     "from_year": 1928,
+     "to_year": 1932
+    },
+    {
+     "iso2": "CR",
+     "from_year": 1949,
+     "to_year": 1953
+    },
+    {
+     "iso2": "CR",
+     "from_year": 1958,
+     "to_year": 1962
+    },
+    {
+     "iso2": "CR",
+     "from_year": 2026,
+     "to_year": null
+    },
+    {
+     "iso2": "CU",
+     "from_year": 1952,
+     "to_year": 1959
+    },
+    {
+     "iso2": "CZ",
+     "from_year": 1992,
+     "to_year": 1998
+    },
+    {
+     "iso2": "CZ",
+     "from_year": 2003,
+     "to_year": 2013
+    },
+    {
+     "iso2": "CZ",
+     "from_year": 2021,
+     "to_year": 2025
+    },
+    {
+     "iso2": "DE",
+     "from_year": 1949,
+     "to_year": 1969
+    },
+    {
+     "iso2": "DE",
+     "from_year": 1979,
+     "to_year": 1999
+    },
+    {
+     "iso2": "DE",
+     "from_year": 2004,
+     "to_year": 2021
+    },
+    {
+     "iso2": "DE",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "DM",
+     "from_year": 1980,
+     "to_year": 1995
+    },
+    {
+     "iso2": "EC",
+     "from_year": 1861,
+     "to_year": 1875
+    },
+    {
+     "iso2": "EC",
+     "from_year": 1895,
+     "to_year": 1895
+    },
+    {
+     "iso2": "EC",
+     "from_year": 1935,
+     "to_year": 1935
+    },
+    {
+     "iso2": "EE",
+     "from_year": 2003,
+     "to_year": 2005
+    },
+    {
+     "iso2": "ES",
+     "from_year": 1875,
+     "to_year": 1875
+    },
+    {
+     "iso2": "FJ",
+     "from_year": 1970,
+     "to_year": 2009
+    },
+    {
+     "iso2": "FR",
+     "from_year": 1924,
+     "to_year": 1924
+    },
+    {
+     "iso2": "FR",
+     "from_year": 1962,
+     "to_year": 1968
+    },
+    {
+     "iso2": "GA",
+     "from_year": 1957,
+     "to_year": 2023
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1834,
+     "to_year": 1835
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1841,
+     "to_year": 1846
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1852,
+     "to_year": 1852
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1858,
+     "to_year": 1859
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1866,
+     "to_year": 1868
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1874,
+     "to_year": 1880
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1885,
+     "to_year": 1892
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1895,
+     "to_year": 1905
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1922,
+     "to_year": 1929
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1935,
+     "to_year": 1945
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1951,
+     "to_year": 1964
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1970,
+     "to_year": 1974
+    },
+    {
+     "iso2": "GB",
+     "from_year": 1979,
+     "to_year": 1997
+    },
+    {
+     "iso2": "GB",
+     "from_year": 2010,
+     "to_year": 2022
+    },
+    {
+     "iso2": "GD",
+     "from_year": 1961,
+     "to_year": 1962
+    },
+    {
+     "iso2": "GD",
+     "from_year": 1967,
+     "to_year": 1979
+    },
+    {
+     "iso2": "GD",
+     "from_year": 1989,
+     "to_year": 1990
+    },
+    {
+     "iso2": "GE",
+     "from_year": 2003,
+     "to_year": 2004
+    },
+    {
+     "iso2": "GE",
+     "from_year": 2007,
+     "to_year": 2008
+    },
+    {
+     "iso2": "GH",
+     "from_year": 1970,
+     "to_year": 1972
+    },
+    {
+     "iso2": "GR",
+     "from_year": 1963,
+     "to_year": 1963
+    },
+    {
+     "iso2": "GT",
+     "from_year": 1954,
+     "to_year": 1957
+    },
+    {
+     "iso2": "GT",
+     "from_year": 1970,
+     "to_year": 1974
+    },
+    {
+     "iso2": "GT",
+     "from_year": 1982,
+     "to_year": 1983
+    },
+    {
+     "iso2": "GT",
+     "from_year": 1996,
+     "to_year": 2004
+    },
+    {
+     "iso2": "GT",
+     "from_year": 2016,
+     "to_year": 2020
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1856,
+     "to_year": 1862
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1874,
+     "to_year": 1876
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1883,
+     "to_year": 1894
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1903,
+     "to_year": 1907
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1911,
+     "to_year": 1919
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1924,
+     "to_year": 1929
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1933,
+     "to_year": 1956
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1963,
+     "to_year": 1978
+    },
+    {
+     "iso2": "HN",
+     "from_year": 1990,
+     "to_year": 1994
+    },
+    {
+     "iso2": "HN",
+     "from_year": 2002,
+     "to_year": 2006
+    },
+    {
+     "iso2": "HN",
+     "from_year": 2010,
+     "to_year": 2022
+    },
+    {
+     "iso2": "HN",
+     "from_year": 2026,
+     "to_year": null
+    },
+    {
+     "iso2": "HT",
+     "from_year": 2017,
+     "to_year": 2021
+    },
+    {
+     "iso2": "HU",
+     "from_year": 1944,
+     "to_year": 1945
+    },
+    {
+     "iso2": "IL",
+     "from_year": 1996,
+     "to_year": 2007
+    },
+    {
+     "iso2": "IL",
+     "from_year": 2009,
+     "to_year": null
+    },
+    {
+     "iso2": "IN",
+     "from_year": 2014,
+     "to_year": null
+    },
+    {
+     "iso2": "IQ",
+     "from_year": 2004,
+     "to_year": 2004
+    },
+    {
+     "iso2": "JM",
+     "from_year": 1962,
+     "to_year": 1973
+    },
+    {
+     "iso2": "JM",
+     "from_year": 1980,
+     "to_year": 1989
+    },
+    {
+     "iso2": "JM",
+     "from_year": 1991,
+     "to_year": 2012
+    },
+    {
+     "iso2": "JM",
+     "from_year": 2016,
+     "to_year": null
+    },
+    {
+     "iso2": "JP",
+     "from_year": 1956,
+     "to_year": 1972
+    },
+    {
+     "iso2": "JP",
+     "from_year": 1974,
+     "to_year": 1982
+    },
+    {
+     "iso2": "JP",
+     "from_year": 1987,
+     "to_year": 1989
+    },
+    {
+     "iso2": "JP",
+     "from_year": 1991,
+     "to_year": 1993
+    },
+    {
+     "iso2": "JP",
+     "from_year": 1996,
+     "to_year": 2009
+    },
+    {
+     "iso2": "JP",
+     "from_year": 2012,
+     "to_year": null
+    },
+    {
+     "iso2": "KE",
+     "from_year": 1964,
+     "to_year": 2013
+    },
+    {
+     "iso2": "KG",
+     "from_year": 2020,
+     "to_year": 2021
+    },
+    {
+     "iso2": "KH",
+     "from_year": 1997,
+     "to_year": 1998
+    },
+    {
+     "iso2": "KN",
+     "from_year": 1980,
+     "to_year": 1995
+    },
+    {
+     "iso2": "LB",
+     "from_year": 1929,
+     "to_year": 1930
+    },
+    {
+     "iso2": "LB",
+     "from_year": 1936,
+     "to_year": 1941
+    },
+    {
+     "iso2": "LB",
+     "from_year": 1943,
+     "to_year": 1943
+    },
+    {
+     "iso2": "LK",
+     "from_year": 1978,
+     "to_year": 1994
+    },
+    {
+     "iso2": "LK",
+     "from_year": 2022,
+     "to_year": 2024
+    },
+    {
+     "iso2": "LV",
+     "from_year": 1995,
+     "to_year": 1997
+    },
+    {
+     "iso2": "LV",
+     "from_year": 1999,
+     "to_year": 2000
+    },
+    {
+     "iso2": "LV",
+     "from_year": 2004,
+     "to_year": 2007
+    },
+    {
+     "iso2": "MA",
+     "from_year": 1958,
+     "to_year": 1960
+    },
+    {
+     "iso2": "MA",
+     "from_year": 1969,
+     "to_year": 1971
+    },
+    {
+     "iso2": "MA",
+     "from_year": 1986,
+     "to_year": 1992
+    },
+    {
+     "iso2": "MA",
+     "from_year": 2007,
+     "to_year": 2021
+    },
+    {
+     "iso2": "MD",
+     "from_year": 2013,
+     "to_year": 2015
+    },
+    {
+     "iso2": "MD",
+     "from_year": 2020,
+     "to_year": null
+    },
+    {
+     "iso2": "ME",
+     "from_year": 1907,
+     "to_year": 1907
+    },
+    {
+     "iso2": "ME",
+     "from_year": 1916,
+     "to_year": 1917
+    },
+    {
+     "iso2": "MK",
+     "from_year": 1991,
+     "to_year": 1992
+    },
+    {
+     "iso2": "MK",
+     "from_year": 1998,
+     "to_year": 2004
+    },
+    {
+     "iso2": "MK",
+     "from_year": 2006,
+     "to_year": 2019
+    },
+    {
+     "iso2": "MK",
+     "from_year": 2024,
+     "to_year": null
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1921,
+     "to_year": 1927
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1932,
+     "to_year": 1933
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1950,
+     "to_year": 1955
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1962,
+     "to_year": 1971
+    },
+    {
+     "iso2": "MT",
+     "from_year": 1987,
+     "to_year": 2013
+    },
+    {
+     "iso2": "MV",
+     "from_year": 2013,
+     "to_year": 2018
+    },
+    {
+     "iso2": "MV",
+     "from_year": 2023,
+     "to_year": null
+    },
+    {
+     "iso2": "MW",
+     "from_year": 1966,
+     "to_year": 1994
+    },
+    {
+     "iso2": "MW",
+     "from_year": 2020,
+     "to_year": 2025
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1830,
+     "to_year": 1832
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1836,
+     "to_year": 1846
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1853,
+     "to_year": 1853
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1855,
+     "to_year": 1855
+    },
+    {
+     "iso2": "MX",
+     "from_year": 1860,
+     "to_year": 1860
+    },
+    {
+     "iso2": "NE",
+     "from_year": 1983,
+     "to_year": 1983
+    },
+    {
+     "iso2": "NE",
+     "from_year": 1988,
+     "to_year": 1991
+    },
+    {
+     "iso2": "NE",
+     "from_year": 1995,
+     "to_year": 1996
+    },
+    {
+     "iso2": "NE",
+     "from_year": 1999,
+     "to_year": 2011
+    },
+    {
+     "iso2": "NE",
+     "from_year": 2023,
+     "to_year": null
+    },
+    {
+     "iso2": "NI",
+     "from_year": 1854,
+     "to_year": 1893
+    },
+    {
+     "iso2": "NI",
+     "from_year": 1910,
+     "to_year": 1929
+    },
+    {
+     "iso2": "NI",
+     "from_year": 1936,
+     "to_year": 1972
+    },
+    {
+     "iso2": "NI",
+     "from_year": 1974,
+     "to_year": 1979
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1873,
+     "to_year": 1876
+    },
+    {
+     "iso2": "NZ",
+     "from_year": 1912,
+     "to_year": 1928
+    },
+    {
+     "iso2": "PA",
+     "from_year": 1903,
+     "to_year": 1903
+    },
+    {
+     "iso2": "PE",
+     "from_year": 1883,
+     "to_year": 1883
+    },
+    {
+     "iso2": "PE",
+     "from_year": 1886,
+     "to_year": 1895
+    },
+    {
+     "iso2": "PE",
+     "from_year": 2000,
+     "to_year": 2001
+    },
+    {
+     "iso2": "PE",
+     "from_year": 2020,
+     "to_year": 2020
+    },
+    {
+     "iso2": "PE",
+     "from_year": 2026,
+     "to_year": null
+    },
+    {
+     "iso2": "PK",
+     "from_year": 1990,
+     "to_year": 1993
+    },
+    {
+     "iso2": "PK",
+     "from_year": 1999,
+     "to_year": 2008
+    },
+    {
+     "iso2": "PK",
+     "from_year": 2013,
+     "to_year": 2018
+    },
+    {
+     "iso2": "PK",
+     "from_year": 2022,
+     "to_year": null
+    },
+    {
+     "iso2": "PT",
+     "from_year": 1926,
+     "to_year": 1974
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1862,
+     "to_year": 1862
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1866,
+     "to_year": 1866
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1868,
+     "to_year": 1870
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1888,
+     "to_year": 1891
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1899,
+     "to_year": 1901
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1904,
+     "to_year": 1907
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1911,
+     "to_year": 1913
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1918,
+     "to_year": 1918
+    },
+    {
+     "iso2": "RO",
+     "from_year": 1937,
+     "to_year": 1938
+    },
+    {
+     "iso2": "RS",
+     "from_year": 1884,
+     "to_year": 1887
+    },
+    {
+     "iso2": "RU",
+     "from_year": 1916,
+     "to_year": 1916
+    },
+    {
+     "iso2": "RU",
+     "from_year": 1999,
+     "to_year": 2008
+    },
+    {
+     "iso2": "SE",
+     "from_year": 1880,
+     "to_year": 1883
+    },
+    {
+     "iso2": "SK",
+     "from_year": 2020,
+     "to_year": 2023
+    },
+    {
+     "iso2": "SM",
+     "from_year": 2010,
+     "to_year": 2010
+    },
+    {
+     "iso2": "ST",
+     "from_year": 1991,
+     "to_year": 2002
+    },
+    {
+     "iso2": "ST",
+     "from_year": 2008,
+     "to_year": 2008
+    },
+    {
+     "iso2": "ST",
+     "from_year": 2010,
+     "to_year": 2012
+    },
+    {
+     "iso2": "ST",
+     "from_year": 2014,
+     "to_year": null
+    },
+    {
+     "iso2": "SY",
+     "from_year": 1955,
+     "to_year": 1958
+    },
+    {
+     "iso2": "TH",
+     "from_year": 1988,
+     "to_year": 1991
+    },
+    {
+     "iso2": "TH",
+     "from_year": 1995,
+     "to_year": 1996
+    },
+    {
+     "iso2": "TH",
+     "from_year": 2008,
+     "to_year": 2008
+    },
+    {
+     "iso2": "TH",
+     "from_year": 2014,
+     "to_year": 2023
+    },
+    {
+     "iso2": "TH",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "TN",
+     "from_year": 2011,
+     "to_year": 2014
+    },
+    {
+     "iso2": "TW",
+     "from_year": 1913,
+     "to_year": 1914
+    },
+    {
+     "iso2": "TW",
+     "from_year": 1917,
+     "to_year": 1917
+    },
+    {
+     "iso2": "UA",
+     "from_year": 2005,
+     "to_year": 2005
+    },
+    {
+     "iso2": "UA",
+     "from_year": 2007,
+     "to_year": 2010
+    },
+    {
+     "iso2": "UG",
+     "from_year": 1986,
+     "to_year": null
+    },
+    {
+     "iso2": "US",
+     "from_year": 1861,
+     "to_year": 1865
+    },
+    {
+     "iso2": "US",
+     "from_year": 1869,
+     "to_year": 1885
+    },
+    {
+     "iso2": "US",
+     "from_year": 1889,
+     "to_year": 1893
+    },
+    {
+     "iso2": "US",
+     "from_year": 1897,
+     "to_year": 1913
+    },
+    {
+     "iso2": "US",
+     "from_year": 1921,
+     "to_year": 1933
+    },
+    {
+     "iso2": "US",
+     "from_year": 1953,
+     "to_year": 1961
+    },
+    {
+     "iso2": "US",
+     "from_year": 1969,
+     "to_year": 1977
+    },
+    {
+     "iso2": "US",
+     "from_year": 1981,
+     "to_year": 1993
+    },
+    {
+     "iso2": "US",
+     "from_year": 2001,
+     "to_year": 2009
+    },
+    {
+     "iso2": "US",
+     "from_year": 2017,
+     "to_year": 2021
+    },
+    {
+     "iso2": "US",
+     "from_year": 2025,
+     "to_year": null
+    },
+    {
+     "iso2": "VC",
+     "from_year": 1984,
+     "to_year": 2001
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1830,
+     "to_year": 1847
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1858,
+     "to_year": 1863
+    },
+    {
+     "iso2": "VE",
+     "from_year": 1941,
+     "to_year": 1945
+    },
+    {
+     "iso2": "XK",
+     "from_year": 1991,
+     "to_year": 2000
+    },
+    {
+     "iso2": "XK",
+     "from_year": 2002,
+     "to_year": 2006
+    },
+    {
+     "iso2": "XK",
+     "from_year": 2008,
+     "to_year": 2010
+    },
+    {
+     "iso2": "XK",
+     "from_year": 2014,
+     "to_year": 2021
+    },
+    {
+     "iso2": "ZW",
+     "from_year": 2017,
+     "to_year": 2017
+    }
+   ],
+   "sources": [
+    {
+     "id": "wikidata",
+     "title": "Wikidata",
+     "url": "https://www.wikidata.org/",
+     "license": "CC0 1.0 (Wikidata:Licensing: structured data released under Creative Commons Zero)",
+     "retrieved_at": "2026-11-12T11:29:13.110433Z"
+    }
+   ]
+  }
+ }
+}

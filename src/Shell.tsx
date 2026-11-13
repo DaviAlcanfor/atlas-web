@@ -41,7 +41,7 @@ function Chrome({ children }: { children: ReactNode }) {
   // The glossary page covers the whole screen: opened directly, it skips the globe (WebGL + ~550 kB gzip of three.js) and the
   // map files. Once a globe route is visited the globe stays mounted for good.
   const path = usePathname();
-  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/'); // full-page routes skip the globe when opened directly
+  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/') && !path.startsWith('/ideias/'); // full-page routes skip the globe when opened directly
   const [wantGlobe, setWantGlobe] = useState(globeRoute);
   useEffect(() => { if (globeRoute) setWantGlobe(true); }, [globeRoute]);
   const { data, error, apiError, progress } = useAtlasData(wantGlobe);

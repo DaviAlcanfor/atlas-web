@@ -23,6 +23,9 @@ export type GlossaryTerm = z.infer<typeof S.GlossaryTerm>;
 export type Leader = z.infer<typeof S.Leader>;
 export type CountryHistory = z.infer<typeof S.CountryHistory>;
 export type Subdivision = z.infer<typeof S.Subdivision>;
+export type IdeologyFigure = z.infer<typeof S.IdeologyFigure>;
+export type CountryIdeologies = z.infer<typeof S.CountryIdeologies>;
+export type IdeologyDetail = z.infer<typeof S.IdeologyDetail>;
 export type SubdivisionList = z.infer<typeof S.SubdivisionList>;
 export type Person = z.infer<typeof S.Person>;
 export type PersonDomain = z.infer<typeof S.PersonDomain>;
@@ -61,4 +64,7 @@ export interface AtlasApi {
   history(iso2: string): Promise<CountryHistory>;
   // v1.3 proposal (spec 024): any failure = no state facts/flags.
   subdivisions(iso2: string): Promise<SubdivisionList>;
+  // v1.3 proposal (spec 018): any failure = section hidden / page says unavailable.
+  ideologies(iso2: string): Promise<CountryIdeologies>;
+  ideology(id: string): Promise<IdeologyDetail>;
 }

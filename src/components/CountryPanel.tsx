@@ -16,6 +16,7 @@ import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
 import { HistorySummary, KIND_LABEL } from './HistorySummary';
 import { SubdivisionCard } from './SubdivisionCard';
+import { IdeologySection } from './Ideologies';
 import type { StateRef } from './Globe';
 import type { Subdivision } from '../api/types';
 import { Section } from './Section';
@@ -179,6 +180,7 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
       </Section>
 
       <LeadersSection items={leaders} />
+      <IdeologySection iso2={c.iso2} />
       <PeopleSection iso2={c.iso2} />
 
       <Section title="História">
