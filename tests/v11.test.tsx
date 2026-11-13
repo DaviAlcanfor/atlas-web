@@ -245,3 +245,23 @@ describe('history events filter (spec 016)', () => {
     expect(pol.map((li) => li.textContent)).toContain('Proclamação da República do Brasil');
   });
 });
+
+describe('ideologies (spec 018)', () => {
+  it('panel section: same layout per current, says why each person is listed', async () => {
+    const { IdeologySection } = await import('../src/components/Ideologies');
+    render(<IdeologySection iso2="BR" />);
+    expect(await screen.findByRole('heading', { name: /Ideias políticas/ })).toBeTruthy();
+    fireEvent.click(screen.getByText('Social-democracia'));
+    expect(screen.getAllByText(/filiado\(a\) ao Partido dos Trabalhadores/).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('link', { name: 'A corrente no mundo →' })[0]!.getAttribute('href')).toMatch(/^\/ideias\//);
+  });
+  it('world page: verbete, declared figures only, where it governed', async () => {
+    const { IdeologyPage } = await import('../src/components/IdeologyPage');
+    const { createMockApi } = await import('../src/api/mocks/adapter');
+    const d = await createMockApi(0).ideology('fascismo');
+    render(<IdeologyPage detail={d} names={{ IT: 'Itália', DE: 'Alemanha' }} />);
+    expect(screen.getByRole('heading', { name: 'Fascismo' })).toBeTruthy();
+    expect(screen.queryByText(/filiado\(a\)/)).toBeNull();
+    expect(screen.getByRole('heading', { name: 'Onde governou' })).toBeTruthy();
+  });
+});

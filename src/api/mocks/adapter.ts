@@ -6,6 +6,7 @@ import { LANGUAGES_SPOKEN } from './languages';
 import v12 from './v12.json';
 import history from './history.json';
 import subdivisions from './subdivisions.json';
+import ideologies from './ideologies.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
@@ -82,6 +83,15 @@ export function createMockApi(delayMs = 150): AtlasApi {
     subdivisions: (iso2) => wait(() => {
       const s = (subdivisions as Record<string, unknown>)[iso2]; // BR, JP from the local API (spec 024)
       return parse(S.SubdivisionList, s ?? { items: [], sources: [] }, `mock subdivisions ${iso2}`);
+    }),
+    ideologies: (iso2) => wait(() => {
+      const c = (ideologies.countries as Record<string, unknown>)[iso2]; // BR, DE from the local API (spec 018)
+      return parse(S.CountryIdeologies, c ?? { items: [], sources: [] }, `mock ideologies ${iso2}`);
+    }),
+    ideology: (id) => wait(() => {
+      const d = (ideologies.details as Record<string, unknown>)[id];
+      if (!d) throw notFound(`Unknown ideology ${id}`);
+      return parse(S.IdeologyDetail, d, `mock ideology ${id}`);
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];

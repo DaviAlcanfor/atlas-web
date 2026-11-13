@@ -99,7 +99,7 @@ export const ProblemJson = z.object({ type: Str, title: Str, status: z.number(),
 
 // ---- v1.1 ----
 export const Image = z.object({ url: Str, credit: Str, license: Str });
-export const GlossaryKind = z.enum(['regime', 'system', 'region', 'membership', 'currency', 'other']);
+export const GlossaryKind = z.enum(['regime', 'system', 'region', 'membership', 'currency', 'ideology', 'other']); // ideology: spec 018
 export const GlossaryTerm = z.object({
   id: Str, kind: GlossaryKind, label: Str, short: Str, body: Str, icon: NStr, examples: z.array(Str), sources: z.array(Source),
 });
@@ -162,3 +162,17 @@ export const Subdivision = z.object({
   population: z.object({ value: z.number().int(), year: z.number().int().nullable() }).nullable(), flag: Image.nullable(),
 });
 export const SubdivisionList = z.object({ items: z.array(Subdivision), sources: z.array(Source) });
+// ---- v1.3 proposal (spec 018, CR-004 addendum 3): political currents. `via`/`party` say WHY a person is listed. ----
+export const PartyRef = z.object({ id: Str, name: Str });
+export const IdeologyFigure = z.object({
+  person_id: Str, name: Str, role: z.enum(['thinker', 'leader', 'activist', 'other']), birth_year: Year.nullable(), death_year: Year.nullable(),
+  summary: NStr, works: z.array(Str), image: Image.nullable(), wikipedia_url: NStr, via: z.enum(['declared', 'party']), party: PartyRef.nullable(),
+});
+export const CountryIdeologies = z.object({
+  items: z.array(z.object({ term: GlossaryTerm, figures: z.array(IdeologyFigure), parties: z.array(PartyRef), milestones: z.array(Event) })),
+  sources: z.array(Source),
+});
+export const IdeologyDetail = z.object({
+  term: GlossaryTerm, founders: z.array(IdeologyFigure), timeline: z.array(Event),
+  governed: z.array(z.object({ iso2: Str, from_year: z.number().int(), to_year: z.number().int().nullable() })), sources: z.array(Source),
+});

@@ -9,6 +9,7 @@ import { GitBranch } from '@phosphor-icons/react/dist/csr/GitBranch';
 import { GlobeHemisphereWest } from '@phosphor-icons/react/dist/csr/GlobeHemisphereWest';
 import { GridFour } from '@phosphor-icons/react/dist/csr/GridFour';
 import { Hourglass } from '@phosphor-icons/react/dist/csr/Hourglass';
+import { Lightbulb } from '@phosphor-icons/react/dist/csr/Lightbulb';
 import { MapPin } from '@phosphor-icons/react/dist/csr/MapPin';
 import { Newspaper } from '@phosphor-icons/react/dist/csr/Newspaper';
 import { Ruler } from '@phosphor-icons/react/dist/csr/Ruler';
@@ -36,6 +37,7 @@ const LABEL_ICON: Readonly<Record<string, Icon>> = {
   'Governantes': Crown,
   'Pessoas importantes': UsersThree,
   'Pistas': Compass,
+  'Ideias políticas': Lightbulb,
 };
 
 export function LabelIcon({ label }: { label: string }) {

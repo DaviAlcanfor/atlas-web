@@ -22,6 +22,10 @@ export interface paths {
     /** Get History */
     get: operations["get_history_v1_countries__iso2__history_get"];
   };
+  "/v1/countries/{iso2}/ideologies": {
+    /** List Ideologies */
+    get: operations["list_ideologies_v1_countries__iso2__ideologies_get"];
+  };
   "/v1/countries/{iso2}/leaders": {
     /** List Leaders */
     get: operations["list_leaders_v1_countries__iso2__leaders_get"];
@@ -65,6 +69,10 @@ export interface paths {
      * once (the DB may be fine, but this process cannot reach it right now).
      */
     get: operations["health_v1_health_get"];
+  };
+  "/v1/ideologies/{id}": {
+    /** Get Ideology */
+    get: operations["get_ideology_v1_ideologies__id__get"];
   };
   "/v1/meta": {
     /** Get Meta */
@@ -205,6 +213,23 @@ export interface components {
       sources: components["schemas"]["Source"][];
       /** Summary */
       summary: string | null;
+    };
+    /** CountryIdeologies */
+    CountryIdeologies: {
+      /** Items */
+      items: components["schemas"]["CountryIdeology"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
+    /** CountryIdeology */
+    CountryIdeology: {
+      /** Figures */
+      figures: components["schemas"]["IdeologyFigure"][];
+      /** Milestones */
+      milestones: components["schemas"]["Event"][];
+      /** Parties */
+      parties: components["schemas"]["PartyRef"][];
+      term: components["schemas"]["GlossaryTerm"];
     };
     /** CountryList */
     CountryList: {
@@ -365,13 +390,22 @@ export interface components {
        * Kind
        * @enum {string}
        */
-      kind: "regime" | "system" | "region" | "membership" | "currency" | "other";
+      kind: "regime" | "system" | "region" | "membership" | "currency" | "ideology" | "other";
       /** Label */
       label: string;
       /** Short */
       short: string;
       /** Sources */
       sources: components["schemas"]["Source"][];
+    };
+    /** Governed */
+    Governed: {
+      /** From Year */
+      from_year: number;
+      /** Iso2 */
+      iso2: string;
+      /** To Year */
+      to_year: number | null;
     };
     /** Health */
     Health: {
@@ -419,6 +453,47 @@ export interface components {
     HTTPValidationError: {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
+    };
+    /** IdeologyDetail */
+    IdeologyDetail: {
+      /** Founders */
+      founders: components["schemas"]["IdeologyFigure"][];
+      /** Governed */
+      governed: components["schemas"]["Governed"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      term: components["schemas"]["GlossaryTerm"];
+      /** Timeline */
+      timeline: components["schemas"]["Event"][];
+    };
+    /** IdeologyFigure */
+    IdeologyFigure: {
+      /** Birth Year */
+      birth_year: number | null;
+      /** Death Year */
+      death_year: number | null;
+      image: components["schemas"]["Image"] | null;
+      /** Name */
+      name: string;
+      party: components["schemas"]["PartyRef"] | null;
+      /** Person Id */
+      person_id: string;
+      /**
+       * Role
+       * @enum {string}
+       */
+      role: "thinker" | "leader" | "activist" | "other";
+      /** Summary */
+      summary: string | null;
+      /**
+       * Via
+       * @enum {string}
+       */
+      via: "declared" | "party";
+      /** Wikipedia Url */
+      wikipedia_url: string | null;
+      /** Works */
+      works: string[];
     };
     /** Image */
     Image: {
@@ -530,6 +605,13 @@ export interface components {
     };
     /** Party */
     Party: {
+      /** Id */
+      id: string;
+      /** Name */
+      name: string;
+    };
+    /** PartyRef */
+    PartyRef: {
       /** Id */
       id: string;
       /** Name */
@@ -970,6 +1052,28 @@ export interface operations {
       };
     };
   };
+  /** List Ideologies */
+  list_ideologies_v1_countries__iso2__ideologies_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryIdeologies"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** List Leaders */
   list_leaders_v1_countries__iso2__leaders_get: {
     parameters: {
@@ -1184,6 +1288,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Health"];
+        };
+      };
+    };
+  };
+  /** Get Ideology */
+  get_ideology_v1_ideologies__id__get: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["IdeologyDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };

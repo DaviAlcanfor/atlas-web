@@ -5,6 +5,7 @@ import { Crown } from '@phosphor-icons/react/dist/csr/Crown';
 import { Gear } from '@phosphor-icons/react/dist/csr/Gear';
 import { GlobeHemisphereWest } from '@phosphor-icons/react/dist/csr/GlobeHemisphereWest';
 import { Handshake } from '@phosphor-icons/react/dist/csr/Handshake';
+import { Lightbulb } from '@phosphor-icons/react/dist/csr/Lightbulb';
 import { Question } from '@phosphor-icons/react/dist/csr/Question';
 import { ShieldWarning } from '@phosphor-icons/react/dist/csr/ShieldWarning';
 import type { Icon } from '@phosphor-icons/react/lib';
@@ -14,7 +15,7 @@ import type { GlossaryTerm } from './api/types';
 import { safeHref } from './lib/url';
 
 export const KIND_LABEL: Record<GlossaryTerm['kind'], string> = {
-  regime: 'Regime político', system: 'Sistema', region: 'Região', membership: 'Organização', currency: 'Moeda', other: 'Outro',
+  regime: 'Regime político', system: 'Sistema', region: 'Região', membership: 'Organização', currency: 'Moeda', ideology: 'Corrente política', other: 'Outro',
 };
 const norm = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 
@@ -75,7 +76,8 @@ function GlossaryDialog({ term, onClose, countryName, onPickCountry }: { term: G
             <button className="icon-btn" onClick={() => ref.current?.close()} aria-label="Fechar"><X size={16} weight="light" aria-hidden="true" /></button>
           </header>
           <p className="gdialog__short">{term.short}</p>
-          {term.body.split(/\n\s*\n/).map((p, i) => <p key={i}>{p}</p>)}
+          {term.body.split(/\n+/).map((p, i) => <p key={i}>{p}</p>)}
+          {term.kind === 'ideology' && <p><a href={`/ideias/${term.id}`}>A corrente no mundo: figuras e onde governou →</a></p>}
           {term.examples.length > 0 && (
             <>
               <h3>Exemplos</h3>
@@ -112,6 +114,8 @@ export const THEMES: Theme[] = [
     match: (t) => isRegime(t) && t.id.startsWith('monarquia') },
   { id: 'excecao', label: 'Partido único, militares e religião', blurb: 'Regimes em que o poder fica com um partido, as Forças Armadas, autoridades religiosas ou um governo de transição.',
     color: regimePalette[1], icon: ShieldWarning, match: isRegime },
+  { id: 'correntes', label: 'Correntes políticas', blurb: 'Ideias e movimentos políticos, no mesmo formato para todos: o que defendem, de onde vieram e o que dizem defensores e críticos.',
+    color: regimePalette[7], icon: Lightbulb, match: (t) => t.kind === 'ideology' },
   { id: 'sistemas', label: 'Sistemas de governo', blurb: 'Como as instituições funcionam no dia a dia.', color: regimePalette[6], icon: Gear, match: (t) => t.kind === 'system' },
   { id: 'regioes', label: 'Regiões do mundo', blurb: 'Grandes regiões usadas para agrupar os países.', color: regimePalette[2], icon: GlobeHemisphereWest, match: (t) => t.kind === 'region' },
   { id: 'organizacoes', label: 'Organizações', blurb: 'Organizações internacionais e blocos de que os países fazem parte.', color: regimePalette[4], icon: Handshake, match: (t) => t.kind === 'membership' },
