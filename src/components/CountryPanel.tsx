@@ -185,9 +185,8 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
       <PeopleSection iso2={c.iso2} />
 
       <Section title="História">
-        <HistorySummary iso2={c.iso2} />
-        {c.timeline.length > 0 && <p className="sub">Marcos</p>}
-        <Timeline events={c.timeline} sources={c.sources} />
+        <HistorySummary iso2={c.iso2} curated={c.timeline}
+          renderTimeline={(events, sources) => <Timeline events={events} sources={sources.length ? sources : c.sources} />} />
       </Section>
 
       <Lineage polityId={c.polity_id} />

@@ -193,16 +193,19 @@ describe('spec 023 helpers', () => {
 describe('history summary (spec 016 stage 1)', () => {
   it('BR: summary, periods with years, Wikipedia revision credited', async () => {
     const { HistorySummary } = await import('../src/components/HistorySummary');
-    render(<HistorySummary iso2="BR" />);
+    render(<HistorySummary iso2="BR" curated={[]} renderTimeline={(ev) => <ol>{ev.map((e) => <li key={e.id}>{e.title}</li>)}</ol>} />);
     expect(await screen.findByRole('button', { name: 'ler o resumo inteiro' })).toBeTruthy();
     expect(screen.getByText('Império')).toBeTruthy();
     expect(screen.getByText('1822 - 1889')).toBeTruthy();
     expect(screen.getByText('até 1500')).toBeTruthy();
     expect(screen.getByRole('link', { name: /História do Brasil \(revisão \d+\)/ }).getAttribute('href')).toMatch(/oldid=\d+$/);
+    expect(screen.getByText('7 marcos')).toBeTruthy(); // Império: events inside 1822-1889 (spec 016 stage 2)
+    expect(screen.getAllByText('Guerra do Paraguai').length).toBeGreaterThan(0);
+    expect(screen.getByText(/sem revisão humana/)).toBeTruthy();
   });
   it('a country without data renders nothing', async () => {
     const { HistorySummary } = await import('../src/components/HistorySummary');
-    const { container } = render(<HistorySummary iso2="RS" />);
+    const { container } = render(<HistorySummary iso2="RS" curated={[]} renderTimeline={() => null} />);
     await new Promise((r) => setTimeout(r, 400));
     expect(container.textContent).toBe('');
   });

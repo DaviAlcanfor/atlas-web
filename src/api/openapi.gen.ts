@@ -197,6 +197,8 @@ export interface components {
     };
     /** CountryHistory */
     CountryHistory: {
+      /** Events */
+      events: components["schemas"]["HistoryEvent"][];
       /** Periods */
       periods: components["schemas"]["Period"][];
       /** Sources */
@@ -383,6 +385,26 @@ export interface components {
        * @constant
        */
       status: "ok";
+    };
+    /** HistoryEvent */
+    HistoryEvent: {
+      /** Id */
+      id: string;
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: "political" | "war" | "treaty" | "cultural" | "economic" | "other";
+      /** Summary */
+      summary: string | null;
+      /** Title */
+      title: string;
+      /** Wikipedia Url */
+      wikipedia_url: string | null;
+      /** Year End */
+      year_end: number | null;
+      /** Year Start */
+      year_start: number;
     };
     /** HistoryItem */
     HistoryItem: {

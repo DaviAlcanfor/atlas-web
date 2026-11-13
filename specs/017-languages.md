@@ -1,5 +1,5 @@
 # 017 - Idiomas: oficiais e os outros falados
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/017-languages.md | Executor: Sonnet
+Status: in progress (front feito; mock à mão até importar os dados reais) (revisado em 2026-11-13) | Contrato: v1.2 | API: atlas-api/specs/017-languages.md | Executor: Sonnet
 
 ## Por quê
 Hoje só aparece o idioma oficial. Quero ver também os indígenas, de imigração, regionais e de sinais (no Brasil: Nheengatu, Tupi,

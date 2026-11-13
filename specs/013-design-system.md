@@ -1,5 +1,5 @@
 # 013 - Design system "Signal" e animações
-Status: in progress | Contrato: não muda
+Status: done (revisado em 2026-11-13) | Contrato: não muda
 
 ## Por quê
 O visual atual (cards arredondados com gradiente, 5 cores de acento, Inter/Space Grotesk) parece template de IA.
@@ -41,7 +41,7 @@ Tudo desligado com `prefers-reduced-motion: reduce`. Só `transform`/`opacity`/`
 - [x] ícones Phosphor (`@phosphor-icons/react` 2.1.10, import por ícone: o barril tem ~9000 módulos e travava os testes)
 - [x] animações do painel (máscara + varredura + cascata), `CountUp` nos números, linha da timeline desenhando; tudo em `@media (prefers-reduced-motion: no-preference)`
 - [x] globo: shader de pontos, gratícula, anel de pulso, entrada; remover aliases de cor antigos
-- [ ] `npm run smoke` + screenshots antes/depois
+- [x] `npm run smoke` + screenshots antes/depois
 
 ## Resultado (globo)
 - Terra em matriz de pontos (`src/lib/dotMaterial.ts`): grade em lat/lng no shader (presa ao globo), 0,9° no zoom padrão,
