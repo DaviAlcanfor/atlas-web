@@ -231,3 +231,17 @@ describe('subdivision card (spec 024)', () => {
     expect(screen.getByText('sem dados')).toBeTruthy();
   });
 });
+
+describe('history events filter (spec 016)', () => {
+  it('filters the Marcos timeline by kind', async () => {
+    const { HistorySummary } = await import('../src/components/HistorySummary');
+    render(<HistorySummary iso2="BR" curated={[]} renderTimeline={(ev) => <ol aria-label="marcos">{ev.map((e) => <li key={e.id}>{e.title}</li>)}</ol>} />);
+    const group = await screen.findByRole('group', { name: 'Filtrar marcos por tipo' });
+    const all = within(screen.getByRole('list', { name: 'marcos' })).getAllByRole('listitem').length;
+    fireEvent.click(within(group).getByRole('button', { name: 'política' }));
+    const pol = within(screen.getByRole('list', { name: 'marcos' })).getAllByRole('listitem');
+    expect(pol.length).toBeGreaterThan(0);
+    expect(pol.length).toBeLessThan(all);
+    expect(pol.map((li) => li.textContent)).toContain('Proclamação da República do Brasil');
+  });
+});

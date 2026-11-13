@@ -7,6 +7,10 @@ import { formatRange, formatYear } from '../lib/years';
 
 type HistoryEvent = CountryHistory['events'][number];
 
+export const KIND_LABEL: Record<Event['kind'], string> = {
+  political: 'política', war: 'guerra', treaty: 'tratado', cultural: 'cultura', economic: 'economia', other: 'outro',
+};
+
 const years = (a: number | null, b: number | null) =>
   a !== null ? (a === b ? formatYear(a) : formatRange(a, b)) : b !== null ? `até ${formatYear(b)}` : null; // end null = "presente"
 
@@ -44,11 +48,13 @@ export function HistorySummary({ iso2, curated, renderTimeline }: {
 }) {
   const s = useAsync(() => api.history(iso2), iso2);
   const [open, setOpen] = useState(false);
+  const [kind, setKind] = useState<Event['kind'] | null>(null); // spec 016: filter of the "Marcos" timeline
   const h = s.status === 'ok' ? s.data : null;
   const events = h?.events ?? [];
   const wiki = h?.sources.find((x) => x.id === 'wikipedia-pt');
   const wikidata = h?.sources.find((x) => x.id === 'wikidata');
   const paras = h?.summary?.split(/\n\s*\n/) ?? [];
+  const kinds = (Object.keys(KIND_LABEL) as Event['kind'][]).filter((k) => events.some((e) => e.kind === k));
   return (
     <div className="hsum">
       {paras.length > 0 && (
@@ -98,7 +104,13 @@ export function HistorySummary({ iso2, curated, renderTimeline }: {
         <>
           <p className="sub">Marcos</p>
           <p className="note">Eventos mais citados do país e dos Estados que o antecederam, reunidos automaticamente do Wikidata (sem revisão humana).</p>
-          {renderTimeline(events.map(asEvent), wikidata ? [wikidata] : [])}
+          {kinds.length > 1 && (
+            <div className="filters" role="group" aria-label="Filtrar marcos por tipo">
+              <button aria-pressed={kind === null} onClick={() => setKind(null)}>Todos</button>
+              {kinds.map((k) => <button key={k} aria-pressed={kind === k} onClick={() => setKind(k)}>{KIND_LABEL[k]}</button>)}
+            </div>
+          )}
+          {renderTimeline(events.filter((e) => !kind || e.kind === kind).map(asEvent), wikidata ? [wikidata] : [])}
         </>
       ) : curated.length > 0 && (
         <>
