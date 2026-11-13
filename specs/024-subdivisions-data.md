@@ -43,7 +43,9 @@ desatualizado (ver spec da API). Fora desta fase: rota `/pais/[iso2]/[sub]`, IDH
 - [x] Bandeiras de todos os estados de uma vez (2026-11-13, feedback do dono: "não tá dando pra puxar as bandeiras dos estados"): com
   "Estados" ligado, cada estado com bandeira aparece com ela (atlas por país, `loadImageAtlas`, um material por estado); estado sem
   bandeira mostra a do país por baixo; hover/clique clareia os pontos
-- [ ] Fase 2: rota `/pais/[iso2]/[sub]`, IDH subnacional, governador
+- [x] Rota `/pais/[iso2]/[sub]` (2026-11-13): `/pais/br/sp` liga "Estados" e seleciona o estado (código ISO 3166-2); clique e
+  fechar atualizam o endereço; título/OG por estado; renderizada sob demanda (ISR 1 h), sem pré-gerar 3.754 páginas
+- [ ] Fase 2: IDH subnacional, governador
 
 ## Decisões abertas
 - Quais países primeiro? Proposta: todos os que têm arquivo admin-1 (240), já que o Wikidata cobre quase todos.

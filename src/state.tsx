@@ -18,12 +18,18 @@ const Ctx = createContext<AtlasCtx | null>(null);
 export const countryPath = (id: string) => `/pais/${encodeURIComponent(/^[A-Z]{2}$/.test(id) ? id.toLowerCase() : id)}`;
 /** Country id in a path; null = no country (home); undefined = a page that keeps the current selection (glossary). */
 export function selectionFromPath(path: string): string | null | undefined {
-  const m = /^\/pais\/([^/]+)\/?$/.exec(path);
+  const m = /^\/pais\/([^/]+)(?:\/[^/]+)?\/?$/.exec(path); // /pais/br or /pais/br/sp (spec 024: a state of the country)
   if (!m) return path === '/' ? null : undefined;
   let slug = m[1]!;
   try { slug = decodeURIComponent(slug); } catch { /* keep raw */ }
   return /^[a-z]{2}$/i.test(slug) ? slug.toUpperCase() : slug;
 }
+
+/** spec 024: state slug of /pais/br/sp ("sp"), else null. */
+export const stateSlugFromPath = (path: string) => /^\/pais\/[^/]+\/([^/]+)\/?$/.exec(path)?.[1]?.toLowerCase() ?? null;
+/** spec 024: path of a state from its ISO 3166-2 code ("BR-SP" -> /pais/br/sp); null when the code has no dash. */
+export const statePath = (iso2: string, code: string | null | undefined) =>
+  code?.includes('-') ? `${countryPath(iso2)}/${encodeURIComponent(code.split('-').slice(1).join('-').toLowerCase())}` : null;
 
 export function AtlasProvider({ children }: { children: ReactNode }) {
   const router = useRouter();

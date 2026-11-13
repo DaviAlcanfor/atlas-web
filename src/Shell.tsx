@@ -5,7 +5,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { api } from './api';
 import type { CountryDetail, GlossaryTerm, Subdivision } from './api/types';
 import type { StateRef } from './components/Globe';
@@ -18,7 +18,7 @@ import { LayerToggle } from './components/LayerToggle';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
 import { flagPreviewUrl } from './lib/url';
-import { AtlasProvider, countryPath, selectionFromPath, useAtlas } from './state';
+import { AtlasProvider, countryPath, selectionFromPath, stateSlugFromPath, statePath, useAtlas } from './state';
 import { idOf } from './types';
 
 // three.js touches window/WebGL at import time: browser only, and in its own chunk (pages without the globe skip ~1 MB).
@@ -55,10 +55,37 @@ function Chrome({ children }: { children: ReactNode }) {
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
   useEffect(() => { setHoverState(null); setPickedState(null); }, [selectedCountry, showStates]);
-  const clearState = useCallback(() => setPickedState(null), []);
   // spec 024: the selected country's state facts + flags, only while "Estados" is on; any failure = polygon names, no flags
   const subsReq = useAsync(() => api.subdivisions(selectedCountry!), selectedCountry && showStates ? selectedCountry : null);
   const subs = useMemo(() => new Map(subsReq.status === 'ok' ? subsReq.data.items.map((x) => [x.wikidata_id, x]) : []), [subsReq]);
+
+  // spec 024: a state has its own path (/pais/br/sp, ISO 3166-2). The path turns "Estados" on and selects the state once the
+  // API's list arrives; clicking a state or closing its card updates the path.
+  const router = useRouter();
+  const stateSlug = stateSlugFromPath(path);
+  useEffect(() => { if (stateSlug) setShowStates(true); }, [stateSlug]);
+  const prevSlug = useRef(stateSlug);
+  useEffect(() => {
+    const had = prevSlug.current;
+    prevSlug.current = stateSlug;
+    if (!stateSlug) {
+      if (had) setPickedState(null); // back from /pais/br/sp to /pais/br
+      return;
+    }
+    if (!selectedCountry || subsReq.status !== 'ok') return;
+    const code = `${selectedCountry}-${decodeURIComponent(stateSlug)}`.toUpperCase();
+    const s = subsReq.data.items.find((x) => x.code?.toUpperCase() === code);
+    if (s) setPickedState((p) => (p?.id === s.wikidata_id ? p : { name: s.name, id: s.wikidata_id }));
+  }, [stateSlug, selectedCountry, subsReq]);
+  const selectState = useCallback((s: StateRef | null) => {
+    setPickedState(s);
+    const p = s?.id && selectedCountry ? statePath(selectedCountry, subs.get(s.id)?.code) : null;
+    if (p) router.push(p, { scroll: false });
+  }, [selectedCountry, subs, router]);
+  const clearState = useCallback(() => {
+    setPickedState(null);
+    if (stateSlug && selectedCountry) router.push(countryPath(selectedCountry), { scroll: false });
+  }, [stateSlug, selectedCountry, router]);
   const factsOf = (s: StateRef | null) => (s?.id ? subs.get(s.id) : undefined);
   const stateFlags = useMemo(() => new Map([...subs].flatMap(([id, x]): [string, string][] => (x.flag ? [[id, x.flag.url]] : []))), [subs]);
 
@@ -111,7 +138,7 @@ function Chrome({ children }: { children: ReactNode }) {
               onSelect={setSelectedCountry}
               onHoverState={setHoverState}
               selectedStateId={pickedState?.id ?? null}
-              onSelectState={setPickedState}
+              onSelectState={selectState}
               stateFlags={stateFlags}
               showStates={showStates}
               onReady={onGlobeReady}
@@ -119,7 +146,7 @@ function Chrome({ children }: { children: ReactNode }) {
             />
             </div>
             <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
-              states={selectedCountry ? { on: showStates, toggle: () => setShowStates((s) => !s) } : undefined}>
+              states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); } } : undefined}>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
             </LayerToggle>
           </>

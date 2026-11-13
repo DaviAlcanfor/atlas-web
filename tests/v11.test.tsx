@@ -228,3 +228,15 @@ describe('subdivision card (spec 024)', () => {
     expect(screen.getByText('sem dados')).toBeTruthy();
   });
 });
+
+describe('state paths (spec 024)', () => {
+  it('maps /pais/br/sp both ways', async () => {
+    const { selectionFromPath, stateSlugFromPath, statePath } = await import('../src/state');
+    expect(selectionFromPath('/pais/br/sp')).toBe('BR');
+    expect(stateSlugFromPath('/pais/br/sp')).toBe('sp');
+    expect(stateSlugFromPath('/pais/br')).toBeNull();
+    expect(statePath('BR', 'BR-SP')).toBe('/pais/br/sp');
+    expect(statePath('JP', 'JP-13')).toBe('/pais/jp/13');
+    expect(statePath('BR', null)).toBeNull();
+  });
+});
