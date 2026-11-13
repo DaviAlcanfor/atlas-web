@@ -51,4 +51,6 @@ export type ContractChecks = [
   Assert<Same<typeof S.CurrencyHistory, Gen['CurrencyHistory']>>,
   Assert<Same<typeof S.Period, Gen['Period']>>,
   Assert<Same<typeof S.CountryHistory, Gen['CountryHistory']>>,
+  Assert<Same<typeof S.Subdivision, Gen['Subdivision']>>,
+  Assert<Same<typeof S.SubdivisionList, Gen['SubdivisionList']>>,
 ];

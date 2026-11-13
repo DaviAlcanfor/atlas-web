@@ -34,6 +34,10 @@ export interface paths {
     /** Get Profile */
     get: operations["get_profile_v1_countries__iso2__profile_get"];
   };
+  "/v1/countries/{iso2}/subdivisions": {
+    /** List Subdivisions */
+    get: operations["list_subdivisions_v1_countries__iso2__subdivisions_get"];
+  };
   "/v1/currencies/{code}": {
     /** Get Currency */
     get: operations["get_currency_v1_currencies__code__get"];
@@ -788,6 +792,35 @@ export interface components {
       /** Year */
       year: number | null;
     };
+    /** Subdivision */
+    Subdivision: {
+      /** Area Km2 */
+      area_km2: number | null;
+      /** Capital */
+      capital: string | null;
+      /** Code */
+      code: string | null;
+      flag: components["schemas"]["Image"] | null;
+      /** Name */
+      name: string;
+      population: components["schemas"]["SubdivisionPopulation"] | null;
+      /** Wikidata Id */
+      wikidata_id: string;
+    };
+    /** SubdivisionList */
+    SubdivisionList: {
+      /** Items */
+      items: components["schemas"]["Subdivision"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
+    /** SubdivisionPopulation */
+    SubdivisionPopulation: {
+      /** Value */
+      value: number;
+      /** Year */
+      year: number | null;
+    };
     /** ValidationError */
     ValidationError: {
       /** Context */
@@ -978,6 +1011,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["CountryProfile"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Subdivisions */
+  list_subdivisions_v1_countries__iso2__subdivisions_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["SubdivisionList"];
         };
       };
       /** @description Validation Error */

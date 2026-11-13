@@ -5,6 +5,7 @@ import { nearestYear } from '../../lib/snapshots';
 import { LANGUAGES_SPOKEN } from './languages';
 import v12 from './v12.json';
 import history from './history.json';
+import subdivisions from './subdivisions.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
@@ -77,6 +78,10 @@ export function createMockApi(delayMs = 150): AtlasApi {
       const h = (history as Record<string, unknown>)[iso2]; // BR, JP, ML from the local API (spec 016 stage 1)
       if (!h) throw notFound(`No history for ${iso2}`);
       return parse(S.CountryHistory, h, `mock history ${iso2}`);
+    }),
+    subdivisions: (iso2) => wait(() => {
+      const s = (subdivisions as Record<string, unknown>)[iso2]; // BR, JP from the local API (spec 024)
+      return parse(S.SubdivisionList, s ?? { items: [], sources: [] }, `mock subdivisions ${iso2}`);
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];

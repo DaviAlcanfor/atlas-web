@@ -15,6 +15,9 @@ import { CurrencyChip } from './CurrencyChip';
 import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
 import { HistorySummary } from './HistorySummary';
+import { SubdivisionCard } from './SubdivisionCard';
+import type { StateRef } from './Globe';
+import type { Subdivision } from '../api/types';
 import { Section } from './Section';
 import { Term } from './Term';
 import { splitLeaders } from '../lib/leaders';
@@ -27,6 +30,8 @@ interface Props {
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
   initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
   lat?: number; // latitude of the country's label point (globe data); feeds the hemisphere clue
+  subdivision?: { ref: StateRef; facts: Subdivision | undefined }; // spec 024: clicked state
+  onCloseSubdivision?: () => void;
   onClose: () => void;
 }
 
@@ -69,7 +74,7 @@ function Skeleton() {
   );
 }
 
-export function CountryPanel({ iso2, name, inApi, initial, lat, onClose }: Props) {
+export function CountryPanel({ iso2, name, inApi, initial, lat, subdivision, onCloseSubdivision, onClose }: Props) {
   // Not in the API's list (e.g. polygons without an ISO code) or already loaded on the server: nothing to fetch (key null = idle).
   const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
   const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
@@ -97,6 +102,7 @@ export function CountryPanel({ iso2, name, inApi, initial, lat, onClose }: Props
           <button className="icon-btn" onClick={onClose} aria-label="Fechar painel"><X size={16} weight="light" aria-hidden="true" /></button>
         </div>
       </header>
+      {subdivision && <SubdivisionCard key={subdivision.ref.id ?? subdivision.ref.name} name={subdivision.ref.name} facts={subdivision.facts} onClose={() => onCloseSubdivision?.()} />}
       {body}
     </aside>
   );
