@@ -34,3 +34,7 @@
 
 ## Production CORS (2026-11-11)
 - Vercel (https://atlas-web-ruddy.vercel.app) was blocked: API `CORS_ORIGINS` held only localhost. Added on FastAPI Cloud; verified with `npm run smoke`.
+
+## CR-004 (contract v1.3) applied 2026-11-13
+The owner approved everything pending (spec 026); CR-004 and its addenda 1-4 (history, subdivisions, history events, political
+currents, `Subdivision.area_codes`) are now in `CONTRACT.md` (identical in both repos). Full CR text: atlas-api `contract/CHANGE_REQUESTS.md`.

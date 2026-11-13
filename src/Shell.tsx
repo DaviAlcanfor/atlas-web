@@ -41,7 +41,7 @@ function Chrome({ children }: { children: ReactNode }) {
   // The glossary page covers the whole screen: opened directly, it skips the globe (WebGL + ~550 kB gzip of three.js) and the
   // map files. Once a globe route is visited the globe stays mounted for good.
   const path = usePathname();
-  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/') && !path.startsWith('/ideias/'); // full-page routes skip the globe when opened directly
+  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/') && !path.startsWith('/ideias/') && !path.startsWith('/economia'); // full-page routes skip the globe when opened directly
   const [wantGlobe, setWantGlobe] = useState(globeRoute);
   useEffect(() => { if (globeRoute) setWantGlobe(true); }, [globeRoute]);
   const { data, error, apiError, progress } = useAtlasData(wantGlobe);
@@ -51,6 +51,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const [globeReady, setGlobeReady] = useState(false);
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
+  const [allStateFlags, setAllStateFlags] = useState(true); // spec 026: every state's flag, or only the clicked one
   const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
@@ -87,7 +88,8 @@ function Chrome({ children }: { children: ReactNode }) {
     if (stateSlug && selectedCountry) router.push(countryPath(selectedCountry), { scroll: false });
   }, [stateSlug, selectedCountry, router]);
   const factsOf = (s: StateRef | null) => (s?.id ? subs.get(s.id) : undefined);
-  const stateFlags = useMemo(() => new Map([...subs].flatMap(([id, x]): [string, string][] => (x.flag ? [[id, x.flag.url]] : []))), [subs]);
+  const stateFlags = useMemo(() => new Map([...subs].flatMap(([id, x]): [string, string][] =>
+    (x.flag && (allStateFlags || id === pickedState?.id) ? [[id, x.flag.url]] : []))), [subs, allStateFlags, pickedState?.id]);
 
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
@@ -146,7 +148,9 @@ function Chrome({ children }: { children: ReactNode }) {
             />
             </div>
             <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
-              states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); } } : undefined}>
+              states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
+                all: allStateFlags, setAll: setAllStateFlags } : undefined}>
+              <Link className="chrome-link" href="/economia">Economia</Link>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
             </LayerToggle>
           </>

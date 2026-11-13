@@ -898,6 +898,8 @@ export interface components {
     };
     /** Subdivision */
     Subdivision: {
+      /** Area Codes */
+      area_codes: string[];
       /** Area Km2 */
       area_km2: number | null;
       /** Capital */

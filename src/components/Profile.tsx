@@ -67,8 +67,8 @@ function Groups({ p }: { p: CountryProfile }) {
   const csrc = c.source_id ? shortSource(p.sources, c.source_id) : '';
   return (
     <Section title="Como vive o povo">
-      {groups.map((g, n) => (
-        <details key={g.id} className="pgroup" open={n < 2}>
+      {groups.map((g) => (
+        <details key={g.id} className="pgroup">
           <summary>{GROUP_TITLE[g.id]} <span>{g.indicators.length}</span></summary>
           <ul className="inds">{g.indicators.map((i) => <IndicatorRow key={i.id} i={i} sources={p.sources} />)}</ul>
           {g.id === 'society' && c.religion && <CompositionBar title="Religiões" items={c.religion} year={c.year} source={csrc} />}

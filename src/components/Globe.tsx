@@ -16,8 +16,11 @@ import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 const ALT_BASE = 0.004;
 const ALT_SELECTED = 0.008; // spec 023: less relief (was 0.015)
 const ALT_LINE = 0.0042;
-const ALT_ADMIN1 = ALT_SELECTED + 0.0003; // on the raised selected cap, under its outline
-const ALT_STATE_HOVER = ALT_SELECTED + 0.0002; // hovered state overlay: just over the selected cap
+// spec 026: state caps sit clearly above the country cap. 0.0002 was less than how far a cap's big triangles dip below the
+// sphere between vertices (three-globe tessellates caps every ~5°: ~0.001 of the radius), so the country's flag cap and the
+// states' caps crossed each other and flickered (z-fighting).
+const ALT_STATE_HOVER = ALT_SELECTED + 0.0015; // state caps (flags, hover, selection)
+const ALT_ADMIN1 = ALT_STATE_HOVER + 0.0003; // state borders, over the state caps
 const MIN_ALTITUDE = 0.15;
 const START = { lat: 35, lng: -15, altitude: 0.92 }; // spec said altitude ~1.8; reference screenshot 2 measures ~0.92
 
@@ -425,7 +428,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     if (!selectedFeature) return [];
     const g = selectedFeature.geometry;
     const polys = g.type === 'Polygon' ? [g.coordinates] : g.type === 'MultiPolygon' ? g.coordinates : [];
-    return polys.flatMap((p) => p.map((ring) => ({ points: ring.map(([x, y]) => [x!, y!, ALT_SELECTED + 0.0005]) })));
+    return polys.flatMap((p) => p.map((ring) => ({ points: ring.map(([x, y]) => [x!, y!, ALT_ADMIN1 + 0.0002]) }))); // over the state caps too
   }, [selectedFeature]);
 
   // Hover/click picking without raycasting the polygon meshes (that cost ~15 ms/frame on an integrated GPU):

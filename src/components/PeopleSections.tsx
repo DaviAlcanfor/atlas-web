@@ -8,7 +8,7 @@ import { safeHref } from '../lib/url';
 import { formatYear } from '../lib/years';
 import { Section } from './Section';
 
-const PAGE = 10;
+const PAGE = 5; // spec 026: five people first; the rest of the filter is one click away
 const LEADERS_SHOWN = 3; // spec 023: only the latest predecessors; the rest is one click away
 
 /** One person: photo (with the credit + licence the contract requires) or initials, name, free-form lines, Wikipedia link. */
@@ -93,17 +93,19 @@ function life(p: Person): string | null {
 export function PeopleSection({ iso2 }: { iso2: string }) {
   const s = useAsync(() => api.people(iso2, undefined, 50), iso2); // one request; the filter works on the top 50
   const [domain, setDomain] = useState<PersonDomain | null>(null);
+  const [all, setAll] = useState(false);
   if (s.status !== 'ok' || !s.data.items.length) return null;
   const { items, method, source } = s.data;
   const domains = (Object.keys(DOMAIN_LABEL) as PersonDomain[]).filter((d) => items.some((p) => p.domain === d));
-  const shown = items.filter((p) => !domain || p.domain === domain).slice(0, PAGE);
+  const matching = items.filter((p) => !domain || p.domain === domain);
+  const shown = all ? matching : matching.slice(0, PAGE);
   const srcHref = safeHref(source.url);
   return (
     <Section title="Pessoas importantes">
       {domains.length > 1 && (
         <div className="filters" role="group" aria-label="Filtrar por área">
-          <button aria-pressed={domain === null} onClick={() => setDomain(null)}>Todas</button>
-          {domains.map((d) => <button key={d} aria-pressed={domain === d} onClick={() => setDomain(d)}>{DOMAIN_LABEL[d]}</button>)}
+          <button aria-pressed={domain === null} onClick={() => { setDomain(null); setAll(false); }}>Todas</button>
+          {domains.map((d) => <button key={d} aria-pressed={domain === d} onClick={() => { setDomain(d); setAll(false); }}>{DOMAIN_LABEL[d]}</button>)}
         </div>
       )}
       <ul className="plist">
@@ -112,6 +114,11 @@ export function PeopleSection({ iso2 }: { iso2: string }) {
             lines={[occupationPt(p.occupation), life(p)]} />
         ))}
       </ul>
+      {matching.length > PAGE && (
+        <button className="more-btn" aria-expanded={all} onClick={() => setAll(!all)}>
+          {all ? 'mostrar menos' : `ver mais (+${matching.length - PAGE})`}
+        </button>
+      )}
       <p className="src">{method}</p>
       <p className="src">
         Fonte: {srcHref ? <a href={srcHref} target="_blank" rel="noreferrer noopener">{source.title}</a> : source.title}

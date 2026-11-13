@@ -160,6 +160,7 @@ export const CountryHistory = z.object({ summary: NStr, periods: z.array(Period)
 export const Subdivision = z.object({
   wikidata_id: Str, code: NStr, name: Str, capital: NStr, area_km2: z.number().nullable(),
   population: z.object({ value: z.number().int(), year: z.number().int().nullable() }).nullable(), flag: Image.nullable(),
+  area_codes: z.array(Str).default([]), // spec 026 (CR-004 addendum 4); the default keeps answers from a release without it valid
 });
 export const SubdivisionList = z.object({ items: z.array(Subdivision), sources: z.array(Source) });
 // ---- v1.3 proposal (spec 018, CR-004 addendum 3): political currents. `via`/`party` say WHY a person is listed. ----
