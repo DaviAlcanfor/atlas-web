@@ -43,6 +43,7 @@ export type CurrencyHistory = z.infer<typeof S.CurrencyHistory>;
 export interface AtlasApi {
   countries(): Promise<CountrySummary[]>;
   country(iso2: string): Promise<CountryDetail>;
+  snapshots(): Promise<SnapshotInfo[]>; // spec 012: every snapshot year, ascending
   nearestSnapshot(year: number): Promise<SnapshotNearest>;
   snapshotLinks(year: number): Promise<SnapshotLinks>;
   polity(id: string): Promise<PolityDetail>;

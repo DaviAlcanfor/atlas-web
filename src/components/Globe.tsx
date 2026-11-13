@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
 import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
-import { palette } from '../lib/palette';
+import { palette, regimePalette } from '../lib/palette';
 import type { CapitalCoord } from '../api/types';
 import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas, loadImageAtlas } from '../lib/flagMaterial';
 import { flagLargeUrl } from '../lib/url';
@@ -21,6 +21,7 @@ const ALT_LINE = 0.0042;
 // states' caps crossed each other and flickered (z-fighting).
 const ALT_STATE_HOVER = ALT_SELECTED + 0.0015; // state caps (flags, hover, selection)
 const ALT_ADMIN1 = ALT_STATE_HOVER + 0.0003; // state borders, over the state caps
+const ALT_LIFT = 0.0015; // spec 012: historical entities float this much over the dim modern land (same margin as the states)
 const MIN_ALTITUDE = 0.15;
 const START = { lat: 35, lng: -15, altitude: 0.92 }; // spec said altitude ~1.8; reference screenshot 2 measures ~0.92
 
@@ -101,6 +102,8 @@ interface Props {
   onSelectState?: (s: StateRef | null) => void;
   stateFlags?: Map<string, string>; // spec 024: wikidataid -> flag image (API, Commons thumbnail) of the selected country's states
   showStates: boolean; // draw + hover the selected country's divisions (the "Estados" button)
+  backdrop?: CountryFeature[]; // spec 012: modern land drawn dim and inert under `features` (time travel: land without a recorded state)
+  tint?: (id: string) => string | undefined; // spec 012: colour of a feature's dots (one of regimePalette); hover/selection still win
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
 }
@@ -160,7 +163,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -194,6 +197,12 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [shared],
   );
   const graticule = useMemo(() => buildLines(graticule10(), palette.grid), []);
+  const tintMats = useMemo(
+    () => new Map(regimePalette.map((c) => [c as string, createDotMaterial({ color: c, radius: DOTS.content.radius }, shared)])),
+    [shared],
+  );
+  const backdropSet = useMemo(() => new Set<object>(backdrop), [backdrop]);
+  const lift = backdrop ? ALT_LIFT : 0;
 
   // Flag backdrop (spec 002): the selected country's flag, blended over its largest polygon. Any failure = no flag.
   const [flagId, setFlagId] = useState<string | null>(null); // country whose flag mats.flag currently holds
@@ -390,8 +399,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   useEffect(() => setHoverState(null), [selectedId, showStates]);
 
   const baseLines = useMemo(
-    () => [graticule, buildLines(lines.borders, palette.border), buildLines(lines.coast, palette.coast)],
-    [lines, graticule],
+    () => [graticule, buildLines(lines.borders, palette.border, ALT_LINE + lift), buildLines(lines.coast, palette.coast, ALT_LINE + lift)],
+    [lines, graticule, lift],
   );
 
   // Selection pulse (spec 013): 3 signal-red rings from the mainland's centroid (FR's centroid is in the Atlantic because of
@@ -501,8 +510,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   const polygons = useMemo(() => {
     const extra = (admin1?.states ?? []).filter((st) => stateMats?.has(st.properties.wikidataid ?? ''));
     for (const st of [selState, hoverState]) if (st && !extra.includes(st)) extra.push(st);
-    return extra.length ? [...features, ...(extra as unknown as CountryFeature[])] : features;
-  }, [features, admin1, stateMats, hoverState, selState]);
+    return extra.length || backdrop ? [...(backdrop ?? []), ...features, ...(extra as unknown as CountryFeature[])] : features;
+  }, [features, backdrop, admin1, stateMats, hoverState, selState]);
 
   const ptr = useRef({ down: false, moved: false, x: 0, y: 0, raf: 0 });
   const onPointerDown = (e: React.PointerEvent) => {
@@ -583,6 +592,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         return sm;
       }
       if (d === selState || d === hoverState) return mats.stateHover;
+      if (backdropSet.has(d)) return mats.dim;
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
       const regime = regimes.get(id);
@@ -601,15 +611,19 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
       if (sv === 'partial') return mats.mid;
+      const t = tint?.(id);
+      if (t) return tintMats.get(t) ?? mats.content;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat, backdropSet, tint, tintMats],
   );
 
   const polygonAltitude = useCallback(
     (d: object) =>
-      d === hoverState || d === selState || stateMat(d) ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE,
-    [selectedId, hoverState, selState, stateMat],
+      d === hoverState || d === selState || stateMat(d) ? ALT_STATE_HOVER
+        : backdropSet.has(d) ? ALT_BASE
+        : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE + lift,
+    [selectedId, hoverState, selState, stateMat, backdropSet, lift],
   );
 
   return (

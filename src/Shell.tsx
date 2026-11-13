@@ -17,7 +17,11 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { LayerToggle } from './components/LayerToggle';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
+import { nearestYear } from './lib/snapshots';
+import { loadSnapshot, tintOf, type Snapshot } from './lib/timeTravel';
 import { flagPreviewUrl } from './lib/url';
+import { formatYear } from './lib/years';
+import { HistPanel, TimeBar } from './components/TimeTravel';
 import { AtlasProvider, countryPath, selectionFromPath, stateSlugFromPath, statePath, useAtlas } from './state';
 import { idOf } from './types';
 
@@ -25,6 +29,9 @@ import { idOf } from './types';
 const Globe = dynamic(() => import('./components/Globe').then((m) => m.Globe), { ssr: false });
 
 const NO_TERMS: never[] = [];
+const NO_CAPITALS = new Map<string, never>();
+const NO_REGIMES = new Map<string, string>();
+const DEFAULT_YEAR = 1914; // where "Viagem no tempo" starts
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
@@ -91,6 +98,48 @@ function Chrome({ children }: { children: ReactNode }) {
   const stateFlags = useMemo(() => new Map([...subs].flatMap(([id, x]): [string, string][] =>
     (x.flag && (allStateFlags || id === pickedState?.id) ? [[id, x.flag.url]] : []))), [subs, allStateFlags, pickedState?.id]);
 
+  // spec 012: time travel. `year` null = the present. The slider only stops on snapshot years; a year typed in the URL snaps
+  // to the nearest one. While the next snapshot downloads the previous one stays on screen.
+  const [year, setYearState] = useState<number | null>(null);
+  const [hist, setHist] = useState<Snapshot | null>(null);
+  const [histError, setHistError] = useState<string>();
+  const [histSel, setHistSel] = useState<string | null>(null);
+  useEffect(() => { // shared links: ?ano=1815
+    const y = Number(new URLSearchParams(location.search).get('ano'));
+    if (Number.isInteger(y) && y !== 0) setYearState(y);
+  }, []);
+  const snapsReq = useAsync(() => api.snapshots(), year !== null ? 'snapshots' : null);
+  const snaps = snapsReq.status === 'ok' ? snapsReq.data : null;
+  const years = useMemo(() => snaps?.map((x) => x.year) ?? [], [snaps]);
+  const snapYear = year !== null ? nearestYear(years, year)?.year ?? null : null;
+  const setYear = useCallback((y: number | null) => {
+    setYearState(y);
+    const u = new URL(location.href);
+    if (y === null) u.searchParams.delete('ano'); else u.searchParams.set('ano', String(y));
+    window.history.replaceState(null, '', u);
+  }, []);
+  useEffect(() => {
+    if (snapYear === null) { setHist(null); setHistSel(null); setHistError(undefined); return; }
+    const info = snaps?.find((x) => x.year === snapYear);
+    if (!info) return;
+    let live = true;
+    const t = setTimeout(() => { // dragging the slider passes over many years: only the one it rests on is downloaded
+      loadSnapshot(snapYear, info.geometry_url).then(
+        (s) => { if (live) { setHist(s); setHistError(undefined); setHistSel((id) => (id && s.ids.has(id) ? id : null)); } },
+        (e: Error) => live && setHistError(e.message),
+      );
+    }, 120);
+    return () => { live = false; clearTimeout(t); };
+  }, [snapYear, snaps]);
+  const timeMode = year !== null && globeRoute;
+  const enterTime = useCallback(() => { setSelectedCountry(null); setYear(DEFAULT_YEAR); }, [setSelectedCountry, setYear]);
+  useEffect(() => { if (selectedCountry && year !== null) setYear(null); }, [selectedCountry]); // a modern country was opened: back to the present
+  const histLines = useMemo(() => (hist && data ? { borders: hist.borders, coast: data.lines.coast } : null), [hist, data]);
+  const modernByName = useMemo(() => new Map([...(data?.names ?? [])].map(([iso, n]) => [n, iso])), [data]);
+  const histProps = timeMode && hist ? hist.props.get(histSel ?? '') : undefined;
+  const histHover = timeMode && hist ? hist.props.get(hoveredCountry ?? histSel ?? '') : undefined;
+
+  const inPast = timeMode && hist !== null && histLines !== null ? hist : null; // the snapshot on the globe, or null in the present
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
   const name = active ? countryName(active) : undefined; // pt-BR name from the API, Natural Earth's English one as fallback
@@ -101,7 +150,9 @@ function Chrome({ children }: { children: ReactNode }) {
   return (
     <ShellContext.Provider value={{ data, state: pickedState ? { ref: pickedState, facts: factsOf(pickedState) } : null, clearState }}>
       <GlossaryProvider terms={terms} countryName={countryName} onPickCountry={setSelectedCountry}>
-        {hoverState && selectedName ? (
+        {timeMode ? (
+          <InfoCard label={histHover ? `Em ${formatYear(snapYear ?? year!)}` : 'Viagem no tempo'} name={histHover?.name ?? formatYear(snapYear ?? year!)} />
+        ) : hoverState && selectedName ? (
           <InfoCard label={`Estado em ${selectedName}`} name={factsOf(hoverState)?.name ?? hoverState.name} flagUrl={factsOf(hoverState)?.flag?.url} />
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
@@ -126,33 +177,54 @@ function Chrome({ children }: { children: ReactNode }) {
         )}
         {data && (
           <>
-            <div className={selectedCountry && globeRoute ? 'globe-slot globe-slot--panel' : 'globe-slot'}>
+            <div className={(timeMode ? histProps : selectedCountry) && globeRoute ? 'globe-slot globe-slot--panel' : 'globe-slot'}>
+            {/* One Globe instance for both modes (same position in the tree): switching swaps its data, the WebGL scene stays. */}
             <Globe
-              features={data.features}
-              lines={data.lines}
-              apiIds={data.knownIds}
-              capitals={data.capitals}
-              regimes={data.regimes}
-              layer={layer}
+              features={inPast ? inPast.features : data.features}
+              lines={inPast ? histLines! : data.lines}
+              apiIds={inPast ? inPast.ids : data.knownIds}
+              capitals={inPast ? NO_CAPITALS : data.capitals}
+              regimes={inPast ? NO_REGIMES : data.regimes}
+              layer={inPast ? 'content' : layer}
               hoveredId={hoveredCountry}
-              selectedId={selectedCountry}
+              selectedId={inPast ? histSel : selectedCountry}
               onHover={setHoveredCountry}
-              onSelect={setSelectedCountry}
+              onSelect={inPast ? setHistSel : setSelectedCountry}
               onHoverState={setHoverState}
-              selectedStateId={pickedState?.id ?? null}
+              selectedStateId={inPast ? null : pickedState?.id ?? null}
               onSelectState={selectState}
-              stateFlags={stateFlags}
-              showStates={showStates}
+              stateFlags={inPast ? undefined : stateFlags}
+              showStates={inPast ? false : showStates}
+              backdrop={inPast ? data.features : undefined}
+              tint={inPast ? tintOf : undefined}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
             </div>
-            <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
+            {timeMode && years.length > 0 && (
+              <TimeBar years={years} year={snapYear ?? years[0]!} loading={hist?.year !== snapYear && !histError} count={hist?.year === snapYear ? hist.features.length : null}
+                error={histError} onYear={setYear} onExit={() => setYear(null)} />
+            )}
+            {/* No snapshots (API not imported yet) or the list failed: say so and offer the way back, never a dead end. */}
+            {timeMode && (snapsReq.status === 'error' || (snaps && !years.length)) && (
+              <div className="timebar bracketed" role="alert">
+                <div className="timebar__head">
+                  <span className="timebar__label">Viagem no tempo</span>
+                  <span className="timebar__meta">
+                    {snapsReq.status === 'error' ? `Não foi possível carregar: ${snapsReq.error.message}` : 'Os mapas históricos ainda não estão disponíveis.'}
+                  </span>
+                  <button className="timebar__exit" onClick={() => setYear(null)}>Voltar ao presente</button>
+                </div>
+              </div>
+            )}
+            {timeMode && histProps && <HistPanel p={histProps} year={snapYear ?? year!} modern={modernByName.get(histProps.name)} onClose={() => setHistSel(null)} />}
+            {!timeMode && <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
                 all: allStateFlags, setAll: setAllStateFlags } : undefined}>
+              <button className="chrome-link" onClick={enterTime}>Viagem no tempo</button>
               <Link className="chrome-link" href="/economia">Economia</Link>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
-            </LayerToggle>
+            </LayerToggle>}
           </>
         )}
         {children}

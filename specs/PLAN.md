@@ -15,6 +15,18 @@ dados (3.754 subdivisões), glossário por tema, camadas (regime, bandeiras, Geo
 Produção: schema migra sozinho ao subir (API PR #7); **dados** continuam manuais: `import-facts` contra o banco de produção a partir
 do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=false`.
 
+### Feito em 2026-11-13 (tarde)
+- Spec 026 (polimento 3) mergeada nos dois repos. **Dados ainda não importados na produção**: rodar `import-prod-026.ps1`
+  (na raiz do workspace; o modo automático bloqueia a importação). Sem isso não aparecem organizações novas, DDD, resumo de
+  história melhor nem as correntes políticas (018 nunca foi importada).
+- Viagem no tempo, etapa 1 (spec 012): `etl cliopatria` (130 retratos em `public/data/historical`, CR-005), `/v1/snapshots` com
+  dados reais, slider + camada histórica + painel básico no web. Próxima etapa: entidades e links no banco, fatos da época
+  (`etl wikidata-polities`), estilos de mapa por época, séries.
+- LLM e Jev: usar o Vercel AI Gateway (`AI_GATEWAY_API_KEY`; LLM em `https://ai-gateway.vercel.sh/v1`, Jev em `.../typesafe`),
+  uma chave com orçamento por uso (notícias, resumos, chatbot). O dono adiciona a chave.
+- Idiomas (017): `languages.json` tem 197 países, mas o Brasil sai com 227 idiomas e muitos indígenas como "cooficial":
+  revisar a classificação antes de importar (ficou fora do script de produção de propósito).
+
 ### Pendente
 1. **Idiomas reais (017)**: o ETL foi corrigido (API PRs #8 e #11: lotes que estouram o tempo são divididos na hora, JSON cortado
    conta como falha, Hunsrik/Talian = imigração). Falta terminar a coleta, importar na produção e trocar o mock do web pelos dados reais.

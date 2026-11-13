@@ -486,3 +486,24 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .hub-grid img { width: 26px; height: 18px; object-fit: contain; border-radius: 2px; flex: none; }
 @media (max-width: 640px) { .blk { padding: 14px 14px 18px; } }
 .chips__more { font: 400 11px/1 var(--f-mono); color: var(--c-text-dim); }
+
+/* spec 012: time travel bar (bottom left, where the layer toggle sits in the present) */
+button.chrome-link { background: none; border: 0; cursor: pointer; text-decoration: underline; }
+.timebar { position: fixed; z-index: var(--z-chrome); left: 24px; bottom: 40px; width: min(680px, calc(100vw - 48px)); padding: 14px 18px 12px; border: 1px solid var(--c-line); background: var(--c-panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.timebar__head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.timebar__label { font: 500 11px/1.4 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-signal); }
+.timebar__year { font: 600 30px/1 var(--f-sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.timebar__meta { flex: 1; font: 400 11px/1.4 var(--f-mono); color: var(--c-text-dim); }
+.timebar__exit { font: 500 12px/1 var(--f-mono); padding: 8px 12px; color: var(--c-text); background: none; border: 1px solid var(--c-line-strong); border-radius: var(--r); cursor: pointer; }
+.timebar__exit:hover { border-color: var(--c-ice); color: var(--c-ice); }
+.timebar__row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.timebar__row input[type='range'] { flex: 1; min-width: 0; height: 28px; accent-color: var(--c-ice); cursor: pointer; }
+.timebar__row input[type='range']:focus-visible { outline: 1px solid var(--c-focus); outline-offset: 2px; }
+.timebar__row .icon-btn { font: 500 18px/1 var(--f-mono); color: var(--c-text); background: none; cursor: pointer; border: 1px solid var(--c-line-strong); border-radius: var(--r); width: 30px; height: 30px; padding: 0; }
+.timebar__row .icon-btn:disabled { opacity: 0.35; cursor: default; }
+.timebar__ends { display: flex; justify-content: space-between; padding: 0 38px; font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
+.timebar__src { margin: 8px 0 0; font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
+@media (max-width: 700px) {
+  .timebar { left: 0; right: 0; bottom: 0; width: auto; padding: 10px 12px; border-width: 1px 0 0; }
+  .timebar__year { font-size: 24px; }
+}

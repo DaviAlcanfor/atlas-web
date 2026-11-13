@@ -42,6 +42,7 @@ export function createClient(baseUrl: string, timeoutMs?: number): AtlasApi {
   return {
     countries: async () => (await get('/v1/countries', S.CountryList)).items,
     country: (iso2) => get(`/v1/countries/${q(iso2)}`, S.CountryDetail),
+    snapshots: async () => (await get('/v1/snapshots', S.SnapshotList)).items,
     nearestSnapshot: (year) => get(`/v1/snapshots/nearest?year=${year}`, S.SnapshotNearest),
     snapshotLinks: (year) => get(`/v1/snapshots/${year}/links`, S.SnapshotLinks),
     polity: (id) => get(`/v1/polities/${q(id)}`, S.PolityDetail),
