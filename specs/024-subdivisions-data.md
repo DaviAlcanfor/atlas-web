@@ -34,17 +34,16 @@ GET /v1/countries/{iso2}/subdivisions -> { items: [ { id: "BR-SP", wikidata_id: 
 Com "Estados" ligado: hover mostra nome pt-BR + bandeira do estado no leitor do topo; clique num estado do país selecionado cobre o
 território com a bandeira dele (material de bandeira, como a do país) e abre o cartão "Estado / província" no topo do painel
 (capital, população com ano, área, código ISO, crédito/licença da bandeira, "voltar ao país"). Sem governador: o Wikidata está
-desatualizado (ver spec da API). Fora desta fase: rota `/pais/[iso2]/[sub]`, bandeiras de TODOS os estados de uma vez, IDH/IBGE.
+desatualizado (ver spec da API). Fora desta fase: rota `/pais/[iso2]/[sub]`, IDH/IBGE.
 
 ## Tarefas
 - [x] API: ETL, migração 0012, endpoint, testes, CR-004 (adendo)
 - [x] Web: leitor com bandeira do estado; cartão no painel; bandeira do estado selecionado no globo
-- [ ] API: ler termos (Wikidata, Commons, GDL, IBGE) e citar na spec da API
-- [ ] API: ETL `wikidata-subdivisions` (SPARQL em lotes por país, com teto de espera do limite de taxa: ver o travamento do ETL de idiomas)
-- [ ] API: migração + endpoint + testes + fixture
-- [ ] Contrato v1.3 (dono)
-- [ ] Web: readout com bandeira do estado; seção "Estado" no painel; rota `/pais/[iso2]/[sub]`
-- [ ] Web: bandeiras dos estados no globo (atlas por país)
+- [ ] Contrato v1.3 (dono: colar o CR-004)
+- [x] Bandeiras de todos os estados de uma vez (2026-11-13, feedback do dono: "não tá dando pra puxar as bandeiras dos estados"): com
+  "Estados" ligado, cada estado com bandeira aparece com ela (atlas por país, `loadImageAtlas`, um material por estado); estado sem
+  bandeira mostra a do país por baixo; hover/clique clareia os pontos
+- [ ] Fase 2: rota `/pais/[iso2]/[sub]`, IDH subnacional, governador
 
 ## Decisões abertas
 - Quais países primeiro? Proposta: todos os que têm arquivo admin-1 (240), já que o Wikidata cobre quase todos.

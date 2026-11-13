@@ -6,44 +6,24 @@ Specs do web: `specs/NNN-*.md` deste repo. Specs da API: `atlas-api/specs/NNN-*.
 (o dono aprovou a v1.2 em bloco: aplicar no `CONTRACT.md` dos dois repos no início da fase que a usar); terminar cada tarefa com
 testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo quando a tarefa cruza os dois.
 
-## RETOMAR AQUI (estado em 2026-11-12, fim da sessão)
+## RETOMAR AQUI (estado em 2026-11-13)
 
 ### No ar
-API v1.1 (glossário, regime de 153 países, governantes, pessoas, pistas, capital) e front com: design "Signal", globo em pontos,
-Next.js (`/pais/[iso2]`, `/glossario`), bandeira do país, estados, timeline, ícones, camada Bandeiras, polimento 021 (estados com botão,
-fronteiras fortes, paleta de regime, ⓘ em todos os rótulos, camada GeoGuessr, carregamento com %, painel 540 px).
+API v1.3 (proposta, CR-004) e front com tudo das specs 001-024 fase 1: globo em pontos, painel do país (perfil do povo, economia,
+câmbio, idiomas, governantes, pessoas, história resumida da Wikipédia com períodos, pistas de GeoGuessr), estados com bandeira e
+dados (3.754 subdivisões), glossário por tema, camadas (regime, bandeiras, GeoGuessr), READMEs com screenshots.
+Produção: schema migra sozinho ao subir (API PR #7); **dados** continuam manuais: `import-facts` contra o banco de produção a partir
+do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=false`.
 
-### Feito em 2026-11-12, noite
-- 503 da API resolvido: o dono rodou `fix-prod-0010.ps1` (produção em 0010 com dados v1.2). Smoke do site OK.
-- Rodada 023 no ar (PR #8).
-- **Resumo da história (016 fase 1)**: API PR #6 + web PR #9. Ordem: rodar `fix-prod-0011.ps1` (pasta `atlas`, ensaiado; o worktree
-  `atlas-api-deploy` já está no commit do PR #6) -> mergear API #6 -> conferir `/v1/countries/BR/history` -> mergear web #9 (pode ir antes:
-  a parte nova só aparece quando o endpoint existir). Colar o CR-004 (contrato v1.3) no CONTRACT.md dos dois repos.
-
-### Rodada 023 (2026-11-12, noite): web, branch `feat/polish-2`
-Feito: spec [023](023-polish-round-2.md). Rascunhos para aprovação: [024 estados](024-subdivisions-data.md), [025 chatbot](025-chatbot.md).
-Backlog novo: **B15** pistas de GeoGuessr ricas (postes, placas, câmeras, faixas): Plonk It é conteúdo protegido; achar fonte aberta
-ou curar à mão com citação. **016** (resumo corrido da história) segue como próximo item de conteúdo da API.
-
-### Pronto, mas ainda não no ar (fazer nesta ordem)
-1. **Idiomas reais (spec 017)**: o ETL `python -m etl wikidata-languages` (pasta `atlas-api`, `PYTHONPATH=src`, `.venv/Scripts/python.exe`)
-   travava (duas execuções da manhã ficaram 8 h paradas; foram encerradas) e foi relançado às 17:01. Conferir se gerou
-   `data_out/languages.json`; se travar de novo, investigar `_cached` em `etl/wikidata/languages.py` (provável espera de limite de taxa
-   do Wikidata sem teto). Depois: `-m atlas_api.cli import-facts` no banco local, conferir BR (Nheengatu, Guarani, Libras, Hunsrik,
-   Talian), regerar amostras com `atlas-api/scripts/samples_v12a.py <saida.json>` e trocar o mock feito à mão `geo/src/api/mocks/languages.ts` pelos dados reais.
-2. **atlas-api, branch `feat/v1.2-data`**: tem 3 commits (019, 017, 015, 009, CR-003) + 2 arquivos sem commit: `contract/CONTRACT.md`
-   (v1.2 parte A já aplicada, idêntica à do web) e `specs/012-historical-series.md` (pesquisa do Cliopatria). Commitar, rodar
-   pytest + ruff + mypy, push e abrir PR para `main`. **Não mergear ainda.**
-3. **Ensaiar a migração 0006 → 0010** (0007 capitals, 0008 country_languages, 0009 indicators, 0010 fx) num banco local descartável a partir
-   de um worktree da branch do PR, com `alembic upgrade 0010` + `import-content` + `import-facts` (usa `data_out/`: wikidata, worldbank,
-   undp, fx, languages, leaders, pantheon). Usar o modelo `atlas-api/scripts/prod-migrate-example.ps1` (worktree `atlas-api-deploy`, `$revision = 0010`).
-4. **Produção** (dono, ou agente se o dono disser "roda você"): rodar o script na produção, **depois** mergear o PR da API (o merge publica).
-   Conferir `/v1/countries/BR/profile`, `/v1/countries/BR/economy`, `/v1/currencies/BRL`, `languages_spoken` em `/v1/countries/BR`.
-5. **atlas-web PR #7** (front v1.2: "Como vive o povo", `/moeda/[code]`, idiomas por status): pode ser mergeado a qualquer momento
-   (campos opcionais), mas só mostra os dados depois do passo 4. Depois: `npm run smoke` e screenshots contra produção.
-6. **Ajustes de produção da spec 019 (dono)**: conferir réplicas/workers no FastAPI Cloud e `DB_POOL_SIZE`/`DB_MAX_OVERFLOW`/`DB_POOL_TIMEOUT`
-   (spec 019, "O que o dono deve conferir"); rodar uma vez `python scripts/load_test.py https://atlas-api.fastapicloud.dev 48`;
-   para espelhar imagens no Supabase Storage, definir `IMAGE_BUCKET_URL` e `SUPABASE_SERVICE_KEY` e rodar o ETL de imagens.
+### Pendente
+1. **Idiomas reais (017)**: o ETL foi corrigido (API PRs #8 e #11: lotes que estouram o tempo são divididos na hora, JSON cortado
+   conta como falha, Hunsrik/Talian = imigração). Falta terminar a coleta, importar na produção e trocar o mock do web pelos dados reais.
+2. **Contrato v1.3**: o dono cola o CR-004 (história + estados) no `CONTRACT.md` dos dois repos.
+3. **025 chatbot**: rascunho; precisa da chave da Anthropic e de um teto de gasto (decisão do dono).
+4. **024 fase 2**: rota `/pais/[iso2]/[sub]`, IDH subnacional (Global Data Lab, ler termos),
+   governador (fonte melhor que o Wikidata, que está desatualizado).
+5. **016 fase 2**: eventos do Wikidata por período (`event_count` hoje é 0).
+6. Ajustes da 019 no FastAPI Cloud (réplicas, pool) e revisão humana de `glossary.yaml`, `regimes.yaml`, `explanations.ts`.
 
 ### Próximas fases (depois do acima), detalhes nas seções abaixo
 - P4 resto: 016 história (agora em **texto corrido por período**, ver P4.5) e 018 ideologias. Contrato v1.2 parte B.
