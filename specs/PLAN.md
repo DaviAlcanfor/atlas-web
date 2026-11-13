@@ -20,7 +20,7 @@ do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=fals
    conta como falha, Hunsrik/Talian = imigração). Falta terminar a coleta, importar na produção e trocar o mock do web pelos dados reais.
 2. **Contrato v1.3**: o dono cola o CR-004 (história + estados) no `CONTRACT.md` dos dois repos.
 3. **025 chatbot**: rascunho; precisa da chave da Anthropic e de um teto de gasto (decisão do dono).
-4. **024 fase 2**: rota `/pais/[iso2]/[sub]`, IDH subnacional (Global Data Lab, ler termos),
+4. **024 fase 2**: IDH subnacional (Global Data Lab, ler termos),
    governador (fonte melhor que o Wikidata, que está desatualizado).
 5. **016 fase 2**: eventos do Wikidata por período (`event_count` hoje é 0).
 6. Ajustes da 019 no FastAPI Cloud (réplicas, pool) e revisão humana de `glossary.yaml`, `regimes.yaml`, `explanations.ts`.
