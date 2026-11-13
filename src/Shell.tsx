@@ -205,7 +205,18 @@ function Chrome({ children }: { children: ReactNode }) {
               <TimeBar years={years} year={snapYear ?? years[0]!} loading={hist?.year !== snapYear && !histError} count={hist?.year === snapYear ? hist.features.length : null}
                 error={histError} onYear={setYear} onExit={() => setYear(null)} />
             )}
-            {timeMode && snapsReq.status === 'error' && <p className="load-error" role="alert">Não foi possível carregar a viagem no tempo: {snapsReq.error.message}</p>}
+            {/* No snapshots (API not imported yet) or the list failed: say so and offer the way back, never a dead end. */}
+            {timeMode && (snapsReq.status === 'error' || (snaps && !years.length)) && (
+              <div className="timebar bracketed" role="alert">
+                <div className="timebar__head">
+                  <span className="timebar__label">Viagem no tempo</span>
+                  <span className="timebar__meta">
+                    {snapsReq.status === 'error' ? `Não foi possível carregar: ${snapsReq.error.message}` : 'Os mapas históricos ainda não estão disponíveis.'}
+                  </span>
+                  <button className="timebar__exit" onClick={() => setYear(null)}>Voltar ao presente</button>
+                </div>
+              </div>
+            )}
             {timeMode && histProps && <HistPanel p={histProps} year={snapYear ?? year!} modern={modernByName.get(histProps.name)} onClose={() => setHistSel(null)} />}
             {!timeMode && <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
