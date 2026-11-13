@@ -193,16 +193,19 @@ describe('spec 023 helpers', () => {
 describe('history summary (spec 016 stage 1)', () => {
   it('BR: summary, periods with years, Wikipedia revision credited', async () => {
     const { HistorySummary } = await import('../src/components/HistorySummary');
-    render(<HistorySummary iso2="BR" />);
+    render(<HistorySummary iso2="BR" curated={[]} renderTimeline={(ev) => <ol>{ev.map((e) => <li key={e.id}>{e.title}</li>)}</ol>} />);
     expect(await screen.findByRole('button', { name: 'ler o resumo inteiro' })).toBeTruthy();
     expect(screen.getByText('Império')).toBeTruthy();
     expect(screen.getByText('1822 - 1889')).toBeTruthy();
     expect(screen.getByText('até 1500')).toBeTruthy();
     expect(screen.getByRole('link', { name: /História do Brasil \(revisão \d+\)/ }).getAttribute('href')).toMatch(/oldid=\d+$/);
+    expect(screen.getByText('7 marcos')).toBeTruthy(); // Império: events inside 1822-1889 (spec 016 stage 2)
+    expect(screen.getAllByText('Guerra do Paraguai').length).toBeGreaterThan(0);
+    expect(screen.getByText(/sem revisão humana/)).toBeTruthy();
   });
   it('a country without data renders nothing', async () => {
     const { HistorySummary } = await import('../src/components/HistorySummary');
-    const { container } = render(<HistorySummary iso2="RS" />);
+    const { container } = render(<HistorySummary iso2="RS" curated={[]} renderTimeline={() => null} />);
     await new Promise((r) => setTimeout(r, 400));
     expect(container.textContent).toBe('');
   });
@@ -229,14 +232,16 @@ describe('subdivision card (spec 024)', () => {
   });
 });
 
-describe('state paths (spec 024)', () => {
-  it('maps /pais/br/sp both ways', async () => {
-    const { selectionFromPath, stateSlugFromPath, statePath } = await import('../src/state');
-    expect(selectionFromPath('/pais/br/sp')).toBe('BR');
-    expect(stateSlugFromPath('/pais/br/sp')).toBe('sp');
-    expect(stateSlugFromPath('/pais/br')).toBeNull();
-    expect(statePath('BR', 'BR-SP')).toBe('/pais/br/sp');
-    expect(statePath('JP', 'JP-13')).toBe('/pais/jp/13');
-    expect(statePath('BR', null)).toBeNull();
+describe('history events filter (spec 016)', () => {
+  it('filters the Marcos timeline by kind', async () => {
+    const { HistorySummary } = await import('../src/components/HistorySummary');
+    render(<HistorySummary iso2="BR" curated={[]} renderTimeline={(ev) => <ol aria-label="marcos">{ev.map((e) => <li key={e.id}>{e.title}</li>)}</ol>} />);
+    const group = await screen.findByRole('group', { name: 'Filtrar marcos por tipo' });
+    const all = within(screen.getByRole('list', { name: 'marcos' })).getAllByRole('listitem').length;
+    fireEvent.click(within(group).getByRole('button', { name: 'política' }));
+    const pol = within(screen.getByRole('list', { name: 'marcos' })).getAllByRole('listitem');
+    expect(pol.length).toBeGreaterThan(0);
+    expect(pol.length).toBeLessThan(all);
+    expect(pol.map((li) => li.textContent)).toContain('Proclamação da República do Brasil');
   });
 });

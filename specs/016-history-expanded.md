@@ -1,5 +1,5 @@
 # 016 - História expandida e expansível
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/016-history-expanded.md | Executor: Sonnet
+Status: in progress (fases 1 e 2 feitas, com filtro por tipo; falta detalhe do evento) (revisado em 2026-11-13) | Contrato: v1.2 | API: atlas-api/specs/016-history-expanded.md | Executor: Sonnet
 
 ## Por quê
 A história do Brasil hoje tem 5 eventos. Quero uma história mais elaborada, organizada por períodos, onde cada parte abre para mais detalhe.

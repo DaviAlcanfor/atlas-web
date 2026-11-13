@@ -1,5 +1,5 @@
 # 007 — Pessoas importantes
-Status: done (web, em mocks até a API v1.1 ir ao ar) | Contrato: v1.1 | API: atlas-api/specs/007-notable-people.md
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: v1.1 | API: atlas-api/specs/007-notable-people.md
 
 ## Requisitos
 - Seção "Pessoas": até 20, com foto (crédito), nome, ocupação, anos de vida, link Wikipedia; filtro por área

@@ -1,5 +1,5 @@
 # 009 - Moeda, câmbio e economia comparável
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/009-currency.md | Executor: Sonnet (UI), Opus (gráficos de comparação)
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: v1.2 | API: atlas-api/specs/009-currency.md | Executor: Sonnet (UI), Opus (gráficos de comparação)
 
 ## Por quê
 O chip da moeda no painel deve ser clicável e com hover (como o regime): hover explica a moeda; clique abre uma tela de câmbio

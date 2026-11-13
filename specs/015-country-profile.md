@@ -1,5 +1,5 @@
 # 015 - Perfil do país: como vive o povo
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/015-country-profile.md | Executor: Sonnet
+Status: done (no ar) (revisado em 2026-11-13) | Contrato: v1.2 | API: atlas-api/specs/015-country-profile.md | Executor: Sonnet
 
 ## Por quê
 População, área, densidade e regime não dizem como o país está nem como é o povo. Quero indicadores de vida, sociedade e

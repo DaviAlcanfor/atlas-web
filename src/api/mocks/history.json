@@ -16,7 +16,7 @@
     "year_start": 1500,
     "year_end": 1815,
     "summary": "O período compreendido entre a chegada dos europeus ao Brasil em 1500, (chamado pelos portugueses de Achamento do Brasil), até a Independência do Brasil, é chamado, no Brasil, de Período Colonial. Os portugueses, porém, chamam este período de A Construção do Brasil, e o estendem até 1825 quando Portugal reconheceu a independência do Brasil.",
-    "event_count": 0
+    "event_count": 1
    },
    {
     "id": "br-3",
@@ -24,7 +24,7 @@
     "year_start": 1815,
     "year_end": 1822,
     "summary": "No contexto das negociações do Congresso de Viena, o Brasil foi elevado à condição de Reino dentro do Estado português, que assumiu a designação oficial de Reino Unido de Portugal, Brasil e Algarves em 16 de dezembro de 1815. A carta de lei foi publicada na Gazeta do Rio de Janeiro de 10 de janeiro de 1816, oficializando o ato. O Rio de Janeiro, por conseguinte, subia à categoria de Corte e capital, as antigas capitanias passaram a ser denominadas províncias (hoje, os estados). No mesmo ano, a rainha Maria I morreu e D. João foi coroado rei como João VI.",
-    "event_count": 0
+    "event_count": 1
    },
    {
     "id": "br-4",
@@ -32,7 +32,7 @@
     "year_start": 1822,
     "year_end": 1889,
     "summary": "Após a declaração da independência, o Brasil foi governado por Dom Pedro I até o ano de 1831, período chamado de Primeiro Reinado, quando abdicou em favor de seu filho, Dom Pedro II, então com cinco anos de idade.",
-    "event_count": 0
+    "event_count": 7
    },
    {
     "id": "br-5",
@@ -40,7 +40,144 @@
     "year_start": 1889,
     "year_end": null,
     "summary": "Em 15 de novembro de 1889, o Marechal Deodoro da Fonseca decretou o fim do período imperial em um golpe militar de Estado sob a forma de uma quartelada quase sem força política e nenhum apoio popular, e o início de um período republicano ditatorial, destituindo o último imperador brasileiro, D. Pedro II, que teve de partir em exílio para a Europa. O nome do país mudou de Império do Brasil para Estados Unidos do Brasil. A primeira constituição da República do Brasil foi feita dia 15 de novembro de 1890.",
-    "event_count": 0
+    "event_count": 8
+   }
+  ],
+  "events": [
+   {
+    "id": "Q4204142",
+    "title": "Guerra hispano-portuguesa (1776-1777)",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1776,
+    "year_end": 1777,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_da_Restaura%C3%A7%C3%A3o_do_Rio_Grande_do_Sul"
+   },
+   {
+    "id": "Q3082702",
+    "title": "Guerra de Independência do Brasil",
+    "summary": "conflito armado pela independência do Brasil do Império Português, ocorrida de 1823 a 1825",
+    "kind": "war",
+    "year_start": 1822,
+    "year_end": 1824,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_da_Independ%C3%AAncia_do_Brasil"
+   },
+   {
+    "id": "Q288251",
+    "title": "Guerra da Cisplatina",
+    "summary": "guerra entre o Brasil e as Províncias Unidas do Rio da Prata de 1825–1828",
+    "kind": "war",
+    "year_start": 1825,
+    "year_end": 1828,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_da_Cisplatina"
+   },
+   {
+    "id": "Q209297",
+    "title": "Guerra dos farrapos",
+    "summary": "revolta republicana no sul do Brasil em 1835–45",
+    "kind": "war",
+    "year_start": 1835,
+    "year_end": 1845,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_dos_Farrapos"
+   },
+   {
+    "id": "Q3042457",
+    "title": "Guerra do Prata",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1851,
+    "year_end": 1852,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_do_Prata"
+   },
+   {
+    "id": "Q3042463",
+    "title": "Guerra do Uruguai",
+    "summary": "guerra entre Brasil e Uruguai de 1864–1865",
+    "kind": "war",
+    "year_start": 1864,
+    "year_end": 1865,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_do_Uruguai"
+   },
+   {
+    "id": "Q58947",
+    "title": "Guerra do Paraguai",
+    "summary": "conflito de larga escala na América do Sul (1864–1870)",
+    "kind": "war",
+    "year_start": 1864,
+    "year_end": 1870,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_do_Paraguai"
+   },
+   {
+    "id": "Q2294549",
+    "title": "Proclamação da República do Brasil",
+    "summary": "golpe de Estado militar que estabeleceu a Primeira República Brasileira em 15 de novembro de 1889",
+    "kind": "political",
+    "year_start": 1889,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Proclama%C3%A7%C3%A3o_da_Rep%C3%BAblica_do_Brasil"
+   },
+   {
+    "id": "Q2350166",
+    "title": "Guerra de Canudos",
+    "summary": "conflitos ocorridos na Bahia entre 1896 e 1897",
+    "kind": "war",
+    "year_start": 1897,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_de_Canudos"
+   },
+   {
+    "id": "Q2606574",
+    "title": "Revolução Acriana",
+    "summary": "série de conflitos de fronteira entre a Bolívia e a Primeira República do Brasil",
+    "kind": "war",
+    "year_start": 1899,
+    "year_end": 1903,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Revolu%C3%A7%C3%A3o_Acriana"
+   },
+   {
+    "id": "Q2634783",
+    "title": "Revolução de 1930",
+    "summary": "insurreição armada que encerrou a Primeira República Brasileira",
+    "kind": "political",
+    "year_start": 1930,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Revolu%C3%A7%C3%A3o_de_1930"
+   },
+   {
+    "id": "Q2592295",
+    "title": "Revolução Constitucionalista de 1932",
+    "summary": "conflito armado no Brasil",
+    "kind": "political",
+    "year_start": 1932,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Revolu%C3%A7%C3%A3o_Constitucionalista_de_1932"
+   },
+   {
+    "id": "Q10332838",
+    "title": "Movimento de 11 de Novembro",
+    "summary": "evento político-militar, liderado pelo marechal Lott, relacionado à posse de Juscelino Kubitschek e João Goulart como presidente e vice-presidente eleitos em 1955",
+    "kind": "political",
+    "year_start": 1955,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Movimento_de_11_de_Novembro"
+   },
+   {
+    "id": "Q4571496",
+    "title": "Golpe de Estado no Brasil em 1964",
+    "summary": "golpe de Estado que derrubou o presidente João Goulart em 1964",
+    "kind": "political",
+    "year_start": 1964,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Golpe_de_Estado_no_Brasil_em_1964"
+   },
+   {
+    "id": "Q1045449",
+    "title": "eleições gerais no Brasil em 2010",
+    "summary": null,
+    "kind": "political",
+    "year_start": 2010,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%B5es_gerais_no_Brasil_em_2010"
    }
   ],
   "sources": [
@@ -50,6 +187,13 @@
     "url": "https://pt.wikipedia.org/w/index.php?oldid=73212581",
     "license": "CC BY-SA 4.0",
     "retrieved_at": "2026-11-12T21:22:52.458703+00:00"
+   },
+   {
+    "id": "wikidata",
+    "title": "Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC0 1.0",
+    "retrieved_at": null
    }
   ]
  },
@@ -217,6 +361,332 @@
     "event_count": 0
    }
   ],
+  "events": [
+   {
+    "id": "Q842357",
+    "title": "Rebelião Hōgen",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1156,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Rebeli%C3%A3o_H%C5%8Dgen"
+   },
+   {
+    "id": "Q944859",
+    "title": "Rebelião Heiji",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1160,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Rebeli%C3%A3o_Heiji"
+   },
+   {
+    "id": "Q737542",
+    "title": "Guerras Genpei",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1180,
+    "year_end": 1185,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerras_Genpei"
+   },
+   {
+    "id": "Q385676",
+    "title": "Guerra de Ōnin",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1467,
+    "year_end": 1477,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_de_%C5%8Cnin"
+   },
+   {
+    "id": "Q1143044",
+    "title": "Batalha de Kawanakajima",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1553,
+    "year_end": 1564,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Kawanakajima"
+   },
+   {
+    "id": "Q349422",
+    "title": "Batalha de Okehazama",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1560,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Okehazama"
+   },
+   {
+    "id": "Q690464",
+    "title": "Battle of Mikatagahara",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1573,
+    "year_end": null,
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Battle_of_Mikatagahara"
+   },
+   {
+    "id": "Q428369",
+    "title": "Batalha de Nagashino",
+    "summary": "Vitória de Oda-Tokugawa sobre o clã Takeda em 1575",
+    "kind": "war",
+    "year_start": 1575,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Nagashino"
+   },
+   {
+    "id": "Q169598",
+    "title": "Incidente de Honnō-ji",
+    "summary": null,
+    "kind": "political",
+    "year_start": 1582,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Incidente_de_Honn%C5%8D-ji"
+   },
+   {
+    "id": "Q234188",
+    "title": "Batalha de Sekigahara",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1600,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Sekigahara"
+   },
+   {
+    "id": "Q497189",
+    "title": "Tratado de Shimoda",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1855,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Tratado_de_Shimoda"
+   },
+   {
+    "id": "Q771451",
+    "title": "Tratado de Kanagawa",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1864,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Tratado_de_Kanagawa"
+   },
+   {
+    "id": "Q1193959",
+    "title": "Batalha de Toba-Fushimi",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1868,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Toba-Fushimi"
+   },
+   {
+    "id": "Q1197271",
+    "title": "Tratado de São Petersburgo",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1875,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Tratado_de_S%C3%A3o_Petersburgo_(1875)"
+   },
+   {
+    "id": "Q1788393",
+    "title": "Batalha de Shiroyama",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1877,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Shiroyama"
+   },
+   {
+    "id": "Q178687",
+    "title": "Primeira Guerra Sino-Japonesa",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1894,
+    "year_end": 1895,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Primeira_Guerra_Sino-Japonesa"
+   },
+   {
+    "id": "Q541195",
+    "title": "Aliança Anglo-Japonesa",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1902,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Alian%C3%A7a_Anglo-Japonesa"
+   },
+   {
+    "id": "Q159950",
+    "title": "Guerra Russo-Japonesa",
+    "summary": "Guerra de 1904 a 1905 pela Manchúria e Coreia",
+    "kind": "war",
+    "year_start": 1904,
+    "year_end": 1905,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_Russo-Japonesa"
+   },
+   {
+    "id": "Q704536",
+    "title": "Tratado Naval de Londres",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1930,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Tratado_Naval_de_Londres"
+   },
+   {
+    "id": "Q696389",
+    "title": "Conflitos fronteiriços entre a União Soviética e o Japão",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1932,
+    "year_end": 1939,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Conflitos_fronteiri%C3%A7os_Sovi%C3%A9tico-Japoneses"
+   },
+   {
+    "id": "Q152195",
+    "title": "Pacto Anticomintern",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1936,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Pacto_Anticomintern"
+   },
+   {
+    "id": "Q170314",
+    "title": "Segunda Guerra Sino-Japonesa",
+    "summary": "conflito travado de 1937 a 1945 entre a China e o Japão, antes e durante a Segunda Guerra Mundial",
+    "kind": "war",
+    "year_start": 1937,
+    "year_end": 1945,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Segunda_Guerra_Sino-Japonesa"
+   },
+   {
+    "id": "Q188925",
+    "title": "Batalhas de Khalkhin Gol",
+    "summary": "Guerra entre URSS e Japão em 1939",
+    "kind": "war",
+    "year_start": 1939,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalhas_de_Khalkhin_Gol"
+   },
+   {
+    "id": "Q1141380",
+    "title": "Batalha da Ilha Wake",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1941,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_da_Ilha_Wake"
+   },
+   {
+    "id": "Q52418",
+    "title": "Ataque a Pearl Harbor",
+    "summary": "ataque surpresa da Marinha Japonesa à Frota do Pacífico dos Estados Unidos no Havaí",
+    "kind": "war",
+    "year_start": 1941,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Ataque_a_Pearl_Harbor"
+   },
+   {
+    "id": "Q697059",
+    "title": "Batalha de Hong Kong",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1941,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Hong_Kong"
+   },
+   {
+    "id": "Q1414998",
+    "title": "Batalha do Tenaru",
+    "summary": "parte de um conflito maior",
+    "kind": "war",
+    "year_start": 1942,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_do_Tenaru"
+   },
+   {
+    "id": "Q296754",
+    "title": "Batalha de Singapura",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1942,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Singapura"
+   },
+   {
+    "id": "Q188532",
+    "title": "Acordos de Bretton Woods",
+    "summary": "acordo econômico internacional",
+    "kind": "treaty",
+    "year_start": 1944,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Acordos_de_Bretton_Woods"
+   },
+   {
+    "id": "Q383614",
+    "title": "Batalha de Kohima",
+    "summary": "batalha na Índia durante a Segunda Guerra Mundial",
+    "kind": "war",
+    "year_start": 1944,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Coim%C3%A1"
+   },
+   {
+    "id": "Q609030",
+    "title": "Batalha de Peleliu",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1944,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Peleliu"
+   },
+   {
+    "id": "Q180182",
+    "title": "Batalha de Iwo Jima",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1945,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Iwo_Jima"
+   },
+   {
+    "id": "Q192660",
+    "title": "Batalha de Okinawa",
+    "summary": "combate entre os Estados Unidos e o Império Japonês na ilha de Okinawa,Japão",
+    "kind": "war",
+    "year_start": 1945,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Okinawa"
+   },
+   {
+    "id": "Q694604",
+    "title": "Tratado de Cooperação Mútua e Segurança entre os Estados Unidos e o Japão",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 1960,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Tratado_de_Coopera%C3%A7%C3%A3o_M%C3%BAtua_e_Seguran%C3%A7a_entre_os_Estados_Unidos_e_o_Jap%C3%A3o"
+   },
+   {
+    "id": "Q545449",
+    "title": "Guerra do Iraque",
+    "summary": "invasão do Iraque por uma coalizão de tropas lideradas pelos Estados Unidos",
+    "kind": "war",
+    "year_start": 2003,
+    "year_end": 2011,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_do_Iraque"
+   },
+   {
+    "id": "Q6862837",
+    "title": "Minamata Convention on Mercury",
+    "summary": null,
+    "kind": "treaty",
+    "year_start": 2013,
+    "year_end": null,
+    "wikipedia_url": "https://en.wikipedia.org/wiki/Minamata_Convention_on_Mercury"
+   }
+  ],
   "sources": [
    {
     "id": "wikipedia-pt",
@@ -224,12 +694,93 @@
     "url": "https://pt.wikipedia.org/w/index.php?oldid=71717530",
     "license": "CC BY-SA 4.0",
     "retrieved_at": "2026-11-12T21:22:57.238896+00:00"
+   },
+   {
+    "id": "wikidata",
+    "title": "Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC0 1.0",
+    "retrieved_at": null
    }
   ]
  },
  "ML": {
   "summary": "O território do atual Mali foi sede de grandes impérios da África Ocidental, que controlavam o comércio de sal, ouro, matérias prima, além de prata e bronze. Estes reinos careciam tanto de fronteiras geopolíticas quanto de identidades étnicas. Um destes grandes impérios foi o Império do Gana, fundada pelos soninquês, que falavam mandê. O reino se expandiu por toda África Ocidental desde o século VIII até 1078, quando foi conquistado pelos almorávidas.\n\nO Império do Mali se formou na parte superior do Rio Níger e chegou à sua força máxima em meados do século XIV. Sob o reinado do Império do Mali, as antigas cidades de Djené e Tombuctu foram importantes centros de comércio e de aprendizagem islâmica. O reino entrou em declínio e, posteriormente, foi resultado de conflitos internos, e até ser substituído pelo Império Songai. O povo songai é originário do noroeste da atual Nigéria, cujo império tinha sido há muito tempo uma potência na África Ocidental sob o controle do Império de Mali.",
   "periods": [],
+  "events": [
+   {
+    "id": "Q1319855",
+    "title": "Batalha de Kirina",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1235,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Batalha_de_Quirina"
+   },
+   {
+    "id": "Q580961",
+    "title": "Guerra da Faixa de Agacher",
+    "summary": null,
+    "kind": "war",
+    "year_start": 1985,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_da_Faixa_de_Agacher"
+   },
+   {
+    "id": "Q632787",
+    "title": "Insurgência islâmica no Magrebe",
+    "summary": "terrorismo islâmico sunita no Magrebe",
+    "kind": "war",
+    "year_start": 2002,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Insurg%C3%AAncia_isl%C3%A2mica_no_Magrebe"
+   },
+   {
+    "id": "Q1525846",
+    "title": "Rebelião tuaregue",
+    "summary": "fase inicial da Guerra Civil do Mali",
+    "kind": "political",
+    "year_start": 2012,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Rebeli%C3%A3o_tuaregue_(2012)"
+   },
+   {
+    "id": "Q2946372",
+    "title": "Revolta no norte do Mali",
+    "summary": "conflito armado que começou em janeiro de 2012",
+    "kind": "war",
+    "year_start": 2012,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Guerra_Civil_do_Mali"
+   },
+   {
+    "id": "Q875912",
+    "title": "Golpe de Estado no Mali em 2012",
+    "summary": "golpe de estado contra a rebelião tuaregue de 2012",
+    "kind": "political",
+    "year_start": 2012,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Golpe_de_Estado_no_Mali_em_2012"
+   },
+   {
+    "id": "Q98457371",
+    "title": "Golpe de Estado no Mali em 2020",
+    "summary": null,
+    "kind": "political",
+    "year_start": 2020,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Golpe_de_Estado_no_Mali_em_2020"
+   },
+   {
+    "id": "Q106975429",
+    "title": "Golpe de Estado no Mali em 2021",
+    "summary": null,
+    "kind": "political",
+    "year_start": 2021,
+    "year_end": null,
+    "wikipedia_url": "https://pt.wikipedia.org/wiki/Golpe_de_Estado_no_Mali_em_2021"
+   }
+  ],
   "sources": [
    {
     "id": "wikipedia-pt",
@@ -237,6 +788,13 @@
     "url": "https://pt.wikipedia.org/w/index.php?oldid=73310910",
     "license": "CC BY-SA 4.0",
     "retrieved_at": "2026-11-12T21:22:58.570161+00:00"
+   },
+   {
+    "id": "wikidata",
+    "title": "Wikidata",
+    "url": "https://www.wikidata.org/",
+    "license": "CC0 1.0",
+    "retrieved_at": null
    }
   ]
  }
