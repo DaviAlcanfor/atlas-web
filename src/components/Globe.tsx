@@ -10,6 +10,7 @@ import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo'
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
 import { STREETVIEW } from '../lib/streetview';
+import { capGeometry, capResolution } from '../lib/capGeometry';
 import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
@@ -147,6 +148,8 @@ const pathAlt = (p: unknown) => (p as number[])[2]!;
 const pathColor = () => palette.iceBright;
 const noSide = () => '';
 const asObject = (d: object) => d as Object3D;
+const capCurvature = (d: object) => capResolution((d as Feature).geometry);
+const capGeoJson = (d: object) => capGeometry((d as Feature).geometry) as { type: string; coordinates: number[] }; // caps only: picking keeps the original (the lib types coordinates loosely)
 const noop = () => {};
 
 /** 10° graticule sampled every 1° (d3's geoGraticule draws meridians as 90° chords, which cut through the globe). */
@@ -652,6 +655,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         atmosphereAltitude={0.12}
         onGlobeReady={onReady}
         polygonsData={polygons}
+        polygonGeoJsonGeometry={capGeoJson}
+        polygonCapCurvatureResolution={capCurvature}
         enablePointerInteraction={false}
         polygonCapMaterial={capMaterial}
         polygonSideColor={noSide}

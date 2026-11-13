@@ -22,6 +22,7 @@ import { loadSnapshot, tintOf, type Snapshot } from './lib/timeTravel';
 import { flagPreviewUrl } from './lib/url';
 import { formatYear } from './lib/years';
 import { HistPanel, TimeBar } from './components/TimeTravel';
+import { SearchBox, type SearchItem } from './components/SearchBox';
 import { AtlasProvider, countryPath, selectionFromPath, stateSlugFromPath, statePath, useAtlas } from './state';
 import { idOf } from './types';
 
@@ -139,6 +140,11 @@ function Chrome({ children }: { children: ReactNode }) {
   const histProps = timeMode && hist ? hist.props.get(histSel ?? '') : undefined;
   const histHover = timeMode && hist ? hist.props.get(hoveredCountry ?? histSel ?? '') : undefined;
 
+  // Search (spec 026 follow-up): present = countries by their pt-BR name; time travel = the entities of the snapshot on screen.
+  const searchItems = useMemo<SearchItem[]>(() => {
+    if (timeMode) return hist ? [...hist.props.values()].map((p) => ({ id: p.name_en, name: p.name })) : [];
+    return data ? data.features.filter((f) => f.properties.ISO2).map((f) => ({ id: idOf(f), name: data.names.get(idOf(f)) ?? f.properties.NAME, iso2: f.properties.ISO2 })) : [];
+  }, [timeMode, hist, data]);
   const inPast = timeMode && hist !== null && histLines !== null ? hist : null; // the snapshot on the globe, or null in the present
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
@@ -163,6 +169,7 @@ function Chrome({ children }: { children: ReactNode }) {
             rendering={!!data}
             done={globeReady}
             countries={progress.countries}
+            beside={!!selectedCountry && globeRoute}
           />
         )}
         {error && (
@@ -201,6 +208,10 @@ function Chrome({ children }: { children: ReactNode }) {
               onFlagsLoading={setFlagsLoading}
             />
             </div>
+            {globeRoute && searchItems.length > 0 && (
+              <SearchBox items={searchItems} placeholder={timeMode ? 'Buscar Estado neste ano' : 'Buscar país'}
+                onPick={timeMode ? setHistSel : setSelectedCountry} />
+            )}
             {timeMode && years.length > 0 && (
               <TimeBar years={years} year={snapYear ?? years[0]!} loading={hist?.year !== snapYear && !histError} count={hist?.year === snapYear ? hist.features.length : null}
                 error={histError} onYear={setYear} onExit={() => setYear(null)} />
