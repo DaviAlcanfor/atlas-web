@@ -90,23 +90,27 @@ export interface FlagAtlas {
 }
 const atlases = new Map<string, Promise<FlagAtlas>>();
 
-export function loadFlagAtlas(ids: string[]): Promise<FlagAtlas> {
-  const key = ids.join();
+export const loadFlagAtlas = (ids: string[]): Promise<FlagAtlas> => loadImageAtlas(ids.map((id) => [id, flagAtlasUrl(id)]));
+
+/** Any [id, image url] list -> one shelf-packed atlas (spec 024 uses it for a country's state flags). Cached per list. */
+export function loadImageAtlas(items: [string, string | undefined][]): Promise<FlagAtlas> {
+  const key = items.map(([id, u]) => `${id}=${u ?? ''}`).join();
   let p = atlases.get(key);
-  if (!p) atlases.set(key, (p = buildAtlas(ids)));
+  if (!p) atlases.set(key, (p = buildAtlas(items)));
   return p;
 }
 
-async function buildAtlas(ids: string[]): Promise<FlagAtlas> {
+async function buildAtlas(items: [string, string | undefined][]): Promise<FlagAtlas> {
+  const ids = items.map(([id]) => id);
   const imgs: (HTMLImageElement | undefined)[] = new Array(ids.length);
   let next = 0;
   const worker = async () => {
     while (next < ids.length) {
       const i = next++;
-      const url = flagAtlasUrl(ids[i]);
+      const url = items[i]![1];
       if (!url) continue;
       const img = new Image();
-      img.crossOrigin = 'anonymous'; // flagcdn sends ACAO: *; without it the canvas would be tainted
+      img.crossOrigin = 'anonymous'; // flagcdn and Wikimedia send ACAO: *; without it the canvas would be tainted
       img.src = url;
       try {
         await img.decode();

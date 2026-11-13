@@ -3,7 +3,7 @@ import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
 import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
 import { palette } from '../lib/palette';
 import type { CapitalCoord } from '../api/types';
-import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas } from '../lib/flagMaterial';
+import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas, loadImageAtlas } from '../lib/flagMaterial';
 import { flagLargeUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
@@ -96,7 +96,7 @@ interface Props {
   onHoverState?: (s: StateRef | null) => void; // state/province under the pointer, inside the selected country (spec 005)
   selectedStateId?: string | null; // spec 024: clicked state (its wikidataid); its flag covers it
   onSelectState?: (s: StateRef | null) => void;
-  stateFlagUrl?: string; // flag image of the selected state (API, Commons thumbnail)
+  stateFlags?: Map<string, string>; // spec 024: wikidataid -> flag image (API, Commons thumbnail) of the selected country's states
   showStates: boolean; // draw + hover the selected country's divisions (the "Estados" button)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
@@ -157,7 +157,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlagUrl, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -186,7 +186,6 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       selected: createDotMaterial(DOTS.selected, shared),
       selectedDim: createDotMaterial(DOTS.selectedDim, shared),
       flag: createFlagMaterial(DOTS.selected, shared),
-      stateFlag: createFlagMaterial(DOTS.selected, shared), // spec 024: the selected state's flag
       stateHover: createDotOverlayMaterial(DOTS.stateHover, shared),
     }),
     [shared],
@@ -443,28 +442,64 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     () => (showStates && selectedStateId ? admin1?.states.find((s) => s.properties.wikidataid === selectedStateId) : undefined),
     [admin1, showStates, selectedStateId],
   );
-  const [stateFlagReady, setStateFlagReady] = useState(false);
+  // spec 024: with "Estados" on, every state that has a flag is drawn with it: one atlas per country (same technique as the flag
+  // layer), one material per state. States without a flag keep showing the country's flag underneath.
+  const [stateMats, setStateMats] = useState<Map<string, ShaderMaterial> | null>(null);
   useEffect(() => {
-    setStateFlagReady(false);
-    const box = selState && flagBox(selState.geometry);
-    if (!stateFlagUrl || !box) return;
+    setStateMats(null);
+    if (!showStates || !admin1 || !stateFlags?.size) return;
     let live = true;
-    loadFlag(stateFlagUrl)
-      .then((tex) => {
+    let raf = 0;
+    let tex: Texture | undefined;
+    const made = new Map<string, ShaderMaterial>();
+    const items = admin1.states.flatMap((st): [string, string][] => {
+      const id = st.properties.wikidataid;
+      const url = id && stateFlags.get(id);
+      return id && url ? [[id, url]] : [];
+    });
+    loadImageAtlas(items)
+      .then(({ canvas, cells }) => {
         if (!live) return;
-        const u = mats.stateFlag.uniforms;
-        u.uFlag!.value = tex;
-        u.uBox!.value = box;
-        u.uMix!.value = FLAG_MIX;
-        setStateFlagReady(true);
+        tex = atlasTexture(canvas);
+        const flag = { value: tex };
+        const mix = { value: 0 }; // shared: one write fades every state in
+        for (const st of admin1.states) {
+          const id = st.properties.wikidataid;
+          const cell = id ? cells.get(id) : undefined;
+          const box = cell && flagBox(st.geometry);
+          if (!id || !cell || !box) continue;
+          const m = createFlagMaterial(DOTS.content, shared);
+          Object.assign(m.uniforms, { uFlag: flag, uMix: mix });
+          m.uniforms.uBox!.value = box;
+          m.uniforms.uCell!.value = cell;
+          made.set(id, m);
+        }
+        setStateMats(made);
+        const t0 = performance.now();
+        const fade = () => {
+          const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / 300);
+          mix.value = FLAG_MIX * k;
+          if (k < 1) raf = requestAnimationFrame(fade);
+        };
+        fade();
       })
-      .catch(() => {}); // no flag = the state keeps the hover look
-    return () => { live = false; };
-  }, [selState, stateFlagUrl, mats]);
+      .catch(() => {}); // no atlas = states keep the plain look
+    return () => {
+      live = false;
+      cancelAnimationFrame(raf);
+      setTimeout(() => { // after three-globe dropped the meshes using them
+        tex?.dispose();
+        made.forEach((m) => m.dispose());
+      }, 1000);
+    };
+  }, [showStates, admin1, stateFlags, shared]);
+  const stateMat = useCallback((d: object) => stateMats?.get((d as StateFeature).properties.wikidataid ?? ''), [stateMats]);
+
   const polygons = useMemo(() => {
-    const extra = [selState, hoverState !== selState ? hoverState : undefined].filter((x): x is StateFeature => !!x);
+    const extra = (admin1?.states ?? []).filter((st) => stateMats?.has(st.properties.wikidataid ?? ''));
+    for (const st of [selState, hoverState]) if (st && !extra.includes(st)) extra.push(st);
     return extra.length ? [...features, ...(extra as unknown as CountryFeature[])] : features;
-  }, [features, hoverState, selState]);
+  }, [features, admin1, stateMats, hoverState, selState]);
 
   const ptr = useRef({ down: false, moved: false, x: 0, y: 0, raf: 0 });
   const onPointerDown = (e: React.PointerEvent) => {
@@ -539,8 +574,12 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
 
   const capMaterial = useCallback(
     (d: object) => {
-      if (d === selState) return stateFlagReady ? mats.stateFlag : mats.stateHover;
-      if (d === hoverState) return mats.stateHover;
+      const sm = stateMat(d);
+      if (sm) {
+        sm.uniforms.uDot!.value.set(d === hoverState || d === selState ? DOTS.hover.color : DOTS.content.color);
+        return sm;
+      }
+      if (d === selState || d === hoverState) return mats.stateHover;
       const id = idOf(d as CountryFeature);
       const hov = id === hoveredId;
       const regime = regimes.get(id);
@@ -561,12 +600,13 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (sv === 'partial') return mats.mid;
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateFlagReady],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat],
   );
 
   const polygonAltitude = useCallback(
-    (d: object) => (d === selState ? ALT_STATE_HOVER + 0.0001 : d === hoverState ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE),
-    [selectedId, hoverState, selState],
+    (d: object) =>
+      d === hoverState || d === selState || stateMat(d) ? ALT_STATE_HOVER : idOf(d as CountryFeature) === selectedId ? ALT_SELECTED : ALT_BASE,
+    [selectedId, hoverState, selState, stateMat],
   );
 
   return (

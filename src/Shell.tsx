@@ -60,6 +60,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const subsReq = useAsync(() => api.subdivisions(selectedCountry!), selectedCountry && showStates ? selectedCountry : null);
   const subs = useMemo(() => new Map(subsReq.status === 'ok' ? subsReq.data.items.map((x) => [x.wikidata_id, x]) : []), [subsReq]);
   const factsOf = (s: StateRef | null) => (s?.id ? subs.get(s.id) : undefined);
+  const stateFlags = useMemo(() => new Map([...subs].flatMap(([id, x]): [string, string][] => (x.flag ? [[id, x.flag.url]] : []))), [subs]);
 
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
@@ -111,7 +112,7 @@ function Chrome({ children }: { children: ReactNode }) {
               onHoverState={setHoverState}
               selectedStateId={pickedState?.id ?? null}
               onSelectState={setPickedState}
-              stateFlagUrl={factsOf(pickedState)?.flag?.url}
+              stateFlags={stateFlags}
               showStates={showStates}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
