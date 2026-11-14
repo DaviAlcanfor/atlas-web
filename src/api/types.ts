@@ -36,6 +36,8 @@ export type ProfileIndicator = z.infer<typeof S.ProfileIndicator>;
 export type CountryProfile = z.infer<typeof S.CountryProfile>;
 export type CountryEconomy = z.infer<typeof S.CountryEconomy>;
 export type EconomyCompare = z.infer<typeof S.EconomyCompare>;
+export type RankedIndicator = z.infer<typeof S.RankedIndicator>;
+export type IndicatorRanking = z.infer<typeof S.IndicatorRanking>;
 export type CurrencyDetail = z.infer<typeof S.CurrencyDetail>;
 export type CurrencyHistory = z.infer<typeof S.CurrencyHistory>;
 
@@ -58,6 +60,8 @@ export interface AtlasApi {
   economy(iso2: string): Promise<CountryEconomy>;
   /** 2-5 countries, in the given order; `ids` = subset of the 10 economy indicator ids (default all). */
   compareEconomy(countries: string[], ids?: string[]): Promise<EconomyCompare>;
+  indicators(): Promise<RankedIndicator[]>; // spec 027
+  indicatorRanking(id: string): Promise<IndicatorRanking>;
   currency(code: string): Promise<CurrencyDetail>;
   /** `vs`: 1-4 codes. `from`/`to`: YYYY-MM-DD (default: last year). */
   currencyHistory(code: string, vs: string[], from?: string, to?: string): Promise<CurrencyHistory>;

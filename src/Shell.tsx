@@ -23,6 +23,7 @@ import { flagPreviewUrl } from './lib/url';
 import { formatYear } from './lib/years';
 import { HistPanel, TimeBar } from './components/TimeTravel';
 import { SearchBox, type SearchItem } from './components/SearchBox';
+import { RankingLayer, rankColors } from './components/RankingLayer';
 import { AtlasProvider, countryPath, selectionFromPath, stateSlugFromPath, statePath, useAtlas } from './state';
 import { idOf } from './types';
 
@@ -145,6 +146,17 @@ function Chrome({ children }: { children: ReactNode }) {
     if (timeMode) return hist ? [...hist.props.values()].map((p) => ({ id: p.name_en, name: p.name })) : [];
     return data ? data.features.filter((f) => f.properties.ISO2).map((f) => ({ id: idOf(f), name: data.names.get(idOf(f)) ?? f.properties.NAME, iso2: f.properties.ISO2 })) : [];
   }, [timeMode, hist, data]);
+  // spec 027: ranking layer. Catalog and ranking are fetched only while the layer is on.
+  const [rankId, setRankId] = useState('HDR.HDI');
+  const ranking = layer === 'ranking' && !timeMode;
+  const catalogReq = useAsync(() => api.indicators(), ranking ? 'indicators' : null);
+  const rankReq = useAsync(() => api.indicatorRanking(rankId), ranking ? rankId : null);
+  const rankData = rankReq.status === 'ok' ? rankReq.data : null;
+  const rankTint = useMemo(() => {
+    if (!rankData) return undefined;
+    const colors = rankColors(rankData);
+    return (id: string) => colors.get(id);
+  }, [rankData]);
   const inPast = timeMode && hist !== null && histLines !== null ? hist : null; // the snapshot on the globe, or null in the present
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
@@ -203,7 +215,7 @@ function Chrome({ children }: { children: ReactNode }) {
               stateFlags={inPast ? undefined : stateFlags}
               showStates={inPast ? false : showStates}
               backdrop={inPast ? data.features : undefined}
-              tint={inPast ? tintOf : undefined}
+              tint={inPast ? tintOf : ranking ? rankTint : undefined}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
@@ -229,7 +241,12 @@ function Chrome({ children }: { children: ReactNode }) {
               </div>
             )}
             {timeMode && histProps && <HistPanel p={histProps} year={snapYear ?? year!} modern={modernByName.get(histProps.name)} onClose={() => setHistSel(null)} />}
-            {!timeMode && <LayerToggle layer={layer} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
+            {!timeMode && <LayerToggle layer={layer}
+              ranking={ranking && (
+                <RankingLayer catalog={catalogReq.status === 'ok' ? catalogReq.data : null} id={rankId} onId={setRankId}
+                  ranking={rankData} error={rankReq.status === 'error' ? rankReq.error.message : undefined}
+                  nameOf={(iso) => countryName(iso) ?? iso} onPick={setSelectedCountry} />
+              )} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
                 all: allStateFlags, setAll: setAllStateFlags } : undefined}>
               <button className="chrome-link" onClick={enterTime}>Viagem no tempo</button>

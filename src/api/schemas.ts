@@ -139,6 +139,11 @@ export const EconomyCompare = z.object({
   indicators: z.array(z.object({ id: Str, label: Str, unit: Str, values: z.record(Str, z.object({ value: z.number(), year: z.number().int() }).nullable()) })),
   sources: z.array(Source),
 });
+// ---- v1.4 (spec 027, CR-006): the map's ranking layer. rank 1 = highest value, not "best". ----
+export const RankedIndicator = z.object({ id: Str, label: Str, unit: Str, n: z.number().int(), source_id: Str });
+export const IndicatorCatalog = z.object({ items: z.array(RankedIndicator) });
+export const RankingItem = z.object({ iso2: Str, value: z.number(), year: z.number().int().nullable(), rank: z.number().int() });
+export const IndicatorRanking = z.object({ id: Str, label: Str, unit: Str, items: z.array(RankingItem), sources: z.array(Source) });
 export const CurrencyDetail = z.object({
   code: Str, name: Str, symbol: NStr, countries: z.array(Str),
   rates: z.object({ date: Str, base: Str, items: z.array(z.object({ code: Str, rate: z.number() })) }).nullable(),

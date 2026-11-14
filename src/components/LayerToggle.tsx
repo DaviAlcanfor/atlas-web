@@ -9,6 +9,7 @@ interface Props {
   regimes: Map<string, string>;
   flagsLoading?: boolean; // the flag layer's atlas is still downloading
   states?: { on: boolean; toggle: () => void; all: boolean; setAll: (all: boolean) => void }; // "Estados" button; only while a country is selected
+  ranking?: ReactNode; // spec 027: the ranking layer's controls, shown while that layer is on
   children?: ReactNode; // extra chrome under the toggle (glossary link)
 }
 
@@ -17,11 +18,12 @@ const LAYERS: { id: LayerId; label: string }[] = [
   { id: 'regime', label: 'Regime político' },
   { id: 'flags', label: 'Bandeiras' },
   { id: 'geoguessr', label: 'GeoGuessr' },
+  { id: 'ranking', label: 'Ranking' },
 ];
 
 const svCount = (l: string) => Object.values(STREETVIEW).filter((v) => v === l).length;
 
-export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, children }: Props) {
+export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ranking, children }: Props) {
   const groups = regimeGroups(regimes);
   return (
     <div className="layer-toggle">
@@ -56,6 +58,7 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ch
           </li>
         </ul>
       )}
+      {layer === 'ranking' && ranking}
       {layer === 'regime' && (
         <ul className="legend">
           {groups.length === 0 && <li>Sem dados de regime</li>}
