@@ -4,12 +4,14 @@ import { X } from '@phosphor-icons/react/dist/csr/X';
 import { LAST_SOURCE_YEAR, type HistProps } from '../lib/timeTravel';
 import { safeHref } from '../lib/url';
 import { formatYear } from '../lib/years';
+import type { Era } from '../lib/eras';
 
 export const CLIOPATRIA_CREDIT = 'Fronteiras históricas: Cliopatria (Seshat Global History Databank), CC BY 4.0, simplificadas';
 
 interface BarProps {
   years: number[]; // snapshot years, ascending
   year: number;
+  era: Era; // spec 012: the map style of this year
   loading: boolean;
   count: number | null; // entities in the loaded snapshot
   error?: string;
@@ -21,7 +23,7 @@ interface BarProps {
  * The slider moves over the LIST of snapshot years, not over time itself: recent centuries have more snapshots, so they get more
  * room. A native range input gives arrows, Home/End and PageUp/PageDown for free.
  */
-export function TimeBar({ years, year, loading, count, error, onYear, onExit }: BarProps) {
+export function TimeBar({ years, year, era, loading, count, error, onYear, onExit }: BarProps) {
   const i = Math.max(0, years.indexOf(year));
   const step = (d: number) => onYear(years[Math.min(years.length - 1, Math.max(0, i + d))]!);
   return (
@@ -34,6 +36,8 @@ export function TimeBar({ years, year, loading, count, error, onYear, onExit }: 
         </span>
         <button className="timebar__exit" onClick={onExit}>Voltar ao presente</button>
       </div>
+      <p className="timebar__era">Estilo do mapa: <b>{era.label}</b>
+        {era.from !== null || era.to !== null ? ` (${era.from !== null ? formatYear(era.from) : 'até'}${era.from !== null && era.to !== null ? ' – ' : ' '}${era.to !== null ? formatYear(era.to) : 'em diante'})` : ''}</p>
       <div className="timebar__row">
         <button className="icon-btn" onClick={() => step(-1)} disabled={i === 0} aria-label="Retrato anterior">‹</button>
         <input id="timebar-range" type="range" min={0} max={years.length - 1} step={1} value={i}

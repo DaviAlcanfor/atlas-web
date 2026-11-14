@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
-import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
+import { createDotMaterial, createDotOverlayMaterial, createDotShared, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
+import { SIGNAL, type Era } from '../lib/eras';
 import { palette } from '../lib/palette';
 import type { CapitalCoord } from '../api/types';
 import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas, loadImageAtlas } from '../lib/flagMaterial';
 import { flagLargeUrl } from '../lib/url';
 import { drawStars } from '../lib/stars';
 import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo';
-import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
+import { BufferGeometry, Color, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
 import { STREETVIEW } from '../lib/streetview';
 import { capGeometry, capResolution } from '../lib/capGeometry';
@@ -35,10 +36,10 @@ const INTRO_MS = 600;
 
 // Dot looks per state (radius = fraction of the spacing). One material per state, shared by every country in it.
 const DOTS = {
-  dim: { color: palette.iceDim, radius: 0.24 }, // no content
+  dim: { color: palette.iceDim, radius: 0.24, empty: true }, // no content
   content: { color: palette.ice, radius: 0.3 },
   mid: { color: palette.iceMid, radius: 0.28 }, // GeoGuessr layer: restricted coverage
-  hoverDim: { color: palette.iceBright, radius: 0.26 },
+  hoverDim: { color: palette.iceBright, radius: 0.26, empty: true },
   hover: { color: palette.iceBright, radius: 0.32 },
   stateHover: { color: palette.iceBright, radius: 0.34, spacing: DOT_SPACING * 0.7 }, // same grid as `selected`: brightens its dots
   selected: { color: palette.iceBright, radius: 0.3, spacing: DOT_SPACING * 0.7 }, // denser + brighter (/2 goes sub-pixel at the default zoom)
@@ -105,6 +106,7 @@ interface Props {
   showStates: boolean; // draw + hover the selected country's divisions (the "Estados" button)
   backdrop?: CountryFeature[]; // spec 012: modern land drawn dim and inert under `features` (time travel: land without a recorded state)
   tint?: (id: string) => string | undefined; // spec 012: colour of a feature's dots (one of regimePalette); hover/selection still win
+  era?: Era; // spec 012: map style of the period on screen (time travel); undefined = the present (Signal)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
 }
@@ -166,7 +168,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, era, onReady: onReadyProp, onFlagsLoading }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -183,7 +185,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     if (stars.current) drawStars(stars.current, size.w, size.h);
   }, [size]);
 
-  const shared = useMemo<DotShared>(() => ({ intro: { value: 0 }, zoom: { value: 1 } }), []); // uniforms shared by every land material
+  const shared = useMemo<DotShared>(createDotShared, []); // uniforms shared by every land material
   const mats = useMemo(
     () => ({
       ocean: createOceanMaterial(),
@@ -408,6 +410,28 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [lines, graticule, lift],
   );
 
+  // spec 012: the period's look. Uniforms and line materials are shared, so this is a handful of writes (no re-digest).
+  const e = era ?? SIGNAL;
+  const gridOpacity = useRef(lineParams(palette.grid).opacity); // the entry animation fades the graticule up to this
+  useEffect(() => {
+    shared.style.value = e.land;
+    shared.paper.value.set(e.paper);
+    shared.ink.value.set(e.ink);
+    (mats.ocean.uniforms.uCenter!.value as Color).set(e.ocean);
+    (mats.ocean.uniforms.uRim!.value as Color).set(e.oceanRim);
+    const paint = (obj: LineSegments, token: string) => {
+      const m = obj.material as LineBasicMaterial, p = lineParams(token);
+      m.color.set(p.color);
+      m.opacity = p.opacity;
+      m.transparent = true;
+      m.visible = p.opacity > 0;
+    };
+    gridOpacity.current = lineParams(e.grid).opacity;
+    paint(graticule, e.grid);
+    paint(baseLines[1]!, e.border);
+    paint(baseLines[2]!, e.coast);
+  }, [e, shared, mats, graticule, baseLines]);
+
   // Selection pulse (spec 013): 3 signal-red rings from the mainland's centroid (FR's centroid is in the Atlantic because of
   // French Guiana), sized to it. Reduced motion: one static ring.
   const selectedFeature = useMemo(() => features.find((f) => idOf(f) === selectedId), [features, selectedId]);
@@ -578,12 +602,11 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     });
     // entry: dots light up and the graticule fades in
     const gratMat = graticule.material as LineBasicMaterial;
-    const gratOpacity = lineParams(palette.grid).opacity;
     const t0 = performance.now();
     const step = () => {
       const k = reducedMotion() ? 1 : Math.min(1, (performance.now() - t0) / INTRO_MS);
       shared.intro.value = 1 - (1 - k) ** 3; // ease-out
-      gratMat.opacity = gratOpacity * k;
+      gratMat.opacity = gridOpacity.current * k;
       if (k < 1) requestAnimationFrame(step);
     };
     step();
@@ -647,7 +670,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         onHoverState?.(null);
       }}
     >
-      <canvas ref={stars} className="stars" aria-hidden="true" style={{ width: size.w, height: size.h }} />
+      <canvas ref={stars} className="stars" aria-hidden="true" style={{ width: size.w, height: size.h, opacity: e.stars ? undefined : 0 }} />
       <ReactGlobe
         ref={globe}
         width={size.w}

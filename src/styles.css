@@ -19,7 +19,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 /* spec 023: the open panel takes the right; the globe re-centers in the space left of it (ResizeObserver resizes the canvas) */
 @media (min-width: 701px) { .globe-slot--panel { right: calc(var(--panel-w) + 16px); } }
 .globe-wrap { position: absolute; inset: 0; }
-.stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.6; }
+.stars { position: absolute; inset: 0; pointer-events: none; opacity: 0.6; transition: opacity 600ms ease-out; }
 
 /* corner brackets: 4 L-shaped ticks drawn as backgrounds (background-attachment: scroll keeps them on the box, not the content) */
 .bracketed {
@@ -506,6 +506,8 @@ button.chrome-link { background: none; border: 0; cursor: pointer; text-decorati
 .timebar__row .icon-btn { font: 500 18px/1 var(--f-mono); color: var(--c-text); background: none; cursor: pointer; border: 1px solid var(--c-line-strong); border-radius: var(--r); width: 30px; height: 30px; padding: 0; }
 .timebar__row .icon-btn:disabled { opacity: 0.35; cursor: default; }
 .timebar__ends { display: flex; justify-content: space-between; padding: 0 38px; font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
+.timebar__era { margin: 6px 0 0; font: 400 11px/1.4 var(--f-mono); color: var(--c-text-dim); }
+.timebar__era b { color: var(--c-text); font-weight: 500; }
 .timebar__src { margin: 8px 0 0; font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
 @media (max-width: 700px) {
   .timebar { left: 0; right: 0; bottom: 0; width: auto; padding: 10px 12px; border-width: 1px 0 0; }

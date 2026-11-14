@@ -19,6 +19,7 @@ import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
 import { nearestYear } from './lib/snapshots';
 import { loadSnapshot, tintOf, type Snapshot } from './lib/timeTravel';
+import { eraOf } from './lib/eras';
 import { flagPreviewUrl } from './lib/url';
 import { formatYear } from './lib/years';
 import { HistPanel, TimeBar } from './components/TimeTravel';
@@ -216,6 +217,7 @@ function Chrome({ children }: { children: ReactNode }) {
               showStates={inPast ? false : showStates}
               backdrop={inPast ? data.features : undefined}
               tint={inPast ? tintOf : ranking ? rankTint : undefined}
+              era={inPast ? eraOf(inPast.year) : undefined}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
@@ -225,7 +227,7 @@ function Chrome({ children }: { children: ReactNode }) {
                 onPick={timeMode ? setHistSel : setSelectedCountry} />
             )}
             {timeMode && years.length > 0 && (
-              <TimeBar years={years} year={snapYear ?? years[0]!} loading={hist?.year !== snapYear && !histError} count={hist?.year === snapYear ? hist.features.length : null}
+              <TimeBar years={years} year={snapYear ?? years[0]!} era={eraOf(snapYear ?? years[0]!)} loading={hist?.year !== snapYear && !histError} count={hist?.year === snapYear ? hist.features.length : null}
                 error={histError} onYear={setYear} onExit={() => setYear(null)} />
             )}
             {/* No snapshots (API not imported yet) or the list failed: say so and offer the way back, never a dead end. */}
