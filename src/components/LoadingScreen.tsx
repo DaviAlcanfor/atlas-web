@@ -57,9 +57,12 @@ interface Props {
   rendering: boolean; // all data is in; waiting for the globe's first frame
   done: boolean; // first frame drawn
   countries: CountrySummary[] | null;
+  beside?: boolean; // a side panel is open: stay behind it (the panel's text is ready long before the globe)
 }
 
-export function LoadingScreen({ target, rendering, done, countries }: Props) {
+export function LoadingScreen({ target, rendering, done, countries, beside }: Props) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [gone, setGone] = useState(false);
   const [msg, setMsg] = useState(0);
   const root = useRef<HTMLDivElement>(null);
@@ -113,7 +116,8 @@ export function LoadingScreen({ target, rendering, done, countries }: Props) {
       const { target: t, rendering: r, done: d } = live.current;
       if (r && !d) creep += (0.85 - creep) * 0.012;
       const goal = d ? 1 : Math.min(0.99, t + (r ? creep * RENDER_SHARE : 0));
-      v = reduced.current ? goal : v + (goal - v) * 0.12;
+      // once the globe has drawn, finish now: easing per frame would take dozens of frames, i.e. seconds on a slow GPU
+      v = reduced.current || d ? goal : v + (goal - v) * 0.12;
       if (Math.abs(goal - v) < 0.0005) v = goal;
       paint();
       if (v >= 1) {
@@ -150,8 +154,9 @@ export function LoadingScreen({ target, rendering, done, countries }: Props) {
   }, [messages.length]);
 
   if (gone) return null;
+  // `beside` only after mounting: the server render of the shared layout cannot know it, and a mismatch breaks hydration
   return (
-    <div ref={root} className="loading-screen" role="status" aria-live="polite" aria-label="Carregando o Atlas">
+    <div ref={root} className={beside && mounted ? 'loading-screen loading-screen--beside' : 'loading-screen'} role="status" aria-live="polite" aria-label="Carregando o Atlas">
       <canvas ref={canvas} className="loading__matrix" aria-hidden="true" />
       <div ref={bar} className="loading__bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
         <i ref={fill} />

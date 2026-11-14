@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactGlobe, { type GlobeMethods } from 'react-globe.gl';
 import { createDotMaterial, createDotOverlayMaterial, createOceanMaterial, DOT_SPACING, type DotShared } from '../lib/dotMaterial';
-import { palette, regimePalette } from '../lib/palette';
+import { palette } from '../lib/palette';
 import type { CapitalCoord } from '../api/types';
 import { atlasTexture, createFlagMaterial, FLAG_LAYER_MIX, FLAG_MIX, flagBox, largestPolygon, loadFlag, loadFlagAtlas, loadImageAtlas } from '../lib/flagMaterial';
 import { flagLargeUrl } from '../lib/url';
@@ -10,6 +10,7 @@ import { geoArea, geoBounds, geoCentroid, geoCircle, geoContains } from 'd3-geo'
 import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, type Object3D, type ShaderMaterial, type Texture } from 'three';
 import { regimeColors } from '../lib/regimes';
 import { STREETVIEW } from '../lib/streetview';
+import { capGeometry, capResolution } from '../lib/capGeometry';
 import type { Feature, FeatureCollection, Geometry, MultiLineString } from 'geojson';
 import { idOf, type CountryFeature, type LayerId, type Lines } from '../types';
 
@@ -147,6 +148,8 @@ const pathAlt = (p: unknown) => (p as number[])[2]!;
 const pathColor = () => palette.iceBright;
 const noSide = () => '';
 const asObject = (d: object) => d as Object3D;
+const capCurvature = (d: object) => capResolution((d as Feature).geometry);
+const capGeoJson = (d: object) => capGeometry((d as Feature).geometry) as { type: string; coordinates: number[] }; // caps only: picking keeps the original (the lib types coordinates loosely)
 const noop = () => {};
 
 /** 10° graticule sampled every 1° (d3's geoGraticule draws meridians as 90° chords, which cut through the globe). */
@@ -197,10 +200,12 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [shared],
   );
   const graticule = useMemo(() => buildLines(graticule10(), palette.grid), []);
-  const tintMats = useMemo(
-    () => new Map(regimePalette.map((c) => [c as string, createDotMaterial({ color: c, radius: DOTS.content.radius }, shared)])),
-    [shared],
-  );
+  const tintMats = useMemo(() => new Map<string, ShaderMaterial>(), [shared]); // one material per tint colour, made on first use
+  const tintMat = useCallback((c: string) => {
+    let m = tintMats.get(c);
+    if (!m) tintMats.set(c, (m = createDotMaterial({ color: c, radius: DOTS.content.radius }, shared)));
+    return m;
+  }, [tintMats, shared]);
   const backdropSet = useMemo(() => new Set<object>(backdrop), [backdrop]);
   const lift = backdrop ? ALT_LIFT : 0;
 
@@ -611,11 +616,13 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
       if (sv === 'partial') return mats.mid;
-      const t = tint?.(id);
-      if (t) return tintMats.get(t) ?? mats.content;
+      if (tint) { // ranking layer / time travel: the tint is the data; no value = dim, like a country without content
+        const t = tint(id);
+        return t ? tintMat(t) : mats.dim;
+      }
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat, backdropSet, tint, tintMats],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat, backdropSet, tint, tintMat],
   );
 
   const polygonAltitude = useCallback(
@@ -652,6 +659,8 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         atmosphereAltitude={0.12}
         onGlobeReady={onReady}
         polygonsData={polygons}
+        polygonGeoJsonGeometry={capGeoJson}
+        polygonCapCurvatureResolution={capCurvature}
         enablePointerInteraction={false}
         polygonCapMaterial={capMaterial}
         polygonSideColor={noSide}

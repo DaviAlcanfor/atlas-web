@@ -8,7 +8,7 @@ export interface CountryProps {
   lng: number;
 }
 export type CountryFeature = Feature<Geometry, CountryProps>;
-export type LayerId = 'content' | 'regime' | 'flags' | 'geoguessr';
+export type LayerId = 'content' | 'regime' | 'flags' | 'geoguessr' | 'ranking';
 export interface Lines {
   borders: number[][][];
   coast: number[][][];

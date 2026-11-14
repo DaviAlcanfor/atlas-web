@@ -61,6 +61,13 @@ export function createMockApi(delayMs = 150): AtlasApi {
       if (!p) throw notFound(`No economy for ${iso2}`);
       return parse(S.CountryEconomy, p, `mock economy ${iso2}`);
     }),
+    // spec 027: one indicator, a few countries; enough to draw the layer without the API
+    indicators: () => wait(() => parse(S.IndicatorCatalog, { items: [{ id: 'HDR.HDI', label: 'Índice de Desenvolvimento Humano (IDH)', unit: '0-1', n: 4, source_id: 'undp' }] }, 'mock /v1/indicators').items),
+    indicatorRanking: (id) => wait(() => {
+      if (id !== 'HDR.HDI') throw notFound(`Unknown indicator ${id}`);
+      const items = [['NO', 0.97], ['JP', 0.93], ['BR', 0.79], ['EG', 0.75]].map(([iso2, value], i) => ({ iso2, value, year: 2023, rank: i + 1 }));
+      return parse(S.IndicatorRanking, { id, label: 'Índice de Desenvolvimento Humano (IDH)', unit: '0-1', items, sources: [] }, 'mock ranking');
+    }),
     compareEconomy: (countries, ids) => wait(() => {
       if (countries.length < 2 || countries.length > 5) throw new ApiError(422, 'Unprocessable Entity', 'countries must have 2-5 items');
       const econ = v12.economy as Record<string, { indicators: { id: string; value: number | null; year: number | null }[] }>;

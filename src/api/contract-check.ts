@@ -57,4 +57,6 @@ export type ContractChecks = [
   Assert<Same<typeof S.IdeologyFigure, Gen['IdeologyFigure']>>,
   Assert<Same<typeof S.CountryIdeologies, Gen['CountryIdeologies']>>,
   Assert<Same<typeof S.IdeologyDetail, Gen['IdeologyDetail']>>,
+  Assert<Same<typeof S.IndicatorCatalog, Gen['IndicatorCatalog']>>,
+  Assert<Same<typeof S.IndicatorRanking, Gen['IndicatorRanking']>>,
 ];

@@ -46,7 +46,11 @@ export const kindColor = {
 // chroma floor, adjacent CVD dE 8.4 (protan), normal-vision dE 19.3, contrast >= 3:1. All-pairs CVD cannot clear the floor for 8 hues on a
 // map, so the legend (swatch + name + count) and the hover readout are the secondary encoding. Rare regimes fold into a neutral "Outros".
 export const regimePalette = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#008300', '#9085e9', '#e66767'] as const;
-export const regimeOther = '#8da4ad'; // not a data hue: neutral gray for the folded regimes
+export const regimeOther = '#8da4ad';
+// Ranking layer (spec 027): ONE hue, dark -> light = low -> high (on a dark surface the ramp's anchor flips). Steps 600..100 of the
+// dataviz skill's validated blue sequential ramp: 600 is the darkest step allowed on dark (2.15:1); the hue is distinct from the
+// ice-cyan "no value" dots. Buckets are rank septiles, so each colour holds ~1/7 of the countries with a value.
+export const rankRamp = ['#184f95', '#256abf', '#3987e5', '#5598e7', '#86b6ef', '#b7d3f6', '#cde2fb'] as const; // not a data hue: neutral gray for the folded regimes
 
 const kebab = (s: string) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 

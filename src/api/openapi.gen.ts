@@ -74,6 +74,14 @@ export interface paths {
     /** Get Ideology */
     get: operations["get_ideology_v1_ideologies__id__get"];
   };
+  "/v1/indicators": {
+    /** List Indicators */
+    get: operations["list_indicators_v1_indicators_get"];
+  };
+  "/v1/indicators/{id}/ranking": {
+    /** Indicator Ranking */
+    get: operations["indicator_ranking_v1_indicators__id__ranking_get"];
+  };
   "/v1/meta": {
     /** Get Meta */
     get: operations["get_meta_v1_meta_get"];
@@ -504,6 +512,24 @@ export interface components {
       /** Url */
       url: string;
     };
+    /** IndicatorCatalog */
+    IndicatorCatalog: {
+      /** Items */
+      items: components["schemas"]["RankedIndicator"][];
+    };
+    /** IndicatorRanking */
+    IndicatorRanking: {
+      /** Id */
+      id: string;
+      /** Items */
+      items: components["schemas"]["RankingItem"][];
+      /** Label */
+      label: string;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Unit */
+      unit: string;
+    };
     /** Language */
     Language: {
       /** Code */
@@ -786,6 +812,30 @@ export interface components {
       world: components["schemas"]["WorldStats"] | null;
       /** Year */
       year: number;
+    };
+    /** RankedIndicator */
+    RankedIndicator: {
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** N */
+      n: number;
+      /** Source Id */
+      source_id: string;
+      /** Unit */
+      unit: string;
+    };
+    /** RankingItem */
+    RankingItem: {
+      /** Iso2 */
+      iso2: string;
+      /** Rank */
+      rank: number;
+      /** Value */
+      value: number;
+      /** Year */
+      year: number | null;
     };
     /** RateItem */
     RateItem: {
@@ -1306,6 +1356,39 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["IdeologyDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Indicators */
+  list_indicators_v1_indicators_get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["IndicatorCatalog"];
+        };
+      };
+    };
+  };
+  /** Indicator Ranking */
+  indicator_ranking_v1_indicators__id__ranking_get: {
+    parameters: {
+      path: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["IndicatorRanking"];
         };
       };
       /** @description Validation Error */
