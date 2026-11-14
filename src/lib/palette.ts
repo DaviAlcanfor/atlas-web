@@ -47,6 +47,18 @@ export const kindColor = {
 // map, so the legend (swatch + name + count) and the hover readout are the secondary encoding. Rare regimes fold into a neutral "Outros".
 export const regimePalette = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#008300', '#9085e9', '#e66767'] as const;
 export const regimeOther = '#8da4ad';
+// Time travel map styles (spec 012, lib/eras.ts). Kept mid-dark so the white chrome text (info card, time bar) stays readable
+// when it overlaps the globe; the panel has its own background. Lines are rgba like `border`/`coast` above.
+export const eraTokens = {
+  manuscript: { paper: '#3a2f1f', ink: '#d8b77a', ocean: '#221a10', oceanRim: '#4a3a22',
+    border: 'rgba(216, 183, 122, 0.55)', coast: 'rgba(216, 183, 122, 0.85)', grid: 'rgba(216, 183, 122, 0.0)' },
+  nautical: { paper: '#4a3d27', ink: '#ead7a8', ocean: '#24312f', oceanRim: '#4b5e55',
+    border: 'rgba(234, 215, 168, 0.5)', coast: 'rgba(234, 215, 168, 0.85)', grid: 'rgba(234, 215, 168, 0.2)' },
+  atlas: { paper: '#c9bb94', ink: '#efe4c8', ocean: '#3a505b', oceanRim: '#5d7682',
+    border: 'rgba(38, 30, 20, 0.75)', coast: 'rgba(38, 30, 20, 0.9)', grid: 'rgba(235, 225, 200, 0.16)' },
+  coldwar: { paper: '#123f6b', ink: '#bfe0ff', ocean: '#0a2440', oceanRim: '#174a78',
+    border: 'rgba(191, 224, 255, 0.7)', coast: 'rgba(191, 224, 255, 0.9)', grid: 'rgba(191, 224, 255, 0.28)' },
+} as const;
 // Ranking layer (spec 027): ONE hue, dark -> light = low -> high (on a dark surface the ramp's anchor flips). Steps 600..100 of the
 // dataviz skill's validated blue sequential ramp: 600 is the darkest step allowed on dark (2.15:1); the hue is distinct from the
 // ice-cyan "no value" dots. Buckets are rank septiles, so each colour holds ~1/7 of the countries with a value.

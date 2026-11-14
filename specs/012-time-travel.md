@@ -45,5 +45,9 @@ Ver a spec da API: `geometry_url` TopoJSON (pode ser URL absoluta), feições `{
       aviso de fronteira aproximada, link para o país de hoje quando o nome coincide. Terra sem Estado registrado: pontos apagados
       (sem o rótulo no hover). Cor estável por entidade (hash do nome). Bandeira, capital, governante e antecessores da época
       dependem da etapa 2 da API (`etl wikidata-polities`).
-- [ ] temas por época (`eras.ts`, modos do shader, cross-fade) + screenshots de cada época
+- [x] temas por época (2026-11-13): `lib/eras.ts` (qual período tem qual estilo) + `eraTokens` em `palette.ts`; o shader da
+      terra ganhou 4 modos procedurais (aguada de manuscrito, hachura de carta náutica, cor chapada de atlas, planta com grade),
+      oceano, fronteiras, gratícula e estrelas mudam junto; "Estilo do mapa" na barra do tempo. Tons mantidos médio-escuros para o
+      texto branco da interface continuar legível. Feito sem: rosa dos ventos e linhas de rumo desenhadas (a gratícula faz o papel),
+      cross-fade do shader entre épocas (troca instantânea; só as estrelas fazem fade).
 - [x] atribuição (barra do tempo e painel); testes: bordas sem duplicata, cor estável, conversão do retrato (`timeTravel.test.ts`)

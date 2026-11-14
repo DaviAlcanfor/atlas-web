@@ -14,12 +14,19 @@ void main() { vPos = position; gl_Position = projectionMatrix * modelViewMatrix 
 // uIntro (0..1) lights the dots up in a random order (entry animation).
 export const DOT_GLSL = /* glsl */ `
 uniform vec3 uFill; uniform vec3 uDot; uniform float uSpacing; uniform float uRadius; uniform float uIntro; uniform float uZoom;
+uniform float uStyle; uniform vec3 uPaper; uniform vec3 uInk; uniform float uEmpty; // spec 012: era style (lib/eras.ts LAND)
 varying vec3 vPos;
+float hash21(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash21(i), hash21(i + vec2(1.0, 0.0)), f.x), mix(hash21(i + vec2(0.0, 1.0)), hash21(i + 1.0), f.x), f.y);
+}
 vec2 latLng() {
   vec3 p = normalize(vPos);
   return vec2(degrees(asin(clamp(p.y, -1.0, 1.0))), 90.0 - degrees(atan(p.z, p.x)));
 }
-vec3 dotColor(vec2 ll) {
+vec3 signalDots(vec2 ll) {
   float S = uSpacing * uZoom;
   float row = floor(ll.x / S + 0.5);
   float rowLat = row * S;
@@ -38,21 +45,56 @@ vec3 dotColor(vec2 ll) {
   halo *= 1.0 - far;
   return mix(uFill, uDot, clamp(m, 0.0, 1.0)) + uDot * halo;
 }
+// Era looks (no textures: everything procedural, in lat/lng so it sticks to the globe). uDot is the entity colour; it is pulled
+// toward the era's ink so the palette reads as that period. uEmpty marks land without a recorded state: plain paper.
+vec3 dotColor(vec2 ll) {
+  if (uStyle < 0.5) return signalDots(ll);
+  float S = uSpacing * uZoom;
+  float grain = 0.5 * vnoise(ll * 2.5) + 0.5 * vnoise(ll * 9.0);
+  if (uEmpty > 0.5) return uPaper * (0.82 + 0.12 * grain);
+  vec3 tint = mix(uInk, uDot, 0.55);
+  if (uStyle < 1.5) { // manuscript: an uneven sepia wash over parchment
+    float wash = 0.3 + 0.3 * vnoise(ll * 1.3) + 0.12 * grain;
+    return mix(uPaper, tint, wash) * (0.9 + 0.14 * grain);
+  }
+  if (uStyle < 2.5) { // nautical chart: fine diagonal ink hatching
+    float h = abs(fract((ll.x + ll.y * cos(radians(ll.x))) / (S * 0.7)) - 0.5);
+    float aa = fwidth((ll.x + ll.y) / (S * 0.7)) + 1e-4;
+    float line = 1.0 - smoothstep(0.14 - aa, 0.14 + aa, h);
+    return mix(uPaper, tint, 0.18 + 0.62 * line) * (0.94 + 0.1 * grain);
+  }
+  if (uStyle < 3.5) { // printed atlas: flat lithograph colour with paper grain
+    return mix(uPaper, tint, 0.62) * (0.95 + 0.07 * grain);
+  }
+  // cold war blueprint: translucent fill with a fine technical grid
+  vec2 g = abs(fract(vec2(ll.x, ll.y * cos(radians(ll.x))) / (S * 2.0)) - 0.5);
+  float aa = fwidth(ll.x / (S * 2.0)) + 1e-4;
+  float grid = 1.0 - smoothstep(0.47 - aa, 0.47 + aa, max(g.x, g.y));
+  return mix(uPaper, tint, 0.32) + uInk * grid * 0.22;
+}
 `;
 
 export interface DotOpts {
   color: string;
   radius: number; // fraction of the spacing
   spacing?: number;
+  empty?: boolean; // land without data/state: drawn as bare paper in the era styles
 }
 
 /** Shared per-globe uniforms: one write animates/re-levels every land material. */
 export interface DotShared {
   intro: IUniform<number>; // 0..1 entry animation
   zoom: IUniform<number>; // spacing multiplier, a power of 2 (zoom LOD)
+  style: IUniform<number>; // spec 012: LAND mode of the current era (0 = Signal dots)
+  paper: IUniform<Color>;
+  ink: IUniform<Color>;
 }
 
-export const dotUniforms = ({ color, radius, spacing = DOT_SPACING }: DotOpts, shared: DotShared) =>
+export const createDotShared = (): DotShared => ({
+  intro: { value: 0 }, zoom: { value: 1 }, style: { value: 0 }, paper: { value: new Color(palette.landFill) }, ink: { value: new Color(palette.ice) },
+});
+
+export const dotUniforms = ({ color, radius, spacing = DOT_SPACING, empty = false }: DotOpts, shared: DotShared) =>
   ({
     uFill: { value: new Color(palette.landFill) },
     uDot: { value: new Color(color) },
@@ -60,6 +102,10 @@ export const dotUniforms = ({ color, radius, spacing = DOT_SPACING }: DotOpts, s
     uRadius: { value: radius },
     uIntro: shared.intro,
     uZoom: shared.zoom,
+    uStyle: shared.style,
+    uPaper: shared.paper,
+    uInk: shared.ink,
+    uEmpty: { value: empty ? 1 : 0 },
   }) satisfies Record<string, IUniform>;
 
 export const createDotMaterial = (opts: DotOpts, shared: DotShared) =>
