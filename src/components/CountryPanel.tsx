@@ -16,6 +16,7 @@ import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
 import { HistorySummary, KIND_LABEL } from './HistorySummary';
 import { SubdivisionCard } from './SubdivisionCard';
+import { BriefSection } from './Brief';
 import { IdeologySection } from './Ideologies';
 import type { StateRef } from './Globe';
 import type { Subdivision } from '../api/types';
@@ -145,6 +146,7 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
         </div>
       </div>
       {c.summary && <p className="lead">{c.summary}</p>}
+      <BriefSection iso2={c.iso2} />
 
       <div className="stats">
         <Stat label="População" value={pop && <CountUp value={pop.value} format={fmtInt} />}

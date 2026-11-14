@@ -14,6 +14,10 @@ export interface paths {
     /** Get Country */
     get: operations["get_country_v1_countries__iso2__get"];
   };
+  "/v1/countries/{iso2}/brief": {
+    /** Get Brief */
+    get: operations["get_brief_v1_countries__iso2__brief_get"];
+  };
   "/v1/countries/{iso2}/economy": {
     /** Get Economy */
     get: operations["get_economy_v1_countries__iso2__economy_get"];
@@ -161,6 +165,19 @@ export interface components {
       source_id: string | null;
       /** Year */
       year: number | null;
+    };
+    /** CountryBriefOut */
+    CountryBriefOut: {
+      /** Generated At */
+      generated_at: string;
+      /** Method */
+      method: string;
+      /** Now */
+      now: string | null;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Tldr */
+      tldr: string;
     };
     /** CountryDetail */
     CountryDetail: {
@@ -1050,6 +1067,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["CountryDetail"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Brief */
+  get_brief_v1_countries__iso2__brief_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryBriefOut"];
         };
       };
       /** @description Validation Error */

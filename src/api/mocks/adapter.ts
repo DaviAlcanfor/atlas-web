@@ -62,6 +62,11 @@ export function createMockApi(delayMs = 150): AtlasApi {
       return parse(S.CountryEconomy, p, `mock economy ${iso2}`);
     }),
     // spec 027: one indicator, a few countries; enough to draw the layer without the API
+    brief: (iso2) => wait(() => {
+      if (iso2 !== 'BR') throw notFound(`No summary for ${iso2} yet`);
+      return parse(S.CountryBrief, { tldr: 'O Brasil fica na América do Sul e tem Brasília como capital. Sua população é de 214 milhões de habitantes (2026).',
+        now: 'Os dados mais recentes indicam inflação de 5% (2025).', method: 'template+openai/gpt-6-luna', generated_at: '2026-11-13T00:00:00Z', sources: [] }, 'mock brief');
+    }),
     indicators: () => wait(() => parse(S.IndicatorCatalog, { items: [{ id: 'HDR.HDI', label: 'Índice de Desenvolvimento Humano (IDH)', unit: '0-1', n: 4, source_id: 'undp' }] }, 'mock /v1/indicators').items),
     indicatorRanking: (id) => wait(() => {
       if (id !== 'HDR.HDI') throw notFound(`Unknown indicator ${id}`);
