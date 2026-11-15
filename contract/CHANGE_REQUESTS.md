@@ -43,3 +43,17 @@ currents, `Subdivision.area_codes`) are now in `CONTRACT.md` (identical in both 
 Proposed in atlas-api `contract/CHANGE_REQUESTS.md` (full text there): `geometry_url` stays relative to this repo's origin
 (`/data/historical/world_<year>.geojson`, 130 files committed under `public/`), GeoJSON with properties
 `{ name, name_en, wikidata, from_year, to_year, member_of, wikipedia_url }`, `meta.year_min` = -3400. The web already reads it.
+
+## CR-009: what the economy lives on (spec 029 phase 1, 2026-11-15; owner: "aprovado tudo")
+Additive. One more profile group; nothing else changes.
+```
+ProfileGroup.id: "life"|"society"|"income"|"environment"|"economy"
+GET /v1/countries/{iso2}/profile -> Always the 5 groups, in this order. "economy" = NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS,
+     NV.IND.MANF.ZS, NV.SRV.TOTL.ZS (% of GDP), NY.GDP.PETR.RT.ZS, NY.GDP.TOTL.RT.ZS (rents, % of GDP),
+     TX.VAL.FUEL.ZS.UN, TX.VAL.FOOD.ZS.UN, TX.VAL.AGRI.ZS.UN, TX.VAL.MMTL.ZS.UN, TX.VAL.MANF.ZS.UN
+     (% of merchandise exports), TX.VAL.TECH.MF.ZS (% of manufactured exports). Same ProfileIndicator shape and rules
+     (no data for the country = the indicator is left out of the group).
+```
+Source: World Bank WDI (CC BY 4.0), same ETL as the other indicators. The same 12 ids also show up in `GET /v1/indicators`
+(the catalog already lists every ranked indicator with data, so that part needs no contract text).
+**Deploy order**: clients validate `ProfileGroup.id` as a closed enum, so the web must accept "economy" BEFORE the API serves it.

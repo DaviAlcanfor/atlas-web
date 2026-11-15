@@ -5,12 +5,12 @@ import type { CountryProfile, ProfileIndicator, Source } from '../api/types';
 import { useAsync } from '../hooks/useAsync';
 import { INDICATOR_EXPLANATIONS, INDICATOR_TERMS } from '../lib/explanations';
 import { regimeOther, regimePalette } from '../lib/palette';
-import { formatIndicator, indicatorTip, pct, rankText, rulerPos, topSlices, type Slice } from '../lib/profile';
+import { ECONOMY_SUMMARY_RULE, economySummary, formatIndicator, indicatorTip, pct, rankText, rulerPos, topSlices, type Slice } from '../lib/profile';
 import { Hint } from './Hint';
 import { Section } from './Section';
 import { Tooltip } from './Tooltip';
 
-const GROUP_TITLE = { life: 'Vida', society: 'Sociedade', income: 'Desigualdade e renda', environment: 'Ambiente' } as const;
+const GROUP_TITLE = { life: 'Vida', society: 'Sociedade', income: 'Desigualdade e renda', environment: 'Ambiente', economy: 'Economia' } as const;
 const shortSource = (sources: Source[], id: string) => (sources.find((s) => s.id === id)?.title ?? id).split(':')[0]!.trim();
 
 /** Value, year, source and a ruler: hairline from the world's min to max, a tick at the median, a dot for the country. No filled track. */
@@ -61,7 +61,7 @@ export function CompositionBar({ title, items, year, source }: { title: string; 
 }
 
 function Groups({ p }: { p: CountryProfile }) {
-  const groups = p.groups.filter((g) => g.indicators.length || (g.id === 'society' && (p.composition.religion || p.composition.ethnicity)));
+  const groups = p.groups.filter((g) => g.id !== 'economy' && (g.indicators.length || (g.id === 'society' && (p.composition.religion || p.composition.ethnicity))));
   if (!groups.length) return null;
   const c = p.composition;
   const csrc = c.source_id ? shortSource(p.sources, c.source_id) : '';
@@ -80,8 +80,39 @@ function Groups({ p }: { p: CountryProfile }) {
   );
 }
 
+// Spec 029 phase 1 (CR-009): "Do que vive a economia", its own block before "Como vive o povo". The "Setor:" / "Exportações:" prefix of
+// the API label (useful in the ranking catalog) is dropped under its subheading.
+const ECONOMY_PARTS: [string, string[]][] = [
+  ['Setores (% do PIB)', ['NV.AGR.TOTL.ZS', 'NV.IND.TOTL.ZS', 'NV.IND.MANF.ZS', 'NV.SRV.TOTL.ZS']],
+  ['Recursos naturais (% do PIB)', ['NY.GDP.PETR.RT.ZS', 'NY.GDP.TOTL.RT.ZS']],
+  ['Exportações', ['TX.VAL.FUEL.ZS.UN', 'TX.VAL.FOOD.ZS.UN', 'TX.VAL.AGRI.ZS.UN', 'TX.VAL.MMTL.ZS.UN', 'TX.VAL.MANF.ZS.UN', 'TX.VAL.TECH.MF.ZS']],
+];
+const unprefixed = (l: string) => { const s = l.replace(/^(Setor|Exportações): /, ''); return s.charAt(0).toUpperCase() + s.slice(1); };
+
+function Economy({ p }: { p: CountryProfile }) {
+  const g = p.groups.find((x) => x.id === 'economy');
+  if (!g?.indicators.length) return null;
+  const by = new Map(g.indicators.map((i) => [i.id, i]));
+  const summary = economySummary(g.indicators);
+  return (
+    <Section title="Do que vive a economia">
+      {summary && <p className="eco-summary">{summary}<Hint k="Resumo da economia" text={ECONOMY_SUMMARY_RULE} label="como a frase é montada" /></p>}
+      {ECONOMY_PARTS.map(([title, ids]) => {
+        const items = ids.flatMap((id) => { const i = by.get(id); return i ? [{ ...i, label: unprefixed(i.label) }] : []; });
+        return items.length ? (
+          <div key={title}>
+            <h4 className="subhead">{title}</h4>
+            <ul className="inds">{items.map((i) => <IndicatorRow key={i.id} i={i} sources={p.sources} />)}</ul>
+          </div>
+        ) : null;
+      })}
+      <p className="src">Fonte: Banco Mundial (WDI). Régua: mínimo a máximo do mundo; traço = mediana mundial; ponto = o país.</p>
+    </Section>
+  );
+}
+
 /** Fetches the profile in the browser; any failure (v1.1 production 404, network) hides the section. */
 export function ProfileSection({ iso2 }: { iso2: string }) {
   const s = useAsync(() => api.profile(iso2), iso2);
-  return s.status === 'ok' ? <Groups p={s.data} /> : null;
+  return s.status === 'ok' ? <><Economy p={s.data} /><Groups p={s.data} /></> : null;
 }

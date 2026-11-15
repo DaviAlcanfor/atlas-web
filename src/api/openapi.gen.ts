@@ -846,7 +846,7 @@ export interface components {
        * Id
        * @enum {string}
        */
-      id: "life" | "society" | "income" | "environment";
+      id: "life" | "society" | "income" | "environment" | "economy";
       /** Indicators */
       indicators: components["schemas"]["ProfileIndicator"][];
     };

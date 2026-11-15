@@ -50,6 +50,19 @@ export const INDICATOR_EXPLANATIONS: Readonly<Record<string, string>> = {
   'BN.CAB.XOKA.GD.ZS': 'Saldo das trocas do país com o exterior (bens, serviços e rendas) como parte do PIB. Negativo = o país gasta mais fora do que recebe.',
   'FI.RES.TOTL.CD': 'Ativos em moeda estrangeira e ouro que o banco central guarda para defender a moeda e pagar dívidas externas.',
   'PA.NUS.PPP': 'Quantas unidades da moeda local compram o que US$ 1 compra nos EUA. Comparado ao câmbio, mostra se a moeda está cara ou barata.',
+  // spec 029 phase 1: what the economy lives on (World Bank)
+  'NV.AGR.TOTL.ZS': 'Parte do PIB gerada por lavouras, criação de animais, florestas e pesca. Países pobres costumam ter fatias maiores.',
+  'NV.IND.TOTL.ZS': 'Parte do PIB gerada pela indústria em sentido amplo: mineração, fábricas, construção, energia e água.',
+  'NV.IND.MANF.ZS': 'Parte do PIB gerada pelas fábricas (indústria de transformação), já incluída na indústria em sentido amplo.',
+  'NV.SRV.TOTL.ZS': 'Parte do PIB gerada por comércio, transporte, finanças, governo, saúde, educação e outros serviços.',
+  'NY.GDP.PETR.RT.ZS': 'Quanto o petróleo extraído vale acima do custo de produzi-lo, como parte do PIB. Alto = economia que depende do petróleo.',
+  'NY.GDP.TOTL.RT.ZS': 'O mesmo cálculo somando petróleo, gás, carvão, minérios e florestas. Mostra o peso dos recursos naturais na economia.',
+  'TX.VAL.FUEL.ZS.UN': 'Parte das exportações de mercadorias (sem serviços) que é petróleo, gás, carvão e outros combustíveis.',
+  'TX.VAL.FOOD.ZS.UN': 'Parte das exportações de mercadorias que é comida, bebida, fumo, óleos vegetais e sementes oleaginosas (como a soja).',
+  'TX.VAL.AGRI.ZS.UN': 'Parte das exportações de mercadorias que é matéria-prima agrícola não comestível: madeira, algodão, borracha, couro.',
+  'TX.VAL.MMTL.ZS.UN': 'Parte das exportações de mercadorias que é minério (como o de ferro) e metal (como o cobre).',
+  'TX.VAL.MANF.ZS.UN': 'Parte das exportações de mercadorias que é produto industrializado: máquinas, carros, químicos, roupas.',
+  'TX.VAL.TECH.MF.ZS': 'Dos produtos industrializados exportados, quanto é de alta tecnologia: aviões, chips, computadores, remédios, instrumentos.',
 };
 
 // Indicator -> glossary entry with the full explanation (API content/glossary.yaml). The (i) keeps the short text above; a click
