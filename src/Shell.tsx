@@ -3,7 +3,6 @@
 // The layout stays mounted across /, /pais/[iso2] and /glossario, so the WebGL globe is created once and never remounts.
 // Pages render into `children`: the country panel (CountryRoute) or the glossary catalog (GlossaryRoute).
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { api } from './api';
@@ -15,7 +14,11 @@ import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
 import { LoadingScreen } from './components/LoadingScreen';
 import { GlobeBoundary, hasWebGL } from './components/GlobeBoundary';
-import { LayerToggle } from './components/LayerToggle';
+import { LayerToggle, RailButton } from './components/LayerToggle';
+import { BookOpenText } from '@phosphor-icons/react/dist/csr/BookOpenText';
+import { ClockCounterClockwise } from '@phosphor-icons/react/dist/csr/ClockCounterClockwise';
+import { CurrencyCircleDollar } from '@phosphor-icons/react/dist/csr/CurrencyCircleDollar';
+import { Newspaper } from '@phosphor-icons/react/dist/csr/Newspaper';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
 import { nearestYear } from './lib/snapshots';
@@ -60,6 +63,7 @@ function Chrome({ children }: { children: ReactNode }) {
   useEffect(() => { if (wantGlobe) void import('./components/Globe').then(() => setChunkReady(true)); }, [wantGlobe]);
   const { hoveredCountry, selectedCountry, layer, setLayer, setHoveredCountry, setSelectedCountry } = useAtlas();
   const [globeReady, setGlobeReady] = useState(false);
+  const [skipGlobe, setSkipGlobe] = useState(false); // spec 028: the visitor chose to enter without waiting for the globe
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
   const [allStateFlags, setAllStateFlags] = useState(true); // spec 026: every state's flag, or only the clicked one
@@ -182,14 +186,20 @@ function Chrome({ children }: { children: ReactNode }) {
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
         )}
-        {wantGlobe && !error && (
+        {wantGlobe && !error && !skipGlobe && (
           <LoadingScreen
             target={0.4 * progress.geo + 0.15 * (progress.countries ? 1 : 0) + 0.15 * (chunkReady ? 1 : 0)}
             rendering={!!data}
             done={globeReady}
             failed={globeFailed}
             countries={progress.countries}
-            beside={!!selectedCountry && globeRoute}
+            steps={[
+              { label: 'Mapas dos países', done: progress.geo >= 1 },
+              { label: 'Lista de países (API)', done: progress.countries !== null },
+              { label: 'Glossário', done: progress.glossaryDone },
+              { label: 'Globo 3D', done: globeReady },
+            ]}
+            onSkip={() => setSkipGlobe(true)}
           />
         )}
         {error && (
@@ -260,10 +270,10 @@ function Chrome({ children }: { children: ReactNode }) {
               )} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
                 all: allStateFlags, setAll: setAllStateFlags } : undefined}>
-              <button className="chrome-link" onClick={enterTime}>Viagem no tempo</button>
-              <Link className="chrome-link" href="/noticias">Notícias</Link>
-              <Link className="chrome-link" href="/economia">Economia</Link>
-              {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
+              <RailButton label="Viagem no tempo" icon={ClockCounterClockwise} onClick={enterTime} />
+              <RailButton label="Notícias" icon={Newspaper} href="/noticias" />
+              <RailButton label="Economia" icon={CurrencyCircleDollar} href="/economia" />
+              {terms.length > 0 && <RailButton label="Glossário" icon={BookOpenText} href="/glossario" />}
             </LayerToggle>}
           </>
         )}
