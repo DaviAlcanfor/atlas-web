@@ -34,6 +34,10 @@ export interface paths {
     /** List Leaders */
     get: operations["list_leaders_v1_countries__iso2__leaders_get"];
   };
+  "/v1/countries/{iso2}/news": {
+    /** Country News */
+    get: operations["country_news_v1_countries__iso2__news_get"];
+  };
   "/v1/countries/{iso2}/people": {
     /** List People */
     get: operations["list_people_v1_countries__iso2__people_get"];
@@ -89,6 +93,10 @@ export interface paths {
   "/v1/meta": {
     /** Get Meta */
     get: operations["get_meta_v1_meta_get"];
+  };
+  "/v1/news": {
+    /** List News */
+    get: operations["list_news_v1_news_get"];
   };
   "/v1/polities": {
     /** List Polities */
@@ -646,6 +654,40 @@ export interface components {
       /** To Year */
       to_year: number | null;
     };
+    /** NewsItemOut */
+    NewsItemOut: {
+      /** Countries */
+      countries: string[];
+      /** Event Type */
+      event_type: string;
+      /** Geopolitical P */
+      geopolitical_p: number;
+      /** Id */
+      id: string;
+      /** Language */
+      language: string | null;
+      /** Origin */
+      origin: string;
+      /** Outlet */
+      outlet: string;
+      /** Published At */
+      published_at: string;
+      /** Title */
+      title: string;
+      /** Url */
+      url: string;
+    };
+    /** NewsList */
+    NewsList: {
+      /** Fetched At */
+      fetched_at: string | null;
+      /** Items */
+      items: components["schemas"]["NewsItemOut"][];
+      /** Next */
+      next: string | null;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
     /** Party */
     Party: {
       /** Id */
@@ -1190,6 +1232,31 @@ export interface operations {
       };
     };
   };
+  /** Country News */
+  country_news_v1_countries__iso2__news_get: {
+    parameters: {
+      query?: {
+        limit?: number;
+      };
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NewsList"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** List People */
   list_people_v1_countries__iso2__people_get: {
     parameters: {
@@ -1445,6 +1512,34 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Meta"];
+        };
+      };
+    };
+  };
+  /** List News */
+  list_news_v1_news_get: {
+    parameters: {
+      query?: {
+        region?: string | null;
+        type?: string | null;
+        lang?: string | null;
+        country?: string | null;
+        min_p?: number;
+        limit?: number;
+        before?: string | null;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NewsList"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };

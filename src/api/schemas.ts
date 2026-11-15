@@ -142,6 +142,13 @@ export const EconomyCompare = z.object({
 // ---- v1.4 (spec 027, CR-006): the map's ranking layer. rank 1 = highest value, not "best". ----
 // ---- v1.5 (spec 022, CR-007): the country brief. ----
 export const CountryBrief = z.object({ tldr: Str, now: NStr, method: Str, generated_at: Str, sources: z.array(Source) });
+// ---- v1.6 (spec 008, CR-008): news. Titles stay in their original language. ----
+export const NewsItem = z.object({
+  id: Str, title: Str, url: Str, outlet: Str, language: NStr, published_at: Str, countries: z.array(Str),
+  event_type: z.enum(['conflict', 'diplomacy', 'election', 'sanctions', 'agreement', 'protest', 'coup', 'economy_policy', 'other']),
+  geopolitical_p: z.number().min(0).max(1), origin: Str,
+});
+export const NewsList = z.object({ items: z.array(NewsItem), fetched_at: NStr, next: NStr, sources: z.array(Source) });
 export const RankedIndicator = z.object({ id: Str, label: Str, unit: Str, n: z.number().int(), source_id: Str });
 export const IndicatorCatalog = z.object({ items: z.array(RankedIndicator) });
 export const RankingItem = z.object({ iso2: Str, value: z.number(), year: z.number().int().nullable(), rank: z.number().int() });
