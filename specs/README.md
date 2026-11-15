@@ -34,6 +34,7 @@ Regras:
 | 024 | [Estados: bandeira e dados por subdivisão](024-subdivisions-data.md) | sim | fase 1 done |
 | 025 | [Chatbot do Atlas](025-chatbot.md) | sim | draft |
 | 028 | [Rodada de polimento 4 (controles inferiores, carregamento do globo)](028-polish-round-4.md) | não | done (README pendente) |
+| 029 | [Do que vive a economia: setores, exportações, parceiros](029-economy-structure-trade.md) | sim (fase 2) | draft |
 
 Plano de execução e checklist: [PLAN.md](PLAN.md). Avaliação de stack: [ADR-001-stack.md](ADR-001-stack.md).
 
