@@ -1,5 +1,5 @@
 # 008 - Notícias geopolíticas do mundo e por país
-Status: approved | Contrato: v1.2 | API: atlas-api/specs/008-news.md | Substitui: CR-2 | Executor: Sonnet
+Status: in progress (front feito em 2026-11-14; dados reais depois do 1º disparo do job) | Contrato: v1.2 | API: atlas-api/specs/008-news.md | Substitui: CR-2 | Executor: Sonnet
 
 ## Por quê
 Uma página de notícias geopolíticas do mundo (prioridade do dono) e a aba Notícias do país. A seleção do que é geopolítico é feita
@@ -24,5 +24,6 @@ GET /v1/countries/{iso2}/news?limit=                             -> { items: New
 ```
 
 ## Tarefas
-- [ ] zod + mocks; página `#/noticias` com filtros e paginação (`before`)
-- [ ] aba Notícias do país; atribuição GDELT no rodapé
+- [x] zod + mocks; página `/noticias` (filtros na URL: tipo, região, idioma, país, "talvez relevante"; "mais notícias" com `before`)
+- [x] bloco Notícias do país (até 6 dos últimos 7 dias + link para o feed filtrado; vazio = Google Notícias); crédito do GDELT
+- Classificador: GPT-6 Luna (decisão do dono em 2026-11-13), dito no crédito.

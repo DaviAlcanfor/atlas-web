@@ -9,6 +9,15 @@ import subdivisions from './subdivisions.json';
 import ideologies from './ideologies.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
+const MOCK_NEWS = {
+  fetched_at: new Date().toISOString(), next: null, sources: [],
+  items: [
+    { id: 'm1', title: 'Rússia e Ucrânia retomam negociações de cessar-fogo', url: 'https://example.org/1', outlet: 'example.org', language: 'pt',
+      published_at: new Date(Date.now() - 3 * 3600e3).toISOString(), countries: ['RU', 'UA'], event_type: 'diplomacy', geopolitical_p: 0.97, origin: 'gdelt' },
+    { id: 'm2', title: 'Brasil e Argentina assinam acordo na fronteira', url: 'https://example.org/2', outlet: 'example.org', language: 'pt',
+      published_at: new Date(Date.now() - 26 * 3600e3).toISOString(), countries: ['BR', 'AR'], event_type: 'agreement', geopolitical_p: 0.82, origin: 'gdelt' },
+  ],
+};
 const notFound = (what: string) => new ApiError(404, 'Not Found', what);
 const norm = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 
@@ -67,6 +76,9 @@ export function createMockApi(delayMs = 150): AtlasApi {
       return parse(S.CountryBrief, { tldr: 'O Brasil fica na América do Sul e tem Brasília como capital. Sua população é de 214 milhões de habitantes (2026).',
         now: 'Os dados mais recentes indicam inflação de 5% (2025).', method: 'template+openai/gpt-6-luna', generated_at: '2026-11-13T00:00:00Z', sources: [] }, 'mock brief');
     }),
+    // spec 008: two sample headlines so the page and the panel block render without the API
+    news: () => wait(() => parse(S.NewsList, MOCK_NEWS, 'mock /v1/news')),
+    countryNews: (iso2) => wait(() => parse(S.NewsList, { ...MOCK_NEWS, items: MOCK_NEWS.items.filter((n) => n.countries.includes(iso2)) }, 'mock country news')),
     indicators: () => wait(() => parse(S.IndicatorCatalog, { items: [{ id: 'HDR.HDI', label: 'Índice de Desenvolvimento Humano (IDH)', unit: '0-1', n: 4, source_id: 'undp' }] }, 'mock /v1/indicators').items),
     indicatorRanking: (id) => wait(() => {
       if (id !== 'HDR.HDI') throw notFound(`Unknown indicator ${id}`);

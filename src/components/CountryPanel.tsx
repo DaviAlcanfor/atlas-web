@@ -16,6 +16,7 @@ import { LanguagesSection } from './Languages';
 import { ProfileSection } from './Profile';
 import { HistorySummary, KIND_LABEL } from './HistorySummary';
 import { SubdivisionCard } from './SubdivisionCard';
+import { CountryNews } from './News';
 import { BriefSection } from './Brief';
 import { IdeologySection } from './Ideologies';
 import type { StateRef } from './Globe';
@@ -131,7 +132,6 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
     ['Street View', sv === 'full' ? 'cobertura pública' : sv === 'partial' ? 'cobertura restrita' : 'sem cobertura oficial'],
     ...(lat !== undefined ? [hemisphere(lat)] : []),
   ];
-  const newsHref =`https://news.google.com/search?q=${encodeURIComponent(c.name)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
   return (
     <>
@@ -192,11 +192,7 @@ function Details({ c, lat }: { c: CountryDetail; lat?: number }) {
 
       <Lineage polityId={c.polity_id} />
 
-      <Section title="Notícias">
-        {/* The Atlas API has no news endpoint yet (contract v1.0); we only link out, we never fetch or invent news. */}
-        <p className="note">A API do Atlas ainda não fornece notícias.</p>
-        <a className="news-link" href={newsHref} target="_blank" rel="noreferrer noopener">Ver notícias sobre {c.name} no Google Notícias ↗</a>
-      </Section>
+      <CountryNews iso2={c.iso2} name={c.name} />
 
       {(plonk || clueRows.length > 0 || geoRows.length > 0) && (
         <Section title="GeoGuessr">

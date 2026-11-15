@@ -51,7 +51,7 @@ function Chrome({ children }: { children: ReactNode }) {
   // The glossary page covers the whole screen: opened directly, it skips the globe (WebGL + ~550 kB gzip of three.js) and the
   // map files. Once a globe route is visited the globe stays mounted for good.
   const path = usePathname();
-  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/') && !path.startsWith('/ideias/') && !path.startsWith('/economia'); // full-page routes skip the globe when opened directly
+  const globeRoute = path !== '/glossario' && !path.startsWith('/moeda/') && !path.startsWith('/ideias/') && !path.startsWith('/economia') && !path.startsWith('/noticias'); // full-page routes skip the globe when opened directly
   const [wantGlobe, setWantGlobe] = useState(globeRoute);
   useEffect(() => { if (globeRoute) setWantGlobe(true); }, [globeRoute]);
   const { data, error, apiError, progress } = useAtlasData(wantGlobe);
@@ -252,6 +252,7 @@ function Chrome({ children }: { children: ReactNode }) {
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
                 all: allStateFlags, setAll: setAllStateFlags } : undefined}>
               <button className="chrome-link" onClick={enterTime}>Viagem no tempo</button>
+              <Link className="chrome-link" href="/noticias">Notícias</Link>
               <Link className="chrome-link" href="/economia">Economia</Link>
               {terms.length > 0 && <Link className="chrome-link" href="/glossario">Glossário</Link>}
             </LayerToggle>}
