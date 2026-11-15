@@ -579,7 +579,22 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
 
   const onReady = useCallback(() => {
     const g = globe.current;
-    if (!g) return;
+    // On a fast machine three-globe can report "ready" before React has attached the ref. Returning here used to leave the
+    // loading screen waiting forever at 95%: try again on the next frame instead.
+    if (!g) {
+      requestAnimationFrame(() => onReadyRef.current());
+      return;
+    }
+    try {
+      setupCamera(g);
+    } finally {
+      requestAnimationFrame(() => onReadyProp?.()); // whatever happens above, the page is told the globe is there
+    }
+  }, [onReadyProp]);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+
+  const setupCamera = (g: GlobeMethods) => {
     g.pointOfView(START, 0);
     initialFly.current();
     (window as unknown as { __globe: GlobeMethods }).__globe = g; // for scripts/screenshot.ts (camera control in production builds too)
@@ -596,10 +611,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     c.addEventListener('change', relevel);
     relevel();
     // programmatic camera moves don't fire 'change' by themselves; update() does, which re-hides far-side markers
-    requestAnimationFrame(() => {
-      c.update();
-      onReadyProp?.();
-    });
+    requestAnimationFrame(() => c.update());
     // entry: dots light up and the graticule fades in
     const gratMat = graticule.material as LineBasicMaterial;
     const t0 = performance.now();
@@ -610,7 +622,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (k < 1) requestAnimationFrame(step);
     };
     step();
-  }, [onReadyProp, shared, graticule]);
+  };
 
   const capMaterial = useCallback(
     (d: object) => {

@@ -8,6 +8,7 @@ import { LAND_COLS, LAND_ROWS, LAND_STEP } from '../lib/landmask';
 import { palette } from '../lib/palette';
 
 const MESSAGE_MS = 2500;
+const SLOW_MS = 20000;
 const RENDER_SHARE = 0.3; // the last step (first render) has no real signal: it creeps toward 85% of its share until the frame arrives
 
 // land cells of the baked mask, and an estimate of how many dots the globe draws on land (cells weighted by cos(lat) = their area)
@@ -58,9 +59,10 @@ interface Props {
   done: boolean; // first frame drawn
   countries: CountrySummary[] | null;
   beside?: boolean; // a side panel is open: stay behind it (the panel's text is ready long before the globe)
+  failed?: string; // the 3D globe could not start (no WebGL, error): say so instead of waiting
 }
 
-export function LoadingScreen({ target, rendering, done, countries, beside }: Props) {
+export function LoadingScreen({ target, rendering, done, countries, beside, failed }: Props) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const [gone, setGone] = useState(false);
@@ -153,6 +155,9 @@ export function LoadingScreen({ target, rendering, done, countries, beside }: Pr
     return () => clearInterval(t);
   }, [messages.length]);
 
+  // Spec: the site never waits on the globe. After SLOW_MS without the first frame, a note says the rest already works.
+  const [slow, setSlow] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setSlow(true), SLOW_MS); return () => clearTimeout(t); }, []);
   if (gone) return null;
   // `beside` only after mounting: the server render of the shared layout cannot know it, and a mismatch breaks hydration
   return (
@@ -163,7 +168,9 @@ export function LoadingScreen({ target, rendering, done, countries, beside }: Pr
       </div>
       <p ref={pctEl} className="loading__pct">0%</p>
       <div className="loading__notes">
-        <p key={msg} className="loading__msg">{messages[reduced.current ? 0 : msg]}</p>
+        {failed ? <p className="loading__msg">{failed}</p>
+          : slow ? <p className="loading__msg">O globo 3D está demorando neste computador. O resto do Atlas já funciona: busca, países, economia, notícias.</p>
+          : <p key={msg} className="loading__msg">{messages[reduced.current ? 0 : msg]}</p>}
         {fact && (
           <p className="loading__fact">
             <span>Você sabia?</span> {fact}
