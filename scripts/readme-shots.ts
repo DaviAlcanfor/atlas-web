@@ -46,6 +46,28 @@ await page.evaluate('window.__globe.pointOfView({ lat: 20, lng: 15, altitude: 1.
 await page.waitForTimeout(3000);
 await shot('regimes');
 
+// spec 027 + 029: the ranking layer on one of the new export indicators (who lives on fuel exports)
+await page.getByRole('button', { name: 'Ranking', exact: true }).click();
+await page.getByLabel('Indicador').selectOption('TX.VAL.FUEL.ZS.UN', { timeout: 60000 });
+await page.waitForTimeout(6000);
+await shot('ranking');
+
+// spec 029: "Do que vive a economia" (Saudi Arabia: fuel exports and oil rent)
+await open('/pais/sa');
+await page.mouse.move(1100, 300);
+await page.locator('.eco-summary').evaluate((e) => e.closest('.psec')!.scrollIntoView({ block: 'start' }));
+await page.waitForTimeout(800);
+await shot('economy');
+
+// spec 012: time travel (starts in 1914)
+await open('/');
+await page.getByRole('button', { name: 'Viagem no tempo', exact: true }).click();
+await page.waitForTimeout(9000);
+await shot('time-travel');
+
+await open('/noticias', false);
+await shot('news');
+
 await open('/glossario', false);
 await shot('glossary');
 

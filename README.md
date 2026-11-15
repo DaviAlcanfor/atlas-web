@@ -10,12 +10,16 @@
 
 | | |
 |---|---|
-| ![Painel do Brasil com bandeira sobre o território](docs/screenshots/country.jpg) | **Painel do país.** Clique em qualquer um dos 197 países: a bandeira cobre o território e o painel abre com população, área, densidade, regime político, capital, idiomas, moedas, organizações, governantes atuais e anteriores, pessoas importantes e os indicadores de "como vive o povo" (expectativa de vida, IDH, renda, escolaridade...), cada um com a posição do país no ranking mundial. |
+| ![Painel do Brasil com bandeira sobre o território](docs/screenshots/country.jpg) | **Painel do país.** Clique em qualquer um dos 197 países: a bandeira cobre o território (em arquipélagos, todas as ilhas) e o painel abre com um resumo em poucas frases ("Em resumo", montado só com os dados da página e revisado por IA sem acrescentar fatos), população, área, densidade, regime político, capital, idiomas, moedas, organizações, governantes atuais e anteriores, pessoas importantes e os indicadores de "como vive o povo" (expectativa de vida, IDH, renda, escolaridade...), cada um com a posição do país no ranking mundial. |
+| ![Bloco "Do que vive a economia" da Arábia Saudita: setores, renda do petróleo e exportações](docs/screenshots/economy.jpg) | **Do que vive a economia.** Peso de agropecuária, indústria e serviços no PIB, renda do petróleo e dos recursos naturais, e do que são feitas as exportações (combustíveis, alimentos, minérios, manufaturados, alta tecnologia), com uma frase-resumo montada por regra fixa sobre esses números. |
 | ![Estado de São Paulo selecionado, com a bandeira dele e um cartão com seus dados](docs/screenshots/states.jpg) | **Estados e províncias.** O botão *Estados* libera as subdivisões do país: passe o mouse para ver o nome e a bandeira, clique para cobrir o estado com a bandeira dele e ver capital, população, área e código ISO 3166-2. São 3.754 subdivisões em 240 países. |
 | ![Seção de história do Brasil com resumo, períodos e marcos](docs/screenshots/history.jpg) | **História.** Resumo em texto corrido e períodos expansíveis com datas (Colônia, Reino, Império, República...), condensados do artigo "História de X" da Wikipédia, com link para a revisão exata usada. Abaixo, os marcos curados. |
 | ![Camada de regime político: cada país colorido pelo seu regime, com legenda](docs/screenshots/regimes.jpg) | **Camadas do mapa.** *Regime político* colore os países por forma de governo (paleta categórica testada para daltonismo); *Bandeiras* pinta o mundo inteiro com as bandeiras; *GeoGuessr* destaca onde há Street View. |
+| ![Camada de ranking: países coloridos pela parte dos combustíveis nas exportações, com os 10 maiores](docs/screenshots/ranking.jpg) | **Ranking.** Escolha um dos 37 indicadores (IDH, PIB per capita, expectativa de vida, peso dos combustíveis nas exportações...) e o globo pinta cada país pela sua faixa, com os 10 maiores ao lado. |
+| ![O mundo em 1914 na viagem no tempo, com o controle de anos](docs/screenshots/time-travel.jpg) | **Viagem no tempo.** Um controle de anos de 3400 a.C. a 2024 troca o mapa pelas fronteiras da época (Cliopatria), com um estilo de mapa para cada era. |
+| ![Página de notícias geopolíticas com filtros por tipo, região e idioma](docs/screenshots/news.jpg) | **Notícias.** Manchetes geopolíticas do mundo (conflitos, eleições, diplomacia, sanções...) atualizadas a cada 6 horas, com filtros e os países citados; cada país mostra as suas no painel. |
 | ![Página de câmbio do real com gráfico em base 100 contra dólar e euro](docs/screenshots/currency.jpg) | **Moedas e câmbio.** Cada moeda tem uma página com conversor, até quatro moedas comparadas em base 100 e histórico de 1 ano, 5 anos ou desde 1999 (Banco Central Europeu). |
-| ![Glossário organizado por temas, com índice lateral](docs/screenshots/glossary.jpg) | **Glossário.** Todo termo do painel tem um ⓘ com a explicação. O glossário reúne os verbetes por tema (repúblicas, monarquias, regimes de exceção, regiões, organizações), com índice e exemplos clicáveis que levam o globo até o país. |
+| ![Glossário organizado por temas, com índice lateral](docs/screenshots/glossary.jpg) | **Glossário.** Todo termo do painel tem um ⓘ com a explicação. O glossário reúne os verbetes por tema (repúblicas, monarquias, regimes de exceção, correntes políticas, sistemas de governo, regiões, organizações, moedas, economia e indicadores), com índice e exemplos clicáveis que levam o globo até o país. |
 
 Também tem pistas para o GeoGuessr (lado da direção, DDI, domínio, placas, alfabeto, cobertura do Street View, hemisfério) e link para o guia Plonk It de cada país.
 
@@ -30,7 +34,7 @@ Também tem pistas para o GeoGuessr (lado da direção, DDI, domínio, placas, a
 ```mermaid
 flowchart LR
   subgraph Fontes
-    WD[Wikidata] --- WB[Banco Mundial e PNUD] --- WP[Wikipédia] --- ECB[BCE] --- PT[Pantheon]
+    WD[Wikidata] --- WB[Banco Mundial e PNUD] --- WP[Wikipédia] --- ECB[BCE] --- PT[Pantheon] --- CL[Cliopatria] --- GD[GDELT]
   end
   Fontes -->|ETL em Python| API[(Atlas API<br/>FastAPI + Postgres)]
   NE[Natural Earth] -->|scripts/build-data.ts| GEO[public/data<br/>geometria estática]
@@ -78,7 +82,7 @@ NEXT_PUBLIC_API_URL=https://atlas-api.fastapicloud.dev
 ## Estrutura
 
 ```
-app/              rotas: / (globo), /pais/[iso2], /moeda/[code], /glossario; ícone do site
+app/              rotas: / (globo), /pais/[iso2], /moeda/[code], /economia, /noticias, /ideias/[id], /glossario; ícone do site
 src/
   Shell.tsx       globo, leitor do topo, camadas e rodapé, montados uma vez no layout
   components/     Globe, CountryPanel, SubdivisionCard, HistorySummary, Profile, CurrencyPage...
@@ -96,7 +100,8 @@ Toda funcionalidade começa como uma spec em [`specs/`](specs/README.md), que pa
 
 ## Limitações conhecidas
 
-- **Viagem no tempo** (fronteiras históricas com um controle deslizante de anos) está planejada ([spec 012](specs/012-time-travel.md)) e ainda não existe.
+- **Viagem no tempo** mostra fronteiras e nomes de cada época; os fatos de cada Estado antigo (bandeira, governantes) ainda não ([spec 012](specs/012-time-travel.md)). Fronteiras antigas são aproximadas.
+- **O que o país exporta produto a produto e com quem negocia** ainda não aparece; está planejado com os dados do BACI ([spec 029](specs/029-economy-structure-trade.md), fase 2).
 - **Regime político:** o texto vem de um seed antigo ainda não verificado, e a legenda avisa isso.
 - **Fronteiras disputadas** (Kosovo, Taiwan, Crimeia) seguem o Natural Earth. Territórios sem código ISO (Somalilândia, Chipre do Norte) não têm dados.
 - **No celular,** o painel vira uma folha inferior e o rodapé de atribuições fica oculto.
@@ -112,6 +117,8 @@ Toda funcionalidade começa como uma spec em [`specs/`](specs/README.md), que pa
 | [Banco Central Europeu](https://www.ecb.europa.eu/) | câmbio | reuso livre com citação |
 | [Wikipédia](https://pt.wikipedia.org/) | resumos de história, cobertura do Street View | CC BY-SA 4.0 |
 | [Pantheon](https://pantheon.world/) | pessoas importantes | CC BY-SA 4.0 |
+| [Cliopatria](https://github.com/Seshat-Global-History-Databank/cliopatria) (Seshat) | fronteiras históricas | CC BY 4.0 |
+| [GDELT](https://www.gdeltproject.org/) | manchetes geopolíticas | uso livre com citação |
 | [flagcdn](https://flagpedia.net/) · [Wikimedia Commons](https://commons.wikimedia.org/) | bandeiras de países · bandeiras de estados | domínio público · licença por arquivo, mostrada junto da imagem |
 
 O código está sob a licença [MIT](LICENSE).
