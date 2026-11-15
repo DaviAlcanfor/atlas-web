@@ -14,6 +14,7 @@ import { CountryPanel } from './components/CountryPanel';
 import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
 import { LoadingScreen } from './components/LoadingScreen';
+import { GlobeBoundary, hasWebGL } from './components/GlobeBoundary';
 import { LayerToggle } from './components/LayerToggle';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
@@ -65,6 +66,11 @@ function Chrome({ children }: { children: ReactNode }) {
   const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
+  const [globeFailed, setGlobeFailed] = useState<string>();
+  const onGlobeError = useCallback((msg: string) => setGlobeFailed(msg), []);
+  useEffect(() => {
+    if (wantGlobe && !hasWebGL()) onGlobeError('Este navegador está com o WebGL desligado, então o globo 3D não aparece. O resto do Atlas funciona normalmente.');
+  }, [wantGlobe, onGlobeError]);
   useEffect(() => { setHoverState(null); setPickedState(null); }, [selectedCountry, showStates]);
   // spec 024: the selected country's state facts + flags, only while "Estados" is on; any failure = polygon names, no flags
   const subsReq = useAsync(() => api.subdivisions(selectedCountry!), selectedCountry && showStates ? selectedCountry : null);
@@ -181,6 +187,7 @@ function Chrome({ children }: { children: ReactNode }) {
             target={0.4 * progress.geo + 0.15 * (progress.countries ? 1 : 0) + 0.15 * (chunkReady ? 1 : 0)}
             rendering={!!data}
             done={globeReady}
+            failed={globeFailed}
             countries={progress.countries}
             beside={!!selectedCountry && globeRoute}
           />
@@ -199,6 +206,7 @@ function Chrome({ children }: { children: ReactNode }) {
           <>
             <div className={(timeMode ? histProps : selectedCountry) && globeRoute ? 'globe-slot globe-slot--panel' : 'globe-slot'}>
             {/* One Globe instance for both modes (same position in the tree): switching swaps its data, the WebGL scene stays. */}
+            {!globeFailed && <GlobeBoundary onError={onGlobeError}>
             <Globe
               features={inPast ? inPast.features : data.features}
               lines={inPast ? histLines! : data.lines}
@@ -221,6 +229,7 @@ function Chrome({ children }: { children: ReactNode }) {
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
             />
+            </GlobeBoundary>}
             </div>
             {globeRoute && searchItems.length > 0 && (
               <SearchBox items={searchItems} placeholder={timeMode ? 'Buscar Estado neste ano' : 'Buscar país'}
