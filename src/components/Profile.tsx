@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 import { api } from '../api';
 import type { CountryProfile, ProfileIndicator, Source } from '../api/types';
 import { useAsync } from '../hooks/useAsync';
-import { INDICATOR_EXPLANATIONS } from '../lib/explanations';
+import { INDICATOR_EXPLANATIONS, INDICATOR_TERMS } from '../lib/explanations';
 import { regimeOther, regimePalette } from '../lib/palette';
 import { formatIndicator, indicatorTip, pct, rankText, rulerPos, topSlices, type Slice } from '../lib/profile';
 import { Hint } from './Hint';
@@ -36,7 +36,7 @@ export function IndicatorRow({ i, sources }: { i: ProfileIndicator; sources: Sou
       {tip ? (
         <Tooltip text={tip}>{(aria) => <div className="ind__body" tabIndex={0} role="group" aria-label={`${i.label}: ${text} ${note}`.trim()} {...aria}>{row}</div>}</Tooltip>
       ) : <div className="ind__body">{row}</div>}
-      <div className="ind__head"><Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></div>
+      <div className="ind__head"><Hint k={i.id} id={INDICATOR_TERMS[i.id]} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></div>
     </li>
   );
 }

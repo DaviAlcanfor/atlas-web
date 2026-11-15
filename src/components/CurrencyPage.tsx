@@ -12,7 +12,7 @@ import { useAsync } from '../hooks/useAsync';
 import {
   apiFrom, convert, defaultVs, fmtEconomy, fmtRate, isWeekly, MAX_COMPARE, MAX_VS, normalizeBase100, parseCmp, parseVs, plainPct, rateOf, seriesChange, signedPct,
 } from '../lib/currency';
-import { INDICATOR_EXPLANATIONS } from '../lib/explanations';
+import { INDICATOR_EXPLANATIONS, INDICATOR_TERMS } from '../lib/explanations';
 import { day, safeHref } from '../lib/url';
 import { Block, BlockIndex, FlagName } from './Block';
 import { Hint } from './Hint';
@@ -274,7 +274,7 @@ export function Economy({ n, countries, nameOf, initialIso }: { n: number; count
               <ul className="econ">
                 {items.map((i) => (
                   <li key={i.id}>
-                    <span className="econ__label">{i.label}<Hint k={i.id} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></span>
+                    <span className="econ__label">{i.label}<Hint k={i.id} id={INDICATOR_TERMS[i.id]} text={INDICATOR_EXPLANATIONS[i.id]} label={i.label} /></span>
                     <span className="econ__value">{i.value !== null ? fmtEconomy(i.unit, i.value) : noData}</span>
                     <Sparkline points={i.series} label={i.label} />
                     <span className="econ__foot">{i.year ?? 'sem ano'} · {i.unit}</span>
