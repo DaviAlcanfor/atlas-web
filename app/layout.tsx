@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://atlas-web-ruddy.vercel.app'),
   title: { default: 'Atlas', template: '%s · Atlas' },
   description: 'Globo 3D interativo: história, política e fatos de cada país.',
-  icons: { icon: 'data:,' },
 };
 export const viewport: Viewport = { themeColor: '#03070c' };
 
