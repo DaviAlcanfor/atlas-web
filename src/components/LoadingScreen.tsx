@@ -1,35 +1,26 @@
 'use client';
-// Loading screen (spec 021 item 7): real progress bar, the world's dot matrix lighting up with it, rotating messages and a curiosity.
-// Reduced motion: no matrix, no rotation, no easing: only the bar and the first message.
+// Loading screen (spec 021 item 7, spec 028): covers the whole screen until the globe draws its first frame, so the map and
+// its controls cannot be used before the globe exists. Real progress bar, the world's dot matrix lighting up with it, the stages
+// that are done, and a curiosity that changes every few seconds. After SLOW_MS (or when the globe fails) it offers a way in without the globe.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CountrySummary } from '../api/types';
-import { DOT_SPACING } from '../lib/dotMaterial';
-import { LAND_COLS, LAND_ROWS, LAND_STEP } from '../lib/landmask';
+import { LAND_COLS, LAND_ROWS } from '../lib/landmask';
 import { palette } from '../lib/palette';
 
-const MESSAGE_MS = 2500;
 const SLOW_MS = 20000;
+const FACT_MS = 8000;
 const RENDER_SHARE = 0.3; // the last step (first render) has no real signal: it creeps toward 85% of its share until the frame arrives
 
-// land cells of the baked mask, and an estimate of how many dots the globe draws on land (cells weighted by cos(lat) = their area)
+// land cells of the baked mask, and the land share of the sphere (for the dot count label in the steps)
 const LAND = (() => {
   const cells: [number, number][] = []; // [col, row]
-  let landArea = 0;
-  let allArea = 0;
   LAND_ROWS.forEach((hex, r) => {
-    const w = Math.cos(((90 - LAND_STEP * (r + 0.5)) * Math.PI) / 180);
-    allArea += w * LAND_COLS;
     for (let c = 0; c < LAND_COLS; c++) {
-      if ((parseInt(hex[c >> 2]!, 16) >> (3 - (c & 3))) & 1) {
-        cells.push([c, r]);
-        landArea += w;
-      }
+      if ((parseInt(hex[c >> 2]!, 16) >> (3 - (c & 3))) & 1) cells.push([c, r]);
     }
   });
-  const sphereDeg2 = 41253; // square degrees on a sphere
-  return { cells, dots: ((landArea / allArea) * sphereDeg2) / DOT_SPACING ** 2 };
+  return { cells };
 })();
-const DOTS_LABEL = `~${Math.round(LAND.dots / 1000)} mil`;
 // stable pseudo-random 0..1 per dot: the progress at which it lights up
 const threshold = (i: number) => {
   const x = Math.sin(i * 12.9898) * 43758.5453;
@@ -53,20 +44,22 @@ function curiosities(list: CountrySummary[]): string[] {
   return out;
 }
 
+export interface Step { label: string; done: boolean }
+
 interface Props {
   target: number; // 0..1, progress of the measurable steps (map bytes, API list, globe code), as a share of the whole
   rendering: boolean; // all data is in; waiting for the globe's first frame
   done: boolean; // first frame drawn
   countries: CountrySummary[] | null;
-  beside?: boolean; // a side panel is open: stay behind it (the panel's text is ready long before the globe)
-  failed?: string; // the 3D globe could not start (no WebGL, error): say so instead of waiting
+  steps: Step[]; // the stages shown as a checklist
+  failed?: string; // the 3D globe could not start (no WebGL, error): say so, and offer to continue without it
+  onSkip: () => void; // the way into the site without the globe (after SLOW_MS, or when the globe failed)
 }
 
-export function LoadingScreen({ target, rendering, done, countries, beside, failed }: Props) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+export function LoadingScreen({ target, rendering, done, countries, steps, failed, onSkip }: Props) {
   const [gone, setGone] = useState(false);
-  const [msg, setMsg] = useState(0);
+  const [fact, setFact] = useState(0);
+  const [slow, setSlow] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const bar = useRef<HTMLDivElement>(null);
@@ -135,48 +128,47 @@ export function LoadingScreen({ target, rendering, done, countries, beside, fail
     };
   }, []);
 
-  const fact = useMemo(() => {
-    const facts = countries ? curiosities(countries) : [];
-    return facts[Math.floor(Math.random() * facts.length)];
-  }, [countries]);
-  const messages = useMemo(
-    () => [
-      'Carregando os mapas dos países',
-      countries?.length ? `Carregando ${countries.length} países` : 'Chamando a API do Atlas',
-      `Desenhando ${DOTS_LABEL} pontos`,
-      'Montando fronteiras e costas',
-      'Primeira visita é mais lenta: a API acorda do modo econômico',
-    ],
-    [countries],
-  );
+  // Curiosities change every FACT_MS (the first one is picked once the list arrives; the start index is 0 so server and client agree)
+  const facts = useMemo(() => (countries ? curiosities(countries) : []), [countries]);
   useEffect(() => {
-    if (reduced.current) return;
-    const t = setInterval(() => setMsg((m) => (m + 1) % messages.length), MESSAGE_MS);
+    if (reduced.current || facts.length < 2) return;
+    const t = setInterval(() => setFact((f) => (f + 1) % facts.length), FACT_MS);
     return () => clearInterval(t);
-  }, [messages.length]);
+  }, [facts.length]);
+  const shownFact = facts.length ? facts[fact % facts.length] : undefined;
 
-  // Spec: the site never waits on the globe. After SLOW_MS without the first frame, a note says the rest already works.
-  const [slow, setSlow] = useState(false);
+  // Spec 028: after SLOW_MS without the first frame, the screen offers the way in without the globe.
   useEffect(() => { const t = setTimeout(() => setSlow(true), SLOW_MS); return () => clearTimeout(t); }, []);
   if (gone) return null;
-  // `beside` only after mounting: the server render of the shared layout cannot know it, and a mismatch breaks hydration
+  const offer = !!failed || slow;
   return (
-    <div ref={root} className={beside && mounted ? 'loading-screen loading-screen--beside' : 'loading-screen'} role="status" aria-live="polite" aria-label="Carregando o Atlas">
-      <canvas ref={canvas} className="loading__matrix" aria-hidden="true" />
-      <div ref={bar} className="loading__bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
-        <i ref={fill} />
-      </div>
-      <p ref={pctEl} className="loading__pct">0%</p>
-      <div className="loading__notes">
-        {failed ? <p className="loading__msg">{failed}</p>
-          : slow ? <p className="loading__msg">O globo 3D está demorando neste computador. O resto do Atlas já funciona: busca, países, economia, notícias.</p>
-          : <p key={msg} className="loading__msg">{messages[reduced.current ? 0 : msg]}</p>}
-        {fact && (
-          <p className="loading__fact">
-            <span>Você sabia?</span> {fact}
+    <div ref={root} className="loading-screen" role="status" aria-live="polite" aria-label="Carregando o Atlas">
+      <div className="loading__stage">
+        <p className="loading__brand">Atlas</p>
+        <canvas ref={canvas} className="loading__matrix" aria-hidden="true" />
+        <div ref={bar} className="loading__bar" role="progressbar" aria-label="Progresso do carregamento" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
+          <i ref={fill} />
+        </div>
+        <p ref={pctEl} className="loading__pct">0%</p>
+        <ul className="loading__steps">
+          {steps.map((s) => (
+            <li key={s.label} data-done={s.done}>{s.label}</li>
+          ))}
+        </ul>
+        {failed && <p className="loading__msg">{failed}</p>}
+        {!failed && slow && <p className="loading__msg">Está demorando neste computador. Você pode esperar ou entrar sem o globo.</p>}
+        {offer && (
+          <button type="button" className="loading__skip" onClick={onSkip}>
+            {failed ? 'Continuar sem o globo' : 'Entrar sem o globo'}
+          </button>
+        )}
+        {shownFact && (
+          <p key={fact} className="loading__fact">
+            <span>Você sabia?</span> {shownFact}
           </p>
         )}
       </div>
+      <p className="loading__note">A primeira visita pode demorar: a API estava em modo econômico.</p>
     </div>
   );
 }
