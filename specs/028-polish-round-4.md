@@ -4,7 +4,7 @@ Status: done (verificado local com screenshots desktop e mobile; README pendente
 ## Pedidos e o que fazer
 | Pedido | O que fazer |
 |---|---|
-| Itens do canto inferior esquerdo ocupam muito espaço (horizontal + vertical) | Uma coluna vertical só, à esquerda, com ícones (Phosphor, weight light). Texto some; cada ícone tem rótulo no hover/foco (`Tooltip`) e `aria-label`. Sub-controles (legenda, ranking, modo das bandeiras dos estados) abrem ao lado da coluna. |
+| Itens do canto inferior esquerdo ocupam muito espaço (horizontal + vertical) | Uma coluna vertical só, à esquerda, com ícones (Phosphor, weight light). Cada botão mostra ícone e nome (ajuste de 2026-11-15: só o ícone era difícil de adivinhar). Sub-controles (legenda, ranking, modo das bandeiras dos estados) abrem ao lado da coluna. |
 | Dá pra usar o site sem o globo (entrada direta em `/pais/...`: o painel e os controles funcionam enquanto o globo não chega) | O carregamento do globo bloqueia a tela inteira até o primeiro quadro. Depois de 20 s aparece "Entrar sem o globo" (saída para hardware lento). Se o globo falhar, o botão é "Continuar sem o globo". |
 | Tela de carregamento: deixar mais legal | Lista de etapas com marcação (mapas, países da API, glossário, globo), barra e porcentagem, pontos do mapa acendendo, curiosidades que trocam a cada 8 s. Sai a frase rotativa de mensagens. |
 | Sobreposição: a mensagem do carregamento e os links do canto inferior ocupam o mesmo lugar | Com o bloqueio, a mensagem fica centralizada e os controles ficam atrás dela até o globo chegar. |

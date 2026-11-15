@@ -54,16 +54,17 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .marker.is-selected { background: var(--c-signal); transform: rotate(45deg) scale(1.5); }
 
 /* ---------- layer switch (bottom-left segmented control) ---------- */
-/* spec 028: one vertical rail of icons (bottom left); its side panel (legend, ranking) opens to the right of it */
+/* spec 028: one vertical rail (bottom left), icon + name per button; its side panel (legend, ranking) opens to the right of it */
 .layer-toggle { position: fixed; z-index: var(--z-chrome); left: 24px; bottom: 48px; display: flex; align-items: flex-end; gap: 10px; max-width: calc(100vw - 48px); }
 .rail { display: flex; flex-direction: column; gap: 6px; }
 .rail__group { display: flex; flex-direction: column; border: 1px solid var(--c-line-strong); border-radius: var(--r); background: var(--c-panel); }
-.rail__group > * { display: flex; }
 .rail__group > * + * { border-top: 1px solid var(--c-line); }
 .rail__btn {
-  display: grid; place-items: center; width: 36px; height: 36px; padding: 0; cursor: pointer; color: var(--c-text-dim);
+  display: flex; align-items: center; gap: 9px; width: 100%; height: 32px; padding: 0 12px 0 10px; cursor: pointer; white-space: nowrap;
+  font: 500 12px/1 var(--f-mono); letter-spacing: 0.02em; color: var(--c-text-dim); text-decoration: none; text-align: left;
   border: 0; border-radius: var(--r); background: transparent; transition: color 0.15s, background-color 0.15s, transform 0.1s;
 }
+.rail__btn svg { flex: none; }
 .icon-btn {
   font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; padding: 9px 12px; cursor: pointer; white-space: nowrap; color: var(--c-text-dim);
   border: 0; border-radius: var(--r); background: transparent; transition: color 0.15s, background-color 0.15s, transform 0.1s;

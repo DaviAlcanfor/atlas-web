@@ -10,9 +10,8 @@ import { Trophy } from '@phosphor-icons/react/dist/csr/Trophy';
 import { regimeGroups } from '../lib/regimes';
 import { STREETVIEW, STREETVIEW_SOURCE } from '../lib/streetview';
 import type { LayerId } from '../types';
-import { Tooltip } from './Tooltip';
 
-// spec 028: one vertical rail of icons at the bottom left; the label shows on hover/focus and is the accessible name.
+// spec 028: one vertical rail at the bottom left, each button with its icon and its name.
 type IconType = ComponentType<{ size?: number; weight?: 'light'; 'aria-hidden'?: boolean }>;
 
 interface Props {
@@ -35,19 +34,12 @@ const LAYERS: { id: LayerId; label: string; icon: IconType }[] = [
 
 const svCount = (l: string) => Object.values(STREETVIEW).filter((v) => v === l).length;
 
-/** One icon button of the rail: a toggle (`onClick` + `pressed`) or a link (`href`). */
+/** One button of the rail, icon + name (icons alone were hard to guess): a toggle (`onClick` + `pressed`) or a link (`href`). */
 export function RailButton({ label, icon: Ico, pressed, onClick, href }: { label: string; icon: IconType; pressed?: boolean; onClick?: () => void; href?: string }) {
-  return (
-    <Tooltip text={label}>
-      {(aria) => href ? (
-        <Link className="rail__btn" href={href} aria-label={label} {...aria}><Ico size={18} weight="light" aria-hidden /></Link>
-      ) : (
-        <button type="button" className="rail__btn" aria-label={label} aria-pressed={pressed} onClick={onClick} {...aria}>
-          <Ico size={18} weight="light" aria-hidden />
-        </button>
-      )}
-    </Tooltip>
-  );
+  const body = <><Ico size={16} weight="light" aria-hidden />{label}</>;
+  return href
+    ? <Link className="rail__btn" href={href}>{body}</Link>
+    : <button type="button" className="rail__btn" aria-pressed={pressed} onClick={onClick}>{body}</button>;
 }
 
 export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ranking, children }: Props) {
@@ -66,7 +58,7 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ra
             {states.on && (
               <>
                 <RailButton label="Todas as bandeiras" icon={Flag} pressed={states.all} onClick={() => states.setAll(true)} />
-                <RailButton label="Só a bandeira selecionada" icon={FlagPennant} pressed={!states.all} onClick={() => states.setAll(false)} />
+                <RailButton label="Só a selecionada" icon={FlagPennant} pressed={!states.all} onClick={() => states.setAll(false)} />
               </>
             )}
           </div>
