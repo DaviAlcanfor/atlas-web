@@ -125,7 +125,7 @@ export const ProfileIndicator = z.object({
 });
 const Share = z.object({ label: Str, share: z.number() });
 export const CountryProfile = z.object({
-  groups: z.array(z.object({ id: z.enum(['life', 'society', 'income', 'environment']), indicators: z.array(ProfileIndicator) })),
+  groups: z.array(z.object({ id: z.enum(['life', 'society', 'income', 'environment', 'economy']), indicators: z.array(ProfileIndicator) })), // economy: CR-009
   composition: z.object({ religion: z.array(Share).nullable(), ethnicity: z.array(Share).nullable(), year: z.number().int().nullable(), source_id: NStr }),
   sources: z.array(Source),
 });

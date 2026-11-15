@@ -64,3 +64,24 @@ export function topSlices(items: Slice[], n = 5): Slice[] {
 export function pct(f: number, d = 1): string {
   return `${nf(f * 100, d)}%`;
 }
+
+// Spec 029 phase 1: the one-line summary of what the economy lives on. Fixed rules over the numbers shown below it (never a guess):
+// the biggest share of merchandise exports; oil when its rent is 10% of GDP or more; high tech above 25% of manufactured exports.
+export const ECONOMY_SUMMARY_RULE = 'Frase montada pelo Atlas com regras fixas sobre os números abaixo: a maior fatia das exportações de mercadorias; o petróleo quando rende 10% do PIB ou mais; a alta tecnologia quando passa de 25% das exportações de manufaturados.';
+const EXPORT_PARTS: Readonly<Record<string, string>> = {
+  'TX.VAL.FUEL.ZS.UN': 'combustíveis', 'TX.VAL.FOOD.ZS.UN': 'alimentos', 'TX.VAL.AGRI.ZS.UN': 'matérias-primas agrícolas',
+  'TX.VAL.MMTL.ZS.UN': 'minérios e metais', 'TX.VAL.MANF.ZS.UN': 'manufaturados',
+};
+type Ind = Pick<ProfileIndicator, 'id' | 'value' | 'year'>;
+const whole = (v: number) => Math.round(v).toLocaleString('pt-BR');
+export function economySummary(items: Ind[]): string | null {
+  const by = new Map(items.map((i) => [i.id, i]));
+  const top = items.filter((i) => i.id in EXPORT_PARTS).sort((a, b) => b.value - a.value)[0];
+  if (!top) return null;
+  const out = [`${top.value >= 50 ? 'Mais da metade' : 'A maior fatia'} das exportações de mercadorias é de ${EXPORT_PARTS[top.id]} (${whole(top.value)}% em ${top.year}).`];
+  const oil = by.get('NY.GDP.PETR.RT.ZS');
+  if (oil && oil.value >= 10) out.push(`O petróleo rende ${whole(oil.value)}% do PIB (${oil.year}).`);
+  const tech = by.get('TX.VAL.TECH.MF.ZS');
+  if (tech && tech.value > 25) out.push(`${whole(tech.value)}% das exportações de manufaturados são de alta tecnologia (${tech.year}).`);
+  return out.join(' ');
+}

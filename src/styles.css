@@ -371,6 +371,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .pgroup[open] summary::before { transform: rotate(45deg); }
 .pgroup summary span { color: var(--c-text-faint); font-size: 10px; }
 .inds { list-style: none; margin: 0 0 10px; padding: 0; }
+.eco-summary { margin: 0 0 4px; font-size: 14px; line-height: 1.55; color: var(--c-text); } /* spec 029 */
 .ind { display: grid; grid-template-columns: 1fr auto; gap: 0 4px; padding: 7px 0; border-top: 1px solid var(--c-line); }
 .ind:first-child { border-top: 0; }
 .ind__body { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: baseline; padding: 2px 4px; margin: -2px -4px; }
