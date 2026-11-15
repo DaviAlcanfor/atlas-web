@@ -51,3 +51,20 @@ export const INDICATOR_EXPLANATIONS: Readonly<Record<string, string>> = {
   'FI.RES.TOTL.CD': 'Ativos em moeda estrangeira e ouro que o banco central guarda para defender a moeda e pagar dívidas externas.',
   'PA.NUS.PPP': 'Quantas unidades da moeda local compram o que US$ 1 compra nos EUA. Comparado ao câmbio, mostra se a moeda está cara ou barata.',
 };
+
+// Indicator -> glossary entry with the full explanation (API content/glossary.yaml). The (i) keeps the short text above; a click
+// opens the entry. An id the API does not have yet just leaves the (i) without a click.
+export const INDICATOR_TERMS: Readonly<Record<string, string>> = {
+  'HDR.HDI': 'idh',
+  'NY.GDP.PCAP.PP.CD': 'pib-per-capita',
+  'SI.POV.GINI': 'indice-de-gini',
+  'SI.POV.DDAY': 'pobreza-extrema',
+  'SL.UEM.TOTL.ZS': 'desemprego',
+  'NY.GDP.MKTP.CD': 'pib',
+  'NY.GDP.MKTP.KD.ZG': 'crescimento-do-pib',
+  'FP.CPI.TOTL.ZG': 'inflacao',
+  'GC.DOD.TOTL.GD.ZS': 'divida-publica',
+  'BN.CAB.XOKA.GD.ZS': 'conta-corrente',
+  'FI.RES.TOTL.CD': 'reservas-internacionais',
+  'PA.NUS.PPP': 'paridade-do-poder-de-compra',
+};

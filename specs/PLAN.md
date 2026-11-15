@@ -6,7 +6,21 @@ Specs do web: `specs/NNN-*.md` deste repo. Specs da API: `atlas-api/specs/NNN-*.
 (o dono aprovou a v1.2 em bloco: aplicar no `CONTRACT.md` dos dois repos no início da fase que a usar); terminar cada tarefa com
 testes + screenshots (web) e marcar os checkboxes da spec. Um subagente por repo quando a tarefa cruza os dois.
 
-## RETOMAR AQUI (estado em 2026-11-13)
+## RETOMAR AQUI (estado em 2026-11-15)
+
+### Conferido na produção em 2026-11-15
+- Já no ar desde o último registro: 008 notícias (API PRs #19/#20, web #21), 022 "Em resumo" (API #18), 027 ranking (API #17),
+  012 etapa 1 (API #16). Dados da 026 importados (organizações curadas, DDD em 27/27 estados do Brasil) e correntes da 018 também.
+- 016: `event_count` já não é 0 (Brasil: 0, 1, 1, 7, 8 por período). Conferir se a fase 2 está completa antes de reabrir.
+- **017 idiomas segue fora do ar**: `languages_spoken` vem vazio para todos os países.
+- Em PR (aguardando merge do dono): web #23 polimento 4 (spec 028: coluna de ícones, carregamento que espera o globo).
+
+### Feito em 2026-11-15
+- 017: a classificação mandava para "imigração" tudo o que não tinha prova de ser nativo (Índia: 399 de 444; Nigéria: 220).
+  Regra nova: "imigração" exige uma pátria em outro país (oficial P37 ou nativa P2341 lá) ou família estrangeira na região;
+  sem pátria em lugar nenhum = língua local = "indígena". A coleta, que estava incompleta, foi terminada.
+- Glossário: +17 verbetes (12 de economia com a página do indicador do Banco Mundial como fonte, taxa de câmbio, 4 de sistemas
+  de governo). No web, tema "Economia e indicadores" e o (i) de cada indicador abre o verbete. **Dados**: `import-content` na produção.
 
 ### No ar
 API v1.3 (proposta, CR-004) e front com tudo das specs 001-024 fase 1: globo em pontos, painel do país (perfil do povo, economia,
@@ -27,15 +41,16 @@ do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=fals
 - Idiomas (017): `languages.json` tem 197 países, mas o Brasil sai com 227 idiomas e muitos indígenas como "cooficial":
   revisar a classificação antes de importar (ficou fora do script de produção de propósito).
 
-### Pendente
-1. **Idiomas reais (017)**: o ETL foi corrigido (API PRs #8 e #11: lotes que estouram o tempo são divididos na hora, JSON cortado
-   conta como falha, Hunsrik/Talian = imigração). Falta terminar a coleta, importar na produção e trocar o mock do web pelos dados reais.
-2. **Contrato v1.3**: o dono cola o CR-004 (história + estados) no `CONTRACT.md` dos dois repos.
-3. **025 chatbot**: rascunho; precisa da chave da Anthropic e de um teto de gasto (decisão do dono).
-4. **024 fase 2**: IDH subnacional (Global Data Lab, ler termos),
+### Pendente (revisto em 2026-11-15)
+1. **Idiomas reais (017)**: classificação corrigida e coleta terminada (ver acima). Falta: revisão do dono por amostra
+   (BR, IN, NG, US), importar na produção (`import-facts`) e conferir o painel. O web já mostra a seção quando a API manda dados.
+2. **Glossário novo**: `import-content` na produção depois do merge da API; revisão humana dos 17 verbetes (rascunho do agente).
+3. **Contrato v1.3**: o dono cola o CR-004 (história + estados) no `CONTRACT.md` dos dois repos.
+4. **025 chatbot**: rascunho; precisa da chave e de um teto de gasto (decisão do dono).
+5. **024 fase 2**: IDH subnacional (Global Data Lab, ler termos),
    governador (fonte melhor que o Wikidata, que está desatualizado).
-5. **016 fase 2**: eventos do Wikidata por período (`event_count` hoje é 0).
-6. Ajustes da 019 no FastAPI Cloud (réplicas, pool) e revisão humana de `glossary.yaml`, `regimes.yaml`, `explanations.ts`.
+6. **README** dos dois repos (pedido do dono: último item).
+7. Ajustes da 019 no FastAPI Cloud (réplicas, pool) e revisão humana de `glossary.yaml`, `regimes.yaml`, `explanations.ts`.
 
 ### Próximas fases (depois do acima), detalhes nas seções abaixo
 - P4 resto: 016 história (agora em **texto corrido por período**, ver P4.5) e 018 ideologias. Contrato v1.2 parte B.

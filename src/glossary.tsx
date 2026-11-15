@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Bank } from '@phosphor-icons/react/dist/csr/Bank';
+import { ChartLineUp } from '@phosphor-icons/react/dist/csr/ChartLineUp';
 import { Coins } from '@phosphor-icons/react/dist/csr/Coins';
 import { Crown } from '@phosphor-icons/react/dist/csr/Crown';
 import { Gear } from '@phosphor-icons/react/dist/csr/Gear';
@@ -133,6 +134,10 @@ export const THEMES: Theme[] = [
   { id: 'regioes', label: 'Regiões do mundo', blurb: 'Grandes regiões usadas para agrupar os países.', color: regimePalette[2], icon: GlobeHemisphereWest, match: (t) => t.kind === 'region' },
   { id: 'organizacoes', label: 'Organizações', blurb: 'Organizações internacionais e blocos de que os países fazem parte.', color: regimePalette[4], icon: Handshake, match: (t) => t.kind === 'membership' },
   { id: 'moedas', label: 'Moedas', blurb: 'Moedas e termos de câmbio.', color: regimePalette[5], icon: Coins, match: (t) => t.kind === 'currency' },
+  // ponytail: the contract has no "economy" kind, so every `other` term lands here (today all of them are indicators);
+  // a CR for an `economy` kind is the upgrade if non-economic `other` terms appear.
+  { id: 'economia', label: 'Economia e indicadores', blurb: 'O que querem dizer os números de economia e desenvolvimento do painel, e como lê-los.',
+    color: regimePalette[5], icon: ChartLineUp, match: (t) => t.kind === 'other' },
   { id: 'outros', label: 'Outros', blurb: '', color: regimeOther, icon: Question, match: () => true },
 ];
 /** Each term lands in the first theme that matches (order above); A-Z inside it. Empty themes are dropped. */
