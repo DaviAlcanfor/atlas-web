@@ -1,5 +1,5 @@
 # 029 - Do que vive a economia: setores, exportações, parceiros
-Status: draft (2026-11-15; aguarda aprovação do dono) | Contrato: fase 1 sem mudança; fase 2 depende de CR | API: atlas-api/specs/029-economy-structure-trade.md
+Status: approved (dono em 2026-11-15: "aprovado tudo") | Contrato: fase 1 sem mudança; fase 2 depende de CR | API: atlas-api/specs/029-economy-structure-trade.md
 
 ## Por quê
 Mostrar de onde vem a renda de cada país (agro, indústria, serviços, petróleo, alta tecnologia), o que ele exporta e com quem
