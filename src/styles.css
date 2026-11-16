@@ -321,11 +321,34 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .footer strong { color: var(--c-text-dim); }
 .load-error { position: fixed; z-index: var(--z-overlay); top: 96px; left: 24px; right: 24px; max-width: 640px; padding: 10px 14px; border-left: 2px solid var(--c-signal); background: var(--c-panel-solid); color: var(--c-text); font-size: 13px; }
 
+/* spec 030: menu button and panel expand exist only on phones */
+.layer-toggle__menu, .panel__grow { display: none; }
 @media (max-width: 700px) {
-  .info-card { top: 14px; left: 16px; }
-  .info-card__name { font-size: 26px; }
-  .layer-toggle { left: 16px; bottom: auto; top: 76px; max-width: calc(100vw - 32px); }
-  .panel { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; max-height: 58vh; border-width: 1px 0 0; }
+  /* top bar: [Camadas] [search]; title below it; legends at the bottom; the panel is a half-height sheet */
+  .info-card { top: 64px; left: 16px; }
+  .info-card__label { font-size: 10px; }
+  .info-card__name { font-size: 20px; }
+  body:has(.panel) .info-card { display: none; } /* the panel already names the country */
+  .layer-toggle { position: static; display: block; }
+  .layer-toggle__menu {
+    position: fixed; z-index: var(--z-chrome); top: 12px; left: 16px; width: 142px; height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 12px;
+    font: 500 12px/1 var(--f-mono); color: var(--c-text); background: var(--c-panel); border: 1px solid var(--c-line-strong); border-radius: var(--r);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer;
+  }
+  .layer-toggle__menu span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .layer-toggle__menu[aria-expanded='true'] { border-color: var(--c-ice); color: var(--c-ice); }
+  .rail { position: fixed; z-index: var(--z-overlay); top: 60px; left: 16px; width: min(260px, calc(100vw - 32px)); max-height: calc(100dvh - 76px); overflow-y: auto; }
+  .layer-toggle[data-open='false'] .rail { display: none; }
+  .rail__group { background: var(--c-panel-solid); }
+  .rail__btn { height: 44px; font-size: 13px; }
+  .layer-toggle__aside { position: fixed; z-index: var(--z-chrome); left: 16px; right: 16px; bottom: 12px; max-width: none; max-height: 38dvh; overflow-y: auto; }
+  .globe-slot--panel { bottom: 50dvh; } /* the globe re-centres in the half above the sheet */
+  .panel { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-width: none; height: 50dvh; border-width: 1px 0 0; padding: 16px 16px 28px; }
+  .panel__head { margin: -16px -16px 0; padding: 14px 16px 10px; top: -16px; }
+  .panel h2 { font-size: 22px; }
+  .panel--full { height: 100dvh; z-index: var(--z-overlay); }
+  .panel__grow { display: grid; }
+  .panel .icon-btn { width: 40px; height: 40px; }
   .footer { display: none; } /* ponytail: attribution is hidden on phones; move into a menu/about panel in the polish phase */
   .mock-badge { top: auto; bottom: 8px; }
 }
@@ -542,7 +565,6 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .search__list li[aria-selected='true'] { background: rgba(143, 219, 227, 0.1); color: var(--c-ice-bright); }
 .search__list img, .search__list i { width: 22px; height: 15px; object-fit: contain; border-radius: 2px; flex: none; }
 .search__empty { color: var(--c-text-faint); cursor: default !important; }
-@media (max-width: 700px) { .search, .globe-slot--panel ~ .search { top: auto; bottom: 12px; left: 16px; right: 16px; transform: none; width: auto; } }
 
 /* spec 027: ranking layer controls */
 .ranking { width: min(320px, calc(100vw - 48px)); padding: 12px 14px; border: 1px solid var(--c-line); background: var(--c-panel); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
@@ -591,3 +613,12 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .cpage .news__check { flex-direction: row; align-items: center; gap: 6px; text-transform: none; letter-spacing: 0; font: 400 13px/1.2 var(--f-sans); color: var(--c-text-dim); }
 .news__day h2 { margin: 28px 0 4px; font: 500 12px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-text-dim); }
 .cpage .news__title { font-size: 16px; }
+
+/* spec 030: phone overrides of rules defined above (kept last so they win) */
+@media (max-width: 700px) {
+  .search, .globe-slot--panel ~ .search { top: 12px; bottom: auto; left: 166px; right: 16px; transform: none; width: auto; }
+  body:not(:has(.layer-toggle)) .search { left: 16px; } /* time travel: no menu, search takes the row */
+  .search input { height: 42px; }
+  .layer-toggle__aside .ranking { width: auto; }
+  .ranking__top { max-height: 18dvh; }
+}
