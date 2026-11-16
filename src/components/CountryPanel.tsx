@@ -7,6 +7,8 @@ import { kindColor } from '../lib/palette';
 import { plonkitUrl } from '../lib/plonkit';
 import { STREETVIEW } from '../lib/streetview';
 import { X } from '@phosphor-icons/react/dist/csr/X';
+import { ArrowsIn } from '@phosphor-icons/react/dist/csr/ArrowsIn';
+import { ArrowsOut } from '@phosphor-icons/react/dist/csr/ArrowsOut';
 import { Hint } from './Hint';
 import { CountUp } from './CountUp';
 import { LabelIcon } from './icons';
@@ -79,6 +81,7 @@ export function CountryPanel({ iso2, name, inApi, initial, lat, subdivision, onC
   const fetched = useAsync(() => api.country(iso2), inApi && !initial ? iso2 : null);
   const state: typeof fetched = initial ? { status: 'ok', data: initial } : fetched;
   const title = state.status === 'ok' ? state.data.name : name;
+  const [full, setFull] = useState(false);
 
   let body: ReactNode;
   if (!inApi || (state.status === 'error' && isNotFound(state.error))) {
@@ -92,13 +95,17 @@ export function CountryPanel({ iso2, name, inApi, initial, lat, subdivision, onC
   }
 
   return (
-    <aside lang="pt-BR" className="panel bracketed" aria-label={`Detalhes de ${title}`}>
+    <aside lang="pt-BR" className={full ? 'panel bracketed panel--full' : 'panel bracketed'} aria-label={`Detalhes de ${title}`}>
       <header className="panel__head">
         <div className="panel__title">
           <span className="panel__code">{iso2}</span>
           <h2>{title}</h2>
         </div>
         <div className="panel__actions">
+          {/* spec 030: phones only (half-height sheet <-> full screen) */}
+          <button className="icon-btn panel__grow" onClick={() => setFull((f) => !f)} aria-label={full ? 'Recolher painel' : 'Expandir painel'} aria-pressed={full}>
+            {full ? <ArrowsIn size={16} weight="light" aria-hidden="true" /> : <ArrowsOut size={16} weight="light" aria-hidden="true" />}
+          </button>
           <button className="icon-btn" onClick={onClose} aria-label="Fechar painel"><X size={16} weight="light" aria-hidden="true" /></button>
         </div>
       </header>

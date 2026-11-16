@@ -1,6 +1,7 @@
-import type { ComponentType, ReactNode } from 'react';
+import { useState, type ComponentType, type ReactNode } from 'react';
 import Link from 'next/link';
 import { Binoculars } from '@phosphor-icons/react/dist/csr/Binoculars';
+import { List } from '@phosphor-icons/react/dist/csr/List';
 import { Flag } from '@phosphor-icons/react/dist/csr/Flag';
 import { FlagPennant } from '@phosphor-icons/react/dist/csr/FlagPennant';
 import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
@@ -44,9 +45,15 @@ export function RailButton({ label, icon: Ico, pressed, onClick, href }: { label
 
 export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ranking, children }: Props) {
   const groups = regimeGroups(regimes);
+  const [open, setOpen] = useState(false); // spec 030: phones only; on desktop the rail is always shown
+  const current = LAYERS.find((l) => l.id === layer)!;
   return (
-    <div className="layer-toggle">
-      <nav className="rail" aria-label="Camadas e páginas">
+    <div className="layer-toggle" data-open={open}>
+      <button type="button" className="layer-toggle__menu" aria-expanded={open} aria-controls="rail" onClick={() => setOpen((o) => !o)}>
+        <List size={18} weight="light" aria-hidden /><span>{current.label}</span>
+      </button>
+      {/* any pick inside closes the phone menu (no effect on desktop) */}
+      <nav id="rail" className="rail" aria-label="Camadas e páginas" onClick={(e) => (e.target as Element).closest('button, a') && setOpen(false)}>
         <div className="rail__group" role="group" aria-label="Camada do mapa">
           {LAYERS.map((l) => (
             <RailButton key={l.id} label={l.label} icon={l.icon} pressed={layer === l.id} onClick={() => onChange(l.id)} />
