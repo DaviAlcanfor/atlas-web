@@ -23,9 +23,10 @@ negocia. Fontes, licenças e fases estão na spec da API.
 - [x] Fase 2: zod + mocks no formato do Contract delta; seções de exportação e parceiros (`src/components/Trade.tsx`, mock BR em
   `src/api/mocks/trade.json`)
 - [x] Fase 3: arcos no globo (até 10 parceiros: destinos + origens somados por valor; sem animação com `prefers-reduced-motion`)
-- [ ] Fase 2/3: conferir os nomes dos campos com o formato final do PR da API e ligar `CountryTrade` ao `contract-check.ts` depois que
-  o dono atualizar o contrato
-- [ ] `/economia/[iso2]` com as mesmas seções (ficou de fora deste PR)
+- [x] Fase 2/3: nomes dos campos conferidos com a API no ar (`CountryTradeOut`, 2026-11-16); `CountryTrade` ligado ao `contract-check.ts`
+- [x] `/economia/[iso2]`: bloco "Comércio" (só quando o BACI tem o país)
+- [x] Botão "Comércio" na coluna (grupo do país): liga/desliga os arcos; ligado por padrão, aparece só com dados de comércio
+- [ ] Dono: colar CR-009 e CR-010 no `CONTRACT.md` dos dois repos
 
 ## Notas da implementação (fase 2/3, web)
 - **Os nomes dos campos precisam ser conferidos com o PR da API** (o agente da API pode ter ajustado nomes). Usados no zod

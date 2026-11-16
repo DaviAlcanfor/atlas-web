@@ -67,6 +67,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const [skipGlobe, setSkipGlobe] = useState(false); // spec 028: the visitor chose to enter without waiting for the globe
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
+  const [tradeArcs, setTradeArcs] = useState(true); // spec 029 phase 3: arcs on by default, the "Comércio" button hides them
   const [allStateFlags, setAllStateFlags] = useState(true); // spec 026: every state's flag, or only the clicked one
   const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
@@ -247,7 +248,7 @@ function Chrome({ children }: { children: ReactNode }) {
               era={inPast ? eraOf(inPast.year) : undefined}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
-              partners={inPast ? undefined : partners}
+              partners={inPast || !tradeArcs ? undefined : partners}
             />
             </GlobeBoundary>}
             </div>
@@ -279,7 +280,8 @@ function Chrome({ children }: { children: ReactNode }) {
                   nameOf={(iso) => countryName(iso) ?? iso} onPick={setSelectedCountry} />
               )} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
-                all: allStateFlags, setAll: setAllStateFlags } : undefined}>
+                all: allStateFlags, setAll: setAllStateFlags } : undefined}
+              trade={selectedCountry && partners?.length ? { on: tradeArcs, toggle: () => setTradeArcs((t) => !t) } : undefined}>
               <RailButton label="Viagem no tempo" icon={ClockCounterClockwise} onClick={enterTime} />
               <RailButton label="Notícias" icon={Newspaper} href="/noticias" />
               <RailButton label="Economia" icon={CurrencyCircleDollar} href="/economia" />

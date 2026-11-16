@@ -633,3 +633,5 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .shares__bar { grid-column: 1 / -1; display: block; height: 3px; min-width: 2px; background: var(--c-ice); }
 .panel a.shares__link { color: var(--c-text); text-decoration: none; }
 .panel a.shares__link:hover, .panel a.shares__link:focus-visible { color: var(--c-ice-bright); text-decoration: underline; }
+.cpage a.shares__link { color: var(--c-text); text-decoration: none; }
+.cpage a.shares__link:hover, .cpage a.shares__link:focus-visible { color: var(--c-ice-bright); text-decoration: underline; }

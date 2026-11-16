@@ -9,6 +9,7 @@ import { useAsync } from '../hooks/useAsync';
 import { flagPreviewUrl } from '../lib/url';
 import { Block, BlockIndex, FlagName } from './Block';
 import { Compare, Economy } from './CurrencyPage';
+import { loadTrade, TradeSection } from './Trade';
 
 const MAIN_CURRENCIES: [string, string][] = [
   ['USD', 'Dólar americano'], ['EUR', 'Euro'], ['JPY', 'Iene'], ['GBP', 'Libra esterlina'], ['CNY', 'Yuan'],
@@ -84,7 +85,6 @@ export function EconomyHub() {
   );
 }
 
-const COUNTRY_BLOCKS = [{ id: 'economia', title: 'Economia' }, { id: 'comparar', title: 'Comparar' }, { id: 'moedas', title: 'Moeda' }];
 
 export function EconomyCountry({ iso2 }: { iso2: string }) {
   const { list, nameOf, loaded } = useNames();
@@ -93,6 +93,15 @@ export function EconomyCountry({ iso2 }: { iso2: string }) {
   const name = country.status === 'ok' ? country.data.name : loaded ? nameOf(iso2) : iso2;
   const currencies = country.status === 'ok' ? country.data.currencies : [];
   const unknown = loaded && !list.some((c) => c.iso2 === iso2);
+  const trade = useAsync(() => loadTrade(iso2), iso2); // spec 029: block only when BACI has the country (404 = no block)
+  const hasTrade = trade.status === 'ok';
+  const blocks = [
+    { id: 'economia', title: 'Economia' },
+    ...(hasTrade ? [{ id: 'comercio', title: 'Comércio' }] : []),
+    { id: 'comparar', title: 'Comparar' },
+    ...(currencies.length ? [{ id: 'moedas', title: 'Moeda' }] : []),
+  ];
+  const n = (id: string) => blocks.findIndex((b) => b.id === id) + 1;
 
   return (
     <main className="cpage" lang="pt-BR">
@@ -104,11 +113,16 @@ export function EconomyCountry({ iso2 }: { iso2: string }) {
       </p>
       {unknown ? <p className="empty">Não há dados para o país {iso2}.</p> : (
         <>
-          <BlockIndex items={currencies.length ? COUNTRY_BLOCKS : COUNTRY_BLOCKS.slice(0, 2)} />
+          <BlockIndex items={blocks} />
           <Economy n={1} countries={[iso2]} nameOf={nameOf} />
-          <Compare n={2} self={iso2} cmp={cmp} setCmp={setCmp} names={list} nameOf={nameOf} />
+          {hasTrade && (
+            <Block n={n('comercio')} id="comercio" title="Comércio" blurb="O que o país exporta e com quem negocia (mercadorias).">
+              <TradeSection iso2={iso2} />
+            </Block>
+          )}
+          <Compare n={n('comparar')} self={iso2} cmp={cmp} setCmp={setCmp} names={list} nameOf={nameOf} />
           {currencies.length > 0 && (
-            <Block n={3} id="moedas" title="Moeda" blurb="Cotação contra outras moedas, conversor e estado da moeda.">
+            <Block n={n('moedas')} id="moedas" title="Moeda" blurb="Cotação contra outras moedas, conversor e estado da moeda.">
               <ul className="chips">
                 {currencies.map((c) => <li key={c.code}><Link href={`/moeda/${c.code.toLowerCase()}?pais=${iso2}`}><b>{c.code}</b> {c.name}</Link></li>)}
               </ul>
