@@ -271,7 +271,7 @@ describe('spec 029 phase 2: trade (not in the contract yet)', () => {
     const { TradeSection } = await import('../src/components/Trade');
     const { unmount } = render(<TradeSection iso2="BR" />);
     expect(await screen.findByRole('heading', { name: /O que exporta/ })).toBeTruthy();
-    expect(screen.getByText('Soja')).toBeTruthy();
+    expect(screen.getByText(/^Soja, mesmo triturada/)).toBeTruthy(); // full MDIC label (CC BY-ND: never shortened)
     expect(screen.getByRole('heading', { name: /Com quem negocia/ })).toBeTruthy();
     expect(screen.getAllByRole('link', { name: /China/ })[0]!.getAttribute('href')).toBe('/pais/cn');
     expect(screen.getAllByText((_, el) => el?.tagName === 'P' && /^2024 · CEPII, BACI/.test(el.textContent ?? '')).length).toBe(2); // year + source under each section
