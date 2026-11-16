@@ -9,6 +9,7 @@ import { ECONOMY_SUMMARY_RULE, economySummary, formatIndicator, indicatorTip, pc
 import { Hint } from './Hint';
 import { Section } from './Section';
 import { Tooltip } from './Tooltip';
+import { TradeSection } from './Trade';
 
 const GROUP_TITLE = { life: 'Vida', society: 'Sociedade', income: 'Desigualdade e renda', environment: 'Ambiente', economy: 'Economia' } as const;
 const shortSource = (sources: Source[], id: string) => (sources.find((s) => s.id === id)?.title ?? id).split(':')[0]!.trim();
@@ -111,8 +112,9 @@ function Economy({ p }: { p: CountryProfile }) {
   );
 }
 
-/** Fetches the profile in the browser; any failure (v1.1 production 404, network) hides the section. */
+/** Fetches the profile in the browser; any failure (v1.1 production 404, network) hides the section. Trade (spec 029) sits between. */
 export function ProfileSection({ iso2 }: { iso2: string }) {
   const s = useAsync(() => api.profile(iso2), iso2);
-  return s.status === 'ok' ? <><Economy p={s.data} /><Groups p={s.data} /></> : null;
+  const ok = s.status === 'ok';
+  return <>{ok && <Economy p={s.data} />}<TradeSection iso2={iso2} />{ok && <Groups p={s.data} />}</>;
 }

@@ -12,6 +12,8 @@ import { Hourglass } from '@phosphor-icons/react/dist/csr/Hourglass';
 import { Lightbulb } from '@phosphor-icons/react/dist/csr/Lightbulb';
 import { MapPin } from '@phosphor-icons/react/dist/csr/MapPin';
 import { Newspaper } from '@phosphor-icons/react/dist/csr/Newspaper';
+import { Package } from '@phosphor-icons/react/dist/csr/Package';
+import { Handshake } from '@phosphor-icons/react/dist/csr/Handshake';
 import { Ruler } from '@phosphor-icons/react/dist/csr/Ruler';
 import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
 import { Translate } from '@phosphor-icons/react/dist/csr/Translate';
@@ -38,6 +40,8 @@ const LABEL_ICON: Readonly<Record<string, Icon>> = {
   'Pessoas importantes': UsersThree,
   'Pistas': Compass,
   'Ideias políticas': Lightbulb,
+  'O que exporta': Package,
+  'Com quem negocia': Handshake,
 };
 
 export function LabelIcon({ label }: { label: string }) {

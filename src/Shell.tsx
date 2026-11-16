@@ -10,6 +10,7 @@ import type { CountryDetail, GlossaryTerm, Subdivision } from './api/types';
 import type { StateRef } from './components/Globe';
 import { useAsync } from './hooks/useAsync';
 import { CountryPanel } from './components/CountryPanel';
+import { loadTrade } from './components/Trade';
 import { Footer } from './components/Footer';
 import { InfoCard } from './components/InfoCard';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -169,6 +170,14 @@ function Chrome({ children }: { children: ReactNode }) {
     return (id: string) => colors.get(id);
   }, [rankData]);
   const inPast = timeMode && hist !== null && histLines !== null ? hist : null; // the snapshot on the globe, or null in the present
+  // spec 029 phase 3: arcs to the top trade partners (destinations + origins, by combined value), present only. Failure = no arcs.
+  const tradeReq = useAsync(() => loadTrade(selectedCountry!), selectedCountry && !timeMode ? selectedCountry : null);
+  const partners = useMemo(() => {
+    if (tradeReq.status !== 'ok') return undefined;
+    const v = new Map<string, number>();
+    for (const p of [...tradeReq.data.top_destinations, ...tradeReq.data.top_origins]) v.set(p.iso2, (v.get(p.iso2) ?? 0) + p.value_usd);
+    return [...v].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([iso]) => iso);
+  }, [tradeReq]);
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
   const name = active ? countryName(active) : undefined; // pt-BR name from the API, Natural Earth's English one as fallback
@@ -238,6 +247,7 @@ function Chrome({ children }: { children: ReactNode }) {
               era={inPast ? eraOf(inPast.year) : undefined}
               onReady={onGlobeReady}
               onFlagsLoading={setFlagsLoading}
+              partners={inPast ? undefined : partners}
             />
             </GlobeBoundary>}
             </div>
