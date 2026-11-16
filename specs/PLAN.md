@@ -41,16 +41,19 @@ do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=fals
 - Idiomas (017): `languages.json` tem 197 países, mas o Brasil sai com 227 idiomas e muitos indígenas como "cooficial":
   revisar a classificação antes de importar (ficou fora do script de produção de propósito).
 
-### Pendente (revisto em 2026-11-15)
-1. **Idiomas reais (017)**: classificação corrigida e coleta terminada (ver acima). Falta: revisão do dono por amostra
-   (BR, IN, NG, US), importar na produção (`import-facts`) e conferir o painel. O web já mostra a seção quando a API manda dados.
-2. **Glossário novo**: `import-content` na produção depois do merge da API; revisão humana dos 17 verbetes (rascunho do agente).
-3. **Contrato v1.3**: o dono cola o CR-004 (história + estados) no `CONTRACT.md` dos dois repos.
-4. **025 chatbot**: rascunho; precisa da chave e de um teto de gasto (decisão do dono).
-5. **024 fase 2**: IDH subnacional (Global Data Lab, ler termos),
-   governador (fonte melhor que o Wikidata, que está desatualizado).
-6. **README** dos dois repos (pedido do dono: último item).
-7. Ajustes da 019 no FastAPI Cloud (réplicas, pool) e revisão humana de `glossary.yaml`, `regimes.yaml`, `explanations.ts`.
+### Feito no fim de 2026-11-15 (tudo em produção)
+- 017 idiomas importados (7.620; Talian cooficial em 15 municípios); glossário com 63 verbetes; spec 029 fase 1 (bloco "Do que vive a
+  economia" + 12 indicadores no ranking); bandeira em todas as ilhas; coluna de ícones com nome; favicon; READMEs dos dois repos.
+- Lição: `import-facts` também regrava o câmbio com o `fx.json` local; depois dele, rodar `gh workflow run fx-daily.yml`.
+
+### Pendente (revisto em 2026-11-15, fim do dia)
+1. **Contrato**: o dono cola a CR-009 (grupo `economy` do perfil) no `CONTRACT.md` dos dois repos (e a CR-004, se ainda faltar).
+2. **029 fase 2**: comércio por produto e parceiro (BACI, Etalab 2.0): ETL, CR com a rota `/trade`, web; nomes dos produtos em
+   português (ler os termos da NCM antes). Fase 3: arcos no globo.
+3. **025 chatbot**: rascunho; precisa da chave e de um teto de gasto (decisão do dono).
+4. **024 fase 2**: IDH subnacional (Global Data Lab, ler termos), governador (fonte melhor que o Wikidata, que está desatualizado).
+5. Revisão humana: `glossary.yaml` (agora 49 verbetes de rascunho + correntes), `regimes.yaml`, `explanations.ts`; amostra dos idiomas.
+6. Ajustes da 019 no FastAPI Cloud (réplicas, pool).
 
 ### Próximas fases (depois do acima), detalhes nas seções abaixo
 - P4 resto: 016 história (agora em **texto corrido por período**, ver P4.5) e 018 ideologias. Contrato v1.2 parte B.

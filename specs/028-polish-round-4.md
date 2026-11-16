@@ -1,5 +1,5 @@
 # 028 - Rodada de polimento 4 (controles inferiores, carregamento do globo)
-Status: done (verificado local com screenshots desktop e mobile; README pendente, último item) (aprovada pelo dono em 2026-11-15: "pode fazer oq ta pendente agora") | Repos: web | Contrato: sem mudança | API: não depende
+Status: done (verificado local com screenshots desktop e mobile; README atualizado) (aprovada pelo dono em 2026-11-15: "pode fazer oq ta pendente agora") | Repos: web | Contrato: sem mudança | API: não depende
 
 ## Pedidos e o que fazer
 | Pedido | O que fazer |
@@ -28,7 +28,7 @@ Status: done (verificado local com screenshots desktop e mobile; README pendente
 - [x] Carregamento redesenhado (etapas, curiosidades rotativas)
 - [x] Remover o modo "ao lado" e o CSS antigo do carregamento
 - [x] Typecheck, testes (69), build (204 páginas), screenshots (desktop e mobile)
-- [ ] README (último)
+- [x] README (último; feito em 2026-11-15 com screenshots novos)
 
 ## Decisões abertas
 - Nenhuma. Escolhas tomadas: a entrada direta também bloqueia (o globo é a entrada do Atlas); o escape de 20 s mantém o site utilizável em máquinas lentas.
