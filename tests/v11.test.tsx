@@ -265,3 +265,25 @@ describe('ideologies (spec 018)', () => {
     expect(screen.getByRole('heading', { name: 'Onde governou' })).toBeTruthy();
   });
 });
+
+describe('spec 029 phase 2: trade (not in the contract yet)', () => {
+  it('BR shows exports and partners (flags link to the country); RS (404) shows neither and no error', async () => {
+    const { TradeSection } = await import('../src/components/Trade');
+    const { unmount } = render(<TradeSection iso2="BR" />);
+    expect(await screen.findByRole('heading', { name: /O que exporta/ })).toBeTruthy();
+    expect(screen.getByText('Soja')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /Com quem negocia/ })).toBeTruthy();
+    expect(screen.getAllByRole('link', { name: /China/ })[0]!.getAttribute('href')).toBe('/pais/cn');
+    expect(screen.getAllByText((_, el) => el?.tagName === 'P' && /^2024 · CEPII, BACI/.test(el.textContent ?? '')).length).toBe(2); // year + source under each section
+    unmount();
+    render(<TradeSection iso2="RS" />);
+    await new Promise((r) => setTimeout(r, 400));
+    expect(screen.queryByRole('heading', { name: /O que exporta|Com quem negocia/ })).toBeNull();
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+  it('real client: a missing /trade route (plain 404) is a not-found the UI swallows', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{"detail":"Not Found"}', { status: 404, headers: { 'content-type': 'application/json' } })));
+    await expect(createClient('http://x').trade('BR')).rejects.toSatisfy(isNotFound);
+    vi.unstubAllGlobals();
+  });
+});

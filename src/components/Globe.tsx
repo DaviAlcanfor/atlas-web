@@ -109,6 +109,7 @@ interface Props {
   era?: Era; // spec 012: map style of the period on screen (time travel); undefined = the present (Signal)
   onReady?: () => void; // the globe has rendered its first frame (used to hide the loading screen)
   onFlagsLoading?: (loading: boolean) => void; // flag layer atlas is downloading (spec 014 part 2)
+  partners?: string[]; // spec 029 phase 3: ids of the selected country's top trade partners (stable reference); arcs go to them
 }
 
 export interface StateRef {
@@ -153,6 +154,11 @@ const asObject = (d: object) => d as Object3D;
 const capCurvature = (d: object) => capResolution((d as Feature).geometry);
 const capGeoJson = (d: object) => capGeometry((d as Feature).geometry) as { type: string; coordinates: number[] }; // caps only: picking keeps the original (the lib types coordinates loosely)
 const noop = () => {};
+// spec 029 phase 3: trade arcs. Module-level accessors/values so the layer is never re-digested by a new identity.
+interface ArcDatum { startLat: number; startLng: number; endLat: number; endLng: number }
+const NO_ARCS: ArcDatum[] = [];
+const ARC_COLORS = [palette.arcFrom, palette.arcTo];
+const arcColor = () => ARC_COLORS;
 
 /** 10° graticule sampled every 1° (d3's geoGraticule draws meridians as 90° chords, which cut through the globe). */
 function graticule10(): number[][][] {
@@ -168,7 +174,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, era, onReady: onReadyProp, onFlagsLoading }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, era, onReady: onReadyProp, onFlagsLoading, partners }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -444,6 +450,13 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
   }, [selectedFeature]);
   const reduced = reducedMotion();
   const ringsData = useMemo(() => (ring && !reduced ? [ring] : []), [ring, reduced]);
+  const arcsData = useMemo<ArcDatum[]>(() => {
+    if (!ring || !partners?.length) return NO_ARCS;
+    return partners.flatMap((id) => {
+      const f = features.find((x) => idOf(x) === id);
+      return f ? [{ startLat: ring.lat, startLng: ring.lng, endLat: f.properties.lat, endLng: f.properties.lng }] : [];
+    });
+  }, [ring, partners, features]);
   const staticRing = useMemo(() => {
     if (!ring || !reduced) return null;
     const c = geoCircle().center([ring.lng, ring.lat]).radius(ring.r * 0.6)();
@@ -726,6 +739,14 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         ringPropagationSpeed={ringSpeed}
         ringRepeatPeriod={ringPeriod}
         ringResolution={96}
+        arcsData={arcsData}
+        arcColor={arcColor}
+        arcStroke={0.35}
+        arcAltitudeAutoScale={0.35}
+        arcDashLength={reduced ? 1 : 0.5}
+        arcDashGap={reduced ? 0 : 0.25}
+        arcDashAnimateTime={reduced ? 0 : 3000}
+        arcsTransitionDuration={0}
       />
     </div>
   );

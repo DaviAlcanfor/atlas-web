@@ -29,6 +29,9 @@ export const palette = {
   signal: '#ff5a4e',
   signalDim: 'rgba(255, 90, 78, 0.22)',
   focus: '#d6f6f8',
+  // spec 029 phase 3: trade arcs, signal red at the selected country fading to ice at the partner
+  arcFrom: 'rgba(255, 90, 78, 0.9)',
+  arcTo: 'rgba(214, 246, 248, 0.5)',
 } as const;
 
 /** Timeline dot color per event kind. One accent: only war uses the signal red; the rest are cyan tints. */

@@ -187,6 +187,14 @@ export const CountryIdeologies = z.object({
   items: z.array(z.object({ term: GlossaryTerm, figures: z.array(IdeologyFigure), parties: z.array(PartyRef), milestones: z.array(Event) })),
   sources: z.array(Source),
 });
+// ---- spec 029 phase 2 (proposal, NOT in the contract yet): BACI trade aggregates. Shape = the spec's "Contract delta"; re-check the names
+// against the API PR. `share`: fraction 0-1 of exports (products, destinations) or imports (origins). 404 / missing route = section hidden. ----
+const TradeFlow = z.object({ iso2: Str, value_usd: z.number(), share: z.number() });
+export const CountryTrade = z.object({
+  year: z.number().int(), exports_usd: z.number(), imports_usd: z.number(),
+  top_exports: z.array(z.object({ hs: Str, label: Str, value_usd: z.number(), share: z.number() })),
+  top_destinations: z.array(TradeFlow), top_origins: z.array(TradeFlow), sources: z.array(Source),
+});
 export const IdeologyDetail = z.object({
   term: GlossaryTerm, founders: z.array(IdeologyFigure), timeline: z.array(Event),
   governed: z.array(z.object({ iso2: Str, from_year: z.number().int(), to_year: z.number().int().nullable() })), sources: z.array(Source),

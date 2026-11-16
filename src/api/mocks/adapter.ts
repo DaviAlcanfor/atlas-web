@@ -7,6 +7,7 @@ import v12 from './v12.json';
 import history from './history.json';
 import subdivisions from './subdivisions.json';
 import ideologies from './ideologies.json';
+import trade from './trade.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const MOCK_NEWS = {
@@ -117,6 +118,11 @@ export function createMockApi(delayMs = 150): AtlasApi {
       const d = (ideologies.details as Record<string, unknown>)[id];
       if (!d) throw notFound(`Unknown ideology ${id}`);
       return parse(S.IdeologyDetail, d, `mock ideology ${id}`);
+    }),
+    trade: (iso2) => wait(() => {
+      const t = (trade as Record<string, unknown>)[iso2]; // spec 029: BR only, shaped like the Contract delta (approximate 2024 BACI figures)
+      if (!t) throw notFound(`No trade data for ${iso2}`);
+      return parse(S.CountryTrade, t, `mock trade ${iso2}`);
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];
