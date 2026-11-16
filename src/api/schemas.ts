@@ -187,8 +187,8 @@ export const CountryIdeologies = z.object({
   items: z.array(z.object({ term: GlossaryTerm, figures: z.array(IdeologyFigure), parties: z.array(PartyRef), milestones: z.array(Event) })),
   sources: z.array(Source),
 });
-// ---- spec 029 phase 2 (proposal, NOT in the contract yet): BACI trade aggregates. Shape = the spec's "Contract delta"; re-check the names
-// against the API PR. `share`: fraction 0-1 of exports (products, destinations) or imports (origins). 404 / missing route = section hidden. ----
+// ---- spec 029 phase 2 (CR-010, live in the API since 2026-11-16; checked against CountryTradeOut in contract-check.ts): BACI trade
+// aggregates. `share`: fraction 0-1 of exports (products, destinations) or imports (origins). 404 / missing route = section hidden. ----
 const TradeFlow = z.object({ iso2: Str, value_usd: z.number(), share: z.number() });
 export const CountryTrade = z.object({
   year: z.number().int(), exports_usd: z.number(), imports_usd: z.number(),

@@ -2,6 +2,7 @@ import { useState, type ComponentType, type ReactNode } from 'react';
 import Link from 'next/link';
 import { Binoculars } from '@phosphor-icons/react/dist/csr/Binoculars';
 import { List } from '@phosphor-icons/react/dist/csr/List';
+import { ArrowsLeftRight } from '@phosphor-icons/react/dist/csr/ArrowsLeftRight';
 import { Flag } from '@phosphor-icons/react/dist/csr/Flag';
 import { FlagPennant } from '@phosphor-icons/react/dist/csr/FlagPennant';
 import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
@@ -21,6 +22,7 @@ interface Props {
   regimes: Map<string, string>;
   flagsLoading?: boolean; // the flag layer's atlas is still downloading
   states?: { on: boolean; toggle: () => void; all: boolean; setAll: (all: boolean) => void }; // "Estados" button; only while a country is selected
+  trade?: { on: boolean; toggle: () => void }; // spec 029 phase 3: trade arcs on/off; only while the selected country has trade data
   ranking?: ReactNode; // spec 027: the ranking layer's controls, shown while that layer is on
   children?: ReactNode; // RailButton items for the pages (time travel, news, economy, glossary)
 }
@@ -43,7 +45,7 @@ export function RailButton({ label, icon: Ico, pressed, onClick, href }: { label
     : <button type="button" className="rail__btn" aria-pressed={pressed} onClick={onClick}>{body}</button>;
 }
 
-export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ranking, children }: Props) {
+export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, trade, ranking, children }: Props) {
   const groups = regimeGroups(regimes);
   const [open, setOpen] = useState(false); // spec 030: phones only; on desktop the rail is always shown
   const current = LAYERS.find((l) => l.id === layer)!;
@@ -59,10 +61,11 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, ra
             <RailButton key={l.id} label={l.label} icon={l.icon} pressed={layer === l.id} onClick={() => onChange(l.id)} />
           ))}
         </div>
-        {states && (
+        {(states || trade) && (
           <div className="rail__group">
-            <RailButton label="Estados" icon={SquaresFour} pressed={states.on} onClick={states.toggle} />
-            {states.on && (
+            {trade && <RailButton label="Comércio" icon={ArrowsLeftRight} pressed={trade.on} onClick={trade.toggle} />}
+            {states && <RailButton label="Estados" icon={SquaresFour} pressed={states.on} onClick={states.toggle} />}
+            {states?.on && (
               <>
                 <RailButton label="Todas as bandeiras" icon={Flag} pressed={states.all} onClick={() => states.setAll(true)} />
                 <RailButton label="Só a selecionada" icon={FlagPennant} pressed={!states.all} onClick={() => states.setAll(false)} />

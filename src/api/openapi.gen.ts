@@ -50,6 +50,10 @@ export interface paths {
     /** List Subdivisions */
     get: operations["list_subdivisions_v1_countries__iso2__subdivisions_get"];
   };
+  "/v1/countries/{iso2}/trade": {
+    /** Get Trade */
+    get: operations["get_trade_v1_countries__iso2__trade_get"];
+  };
   "/v1/currencies/{code}": {
     /** Get Currency */
     get: operations["get_currency_v1_currencies__code__get"];
@@ -298,6 +302,23 @@ export interface components {
       regime_id: string | null;
       /** Region */
       region: string | null;
+    };
+    /** CountryTradeOut */
+    CountryTradeOut: {
+      /** Exports Usd */
+      exports_usd: number;
+      /** Imports Usd */
+      imports_usd: number;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Top Destinations */
+      top_destinations: components["schemas"]["TradePartner"][];
+      /** Top Exports */
+      top_exports: components["schemas"]["TradeProduct"][];
+      /** Top Origins */
+      top_origins: components["schemas"]["TradePartner"][];
+      /** Year */
+      year: number;
     };
     /** Counts */
     Counts: {
@@ -1036,6 +1057,26 @@ export interface components {
       /** Year */
       year: number | null;
     };
+    /** TradePartner */
+    TradePartner: {
+      /** Iso2 */
+      iso2: string;
+      /** Share */
+      share: number;
+      /** Value Usd */
+      value_usd: number;
+    };
+    /** TradeProduct */
+    TradeProduct: {
+      /** Hs */
+      hs: string;
+      /** Label */
+      label: string;
+      /** Share */
+      share: number;
+      /** Value Usd */
+      value_usd: number;
+    };
     /** ValidationError */
     ValidationError: {
       /** Context */
@@ -1317,6 +1358,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["SubdivisionList"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Trade */
+  get_trade_v1_countries__iso2__trade_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryTradeOut"];
         };
       };
       /** @description Validation Error */
