@@ -69,3 +69,12 @@ describe('parseCoverage (spec 021)', () => {
     expect(parseCoverage(wt)).toEqual([['Albania', 'full'], ['Afghanistan', 'partial'], ['Narnia land', 'limited'], ['Vietnam', 'full']]);
   });
 });
+
+describe('loading facts (spec 037)', () => {
+  it('are unique full sentences', async () => {
+    const { FACTS } = await import('../src/lib/facts');
+    expect(FACTS.length).toBeGreaterThanOrEqual(8);
+    expect(new Set(FACTS).size).toBe(FACTS.length);
+    for (const f of FACTS) expect(f).toMatch(/^[A-ZÁÉÍÓÚ].*\.$/);
+  });
+});
