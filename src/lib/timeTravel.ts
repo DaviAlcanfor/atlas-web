@@ -88,3 +88,35 @@ export function loadSnapshot(year: number, url: string): Promise<Snapshot> {
 
 /** "1815 – 1918"; an entity alive in the last source year (2024) is shown as ongoing. */
 export const LAST_SOURCE_YEAR = 2024;
+
+// spec 036 C: the URL and the tab title follow the time-travel state: ?ano=1700&entidade=ottoman-empire
+/** URL-safe id of a historical entity (its `name_en`): "Ottoman Empire" -> "ottoman-empire", "Côte" -> "cote". */
+export const entitySlug = (nameEn: string) =>
+  nameEn.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+/** The snapshot entity (by `name_en`) whose slug is `slug`, if the snapshot has it. */
+export const findEntity = (ids: Iterable<string>, slug: string): string | null => {
+  for (const id of ids) if (entitySlug(id) === slug) return id;
+  return null;
+};
+
+/** `?ano=` and `?entidade=` of a query string. Year: any non-zero integer (negative = BCE); anything else = null. */
+export function readTimeParams(search: string): { year: number | null; entity: string | null } {
+  const q = new URLSearchParams(search);
+  const y = Number(q.get('ano'));
+  return { year: q.get('ano') !== null && Number.isInteger(y) && y !== 0 ? y : null, entity: q.get('entidade') || null };
+}
+
+/** `href` with ano/entidade set (value) or removed (null); a key left out of `p` is untouched. Other params are kept. */
+export function withTimeParams(href: string, p: { year?: number | null; entity?: string | null }): string {
+  const u = new URL(href);
+  for (const [key, v] of [['ano', p.year], ['entidade', p.entity]] as const) {
+    if (v === undefined) continue;
+    if (v === null) u.searchParams.delete(key); else u.searchParams.set(key, String(v));
+  }
+  return u.toString();
+}
+
+/** Tab title while travelling: "Império Otomano em 1700 · Atlas"; nothing selected = "Viagem no tempo, 1700 · Atlas". */
+export const timeTitle = (name: string | undefined, yearLabel: string) =>
+  `${name ? `${name} em ${yearLabel}` : `Viagem no tempo, ${yearLabel}`} · Atlas`;
