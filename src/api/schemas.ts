@@ -95,6 +95,8 @@ export const Meta = z.object({
   data_version: Str, generated_at: Str, year_min: Year, year_max: Year, snapshot_years: z.array(Year),
   counts: z.object({ countries: z.number().int(), polities: z.number().int(), events: z.number().int() }),
 });
+// spec 025 (CR-012, v1.10): POST /v1/chat body item. The SSE events are not in the OpenAPI document (src/api/chat.ts checks them).
+export const ChatMessage = z.object({ role: z.enum(['user', 'assistant']), content: Str });
 export const ProblemJson = z.object({ type: Str, title: Str, status: z.number(), detail: Str });
 
 // ---- v1.1 ----
@@ -175,6 +177,9 @@ export const Subdivision = z.object({
   wikidata_id: Str, code: NStr, name: Str, capital: NStr, area_km2: z.number().nullable(),
   population: z.object({ value: z.number().int(), year: z.number().int().nullable() }).nullable(), flag: Image.nullable(),
   area_codes: z.array(Str).default([]), // spec 026 (CR-004 addendum 4); the default keeps answers from a release without it valid
+  // spec 024 phase 2 (CR-011, v1.9): optional in the API too; absent or null = no data
+  hdi: z.object({ value: z.number(), year: z.number().int() }).nullish(),
+  head: z.object({ name: Str, office: NStr, since: NStr, wikidata_id: NStr, source_id: Str }).nullish(),
 });
 export const SubdivisionList = z.object({ items: z.array(Subdivision), sources: z.array(Source) });
 // ---- v1.3 proposal (spec 018, CR-004 addendum 3): political currents. `via`/`party` say WHY a person is listed. ----
