@@ -690,3 +690,5 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
   .chat__head { padding: 10px 8px 10px 16px; }
   .chat__head .icon-btn { width: 40px; height: 40px; }
 }
+/* spec 031: stock index widget (TradingView iframe) */
+.stock__widget { min-height: 200px; margin: 6px 0; }
