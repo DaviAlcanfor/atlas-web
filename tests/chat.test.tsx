@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { sseParser, toChatEvent } from '../src/api/chat';
+import { MAX_SESSIONS, loadSessions, titleOf, upsert } from '../src/lib/chatSessions';
 import { ChatDrawer } from '../src/components/ChatDrawer';
 import { ToolList } from '../src/components/ToolList';
 import { argChips, toolName } from '../src/lib/chatTools';
@@ -48,13 +49,53 @@ describe('chat drawer on the mock (spec 025)', () => {
     expect(calls.open).toBe(false);
     expect(within(calls).getByText('Busca')).toBeTruthy();
     expect(within(calls).getByText(/país: .*Brasil/)).toBeTruthy();
-    expect(JSON.parse(sessionStorage.getItem('atlas.chat')!)[1].tools).toHaveLength(2);
+    // spec 036 B: conversations live in localStorage
+    expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].turns[1].tools).toHaveLength(2);
     expect(onCountries).toHaveBeenCalledWith(['BR', 'JP']);
     fireEvent.click(within(log).getByRole('link', { name: 'Brasil' }));
     expect(push).toHaveBeenCalledWith('/pais/br', { scroll: false });
-    expect(JSON.parse(sessionStorage.getItem('atlas.chat')!)).toHaveLength(2);
+    expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].turns).toHaveLength(2);
     fireEvent.click(screen.getByRole('button', { name: 'Nova conversa' }));
     expect(within(log).queryByText('Fale do Brasil')).toBeNull();
+  });
+});
+
+describe('conversations (spec 036 B)', () => {
+  const turns = (q: string) => [{ role: 'user', content: q }, { role: 'assistant', content: 'ok' }];
+  it('titles with the first question (60 chars), keeps at most 20 and drops the oldest', () => {
+    expect(titleOf(turns('  Olá   mundo '))).toBe('Olá mundo');
+    expect(titleOf(turns('x'.repeat(100)))).toHaveLength(60);
+    let list: ReturnType<typeof loadSessions> = [];
+    for (let i = 0; i < MAX_SESSIONS + 3; i++) list = upsert(list, { id: `s${i}`, title: `t${i}`, updated: i, turns: [] });
+    expect(list).toHaveLength(MAX_SESSIONS);
+    expect(list[0]!.id).toBe(`s${MAX_SESSIONS + 2}`);
+    expect(list.some((s) => s.id === 's0')).toBe(false);
+  });
+  it('migrates the old single sessionStorage history into the first conversation, once', () => {
+    localStorage.clear();
+    sessionStorage.setItem('atlas.chat', JSON.stringify(turns('Pergunta antiga')));
+    const list = loadSessions();
+    expect(list).toHaveLength(1);
+    expect(list[0]!.title).toBe('Pergunta antiga');
+    expect(sessionStorage.getItem('atlas.chat')).toBeNull();
+    expect(loadSessions()).toHaveLength(1);
+  });
+  it('drawer: new conversation keeps the old one in the list; switch and delete', async () => {
+    localStorage.clear(); sessionStorage.clear();
+    sessionStorage.setItem('atlas.chat', JSON.stringify(turns('Pergunta antiga')));
+    render(<ChatDrawer onCountries={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Perguntar ao Atlas' }));
+    const log = screen.getByRole('log');
+    await within(log).findByText('Pergunta antiga'); // migrated and opened
+    fireEvent.click(screen.getByRole('button', { name: 'Nova conversa' }));
+    expect(within(log).queryByText('Pergunta antiga')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Conversas', expanded: false }));
+    fireEvent.click(within(log).getByRole('button', { name: /^Pergunta antiga/ }));
+    expect(within(log).getByText('Pergunta antiga')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Conversas' }));
+    fireEvent.click(within(log).getByRole('button', { name: 'Apagar conversa: Pergunta antiga' }));
+    expect(JSON.parse(localStorage.getItem('atlas.chats')!)).toHaveLength(0);
+    expect(within(log).queryByText('Pergunta antiga')).toBeNull();
   });
 });
 
