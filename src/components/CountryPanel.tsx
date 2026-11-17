@@ -97,6 +97,7 @@ export function CountryPanel({ iso2, name, inApi, initial, lat, subdivision, onC
   return (
     <aside lang="pt-BR" className={full ? 'panel bracketed panel--full' : 'panel bracketed'} aria-label={`Detalhes de ${title}`}>
       <header className="panel__head">
+        <h1 className="sr-only">Atlas: {title}</h1> {/* the page's only h1 (spec 037 B); the visible title is the h2 below it */}
         <div className="panel__title">
           <span className="panel__code">{iso2}</span>
           <h2>{title}</h2>
