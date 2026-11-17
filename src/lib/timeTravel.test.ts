@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { FeatureCollection, Geometry } from 'geojson';
-import { tintOf, toSnapshot, uniqueSegments, type HistProps } from './timeTravel';
+import { entitySlug, findEntity, readTimeParams, timeTitle, tintOf, toSnapshot, uniqueSegments, withTimeParams, type HistProps } from './timeTravel';
 
 const sq = (x: number): Geometry => ({ type: 'Polygon', coordinates: [[[x, 0], [x, 1], [x + 1, 1], [x + 1, 0], [x, 0]]] }); // clockwise: d3-geo's exterior
 const p = (name_en: string): HistProps => ({ name: name_en, name_en, wikidata: null, from_year: 1, to_year: 2, member_of: null, wikipedia_url: null });
@@ -25,5 +25,28 @@ describe('time travel (spec 012)', () => {
     expect(s.props.get('Tibet')?.name).toBe('Tibete');
     expect(s.features[0]!.properties).toMatchObject({ ISO2: null, NAME: 'Tibet', micro: false });
     expect(s.features[0]!.properties.lat).toBeCloseTo(0.5, 1);
+  });
+});
+
+describe('time travel in the URL and the title (spec 036 C)', () => {
+  it('slugs an entity name and finds it back in a snapshot', () => {
+    expect(entitySlug('Ottoman Empire')).toBe('ottoman-empire');
+    expect(entitySlug("Côte d'Ivoire (French)")).toBe('cote-d-ivoire-french');
+    expect(findEntity(new Set(['Tibet', 'Ottoman Empire']), 'ottoman-empire')).toBe('Ottoman Empire');
+    expect(findEntity(['Tibet'], 'ottoman-empire')).toBeNull();
+  });
+  it('round trip: write year + entity, read them back, remove them keeping other params', () => {
+    const href = withTimeParams(withTimeParams('https://atlas.test/?x=1', { year: 1700 }), { entity: entitySlug('Ottoman Empire') });
+    expect(href).toBe('https://atlas.test/?x=1&ano=1700&entidade=ottoman-empire');
+    expect(readTimeParams(new URL(href).search)).toEqual({ year: 1700, entity: 'ottoman-empire' });
+    expect(withTimeParams(href, { entity: null })).toBe('https://atlas.test/?x=1&ano=1700'); // year untouched
+    expect(withTimeParams(href, { year: null, entity: null })).toBe('https://atlas.test/?x=1');
+    expect(readTimeParams('?ano=-500')).toEqual({ year: -500, entity: null });
+    expect(readTimeParams('?ano=0&entidade=')).toEqual({ year: null, entity: null });
+    expect(readTimeParams('?ano=abc')).toEqual({ year: null, entity: null });
+  });
+  it('titles the tab with the entity, not the modern country', () => {
+    expect(timeTitle('Império Otomano', '1700')).toBe('Império Otomano em 1700 · Atlas');
+    expect(timeTitle(undefined, '1700')).toBe('Viagem no tempo, 1700 · Atlas');
   });
 });

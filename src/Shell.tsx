@@ -24,7 +24,7 @@ import { Newspaper } from '@phosphor-icons/react/dist/csr/Newspaper';
 import { GlossaryPage, GlossaryProvider } from './glossary';
 import { useAtlasData } from './hooks/useAtlasData';
 import { nearestYear } from './lib/snapshots';
-import { loadSnapshot, tintOf, type Snapshot } from './lib/timeTravel';
+import { entitySlug, findEntity, loadSnapshot, readTimeParams, timeTitle, tintOf, withTimeParams, type Snapshot } from './lib/timeTravel';
 import { eraOf } from './lib/eras';
 import { flagPreviewUrl } from './lib/url';
 import { formatYear } from './lib/years';
@@ -44,6 +44,14 @@ const NO_TERMS: never[] = [];
 const NO_CAPITALS = new Map<string, never>();
 const NO_REGIMES = new Map<string, string>();
 const DEFAULT_YEAR = 1914; // where "Viagem no tempo" starts
+
+// While travelling the path is "/": a /pais/ path here is the country the visitor is leaving (its push to "/" is still in flight,
+// and writing the old path back would cancel it).
+const timeHref = (p: Parameters<typeof withTimeParams>[1]) => {
+  const u = new URL(location.href);
+  if (p.year !== null && u.pathname.startsWith('/pais/')) u.pathname = '/';
+  return withTimeParams(u.toString(), p);
+};
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
@@ -126,9 +134,10 @@ function Chrome({ children }: { children: ReactNode }) {
   const [hist, setHist] = useState<Snapshot | null>(null);
   const [histError, setHistError] = useState<string>();
   const [histSel, setHistSel] = useState<string | null>(null);
-  useEffect(() => { // shared links: ?ano=1815
-    const y = Number(new URLSearchParams(location.search).get('ano'));
-    if (Number.isInteger(y) && y !== 0) setYearState(y);
+  const wantEntity = useRef<string | null>(null); // ?entidade= waiting for its snapshot to load (spec 036 C)
+  useEffect(() => { // shared links: ?ano=1815&entidade=ottoman-empire
+    const { year: y, entity } = readTimeParams(location.search);
+    if (y !== null) { setYearState(y); wantEntity.current = entity; }
   }, []);
   const snapsReq = useAsync(() => api.snapshots(), year !== null ? 'snapshots' : null);
   const snaps = snapsReq.status === 'ok' ? snapsReq.data : null;
@@ -136,9 +145,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const snapYear = year !== null ? nearestYear(years, year)?.year ?? null : null;
   const setYear = useCallback((y: number | null) => {
     setYearState(y);
-    const u = new URL(location.href);
-    if (y === null) u.searchParams.delete('ano'); else u.searchParams.set('ano', String(y));
-    window.history.replaceState(null, '', u);
+    window.history.replaceState(null, '', timeHref(y === null ? { year: null, entity: null } : { year: y }));
   }, []);
   useEffect(() => {
     if (snapYear === null) { setHist(null); setHistSel(null); setHistError(undefined); return; }
@@ -147,7 +154,12 @@ function Chrome({ children }: { children: ReactNode }) {
     let live = true;
     const t = setTimeout(() => { // dragging the slider passes over many years: only the one it rests on is downloaded
       loadSnapshot(snapYear, info.geometry_url).then(
-        (s) => { if (live) { setHist(s); setHistError(undefined); setHistSel((id) => (id && s.ids.has(id) ? id : null)); } },
+        (s) => {
+          if (!live) return;
+          const asked = wantEntity.current && findEntity(s.ids, wantEntity.current); // a shared link names the entity once
+          wantEntity.current = null;
+          setHist(s); setHistError(undefined); setHistSel((id) => (id && s.ids.has(id) ? id : asked || null));
+        },
         (e: Error) => live && setHistError(e.message),
       );
     }, 120);
@@ -156,9 +168,25 @@ function Chrome({ children }: { children: ReactNode }) {
   const timeMode = year !== null && globeRoute;
   const enterTime = useCallback(() => { setSelectedCountry(null); setYear(DEFAULT_YEAR); }, [setSelectedCountry, setYear]);
   useEffect(() => { if (selectedCountry && year !== null) setYear(null); }, [selectedCountry]); // a modern country was opened: back to the present
+  // spec 036 C: the URL carries year + entity while travelling. Also re-asserted after each route change: leaving /pais/ve for the
+  // time-travel rail pushes "/" and would otherwise drop the query.
+  const slugSel = histSel ? entitySlug(histSel) : null;
+  useEffect(() => {
+    if (!timeMode || wantEntity.current) return;
+    const href = timeHref({ year, entity: slugSel });
+    if (href !== location.href) window.history.replaceState(null, '', href);
+  }, [timeMode, year, slugSel, path, hist]);
   const histLines = useMemo(() => (hist && data ? { borders: hist.borders, coast: data.lines.coast } : null), [hist, data]);
   const modernByName = useMemo(() => new Map([...(data?.names ?? [])].map(([iso, n]) => [n, iso])), [data]);
   const histProps = timeMode && hist ? hist.props.get(histSel ?? '') : undefined;
+  // The tab title names the entity, never the modern country the visitor came from (/pais/ve -> Ottoman Empire).
+  const title = timeMode ? timeTitle(histProps?.name, formatYear(snapYear ?? year!)) : null;
+  useEffect(() => {
+    if (!title) return;
+    const before = document.title;
+    document.title = title;
+    return () => { document.title = before; };
+  }, [title, path]);
   const histHover = timeMode && hist ? hist.props.get(hoveredCountry ?? histSel ?? '') : undefined;
 
   // Search (spec 026 follow-up): present = countries by their pt-BR name; time travel = the entities of the snapshot on screen.
