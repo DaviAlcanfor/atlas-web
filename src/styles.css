@@ -701,3 +701,16 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .md-table th { font: 500 11px/1.4 var(--f-mono); color: var(--c-text-dim); border-bottom-color: var(--c-line-strong); }
 .md-table td { font-variant-numeric: tabular-nums; }
 .chat { z-index: var(--z-overlay); } /* non-modal on desktop: not in the top layer */
+
+/* spec 036: "Consultas" of an assistant turn (compact, mono, dim, like an agent activity log) */
+.chat__calls { margin: 0 0 8px; font: 400 11px/1.5 var(--f-mono); color: var(--c-text-dim); }
+.chat__calls summary { cursor: pointer; color: var(--c-text-faint); }
+.chat__calls summary:hover { color: var(--c-text-dim); }
+.chat__calls summary:focus-visible { outline: 1px solid var(--c-focus); outline-offset: 2px; }
+.chat__calls ul { list-style: none; margin: 4px 0 0; padding: 0 0 0 8px; border-left: 1px solid var(--c-line); display: flex; flex-direction: column; gap: 4px; }
+.chat__msg--assistant .chat__calls ul { margin: 4px 0 0; padding-left: 8px; }
+.chat__calls li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.chat__calls b { font-weight: 500; color: var(--c-text-dim); }
+.chat__tick { color: var(--c-text-faint); }
+.chat__chip { padding: 0 6px; border: 1px solid var(--c-line); border-radius: var(--r); color: var(--c-text-faint); overflow-wrap: anywhere; }
+.chat__chip img { margin: 0 3px 0 2px; vertical-align: -1px; border-radius: 1px; }
