@@ -155,6 +155,9 @@ const asObject = (d: object) => d as Object3D;
 const capCurvature = (d: object) => capResolution((d as Feature).geometry);
 const capGeoJson = (d: object) => capGeometry((d as Feature).geometry) as { type: string; coordinates: number[] }; // caps only: picking keeps the original (the lib types coordinates loosely)
 const noop = () => {};
+// spec 035: where the camera aims for countries whose centroid is far from most of their land/people (Russia: the centroid is in Siberia)
+const FOCUS: Record<string, { lat: number; lng: number }> = { RU: { lat: 57, lng: 55 } };
+
 // spec 029 phase 3: trade arcs. Module-level accessors/values so the layer is never re-digested by a new identity.
 interface ArcDatum { startLat: number; startLng: number; endLat: number; endLng: number }
 const NO_ARCS: ArcDatum[] = [];
@@ -209,6 +212,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [shared],
   );
   const graticule = useMemo(() => buildLines(graticule10(), palette.grid), []);
+  const partnerSet = useMemo(() => new Set(partners ?? []), [partners]);
   const tintMats = useMemo(() => new Map<string, ShaderMaterial>(), [shared]); // one material per tint colour, made on first use
   const tintMat = useCallback((c: string) => {
     let m = tintMats.get(c);
@@ -309,7 +313,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       const g = globe.current;
       if (!f || !g) return;
       const ms = reducedMotion() ? 0 : 900;
-      g.pointOfView({ lat: f.properties.lat, lng: f.properties.lng, altitude: 0.9 }, ms);
+      const c = FOCUS[id!] ?? { lat: f.properties.lat, lng: f.properties.lng };
+      // spec 035: aiming at a far-north/south centroid tilts the camera over the pole and the country slides away; 62° keeps it in view
+      g.pointOfView({ lat: Math.max(-62, Math.min(62, c.lat)), lng: c.lng, altitude: 0.9 }, ms);
       if (!ms) requestAnimationFrame(() => g.controls().update());
     },
     [features],
@@ -665,6 +671,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       if (id === selectedId) return filled ? mats.selected : mats.selectedDim;
       if (!filled) return hov ? mats.hoverDim : mats.dim;
       if (hov) return mats.hover;
+      if (partnerSet.has(id)) return tintMat(palette.arcTo); // spec 035: trade partners while the arcs are on (selected keeps its own colour)
       if (sv === 'partial') return mats.mid;
       if (tint) { // ranking layer / time travel: the tint is the data; no value = dim, like a country without content
         const t = tint(id);
@@ -672,7 +679,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
       }
       return (layer === 'regime' && regime && regimeMats.get(regime)) || mats.content;
     },
-    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat, backdropSet, tint, tintMat],
+    [apiIds, layer, regimes, regimeMats, hoveredId, selectedId, flagId, mats, flagMats, hoverState, selState, stateMat, backdropSet, tint, tintMat, partnerSet],
   );
 
   const polygonAltitude = useCallback(

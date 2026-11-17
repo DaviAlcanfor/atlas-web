@@ -118,7 +118,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .icon { flex: none; }
 
 .psec { margin-top: 26px; scroll-margin-top: 76px; } /* clears the sticky panel header */
-.psec h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font: 500 11px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-text-dim); }
+.psec h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 600 13px/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text); } /* spec 035: larger, brighter section titles */
 .psec h3::after { content: ''; flex: 1; height: 1px; background: var(--c-line); }
 .sub { font: 400 11px/1.4 var(--f-mono); color: var(--c-text-faint); margin: 10px 0 6px !important; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; }
@@ -646,7 +646,7 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 
 /* spec 025: "Perguntar ao Atlas" (button under the readout; drawer on the left, full-screen sheet on phones) */
 .chat-open {
-  position: fixed; z-index: var(--z-chrome); top: 96px; left: 24px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px;
+  position: fixed; z-index: var(--z-chrome); top: 112px; left: 24px; /* spec 035: room for the governor line */ display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px;
   font: 500 12px/1 var(--f-mono); letter-spacing: 0.02em; color: var(--c-text); background: var(--c-panel); border: 1px solid var(--c-line-strong);
   border-left: 2px solid var(--c-ice); border-radius: var(--r); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer;
 }
@@ -692,3 +692,12 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 }
 /* spec 031: stock index widget (TradingView iframe) */
 .stock__widget { min-height: 200px; margin: 6px 0; }
+/* spec 035: governor line in the hover card; markdown tables in the chat */
+.info-card__sub { margin-top: 4px; font: 400 12px/1.4 var(--f-mono); letter-spacing: 0.02em; color: var(--c-text-dim); }
+.md-table { overflow-x: auto; margin: 0 0 10px; }
+.md-table table { border-collapse: collapse; font: 400 12.5px/1.4 var(--f-sans); min-width: 100%; }
+.md-table th, .md-table td { padding: 5px 8px; border-bottom: 1px solid var(--c-line); vertical-align: top; }
+.md-table th { white-space: nowrap; }
+.md-table th { font: 500 11px/1.4 var(--f-mono); color: var(--c-text-dim); border-bottom-color: var(--c-line-strong); }
+.md-table td { font-variant-numeric: tabular-nums; }
+.chat { z-index: var(--z-overlay); } /* non-modal on desktop: not in the top layer */

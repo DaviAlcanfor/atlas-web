@@ -27,6 +27,7 @@ describe('chat drawer on the mock (spec 025)', () => {
   it('streams the answer, flies to the cited country, navigates internal links with the router', async () => {
     // jsdom lacks <dialog> modal methods
     HTMLDialogElement.prototype.showModal ??= function (this: HTMLDialogElement) { this.open = true; };
+    HTMLDialogElement.prototype.show ??= function (this: HTMLDialogElement) { this.open = true; };
     HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) { this.open = false; this.dispatchEvent(new Event('close')); };
     const onCountries = vi.fn();
     render(<ChatDrawer onCountries={onCountries} />);
