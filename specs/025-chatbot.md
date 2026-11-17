@@ -1,21 +1,25 @@
 # 025 - Chatbot do Atlas (todo o conhecimento do app como ferramentas)
-Status: draft | Contrato: v1.3 (delta abaixo) | API: atlas-api/specs/025-chatbot.md (a escrever junto)
+Status: approved (dono em 2026-11-17: "a chave do chatbot é a mesma que já tá no projeto, do AI Gateway ... só deixo usar o gpt 6 luna ... dale") | Contrato: CR-012 (delta abaixo) | API: atlas-api/specs/025-chatbot.md (a escrever junto)
 
 ## Por quê
 O dono quer perguntar em linguagem natural ("quais monarquias absolutas existem?", "compare a inflação do Brasil e da Argentina")
 e ter respostas que usam os dados do Atlas, com fonte.
 
 ## Desenho
-- **Backend (atlas-api)**: `POST /v1/chat` com streaming (SSE). O modelo da Anthropic recebe como ferramentas as consultas que a API
-  já tem: país, lista/filtro de países, governantes, pessoas, perfil (como vive o povo), economia, moeda/câmbio, idiomas, glossário,
-  busca. As ferramentas chamam as funções de `queries.py` direto (sem HTTP). O executor carrega a skill `claude-api` antes de escolher
-  modelo e SDK (tool runner do SDK Python).
+- **Backend (atlas-api)**: `POST /v1/chat` com streaming (SSE). Modelo **`openai/gpt-6-luna` e nenhum outro** (decisão do dono;
+  trocar de modelo exige aprovação dele), pelo Vercel AI Gateway (endpoint compatível com OpenAI
+  `https://ai-gateway.vercel.sh/v1/chat/completions`, chave `AI_GATEWAY_API_KEY`, a mesma do ETL de `etl/ai/summaries.py`), com
+  chamada de ferramentas (tool calling). Ferramentas = as consultas que a API já tem: país, lista/filtro de países, governantes,
+  pessoas, perfil, economia, comércio, moeda/câmbio, idiomas, glossário, busca, ranking de indicadores. Chamam as funções de
+  `queries.py` direto (sem HTTP).
 - **Regras da resposta**: só afirmar o que veio das ferramentas; citar a fonte de cada número; "o Atlas não tem esse dado" quando não tiver;
   responder em pt-BR; links internos (`/pais/br`) viram navegação no globo.
 - **Web**: gaveta de chat no lado ESQUERDO (usa o espaço livre que o pedido de 2026-11-12 apontou), botão fixo "Perguntar ao Atlas";
   quando a resposta cita países, o globo voa até eles e os destaca.
-- **Custos e abuso**: chave `ANTHROPIC_API_KEY` só no FastAPI Cloud; limite por IP (ex.: 20 perguntas/hora) e teto de tokens por
-  resposta; histórico só no navegador.
+- **Custos e abuso** (padrões do agente; o dono não fixou teto, todos ajustáveis por variável de ambiente): `AI_GATEWAY_API_KEY`
+  só no servidor (FastAPI Cloud); 20 perguntas por hora por IP; 300 perguntas por dia no total (depois disso, 429 com mensagem
+  "o chat atingiu o limite de hoje"); no máximo 6 rodadas de ferramentas e 1.200 tokens de saída por resposta; histórico só no
+  navegador; o servidor não guarda as conversas.
 
 ## Contract delta (proposta, CR a aprovar)
 ```
@@ -24,9 +28,10 @@ POST /v1/chat  body: { messages: [{role: "user"|"assistant", content: str}] (má
 429 problem+json quando passar do limite.
 ```
 
-## Decisões do dono
-- Chave da Anthropic e teto de gasto mensal (o chat custa por pergunta; o resto do Atlas não tem custo variável).
-- Modelo: o executor recomenda com base na skill `claude-api` (custo x qualidade).
+## Decisões do dono (2026-11-17)
+- Chave: a do AI Gateway que já está no projeto (`AI_GATEWAY_API_KEY`).
+- Modelo: só `openai/gpt-6-luna`. Qualquer outro precisa de aprovação.
+- Teto de gasto: não informado; valem os limites acima até o dono mudar.
 
 ## Tarefas
 - [ ] API: spec espelho, endpoint SSE, ferramentas, limite por IP, testes com modelo simulado
