@@ -96,15 +96,15 @@ function Economy({ p }: { p: CountryProfile }) {
   const by = new Map(g.indicators.map((i) => [i.id, i]));
   const summary = economySummary(g.indicators);
   return (
-    <Section title="Do que vive a economia">
+    <Section title="Do que vive a economia" fold>
       {summary && <p className="eco-summary">{summary}<Hint k="Resumo da economia" text={ECONOMY_SUMMARY_RULE} label="como a frase é montada" /></p>}
       {ECONOMY_PARTS.map(([title, ids]) => {
         const items = ids.flatMap((id) => { const i = by.get(id); return i ? [{ ...i, label: unprefixed(i.label) }] : []; });
         return items.length ? (
-          <div key={title}>
-            <h4 className="subhead">{title}</h4>
+          <details key={title} className="pgroup">
+            <summary>{title} <span>{items.length}</span></summary>
             <ul className="inds">{items.map((i) => <IndicatorRow key={i.id} i={i} sources={p.sources} />)}</ul>
-          </div>
+          </details>
         ) : null;
       })}
       <p className="src">Fonte: Banco Mundial (WDI). Régua: mínimo a máximo do mundo; traço = mediana mundial; ponto = o país.</p>
@@ -116,5 +116,5 @@ function Economy({ p }: { p: CountryProfile }) {
 export function ProfileSection({ iso2 }: { iso2: string }) {
   const s = useAsync(() => api.profile(iso2), iso2);
   const ok = s.status === 'ok';
-  return <>{ok && <Economy p={s.data} />}<TradeSection iso2={iso2} />{ok && <Groups p={s.data} />}</>;
+  return <>{ok && <Economy p={s.data} />}<TradeSection iso2={iso2} fold />{ok && <Groups p={s.data} />}</>;
 }

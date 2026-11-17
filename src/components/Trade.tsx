@@ -51,21 +51,22 @@ function Foot({ t }: { t: CountryTrade }) {
   );
 }
 
-export function TradeSection({ iso2 }: { iso2: string }) {
+/** `fold` (panel): both blocks start closed; the economy page shows them open. */
+export function TradeSection({ iso2, fold }: { iso2: string; fold?: boolean }) {
   const s = useAsync(() => loadTrade(iso2), iso2);
   if (s.status !== 'ok') return null;
   const t = s.data;
   return (
     <>
       {t.top_exports.length > 0 && (
-        <Section title="O que exporta">
+        <Section title="O que exporta" fold={fold}>
           <p className="note">Exportou US$ {compact(t.exports_usd)} e importou US$ {compact(t.imports_usd)} em mercadorias em {t.year}. Principais produtos (fatia das exportações):</p>
           <ShareList items={t.top_exports.map((x) => ({ key: x.hs, label: <>{x.label} <small className="mono">SH {x.hs}</small></>, share: x.share, value: x.value_usd }))} />
           <Foot t={t} />
         </Section>
       )}
       {(t.top_destinations.length > 0 || t.top_origins.length > 0) && (
-        <Section title="Com quem negocia">
+        <Section title="Com quem negocia" fold={fold}>
           {t.top_destinations.length > 0 && <><h4 className="subhead">Para onde vende (fatia das exportações)</h4><ShareList items={partners(t.top_destinations)} /></>}
           {t.top_origins.length > 0 && <><h4 className="subhead">De onde compra (fatia das importações)</h4><ShareList items={partners(t.top_origins)} /></>}
           <Foot t={t} />
