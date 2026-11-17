@@ -35,7 +35,7 @@ interface Props {
   inApi: boolean; // the country is in GET /v1/countries (has a record, curated or not)
   initial?: CountryDetail; // already fetched on the server (/pais/[iso2]); without it the panel fetches in the browser
   lat?: number; // latitude of the country's label point (globe data); feeds the hemisphere clue
-  subdivision?: { ref: StateRef; facts: Subdivision | undefined }; // spec 024: clicked state
+  subdivision?: { ref: StateRef; facts: Subdivision | undefined; sources?: Source[] }; // spec 024: clicked state
   onCloseSubdivision?: () => void;
   onClose: () => void;
 }
@@ -109,7 +109,7 @@ export function CountryPanel({ iso2, name, inApi, initial, lat, subdivision, onC
           <button className="icon-btn" onClick={onClose} aria-label="Fechar painel"><X size={16} weight="light" aria-hidden="true" /></button>
         </div>
       </header>
-      {subdivision && <SubdivisionCard key={subdivision.ref.id ?? subdivision.ref.name} name={subdivision.ref.name} facts={subdivision.facts} onClose={() => onCloseSubdivision?.()} />}
+      {subdivision && <SubdivisionCard key={subdivision.ref.id ?? subdivision.ref.name} name={subdivision.ref.name} facts={subdivision.facts} sources={subdivision.sources} onClose={() => onCloseSubdivision?.()} />}
       {body}
     </aside>
   );

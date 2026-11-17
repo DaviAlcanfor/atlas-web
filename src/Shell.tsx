@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { api } from './api';
-import type { CountryDetail, GlossaryTerm, Subdivision } from './api/types';
+import type { CountryDetail, GlossaryTerm, Source, Subdivision } from './api/types';
 import type { StateRef } from './components/Globe';
 import { useAsync } from './hooks/useAsync';
 import { CountryPanel } from './components/CountryPanel';
@@ -44,7 +44,7 @@ const DEFAULT_YEAR = 1914; // where "Viagem no tempo" starts
 
 interface ShellCtx {
   data: ReturnType<typeof useAtlasData>['data'];
-  state: { ref: StateRef; facts: Subdivision | undefined } | null; // spec 024: clicked state of the selected country
+  state: { ref: StateRef; facts: Subdivision | undefined; sources: Source[] } | null; // spec 024: clicked state of the selected country
   clearState: () => void;
 }
 const ShellContext = createContext<ShellCtx>({ data: null, state: null, clearState: () => {} });
@@ -191,7 +191,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const hoverFlag = hoveredCountry && data?.knownIds.has(hoveredCountry) ? flagPreviewUrl(hoveredCountry) : undefined;
 
   return (
-    <ShellContext.Provider value={{ data, state: pickedState ? { ref: pickedState, facts: factsOf(pickedState) } : null, clearState }}>
+    <ShellContext.Provider value={{ data, state: pickedState ? { ref: pickedState, facts: factsOf(pickedState), sources: subsReq.status === 'ok' ? subsReq.data.sources : [] } : null, clearState }}>
       <GlossaryProvider terms={terms} countryName={countryName} onPickCountry={setSelectedCountry}>
         {timeMode ? (
           <InfoCard label={histHover ? `Em ${formatYear(snapYear ?? year!)}` : 'Viagem no tempo'} name={histHover?.name ?? formatYear(snapYear ?? year!)} />
