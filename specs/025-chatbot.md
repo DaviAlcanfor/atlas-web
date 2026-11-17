@@ -1,5 +1,5 @@
 # 025 - Chatbot do Atlas (todo o conhecimento do app como ferramentas)
-Status: approved (dono em 2026-11-17: "a chave do chatbot é a mesma que já tá no projeto, do AI Gateway ... só deixo usar o gpt 6 luna ... dale") | Contrato: CR-012 (delta abaixo) | API: atlas-api/specs/025-chatbot.md (a escrever junto)
+Status: in progress (API e web prontas; falta o secret no FastAPI Cloud) | aprovada (dono em 2026-11-17: "a chave do chatbot é a mesma que já tá no projeto, do AI Gateway ... só deixo usar o gpt 6 luna ... dale") | Contrato: CR-012 (delta abaixo) | API: atlas-api/specs/025-chatbot.md (a escrever junto)
 
 ## Por quê
 O dono quer perguntar em linguagem natural ("quais monarquias absolutas existem?", "compare a inflação do Brasil e da Argentina")
@@ -34,6 +34,18 @@ POST /v1/chat  body: { messages: [{role: "user"|"assistant", content: str}] (má
 - Teto de gasto: não informado; valem os limites acima até o dono mudar.
 
 ## Tarefas
-- [ ] API: spec espelho, endpoint SSE, ferramentas, limite por IP, testes com modelo simulado
-- [ ] Contrato v1.3 (dono) + secret no FastAPI Cloud
-- [ ] Web: gaveta à esquerda, streaming, voo do globo para países citados
+- [x] API: spec espelho, endpoint SSE, ferramentas, limite por IP, testes com modelo simulado (atlas-api PR #27)
+- [x] Contrato v1.10 (CR-012)
+- [ ] Secret `AI_GATEWAY_API_KEY` no FastAPI Cloud (dono)
+- [x] Web: gaveta à esquerda, streaming, voo do globo para países citados
+
+## Entregue (web)
+- Botão "Perguntar ao Atlas" abaixo do leitor (no celular: ícone na barra do topo, ao lado da busca). `<dialog>` nativo com
+  `showModal()`: foco preso, Esc fecha, clique fora fecha; no celular vira folha de tela cheia.
+- `src/api/chat.ts`: `POST /v1/chat` com fetch + ReadableStream e parser SSE próprio (sem dependência); eventos validados com zod.
+  Modo mock: `src/api/mocks/chat.ts` (resposta de exemplo, mesma ordem de eventos).
+- `src/components/Markdown.tsx`: parágrafos, negrito, listas, links, sem `dangerouslySetInnerHTML`; `/pais/xx` navega pelo router
+  (no celular a folha fecha para mostrar o globo), links externos em nova aba.
+- `countries`: o globo voa até o primeiro país e o destaca (sem mudar a seleção). "consultando …" pelos eventos `tool`;
+  rótulo "Gerado por IA (gpt-6-luna) com dados do Atlas" + `done.sources`. 429/503/erro mostrados na gaveta.
+- Histórico no `sessionStorage` (aba atual) + "Nova conversa"; manda as últimas 20 mensagens.

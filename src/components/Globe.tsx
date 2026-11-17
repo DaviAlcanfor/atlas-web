@@ -97,6 +97,7 @@ interface Props {
   regimes: Map<string, string>; // iso2 -> regime text (only countries where the API has one)
   hoveredId: string | null;
   selectedId: string | null;
+  focusId?: string | null; // spec 025: a country the chat answer cites; the camera flies there without selecting it
   onHover: (id: string | null) => void;
   onSelect: (id: string | null) => void;
   onHoverState?: (s: StateRef | null) => void; // state/province under the pointer, inside the selected country (spec 005)
@@ -174,7 +175,7 @@ const setMarkerVisible = (el: object, visible: boolean) => {
 };
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, era, onReady: onReadyProp, onFlagsLoading, partners }: Props) {
+export function Globe({ features, lines, apiIds, capitals, layer, regimes, hoveredId, selectedId, focusId, onHover, onSelect, onHoverState, selectedStateId, onSelectState, stateFlags, showStates, backdrop, tint, era, onReady: onReadyProp, onFlagsLoading, partners }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLCanvasElement>(null);
   const globe = useRef<GlobeMethods | undefined>(undefined);
@@ -314,6 +315,7 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
     [features],
   );
   useEffect(() => flyTo(selectedId), [selectedId, flyTo]);
+  useEffect(() => { if (focusId) flyTo(focusId); }, [focusId, flyTo]);
   const initialFly = useRef(() => {}); // onReady resets the camera to START; a country already selected (URL path) must win
   initialFly.current = () => flyTo(selectedId);
 
