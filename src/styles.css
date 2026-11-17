@@ -701,3 +701,13 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .md-table th { font: 500 11px/1.4 var(--f-mono); color: var(--c-text-dim); border-bottom-color: var(--c-line-strong); }
 .md-table td { font-variant-numeric: tabular-nums; }
 .chat { z-index: var(--z-overlay); } /* non-modal on desktop: not in the top layer */
+
+/* spec 036 B: list of conversations inside the drawer */
+.chat__sessions { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.chat__sessions li { display: flex; align-items: stretch; gap: 6px; }
+.chat__session { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 9px 12px; text-align: left; font: 400 13px/1.4 var(--f-sans); color: var(--c-text);
+  background: none; border: 1px solid var(--c-line-strong); border-radius: var(--r); cursor: pointer; }
+.chat__session span { overflow-wrap: anywhere; }
+.chat__session small { font: 400 10px/1.4 var(--f-mono); color: var(--c-text-faint); }
+.chat__session:hover, .chat__sessions .is-active .chat__session { border-color: var(--c-ice); }
+.chat__session:focus-visible { outline: 1px solid var(--c-focus); outline-offset: 2px; }

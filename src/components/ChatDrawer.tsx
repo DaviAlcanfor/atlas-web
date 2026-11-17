@@ -1,20 +1,22 @@
 'use client';
 // spec 025: "Perguntar ao Atlas", a drawer on the left (full-screen sheet on phones). Native <dialog> + showModal(): focus trap,
-// Escape and an inert page behind come from the browser. History lives only in this tab (sessionStorage) and is resent each time.
+// Escape and an inert page behind come from the browser. Conversations live in this browser (localStorage, spec 036 B); the active one is resent each time.
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowUp } from '@phosphor-icons/react/dist/csr/ArrowUp';
 import { ChatCircleText } from '@phosphor-icons/react/dist/csr/ChatCircleText';
+import { Chats } from '@phosphor-icons/react/dist/csr/Chats';
+import { Trash } from '@phosphor-icons/react/dist/csr/Trash';
 import { X } from '@phosphor-icons/react/dist/csr/X';
 import { streamChat } from '../api/chat';
 import { ApiError } from '../api/client';
 import type { Source } from '../api/types';
+import { loadSessions, newId, remove, saveSessions, titleOf, upsert, type Session } from '../lib/chatSessions';
 import { safeHref } from '../lib/url';
 import { Markdown } from './Markdown';
 
 interface Turn { role: 'user' | 'assistant'; content: string; sources?: Source[]; error?: string }
 
-const KEY = 'atlas.chat';
 const MAX_MESSAGES = 20; // contract: 1..20 messages, 1..4000 chars each
 const MAX_CHARS = 4000;
 const EXAMPLES = ['Quais monarquias absolutas existem?', 'Compare a inflação do Brasil e da Argentina'];
@@ -23,15 +25,6 @@ const TOOL_LABEL: Record<string, string> = {
   get_people: 'pessoas', get_profile: 'perfil', get_economy: 'economia', get_trade: 'comércio', get_history: 'história',
   get_languages: 'idiomas', get_currency: 'moeda', glossary: 'glossário', list_indicators: 'indicadores', indicator_ranking: 'ranking',
 };
-
-function load(): Turn[] {
-  try {
-    const v: unknown = JSON.parse(sessionStorage.getItem(KEY) ?? '[]');
-    return Array.isArray(v) ? (v as Turn[]) : [];
-  } catch {
-    return [];
-  }
-}
 
 function errorText(e: unknown): string {
   if (e instanceof ApiError) return e.status === 503 ? 'O chat ainda não está ligado.' : e.detail || `Erro ${e.status} ao falar com o Atlas.`;
@@ -50,11 +43,23 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
   const [tools, setTools] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => { setTurns(load()); loaded.current = true; }, []); // after hydration: the server has no sessionStorage
-  useEffect(() => {
-    if (!loaded.current) return;
-    try { sessionStorage.setItem(KEY, JSON.stringify(turns)); } catch { /* private mode / quota: history just isn't kept */ }
-  }, [turns]);
+  const [sessions, setSessions] = useState<Session<Turn>[]>([]);
+  const [activeId, setActiveId] = useState(newId);
+  const [showList, setShowList] = useState(false);
+  useEffect(() => { // after hydration: the server has no storage. Opens the newest conversation.
+    const list = loadSessions<Turn>();
+    setSessions(list);
+    if (list[0]) { setActiveId(list[0].id); setTurns(list[0].turns); }
+    loaded.current = true;
+  }, []);
+  useEffect(() => { // every change of the active conversation is saved (empty ones are not)
+    if (!loaded.current || !turns.length) return;
+    setSessions((list) => {
+      const next = upsert(list, { id: activeId, title: titleOf(turns), updated: Date.now(), turns });
+      saveSessions(next);
+      return next;
+    });
+  }, [turns, activeId]);
   const log = useRef<HTMLDivElement>(null);
   useEffect(() => { if (log.current) log.current.scrollTop = log.current.scrollHeight; }, [turns, tools]);
 
@@ -69,11 +74,20 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
     router.push(href, { scroll: false }); // /pais/br: selects the country, the globe flies there
     if (window.matchMedia?.('(max-width: 700px)').matches) close(); // the sheet covers the globe on phones
   };
-  const reset = () => {
+  const switchTo = (id: string, to: Turn[]) => {
     abort.current?.abort();
-    setTurns([]);
+    setActiveId(id);
+    setTurns(to);
+    setShowList(false);
     onCountries([]);
     input.current?.focus();
+  };
+  const reset = () => switchTo(newId(), []); // the old conversation stays in the list
+  const del = (id: string) => {
+    const next = remove(sessions, id);
+    saveSessions(next);
+    setSessions(next);
+    if (id === activeId) reset();
   };
 
   async function send(question: string) {
@@ -116,17 +130,37 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
         <div className="chat__body">
           <header className="chat__head">
             <h2 id="chat-title">Perguntar ao Atlas</h2>
-            {turns.length > 0 && <button type="button" className="chat__reset" onClick={reset}>Nova conversa</button>}
+            {(turns.length > 0 || showList) && <button type="button" className="chat__reset" onClick={reset}>Nova conversa</button>}
+            {sessions.length > 0 && (
+              <button type="button" className="icon-btn" onClick={() => setShowList((v) => !v)} aria-expanded={showList} aria-label="Conversas">
+                <Chats size={14} weight="light" aria-hidden />
+              </button>
+            )}
             <button type="button" className="icon-btn" onClick={close} aria-label="Fechar"><X size={14} weight="light" aria-hidden /></button>
           </header>
           <div className="chat__log" ref={log} role="log" aria-live="polite" aria-busy={busy}>
-            {turns.length === 0 && (
+            {showList && (
+              <ul className="chat__sessions" aria-label="Conversas">
+                {sessions.map((s) => (
+                  <li key={s.id} className={s.id === activeId ? 'is-active' : undefined}>
+                    <button type="button" className="chat__session" onClick={() => switchTo(s.id, s.turns)} aria-current={s.id === activeId || undefined}>
+                      <span>{s.title}</span>
+                      <small>{new Date(s.updated).toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</small>
+                    </button>
+                    <button type="button" className="icon-btn" onClick={() => del(s.id)} aria-label={`Apagar conversa: ${s.title}`}>
+                      <Trash size={14} weight="light" aria-hidden />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!showList && turns.length === 0 && (
               <div className="chat__empty">
                 <p>Pergunte sobre países, governantes, economia, idiomas… As respostas usam só os dados do Atlas, com fonte.</p>
                 {EXAMPLES.map((q) => <button key={q} type="button" className="chat__example" onClick={() => void send(q)}>{q}</button>)}
               </div>
             )}
-            {turns.map((t, i) => t.role === 'user' ? (
+            {!showList && turns.map((t, i) => t.role === 'user' ? (
               <p key={i} className="chat__msg chat__msg--user">{t.content}</p>
             ) : (
               <div key={i} className="chat__msg chat__msg--assistant">
