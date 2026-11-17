@@ -4,11 +4,12 @@
 // that are done, and a curiosity that changes every few seconds. After SLOW_MS (or when the globe fails) it offers a way in without the globe.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CountrySummary } from '../api/types';
+import { FACTS } from '../lib/facts';
 import { LAND_COLS, LAND_ROWS } from '../lib/landmask';
 import { palette } from '../lib/palette';
 
 const SLOW_MS = 20000;
-const FACT_MS = 8000;
+const FACT_MS = 6000;
 const RENDER_SHARE = 0.3; // the last step (first render) has no real signal: it creeps toward 85% of its share until the frame arrives
 
 // land cells of the baked mask, and the land share of the sphere (for the dot count label in the steps)
@@ -129,7 +130,8 @@ export function LoadingScreen({ target, rendering, done, countries, steps, faile
   }, []);
 
   // Curiosities change every FACT_MS (the first one is picked once the list arrives; the start index is 0 so server and client agree)
-  const facts = useMemo(() => (countries ? curiosities(countries) : []), [countries]);
+  // The fixed list shows from the first frame (the API list may take a while); the ones computed from the API join it when it arrives.
+  const facts = useMemo(() => [...FACTS, ...(countries ? curiosities(countries) : [])], [countries]);
   useEffect(() => {
     if (reduced.current || facts.length < 2) return;
     const t = setInterval(() => setFact((f) => (f + 1) % facts.length), FACT_MS);
@@ -141,6 +143,7 @@ export function LoadingScreen({ target, rendering, done, countries, steps, faile
   useEffect(() => { const t = setTimeout(() => setSlow(true), SLOW_MS); return () => clearTimeout(t); }, []);
   if (gone) return null;
   const offer = !!failed || slow;
+  const current = steps.find((s) => !s.done); // the stage being waited on
   return (
     <div ref={root} className="loading-screen" role="status" aria-live="polite" aria-label="Carregando o Atlas">
       <div className="loading__stage">
@@ -152,7 +155,7 @@ export function LoadingScreen({ target, rendering, done, countries, steps, faile
         <p ref={pctEl} className="loading__pct">0%</p>
         <ul className="loading__steps">
           {steps.map((s) => (
-            <li key={s.label} data-done={s.done}>{s.label}</li>
+            <li key={s.label} data-done={s.done} data-current={s === current}>{s.label}</li>
           ))}
         </ul>
         {failed && <p className="loading__msg">{failed}</p>}
@@ -163,7 +166,7 @@ export function LoadingScreen({ target, rendering, done, countries, steps, faile
           </button>
         )}
         {shownFact && (
-          <p key={fact} className="loading__fact">
+          <p key={fact} className="loading__fact" aria-live="off">
             <span>Você sabia?</span> {shownFact}
           </p>
         )}
