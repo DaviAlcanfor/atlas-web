@@ -118,7 +118,7 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .icon { flex: none; }
 
 .psec { margin-top: 26px; scroll-margin-top: 76px; } /* clears the sticky panel header */
-.psec h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 600 13px/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text); } /* spec 035: larger, brighter section titles */
+.psec h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 500 13px/1.4 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-text); } /* spec 035: larger section titles, same weight (owner 2026-11-17: size, not bold) */
 .psec h3::after { content: ''; flex: 1; height: 1px; background: var(--c-line); }
 .sub { font: 400 11px/1.4 var(--f-mono); color: var(--c-text-faint); margin: 10px 0 6px !important; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; }
