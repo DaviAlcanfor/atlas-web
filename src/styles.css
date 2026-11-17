@@ -643,3 +643,5 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .psec--fold[open] > summary::after { transform: rotate(-135deg); }
 .psec--fold[open] > summary { margin-bottom: 10px; }
 .psec--fold > summary:hover h3 { color: var(--c-text); }
+/* spec 031: stock index widget (TradingView iframe) */
+.stock__widget { min-height: 200px; margin: 6px 0; }
