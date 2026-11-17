@@ -743,9 +743,9 @@ export function Globe({ features, lines, apiIds, capitals, layer, regimes, hover
         arcColor={arcColor}
         arcStroke={0.35}
         arcAltitudeAutoScale={0.35}
-        arcDashLength={reduced ? 1 : 0.5}
-        arcDashGap={reduced ? 0 : 0.25}
-        arcDashAnimateTime={reduced ? 0 : 3000}
+        arcDashLength={1}
+        arcDashGap={0}
+        arcDashAnimateTime={0} /* static: the dash animation kept the globe redrawing every frame (owner 2026-11-17: site felt stuck) */
         arcsTransitionDuration={0}
       />
     </div>

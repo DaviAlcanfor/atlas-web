@@ -67,7 +67,7 @@ function Chrome({ children }: { children: ReactNode }) {
   const [skipGlobe, setSkipGlobe] = useState(false); // spec 028: the visitor chose to enter without waiting for the globe
   const [flagsLoading, setFlagsLoading] = useState(false);
   const [showStates, setShowStates] = useState(false); // spec 023: off by default; the button unlocks the clickable divisions
-  const [tradeArcs, setTradeArcs] = useState(true); // spec 029 phase 3: arcs on by default, the "Comércio" button hides them
+  const [tradeArcs, setTradeArcs] = useState(false); // spec 029 phase 3: off by default (owner 2026-11-17: heavy); the "Comércio" button shows them
   const [allStateFlags, setAllStateFlags] = useState(true); // spec 026: every state's flag, or only the clicked one
   const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
