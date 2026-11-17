@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import { sseParser, toChatEvent } from '../src/api/chat';
 import { MAX_SESSIONS, loadSessions, titleOf, upsert } from '../src/lib/chatSessions';
 import { ChatDrawer } from '../src/components/ChatDrawer';
+import { ToolList } from '../src/components/ToolList';
+import { argChips, toolName } from '../src/lib/chatTools';
 
 const push = vi.fn();
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
@@ -38,11 +40,17 @@ describe('chat drawer on the mock (spec 025)', () => {
     fireEvent.keyDown(box, { key: 'Enter' });
     const log = screen.getByRole('log');
     expect(within(log).getByText('Fale do Brasil')).toBeTruthy();
-    await within(log).findByText(/consultando/);
+    await within(log).findByText(/Consultas \(\d\)/);
     const external = await within(log).findByRole('link', { name: 'Wikidata' }, { timeout: 5000 });
     expect(external.getAttribute('target')).toBe('_blank');
     expect(external.getAttribute('rel')).toContain('noopener');
     await within(log).findByText(/Gerado por IA \(gpt-6-luna\)/);
+    const calls = within(log).getByText('Consultas (2)').closest('details')!; // spec 036: collapsed once the answer ends
+    expect(calls.open).toBe(false);
+    expect(within(calls).getByText('Busca')).toBeTruthy();
+    expect(within(calls).getByText(/país: .*Brasil/)).toBeTruthy();
+    // spec 036 B: conversations live in localStorage
+    expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].turns[1].tools).toHaveLength(2);
     expect(onCountries).toHaveBeenCalledWith(['BR', 'JP']);
     fireEvent.click(within(log).getByRole('link', { name: 'Brasil' }));
     expect(push).toHaveBeenCalledWith('/pais/br', { scroll: false });
@@ -88,5 +96,29 @@ describe('conversations (spec 036 B)', () => {
     fireEvent.click(within(log).getByRole('button', { name: 'Apagar conversa: Pergunta antiga' }));
     expect(JSON.parse(localStorage.getItem('atlas.chats')!)).toHaveLength(0);
     expect(within(log).queryByText('Pergunta antiga')).toBeNull();
+  });
+});
+
+describe('tool activity (spec 036 A)', () => {
+  it('names tools in pt-BR and turns arguments into chips, country codes into flag + name', () => {
+    expect(toolName('get_economy')).toBe('Economia');
+    expect(toolName('indicator_ranking')).toBe('Ranking de indicador');
+    expect(toolName('some_new_tool')).toBe('Some new tool');
+    expect(argChips({ iso2: 'BR', year: 2020, q: '', countries: ['JP', 'abc'], id: 'HDR.HDI' })).toEqual([
+      { key: 'país', value: 'Brasil', flag: 'BR' },
+      { key: 'ano', value: '2020' },
+      { key: 'countries', value: 'Japão', flag: 'JP' },
+      { key: 'countries', value: 'abc' }, // not a 2-letter code: shown as typed
+      { key: 'id', value: 'HDR.HDI' },
+    ]);
+  });
+  it('is open with a spinner on the last call while streaming, collapsed after', () => {
+    const tools = [{ name: 'get_trade', args: { iso2: 'AR' } }, { name: 'get_economy', args: { iso2: 'AR' } }];
+    const { container, rerender } = render(<ToolList tools={tools} live />);
+    expect((container.querySelector('details') as HTMLDetailsElement).open).toBe(true);
+    expect(container.querySelectorAll('.spinner')).toHaveLength(1);
+    rerender(<ToolList tools={tools} live={false} />);
+    expect((container.querySelector('details') as HTMLDetailsElement).open).toBe(false);
+    expect(container.querySelectorAll('.spinner')).toHaveLength(0);
   });
 });

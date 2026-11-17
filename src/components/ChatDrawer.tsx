@@ -13,18 +13,15 @@ import { ApiError } from '../api/client';
 import type { Source } from '../api/types';
 import { loadSessions, newId, remove, saveSessions, titleOf, upsert, type Session } from '../lib/chatSessions';
 import { safeHref } from '../lib/url';
+import type { ToolCall } from '../lib/chatTools';
 import { Markdown } from './Markdown';
+import { ToolList } from './ToolList';
 
-interface Turn { role: 'user' | 'assistant'; content: string; sources?: Source[]; error?: string }
+interface Turn { role: 'user' | 'assistant'; content: string; sources?: Source[]; error?: string; tools?: ToolCall[] }
 
 const MAX_MESSAGES = 20; // contract: 1..20 messages, 1..4000 chars each
 const MAX_CHARS = 4000;
 const EXAMPLES = ['Quais monarquias absolutas existem?', 'Compare a inflação do Brasil e da Argentina'];
-const TOOL_LABEL: Record<string, string> = {
-  search: 'busca', list_countries: 'lista de países', get_country: 'dados do país', get_leaders: 'governantes',
-  get_people: 'pessoas', get_profile: 'perfil', get_economy: 'economia', get_trade: 'comércio', get_history: 'história',
-  get_languages: 'idiomas', get_currency: 'moeda', glossary: 'glossário', list_indicators: 'indicadores', indicator_ranking: 'ranking',
-};
 
 function errorText(e: unknown): string {
   if (e instanceof ApiError) return e.status === 503 ? 'O chat ainda não está ligado.' : e.detail || `Erro ${e.status} ao falar com o Atlas.`;
@@ -40,7 +37,6 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
   const loaded = useRef(false);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [text, setText] = useState('');
-  const [tools, setTools] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
 
   const [sessions, setSessions] = useState<Session<Turn>[]>([]);
@@ -61,7 +57,7 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
     });
   }, [turns, activeId]);
   const log = useRef<HTMLDivElement>(null);
-  useEffect(() => { if (log.current) log.current.scrollTop = log.current.scrollHeight; }, [turns, tools]);
+  useEffect(() => { if (log.current) log.current.scrollTop = log.current.scrollHeight; }, [turns]);
 
   const open = () => {
     // owner 2026-11-17: clicking outside must not close it. Desktop = non-modal (the globe stays usable beside it);
@@ -98,7 +94,6 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
     const patch = (f: (t: Turn) => Turn) => setTurns((ts) => [...ts.slice(0, -1), f(ts.at(-1)!)]);
     setTurns((ts) => [...ts, { role: 'user', content: question }, { role: 'assistant', content: '' }]);
     setText('');
-    setTools([]);
     setBusy(true);
     const ac = new AbortController();
     abort.current = ac;
@@ -106,7 +101,7 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
     try {
       for await (const e of streamChat(history, ac.signal)) {
         if (e.type === 'text') patch((t) => ({ ...t, content: t.content + e.delta }));
-        else if (e.type === 'tool') setTools((x) => [...x, TOOL_LABEL[e.name] ?? e.name]);
+        else if (e.type === 'tool') patch((t) => ({ ...t, tools: [...(t.tools ?? []), { name: e.name, args: e.args }] }));
         else if (e.type === 'countries') { if (e.iso2.length) onCountries(e.iso2); }
         else if (e.type === 'done') { ended = true; patch((t) => ({ ...t, sources: e.sources })); }
         else { ended = true; patch((t) => ({ ...t, error: e.message })); }
@@ -115,7 +110,7 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
     } catch (e) {
       if (!ac.signal.aborted) patch((t) => ({ ...t, error: errorText(e) }));
     } finally {
-      if (abort.current === ac) { setBusy(false); setTools([]); }
+      if (abort.current === ac) setBusy(false);
     }
   }
   const submit = (e: FormEvent) => { e.preventDefault(); void send(text); };
@@ -165,9 +160,10 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
             ) : (
               <div key={i} className="chat__msg chat__msg--assistant">
                 {t.content && <Markdown text={t.content} onLink={onLink} />}
-                {busy && i === turns.length - 1 && (
+                {t.tools && <ToolList tools={t.tools} live={busy && i === turns.length - 1} />}
+                {busy && i === turns.length - 1 && !t.content && !t.tools?.length && (
                   <p className="chat__tools" role="status">
-                    <span className="spinner" aria-hidden="true" /> {tools.length ? `consultando ${tools.at(-1)}…` : 'pensando…'}
+                    <span className="spinner" aria-hidden="true" /> pensando…
                   </p>
                 )}
                 {t.error && <p className="chat__err" role="alert">{t.error}</p>}
