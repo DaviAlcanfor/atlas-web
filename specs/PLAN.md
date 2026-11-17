@@ -46,6 +46,40 @@ do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=fals
   economia" + 12 indicadores no ranking); bandeira em todas as ilhas; coluna de ícones com nome; favicon; READMEs dos dois repos.
 - Lição: `import-facts` também regrava o câmbio com o `fx.json` local; depois dele, rodar `gh workflow run fx-daily.yml`.
 
+### Lista do dono de 2026-11-17 (triagem)
+Feito na spec 035 (PR web#42): tabelas no chat, chat não fecha ao clicar fora, títulos maiores, foco da Rússia, polos, parceiros
+comerciais destacados, governador no hover do estado.
+
+**A fazer, sem decisão pendente** (spec própria antes do código; licença lida antes de fonte nova):
+| Item | Repo | Nota |
+|---|---|---|
+| Chat: mostrar cada tool com parâmetros (estilo Claude/Codex) | web (+API: o evento `tool` já traz `args`) | só front |
+| Chat: navegar entre conversas | web | histórico no navegador até existir login |
+| Chat: logs de uso das tools | API | tabela de logs sem texto do usuário (privacidade); retenção curta |
+| Viagem no tempo: URL e nome acompanham o período (ex.: Império Otomano) | web | `?ano=` já existe; falta o polity no caminho e no título |
+| Viagem no tempo: fatos dos polities | API | P7 já previa (bandeira, capital, governantes por Wikidata); "mockar" = só fixture de teste, nunca dado inventado |
+| Tool de território para o chat (destacar regiões no globo) | API + web | evento SSE novo; CR |
+| Mascote e ícone do chat; carregamento mais bonito | web | proposta visual com 2-3 opções antes |
+| Modo aula (overview organizado do assunto) | API + web | depende da arquitetura do chat |
+| Prompt: escopo, hardening, teste de prompt injection | API | casos de teste de injeção no CI |
+| Cache do site | web + API | medir antes (ETag já existe na API) |
+| Refatoração da API (services usados por rotas e tools, models/schemas por domínio, StrEnum, cli.py e importer.py menores) | API | uma PR por pasta, sem mudar contrato; testes antes e depois |
+
+**Investigar com reprodução antes de corrigir:** bugs da Groenlândia (fora o foco, já corrigido) e da viagem no tempo
+(o dono precisa dizer o que vê: passo a passo ou print).
+
+**Decisão do dono antes de qualquer código** (custo, segurança ou arquitetura):
+| Item | Pergunta |
+|---|---|
+| Login, contas e histórico entre sessões | Qual provedor (Supabase Auth já está no projeto)? Login obrigatório para o chat? |
+| Limite por conta (tokens, custo) | Teto por conta por dia/mês? Hoje: 20/h por IP e 300/dia no total |
+| Multiagentes (`/especialista`, roteador, LangGraph `Send`) | Vale a complexidade agora? Quais agentes? Recomendação: um agente com modos (`/learn`, `/analyse`) primeiro |
+| Guardrails com Jev | Qual classificação (entrada fora de escopo? injeção?) e custo por pergunta |
+| Busca na web para o chat | Qual provedor e custo; só para desempate, sempre citando |
+| Chat em repositório próprio | Recomendação: continuar na API até a refatoração em services |
+| Wireup (injeção de dependências) | Recomendação: só depois da refatoração em services, se ainda fizer falta |
+| E-mails/mensagens automáticas | Destinatários, frequência, canal; GitHub Actions agendado resolve sem servidor sempre ligado |
+
 ### Plano revisto em 2026-11-17 (dono: "planeja como fazer o resto e dale" = aprovação das ondas abaixo)
 Feito desde 2026-11-15: 029 fases 2 e 3 (BACI no ar, `/trade`, arcos, botão Comércio, `/economia/[iso2]`), 030 layout do celular,
 seções recolhíveis, contrato v1.7/v1.8 (CR-009, CR-010) colado pelo agente a pedido do dono (PRs api#26, web#34).
