@@ -24,7 +24,7 @@ export const palette = {
   // text
   text: '#e2ecef',
   textDim: '#8da4ad',
-  textFaint: '#5a717a',
+  textFaint: '#738b95', // spec 037 B: 5.3:1 on panelSolid (was #5a717a, 3.7:1: failed 4.5:1 for the small source/footer text)
   // the single accent
   signal: '#ff5a4e',
   signalDim: 'rgba(255, 90, 78, 0.22)',

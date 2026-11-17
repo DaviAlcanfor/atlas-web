@@ -278,6 +278,9 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
 .clues dt { color: var(--c-text-dim); font-size: 13px; }
 .clues dd { margin: 0; font: 500 13px/1.4 var(--f-mono); color: var(--c-ice-bright); text-align: right; }
 
+/* visually hidden, still read by screen readers */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
 /* ---------- loading ---------- */
 .spinner { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--c-line-strong); border-top-color: var(--c-ice); border-radius: 50%; vertical-align: -2px; }
 /* never blocks the site (behind the chrome, click-through): the page works while the globe gets ready */

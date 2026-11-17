@@ -69,3 +69,17 @@ describe('parseCoverage (spec 021)', () => {
     expect(parseCoverage(wt)).toEqual([['Albania', 'full'], ['Afghanistan', 'partial'], ['Narnia land', 'limited'], ['Vietnam', 'full']]);
   });
 });
+
+describe('palette contrast (WCAG AA, spec 037 B)', () => {
+  const lum = (hex: string) => {
+    const f = (v: number) => (v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+    const [r, g, b] = [1, 3, 5].map((i) => f(parseInt(hex.slice(i, i + 2), 16)));
+    return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
+  };
+  const ratio = (a: string, b: string) => (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
+  it.each(['text', 'textDim', 'textFaint', 'ice', 'signal'] as const)('%s reads at 4.5:1 on the panel and on the land fill', async (k) => {
+    const { palette } = await import('../src/lib/palette');
+    expect(ratio(palette[k], palette.panelSolid)).toBeGreaterThanOrEqual(4.5);
+    expect(ratio(palette[k], palette.landFill)).toBeGreaterThanOrEqual(4.5);
+  });
+});
