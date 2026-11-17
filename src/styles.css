@@ -643,5 +643,52 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .psec--fold[open] > summary::after { transform: rotate(-135deg); }
 .psec--fold[open] > summary { margin-bottom: 10px; }
 .psec--fold > summary:hover h3 { color: var(--c-text); }
+
+/* spec 025: "Perguntar ao Atlas" (button under the readout; drawer on the left, full-screen sheet on phones) */
+.chat-open {
+  position: fixed; z-index: var(--z-chrome); top: 96px; left: 24px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px;
+  font: 500 12px/1 var(--f-mono); letter-spacing: 0.02em; color: var(--c-text); background: var(--c-panel); border: 1px solid var(--c-line-strong);
+  border-left: 2px solid var(--c-ice); border-radius: var(--r); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer;
+}
+.chat-open:hover { border-color: var(--c-ice); color: var(--c-ice-bright); }
+.chat { position: fixed; inset: 0 auto 0 0; margin: 0; padding: 0; width: min(420px, 100vw); max-width: none; height: 100dvh; max-height: none;
+  color: var(--c-text); background: var(--c-panel-solid); border: 0; border-right: 1px solid var(--c-line-strong); }
+.chat::backdrop { background: transparent; }
+.chat__body { display: flex; flex-direction: column; height: 100%; }
+.chat__head { display: flex; align-items: center; gap: 6px; padding: 12px 10px 12px 16px; border-bottom: 1px solid var(--c-line); }
+.chat__head h2 { flex: 1; margin: 0; font: 500 11px/1.4 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-ice); }
+.chat__reset { font: 500 11px/1 var(--f-mono); padding: 7px 10px; color: var(--c-text-dim); background: none; border: 1px solid var(--c-line-strong); border-radius: var(--r); cursor: pointer; }
+.chat__reset:hover { color: var(--c-text); border-color: var(--c-ice); }
+.chat__log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.chat__empty p { margin: 0 0 12px; color: var(--c-text-dim); line-height: 1.6; }
+.chat__example { display: block; width: 100%; margin-top: 6px; padding: 9px 12px; text-align: left; font: 400 13px/1.4 var(--f-sans); color: var(--c-text);
+  background: none; border: 1px solid var(--c-line); border-left: 2px solid var(--c-ice); border-radius: var(--r); cursor: pointer; }
+.chat__example:hover { border-color: var(--c-ice); }
+.chat__msg { margin: 0; overflow-wrap: anywhere; }
+.chat__msg--user { align-self: flex-end; max-width: 85%; padding: 8px 12px; white-space: pre-wrap; background: rgba(143, 219, 227, 0.08); border: 1px solid var(--c-line-strong); border-radius: var(--r); }
+.chat__msg--assistant p, .chat__msg--assistant ul, .chat__msg--assistant ol { margin: 0 0 8px; line-height: 1.6; }
+.chat__msg--assistant ul, .chat__msg--assistant ol { padding-left: 20px; }
+.chat__msg--assistant strong { color: var(--c-ice-bright); font-weight: 600; }
+.chat__msg a { color: var(--c-ice); text-underline-offset: 3px; }
+.chat__msg a:hover { color: var(--c-ice-bright); }
+.chat__tools { font: 400 11px/1.4 var(--f-mono); color: var(--c-ice); }
+.chat__err { padding: 6px 10px; border-left: 2px solid var(--c-signal); background: var(--c-signal-dim); font-size: 13px; }
+.chat__msg--assistant .chat__meta { margin: 6px 0 0; font: 400 10px/1.5 var(--f-mono); color: var(--c-text-faint); }
+.chat__meta a { color: var(--c-text-dim); }
+.chat__form { display: flex; align-items: flex-end; gap: 8px; padding: 12px 16px 16px; border-top: 1px solid var(--c-line); }
+.chat__form textarea { flex: 1; min-width: 0; resize: none; max-height: 160px; padding: 10px 12px; font: 400 14px/1.4 var(--f-sans); color: var(--c-text);
+  background: var(--c-panel); border: 1px solid var(--c-line-strong); border-radius: var(--r); }
+.chat__form textarea::placeholder { color: var(--c-text-faint); }
+.chat__form textarea:focus-visible { outline: 1px solid var(--c-focus); outline-offset: 2px; }
+.chat__send { flex: none; display: grid; place-items: center; width: 42px; height: 42px; color: var(--c-abyss); background: var(--c-ice); border: 0; border-radius: var(--r); cursor: pointer; }
+.chat__send:disabled { opacity: 0.35; cursor: default; }
+@media (max-width: 700px) {
+  .chat-open { top: 12px; left: auto; right: 16px; width: 42px; height: 42px; padding: 0; justify-content: center; border-left-width: 1px; }
+  .chat-open span { display: none; }
+  .search, .globe-slot--panel ~ .search { right: 66px; }
+  .chat { width: 100vw; border-right: 0; }
+  .chat__head { padding: 10px 8px 10px 16px; }
+  .chat__head .icon-btn { width: 40px; height: 40px; }
+}
 /* spec 031: stock index widget (TradingView iframe) */
 .stock__widget { min-height: 200px; margin: 6px 0; }

@@ -16,6 +16,7 @@ import { InfoCard } from './components/InfoCard';
 import { LoadingScreen } from './components/LoadingScreen';
 import { GlobeBoundary, hasWebGL } from './components/GlobeBoundary';
 import { LayerToggle, RailButton } from './components/LayerToggle';
+import { ChatDrawer } from './components/ChatDrawer';
 import { BookOpenText } from '@phosphor-icons/react/dist/csr/BookOpenText';
 import { ClockCounterClockwise } from '@phosphor-icons/react/dist/csr/ClockCounterClockwise';
 import { CurrencyCircleDollar } from '@phosphor-icons/react/dist/csr/CurrencyCircleDollar';
@@ -71,6 +72,9 @@ function Chrome({ children }: { children: ReactNode }) {
   const [allStateFlags, setAllStateFlags] = useState(true); // spec 026: every state's flag, or only the clicked one
   const [hoverState, setHoverState] = useState<StateRef | null>(null); // hovered state/province of the selected country
   const [pickedState, setPickedState] = useState<StateRef | null>(null); // spec 024: clicked state
+  const [chatFocus, setChatFocus] = useState<string | null>(null); // spec 025: first country the chat answer cites (highlight + fly)
+  const onChatCountries = useCallback((iso2: string[]) => setChatFocus(iso2[0] ?? null), []);
+  useEffect(() => setChatFocus(null), [selectedCountry]);
   const onGlobeReady = useCallback(() => setGlobeReady(true), []);
   const [globeFailed, setGlobeFailed] = useState<string>();
   const onGlobeError = useCallback((msg: string) => setGlobeFailed(msg), []);
@@ -234,8 +238,9 @@ function Chrome({ children }: { children: ReactNode }) {
               capitals={inPast ? NO_CAPITALS : data.capitals}
               regimes={inPast ? NO_REGIMES : data.regimes}
               layer={inPast ? 'content' : layer}
-              hoveredId={hoveredCountry}
+              hoveredId={hoveredCountry ?? (inPast ? null : chatFocus)}
               selectedId={inPast ? histSel : selectedCountry}
+              focusId={inPast ? null : chatFocus}
               onHover={setHoveredCountry}
               onSelect={inPast ? setHistSel : setSelectedCountry}
               onHoverState={setHoverState}
@@ -289,6 +294,7 @@ function Chrome({ children }: { children: ReactNode }) {
             </LayerToggle>}
           </>
         )}
+        {globeRoute && <ChatDrawer onCountries={onChatCountries} />}
         {children}
         <Footer />
       </GlossaryProvider>

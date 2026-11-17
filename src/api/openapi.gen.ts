@@ -6,6 +6,10 @@
 
 
 export interface paths {
+  "/v1/chat": {
+    /** Post Chat */
+    post: operations["post_chat_v1_chat_post"];
+  };
   "/v1/countries": {
     /** List Countries */
     get: operations["list_countries_v1_countries_get"];
@@ -140,6 +144,21 @@ export interface components {
       lng: number;
       /** Name */
       name: string;
+    };
+    /** ChatIn */
+    ChatIn: {
+      /** Messages */
+      messages: components["schemas"]["ChatMessage"][];
+    };
+    /** ChatMessage */
+    ChatMessage: {
+      /** Content */
+      content: string;
+      /**
+       * Role
+       * @enum {string}
+       */
+      role: "user" | "assistant";
     };
     /** Clues */
     Clues: {
@@ -1037,11 +1056,33 @@ export interface components {
       /** Code */
       code: string | null;
       flag: components["schemas"]["Image"] | null;
+      hdi?: components["schemas"]["SubdivisionHdi"] | null;
+      head?: components["schemas"]["SubdivisionHead"] | null;
       /** Name */
       name: string;
       population: components["schemas"]["SubdivisionPopulation"] | null;
       /** Wikidata Id */
       wikidata_id: string;
+    };
+    /** SubdivisionHdi */
+    SubdivisionHdi: {
+      /** Value */
+      value: number;
+      /** Year */
+      year: number;
+    };
+    /** SubdivisionHead */
+    SubdivisionHead: {
+      /** Name */
+      name: string;
+      /** Office */
+      office: string | null;
+      /** Since */
+      since: string | null;
+      /** Source Id */
+      source_id: string;
+      /** Wikidata Id */
+      wikidata_id: string | null;
     };
     /** SubdivisionList */
     SubdivisionList: {
@@ -1127,6 +1168,29 @@ export type external = Record<string, never>;
 
 export interface operations {
 
+  /** Post Chat */
+  post_chat_v1_chat_post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChatIn"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": unknown;
+          "text/event-stream": unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** List Countries */
   list_countries_v1_countries_get: {
     responses: {

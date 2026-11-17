@@ -4,7 +4,7 @@ import type { AtlasApi } from './types';
 
 /** The API answered with an error status (application/problem+json). */
 export class ApiError extends Error {
-  constructor(readonly status: number, readonly title: string, detail: string) {
+  constructor(readonly status: number, readonly title: string, readonly detail: string) {
     super(`${status} ${title}: ${detail}`);
   }
 }
