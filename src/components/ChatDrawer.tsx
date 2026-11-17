@@ -59,7 +59,9 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
   useEffect(() => { if (log.current) log.current.scrollTop = log.current.scrollHeight; }, [turns, tools]);
 
   const open = () => {
-    dialog.current?.showModal();
+    // owner 2026-11-17: clicking outside must not close it. Desktop = non-modal (the globe stays usable beside it);
+    // phones = modal full-screen sheet (it covers everything anyway).
+    if (window.matchMedia?.('(max-width: 700px)').matches) dialog.current?.showModal(); else dialog.current?.show();
     input.current?.focus();
   };
   const close = () => dialog.current?.close();
@@ -110,7 +112,7 @@ export function ChatDrawer({ onCountries }: { onCountries: (iso2: string[]) => v
         <ChatCircleText size={16} weight="light" aria-hidden /><span>Perguntar ao Atlas</span>
       </button>
       <dialog ref={dialog} className="chat" aria-labelledby="chat-title" onClose={() => onCountries([])}
-        onClick={(e) => e.target === dialog.current && close() /* click on the backdrop */}>
+        onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); close(); } }}>
         <div className="chat__body">
           <header className="chat__head">
             <h2 id="chat-title">Perguntar ao Atlas</h2>

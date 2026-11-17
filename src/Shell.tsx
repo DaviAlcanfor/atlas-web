@@ -37,6 +37,9 @@ import { idOf } from './types';
 // three.js touches window/WebGL at import time: browser only, and in its own chunk (pages without the globe skip ~1 MB).
 const Globe = dynamic(() => import('./components/Globe').then((m) => m.Globe), { ssr: false });
 
+// spec 035: "Governador: Nome · desde 2023" under a state's name on hover; no head = no line
+const headLine = (h: Subdivision['head'] | undefined) => (h ? `${h.office ?? 'Chefe'}: ${h.name}${h.since ? ` · desde ${h.since.slice(0, 4)}` : ''}` : undefined);
+
 const NO_TERMS: never[] = [];
 const NO_CAPITALS = new Map<string, never>();
 const NO_REGIMES = new Map<string, string>();
@@ -196,7 +199,7 @@ function Chrome({ children }: { children: ReactNode }) {
         {timeMode ? (
           <InfoCard label={histHover ? `Em ${formatYear(snapYear ?? year!)}` : 'Viagem no tempo'} name={histHover?.name ?? formatYear(snapYear ?? year!)} />
         ) : hoverState && selectedName ? (
-          <InfoCard label={`Estado em ${selectedName}`} name={factsOf(hoverState)?.name ?? hoverState.name} flagUrl={factsOf(hoverState)?.flag?.url} />
+          <InfoCard label={`Estado em ${selectedName}`} name={factsOf(hoverState)?.name ?? hoverState.name} flagUrl={factsOf(hoverState)?.flag?.url} sub={headLine(factsOf(hoverState)?.head)} />
         ) : (
           <InfoCard label={name ? 'País' : 'Explore o mundo'} name={name ?? 'Atlas'} flagUrl={hoverFlag} />
         )}
