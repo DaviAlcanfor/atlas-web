@@ -14,6 +14,7 @@ import { MapPin } from '@phosphor-icons/react/dist/csr/MapPin';
 import { Newspaper } from '@phosphor-icons/react/dist/csr/Newspaper';
 import { Package } from '@phosphor-icons/react/dist/csr/Package';
 import { Handshake } from '@phosphor-icons/react/dist/csr/Handshake';
+import { ChartLineUp } from '@phosphor-icons/react/dist/csr/ChartLineUp';
 import { Ruler } from '@phosphor-icons/react/dist/csr/Ruler';
 import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
 import { Translate } from '@phosphor-icons/react/dist/csr/Translate';
@@ -42,6 +43,7 @@ const LABEL_ICON: Readonly<Record<string, Icon>> = {
   'Ideias políticas': Lightbulb,
   'O que exporta': Package,
   'Com quem negocia': Handshake,
+  'Bolsa': ChartLineUp,
 };
 
 export function LabelIcon({ label }: { label: string }) {

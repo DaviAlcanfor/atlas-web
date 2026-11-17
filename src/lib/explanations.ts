@@ -21,6 +21,7 @@ export const EXPLANATIONS: Readonly<Record<string, string>> = {
   'GeoGuessr': 'Material de apoio para o jogo GeoGuessr: um guia da comunidade (Plonk It) e pistas para reconhecer o país.',
   'Fontes': 'De onde vêm os dados deste painel, com licença e data da consulta.',
   'O que exporta': 'Os produtos que o país mais vende ao exterior, somados por código de 4 dígitos do Sistema Harmonizado (SH), e a fatia de cada um no total exportado. Fonte: BACI, do CEPII, com alguns anos de defasagem (o ano aparece embaixo).',
+  'Bolsa': 'O principal índice de ações do país: a média ponderada das maiores empresas da bolsa. Mostrado pelo widget gratuito do TradingView, com atraso (as bolsas cobram pela cotação em tempo real). Algumas bolsas não liberam o índice para sites de terceiros; aí só há o link.',
   'Com quem negocia': 'Os países que mais compram do país (destinos das exportações) e os que mais vendem para ele (origens das importações), com a fatia de cada um. Toque num país para abri-lo; no globo, arcos ligam o país a esses parceiros. Fonte: BACI, do CEPII.',
   'Como vive o povo': 'Indicadores de vida, sociedade, renda e ambiente. Cada linha mostra o valor, o ano e a fonte; a régua vai do menor ao maior valor do mundo, com a mediana mundial (traço) e o país (ponto).',
   'Religiões': 'Composição religiosa segundo o Wikidata: só aparece quando as fatias somam de 80% a 105%. O ano da fonte vem junto; confira antes de citar.',
