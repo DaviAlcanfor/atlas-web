@@ -100,9 +100,9 @@ export function HistorySummary({ iso2, curated, renderTimeline }: {
         </>
       )}
       <SourceLine src={wiki} prefix="Texto condensado de" />
-      {/* spec 026: the timeline is long, so it starts collapsed */}
+      {/* owner 2026-11-17: the timeline starts open (was collapsed since spec 026) */}
       {events.length > 0 ? (
-        <details className="pgroup">
+        <details className="pgroup" open>
           <summary>Marcos <span>{events.length}</span></summary>
           <p className="note">Eventos mais citados do país e dos Estados que o antecederam, reunidos automaticamente do Wikidata (sem revisão humana).</p>
           {kinds.length > 1 && (
@@ -114,7 +114,7 @@ export function HistorySummary({ iso2, curated, renderTimeline }: {
           {renderTimeline(events.filter((e) => !kind || e.kind === kind).map(asEvent), wikidata ? [wikidata] : [])}
         </details>
       ) : curated.length > 0 && (
-        <details className="pgroup">
+        <details className="pgroup" open>
           <summary>Marcos <span>{curated.length}</span></summary>
           {renderTimeline(curated, [])}
         </details>

@@ -635,3 +635,11 @@ a.news__title:hover { color: var(--c-ice-bright); text-decoration: underline; te
 .panel a.shares__link:hover, .panel a.shares__link:focus-visible { color: var(--c-ice-bright); text-decoration: underline; }
 .cpage a.shares__link { color: var(--c-text); text-decoration: none; }
 .cpage a.shares__link:hover, .cpage a.shares__link:focus-visible { color: var(--c-ice-bright); text-decoration: underline; }
+/* foldable panel block (Section fold): the title row toggles it, chevron at the end */
+.psec--fold > summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; }
+.psec--fold > summary::-webkit-details-marker { display: none; }
+.psec--fold > summary h3 { flex: 1; margin: 0; padding: 4px 0; }
+.psec--fold > summary::after { content: ''; flex: none; width: 6px; height: 6px; border-right: 1px solid var(--c-ice); border-bottom: 1px solid var(--c-ice); transform: rotate(45deg); transition: transform 0.15s var(--ease-out); }
+.psec--fold[open] > summary::after { transform: rotate(-135deg); }
+.psec--fold[open] > summary { margin-bottom: 10px; }
+.psec--fold > summary:hover h3 { color: var(--c-text); }
