@@ -46,7 +46,30 @@ do worktree `atlas-api-deploy` (no commit em produção), com `AUTO_MIGRATE=fals
   economia" + 12 indicadores no ranking); bandeira em todas as ilhas; coluna de ícones com nome; favicon; READMEs dos dois repos.
 - Lição: `import-facts` também regrava o câmbio com o `fx.json` local; depois dele, rodar `gh workflow run fx-daily.yml`.
 
-### Pendente (revisto em 2026-11-15, fim do dia)
+### Plano revisto em 2026-11-17 (dono: "planeja como fazer o resto e dale" = aprovação das ondas abaixo)
+Feito desde 2026-11-15: 029 fases 2 e 3 (BACI no ar, `/trade`, arcos, botão Comércio, `/economia/[iso2]`), 030 layout do celular,
+seções recolhíveis, contrato v1.7/v1.8 (CR-009, CR-010) colado pelo agente a pedido do dono (PRs api#26, web#34).
+Regras: no máximo 2 agentes Opus ao mesmo tempo; um por repo (worktree próprio se o checkout principal estiver ocupado); licença
+lida e citada na spec ANTES do código; todo PR visível com prints antes/depois; modelo de IA só `openai/gpt-6-luna` (dono).
+
+| Onda | Item | Spec | API | Web | Situação |
+|---|---|---|---|---|---|
+| 1 | Chatbot (gpt-6-luna, chave do AI Gateway) | 025 | `POST /v1/chat` SSE, CR-012 | gaveta à esquerda | API em andamento |
+| 1 | IDH por estado + governador | 024 fase 2 | GDL + fonte do governador, CR-011 | card do estado | API em andamento |
+| 1 | Bolsa: cotação no site (widget TradingView, grátis com a marca, 15 min de atraso) | 031 | — | seção no painel, lista país → índice | a fazer (web) |
+| 2 | Web do chatbot e da 024 fase 2 | 025, 024 | — | sim | depois da onda 1 |
+| 3 | Organizações (UE, BRICS, OTAN, Mercosul...) + camada no globo | nova | lista curada com fontes | camada + seção | a fazer |
+| 3 | Prêmios Nobel por país | nova | Nobel Prize API (ler termos) | seção | a fazer |
+| 3 | "Acontecendo agora": terremotos (USGS, domínio público) e eventos naturais (NASA EONET) | nova | job | pontos pulsando | a fazer |
+| 4 | Tecnologia e chips (BACI já importado: SH 8542, 8471, 8802/8803) + alta tecnologia (WDI) | nova | agregado do BACI | seção | a fazer |
+| 4 | Grafo "quem produz o quê" (BACI) | nova | rota por produto | página com grafo | a fazer |
+| 4 | Esportes (medalhas por esporte) | nova | Olympedia/Wikidata (ler licença) | seção | a fazer |
+| 4 | História da bandeira (Wikidata P41 com datas + Commons) | nova | sim | seção | a fazer |
+| 5 | Radar aéreo (OpenSky, ler termos: não comercial) e satélites (CelesTrak) | nova | — | camada | a fazer |
+| 5 | Vídeos do Prof. Ricardo Marcílio (YouTube Data API: chave do dono) | nova | job | seção | precisa da chave |
+| 5 | Divas pop (Wikidata + Pantheon) | nova | sim | seção | a fazer |
+
+### Pendente (revisto em 2026-11-15, fim do dia; ver o plano de 2026-11-17 acima)
 1. **Contrato**: o dono cola a CR-009 (grupo `economy` do perfil) no `CONTRACT.md` dos dois repos (e a CR-004, se ainda faltar).
 2. **029 fase 2**: comércio por produto e parceiro (BACI, Etalab 2.0): ETL, CR com a rota `/trade`, web; nomes dos produtos em
    português (ler os termos da NCM antes). Fase 3: arcos no globo.
