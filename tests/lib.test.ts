@@ -83,3 +83,12 @@ describe('palette contrast (WCAG AA, spec 037 B)', () => {
     expect(ratio(palette[k], palette.landFill)).toBeGreaterThanOrEqual(4.5);
   });
 });
+
+describe('loading facts (spec 037)', () => {
+  it('are unique full sentences', async () => {
+    const { FACTS } = await import('../src/lib/facts');
+    expect(FACTS.length).toBeGreaterThanOrEqual(8);
+    expect(new Set(FACTS).size).toBe(FACTS.length);
+    for (const f of FACTS) expect(f).toMatch(/^[A-ZÁÉÍÓÚ].*\.$/);
+  });
+});
