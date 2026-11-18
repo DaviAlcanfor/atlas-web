@@ -65,6 +65,17 @@ body { background: var(--c-abyss); color: var(--c-text); font: 400 14px/1.5 var(
   border: 0; border-radius: var(--r); background: transparent; transition: color 0.15s, background-color 0.15s, transform 0.1s;
 }
 .rail__btn svg { flex: none; }
+/* spec 040: a button + its (i) side by side; the (i) stays a separate focus stop */
+.rail__row { display: flex; align-items: center; }
+.rail__row .rail__btn { flex: 1; width: auto; }
+.rail__row .hint { padding: 0 8px; height: 32px; }
+.legend--trade { width: 330px; max-width: calc(100vw - 48px); text-align: left; }
+.legend__h { display: flex; align-items: center; gap: 4px; margin: 0 0 6px; font: 500 11px/1.4 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-text-dim); }
+.legend--trade ul { list-style: none; margin: 0; padding: 0; }
+.legend.legend--trade li { flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; gap: 0; padding: 3px 0; }
+.legend.legend--trade .legend__n { margin-left: 0; padding-left: 0; }
+/* spec 040: pointer only on things you can click; disabled controls never show it */
+button:disabled, [aria-disabled='true'] { cursor: default; }
 .icon-btn {
   font: 500 12px/1 var(--f-mono); letter-spacing: 0.04em; padding: 9px 12px; cursor: pointer; white-space: nowrap; color: var(--c-text-dim);
   border: 0; border-radius: var(--r); background: transparent; transition: color 0.15s, background-color 0.15s, transform 0.1s;
