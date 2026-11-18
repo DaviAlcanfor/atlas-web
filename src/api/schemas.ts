@@ -30,6 +30,11 @@ export const Link = z.object({
   polity_id: Str, name: Str, year: Year,
   kind: z.enum(['renamed', 'succeeded', 'split', 'merged', 'absorbed', 'conquered']),
 });
+// ---- spec 042 (CR-018, v1.16): Wikipedia lead of a historical entity, CC BY-SA 4.0 (attribution + links required). ----
+export const WikipediaSummary = z.object({
+  text: Str, lang: Str, title: Str, url: Str, license: Str, license_url: Str, attribution: Str,
+  revision: z.number().int().nullable(), fetched_at: Str,
+});
 export const PolityDetail = PolitySummary.extend({
   start_precision: Precision,
   end_precision: Precision.nullable(),
@@ -41,6 +46,7 @@ export const PolityDetail = PolitySummary.extend({
   politics: Politics.nullable(),
   timeline: z.array(Event),
   wikipedia: z.object({ title: Str, url: Str }).nullable(),
+  wikipedia_summary: WikipediaSummary.nullable(),
   sources: z.array(Source),
   updated_at: Str,
 });

@@ -82,6 +82,13 @@ export interface paths {
     /** Compare */
     get: operations["compare_v1_economy_compare_get"];
   };
+  "/v1/entities/{qid}/wikipedia": {
+    /**
+     * Entity Wikipedia
+     * @description spec 042: Wikipedia summary of a historical-map entity by its Wikidata Q-id (the `wikidata` of a snapshot feature).
+     */
+    get: operations["entity_wikipedia_v1_entities__qid__wikipedia_get"];
+  };
   "/v1/glossary": {
     /** List Glossary */
     get: operations["list_glossary_v1_glossary_get"];
@@ -1029,6 +1036,7 @@ export interface components {
       /** Updated At */
       updated_at: string;
       wikipedia: components["schemas"]["Wikipedia"] | null;
+      wikipedia_summary: components["schemas"]["WikipediaSummary"] | null;
     };
     /** PolityList */
     PolityList: {
@@ -1337,6 +1345,30 @@ export interface components {
     };
     /** Wikipedia */
     Wikipedia: {
+      /** Title */
+      title: string;
+      /** Url */
+      url: string;
+    };
+    /**
+     * WikipediaSummary
+     * @description spec 042 (CR-018): Wikipedia lead, CC BY-SA 4.0. Clients must show `attribution` and link `url` and `license_url`.
+     */
+    WikipediaSummary: {
+      /** Attribution */
+      attribution: string;
+      /** Fetched At */
+      fetched_at: string;
+      /** Lang */
+      lang: string;
+      /** License */
+      license: string;
+      /** License Url */
+      license_url: string;
+      /** Revision */
+      revision: number | null;
+      /** Text */
+      text: string;
       /** Title */
       title: string;
       /** Url */
@@ -1789,6 +1821,31 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["EconomyCompare"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Entity Wikipedia
+   * @description spec 042: Wikipedia summary of a historical-map entity by its Wikidata Q-id (the `wikidata` of a snapshot feature).
+   */
+  entity_wikipedia_v1_entities__qid__wikipedia_get: {
+    parameters: {
+      path: {
+        qid: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WikipediaSummary"];
         };
       };
       /** @description Validation Error */

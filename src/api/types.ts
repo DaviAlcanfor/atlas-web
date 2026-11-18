@@ -46,6 +46,7 @@ export type CurrencyDetail = z.infer<typeof S.CurrencyDetail>;
 export type CurrencyHistory = z.infer<typeof S.CurrencyHistory>;
 export type CountryTrade = z.infer<typeof S.CountryTrade>;
 export type CountryTech = z.infer<typeof S.CountryTech>;
+export type WikipediaSummary = z.infer<typeof S.WikipediaSummary>;
 
 /** Everything the UI needs from the API. Real client and mock adapter both implement it. */
 export interface AtlasApi {
@@ -85,4 +86,6 @@ export interface AtlasApi {
   trade(iso2: string): Promise<CountryTrade>;
   // spec 041 (v1.15): empty `products` = no data, section hidden.
   tech(iso2: string): Promise<CountryTech>;
+  /** Spec 042: Wikipedia lead of a historical entity by Wikidata Q-id; null = no article (the API answers 404). */
+  entityWikipedia(qid: string): Promise<WikipediaSummary | null>;
 }

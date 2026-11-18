@@ -37,6 +37,7 @@ Regras:
 | 029 | [Do que vive a economia: setores, exportações, parceiros](029-economy-structure-trade.md) | sim (fase 2) | approved |
 | 040 | [Polimento 6 (nome das linhas de comércio, ⓘ direto, cursor)](040-polish-round-6.md) | não | approved |
 | 041 | [Tecnologia e chips (web)](041-tech-section.md) | sim (v1.15) | in progress |
+| 042 | [Wikipédia dentro da viagem no tempo](042-time-wikipedia.md) | sim (v1.16) | in progress |
 | 039 | [Chat: modos de resposta e "mostrar no mapa"](039-chat-modos.md) | sim | approved |
 
 Plano de execução e checklist: [PLAN.md](PLAN.md). Avaliação de stack: [ADR-001-stack.md](ADR-001-stack.md).
