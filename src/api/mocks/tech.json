@@ -1,0 +1,295 @@
+{
+  "JP": {
+    "year": 2024,
+    "products": [
+      {
+        "hs": "8542",
+        "label": "Circuitos eletrônicos integrados",
+        "flow": "export",
+        "value_usd": 129000000000.0,
+        "share": 0.2,
+        "partners": [
+          {
+            "iso2": "CN",
+            "value_usd": 49020000000,
+            "share": 0.38
+          },
+          {
+            "iso2": "HK",
+            "value_usd": 34830000000,
+            "share": 0.27
+          },
+          {
+            "iso2": "VN",
+            "value_usd": 18060000000,
+            "share": 0.14
+          },
+          {
+            "iso2": "TW",
+            "value_usd": 6450000000,
+            "share": 0.05
+          },
+          {
+            "iso2": "US",
+            "value_usd": 5160000000,
+            "share": 0.04
+          }
+        ]
+      },
+      {
+        "hs": "8542",
+        "label": "Circuitos eletrônicos integrados",
+        "flow": "import",
+        "value_usd": 52000000000.0,
+        "share": 0.087,
+        "partners": [
+          {
+            "iso2": "CN",
+            "value_usd": 15600000000,
+            "share": 0.3
+          },
+          {
+            "iso2": "TW",
+            "value_usd": 11440000000,
+            "share": 0.22
+          },
+          {
+            "iso2": "JP",
+            "value_usd": 6240000000,
+            "share": 0.12
+          },
+          {
+            "iso2": "US",
+            "value_usd": 5200000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "MY",
+            "value_usd": 3120000000,
+            "share": 0.06
+          }
+        ]
+      },
+      {
+        "hs": "8471",
+        "label": "Máquinas automáticas para processamento de dados e suas unidades",
+        "flow": "export",
+        "value_usd": 4100000000.0,
+        "share": 0.006,
+        "partners": [
+          {
+            "iso2": "US",
+            "value_usd": 1271000000,
+            "share": 0.31
+          },
+          {
+            "iso2": "VN",
+            "value_usd": 492000000,
+            "share": 0.12
+          },
+          {
+            "iso2": "CN",
+            "value_usd": 410000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "JP",
+            "value_usd": 328000000,
+            "share": 0.08
+          },
+          {
+            "iso2": "DE",
+            "value_usd": 205000000,
+            "share": 0.05
+          }
+        ]
+      },
+      {
+        "hs": "8471",
+        "label": "Máquinas automáticas para processamento de dados e suas unidades",
+        "flow": "import",
+        "value_usd": 12000000000.0,
+        "share": 0.02,
+        "partners": [
+          {
+            "iso2": "CN",
+            "value_usd": 6600000000,
+            "share": 0.55
+          },
+          {
+            "iso2": "VN",
+            "value_usd": 1680000000,
+            "share": 0.14
+          },
+          {
+            "iso2": "US",
+            "value_usd": 1200000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "TH",
+            "value_usd": 600000000,
+            "share": 0.05
+          },
+          {
+            "iso2": "TW",
+            "value_usd": 480000000,
+            "share": 0.04
+          }
+        ]
+      },
+      {
+        "hs": "8541",
+        "label": "Dispositivos semicondutores",
+        "flow": "export",
+        "value_usd": 11000000000.0,
+        "share": 0.017,
+        "partners": [
+          {
+            "iso2": "VN",
+            "value_usd": 3080000000,
+            "share": 0.28
+          },
+          {
+            "iso2": "CN",
+            "value_usd": 2200000000,
+            "share": 0.2
+          },
+          {
+            "iso2": "HK",
+            "value_usd": 1320000000,
+            "share": 0.12
+          },
+          {
+            "iso2": "US",
+            "value_usd": 1100000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "PH",
+            "value_usd": 550000000,
+            "share": 0.05
+          }
+        ]
+      },
+      {
+        "hs": "8541",
+        "label": "Dispositivos semicondutores",
+        "flow": "import",
+        "value_usd": 6000000000.0,
+        "share": 0.01,
+        "partners": [
+          {
+            "iso2": "CN",
+            "value_usd": 1800000000,
+            "share": 0.3
+          },
+          {
+            "iso2": "JP",
+            "value_usd": 1200000000,
+            "share": 0.2
+          },
+          {
+            "iso2": "MY",
+            "value_usd": 720000000,
+            "share": 0.12
+          },
+          {
+            "iso2": "US",
+            "value_usd": 600000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "DE",
+            "value_usd": 360000000,
+            "share": 0.06
+          }
+        ]
+      },
+      {
+        "hs": "8517",
+        "label": "Aparelhos telefônicos e de comunicação",
+        "flow": "export",
+        "value_usd": 22000000000.0,
+        "share": 0.034,
+        "partners": [
+          {
+            "iso2": "US",
+            "value_usd": 6600000000,
+            "share": 0.3
+          },
+          {
+            "iso2": "VN",
+            "value_usd": 3960000000,
+            "share": 0.18
+          },
+          {
+            "iso2": "CN",
+            "value_usd": 2200000000,
+            "share": 0.1
+          },
+          {
+            "iso2": "IN",
+            "value_usd": 1320000000,
+            "share": 0.06
+          },
+          {
+            "iso2": "AE",
+            "value_usd": 880000000,
+            "share": 0.04
+          }
+        ]
+      },
+      {
+        "hs": "8517",
+        "label": "Aparelhos telefônicos e de comunicação",
+        "flow": "import",
+        "value_usd": 19000000000.0,
+        "share": 0.032,
+        "partners": [
+          {
+            "iso2": "CN",
+            "value_usd": 11400000000,
+            "share": 0.6
+          },
+          {
+            "iso2": "VN",
+            "value_usd": 3800000000,
+            "share": 0.2
+          },
+          {
+            "iso2": "US",
+            "value_usd": 1140000000,
+            "share": 0.06
+          },
+          {
+            "iso2": "IN",
+            "value_usd": 570000000,
+            "share": 0.03
+          },
+          {
+            "iso2": "TW",
+            "value_usd": 380000000,
+            "share": 0.02
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "baci",
+        "title": "CEPII, BACI (versão 202601, atualizada em 30/01/2026); HS 2022, agregado por Atlas",
+        "url": "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37",
+        "license": "Etalab 2.0",
+        "retrieved_at": "2026-11-15"
+      },
+      {
+        "id": "mdic-sh",
+        "title": "MDIC/Secex, tabela NCM_SH (nomes das posições do SH)",
+        "url": null,
+        "license": "CC BY-ND 3.0",
+        "retrieved_at": "2026-11-15"
+      }
+    ]
+  }
+}

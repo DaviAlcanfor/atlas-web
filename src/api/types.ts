@@ -45,6 +45,7 @@ export type IndicatorRanking = z.infer<typeof S.IndicatorRanking>;
 export type CurrencyDetail = z.infer<typeof S.CurrencyDetail>;
 export type CurrencyHistory = z.infer<typeof S.CurrencyHistory>;
 export type CountryTrade = z.infer<typeof S.CountryTrade>;
+export type CountryTech = z.infer<typeof S.CountryTech>;
 
 /** Everything the UI needs from the API. Real client and mock adapter both implement it. */
 export interface AtlasApi {
@@ -82,4 +83,6 @@ export interface AtlasApi {
   ideology(id: string): Promise<IdeologyDetail>;
   // spec 029 phase 2 (not in the contract yet): any failure, including the route not existing (404), = section and arcs hidden.
   trade(iso2: string): Promise<CountryTrade>;
+  // spec 041 (v1.15): empty `products` = no data, section hidden.
+  tech(iso2: string): Promise<CountryTech>;
 }

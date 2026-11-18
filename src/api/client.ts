@@ -72,6 +72,7 @@ export function createClient(baseUrl: string, timeoutMs?: number): AtlasApi {
     ideologies: (iso2) => get(`/v1/countries/${q(iso2)}/ideologies`, S.CountryIdeologies),
     ideology: (id) => get(`/v1/ideologies/${q(id)}`, S.IdeologyDetail),
     trade: (iso2) => get(`/v1/countries/${q(iso2)}/trade`, S.CountryTrade),
+    tech: (iso2) => get(`/v1/countries/${q(iso2)}/tech`, S.CountryTech),
     currencyHistory: (code, vs, from, to) => {
       const p = new URLSearchParams({ vs: vs.join(',') });
       if (from) p.set('from', from);

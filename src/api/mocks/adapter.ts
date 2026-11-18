@@ -8,6 +8,7 @@ import history from './history.json';
 import subdivisions from './subdivisions.json';
 import ideologies from './ideologies.json';
 import trade from './trade.json';
+import tech from './tech.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const MOCK_NEWS = {
@@ -123,6 +124,10 @@ export function createMockApi(delayMs = 150): AtlasApi {
       const t = (trade as Record<string, unknown>)[iso2]; // spec 029: BR only, shaped like the Contract delta (approximate 2024 BACI figures)
       if (!t) throw notFound(`No trade data for ${iso2}`);
       return parse(S.CountryTrade, t, `mock trade ${iso2}`);
+    }),
+    tech: (iso2) => wait(() => { // spec 041: JP only (illustrative figures); everyone else = no data, like the real API before the import
+      const t = (tech as Record<string, unknown>)[iso2] ?? { year: null, products: [], sources: [] };
+      return parse(S.CountryTech, t, `mock tech ${iso2}`);
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];

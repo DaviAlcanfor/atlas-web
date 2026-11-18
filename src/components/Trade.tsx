@@ -20,7 +20,7 @@ const regionNames = new Intl.DisplayNames(['pt-BR'], { type: 'region' });
 const nameOf = (iso: string) => { try { return regionNames.of(iso) ?? iso; } catch { return iso; } };
 
 /** Rows of label + share, each with a bar scaled to the list's largest share. */
-function ShareList({ items }: { items: { key: string; label: ReactNode; share: number; value: number }[] }) {
+export function ShareList({ items }: { items: { key: string; label: ReactNode; share: number; value: number }[] }) {
   const max = Math.max(...items.map((i) => i.share), 1e-9);
   return (
     <ul className="shares">
@@ -35,12 +35,12 @@ function ShareList({ items }: { items: { key: string; label: ReactNode; share: n
   );
 }
 
-const partners = (xs: CountryTrade['top_destinations']) => xs.map((p) => ({
+export const partners = (xs: CountryTrade['top_destinations']) => xs.map((p) => ({
   key: p.iso2, share: p.share, value: p.value_usd,
   label: <Link href={countryPath(p.iso2)} scroll={false} className="shares__link"><FlagName iso={p.iso2} name={nameOf(p.iso2)} /></Link>,
 }));
 
-function Foot({ t }: { t: CountryTrade }) {
+export function Foot({ t }: { t: Pick<CountryTrade, 'sources'> & { year: number | null } }) {
   return (
     <p className="src">
       {t.year} · {t.sources.length ? t.sources.map((s, n) => {

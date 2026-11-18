@@ -200,6 +200,12 @@ export const CountryTrade = z.object({
   top_exports: z.array(z.object({ hs: Str, label: Str, value_usd: z.number(), share: z.number() })),
   top_destinations: z.array(TradeFlow), top_origins: z.array(TradeFlow), sources: z.array(Source),
 });
+// ---- spec 041 (CR-017, v1.15; checked against CountryTechOut): technology and chips trade. year null / products [] = no data (block hidden). ----
+export const CountryTech = z.object({
+  year: z.number().int().nullable(),
+  products: z.array(z.object({ hs: Str, label: Str, flow: z.enum(['export', 'import']), value_usd: z.number(), share: z.number(), partners: z.array(TradeFlow) })),
+  sources: z.array(Source),
+});
 export const IdeologyDetail = z.object({
   term: GlossaryTerm, founders: z.array(IdeologyFigure), timeline: z.array(Event),
   governed: z.array(z.object({ iso2: Str, from_year: z.number().int(), to_year: z.number().int().nullable() })), sources: z.array(Source),

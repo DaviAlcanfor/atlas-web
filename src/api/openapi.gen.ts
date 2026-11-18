@@ -42,6 +42,14 @@ export interface paths {
     /** Country News */
     get: operations["country_news_v1_countries__iso2__news_get"];
   };
+  "/v1/countries/{iso2}/nobel": {
+    /** Get Nobel */
+    get: operations["get_nobel_v1_countries__iso2__nobel_get"];
+  };
+  "/v1/countries/{iso2}/organizations": {
+    /** Get Organizations */
+    get: operations["get_organizations_v1_countries__iso2__organizations_get"];
+  };
   "/v1/countries/{iso2}/people": {
     /** List People */
     get: operations["list_people_v1_countries__iso2__people_get"];
@@ -53,6 +61,10 @@ export interface paths {
   "/v1/countries/{iso2}/subdivisions": {
     /** List Subdivisions */
     get: operations["list_subdivisions_v1_countries__iso2__subdivisions_get"];
+  };
+  "/v1/countries/{iso2}/tech": {
+    /** Get Tech */
+    get: operations["get_tech_v1_countries__iso2__tech_get"];
   };
   "/v1/countries/{iso2}/trade": {
     /** Get Trade */
@@ -98,6 +110,10 @@ export interface paths {
     /** Indicator Ranking */
     get: operations["indicator_ranking_v1_indicators__id__ranking_get"];
   };
+  "/v1/live/events": {
+    /** Live Events */
+    get: operations["live_events_v1_live_events_get"];
+  };
   "/v1/meta": {
     /** Get Meta */
     get: operations["get_meta_v1_meta_get"];
@@ -105,6 +121,10 @@ export interface paths {
   "/v1/news": {
     /** List News */
     get: operations["list_news_v1_news_get"];
+  };
+  "/v1/organizations": {
+    /** List Organizations */
+    get: operations["list_organizations_v1_organizations_get"];
   };
   "/v1/polities": {
     /** List Polities */
@@ -149,6 +169,7 @@ export interface components {
     ChatIn: {
       /** Messages */
       messages: components["schemas"]["ChatMessage"][];
+      mode?: components["schemas"]["Mode"] | null;
     };
     /** ChatMessage */
     ChatMessage: {
@@ -292,6 +313,39 @@ export interface components {
       /** Items */
       items: components["schemas"]["CountrySummary"][];
     };
+    /** CountryMembership */
+    CountryMembership: {
+      /** Id */
+      id: string;
+      /** Joined */
+      joined: string;
+      /** Label */
+      label: string;
+      /** Left */
+      left: string | null;
+      /** Note */
+      note: string | null;
+      /** Suspended */
+      suspended: boolean;
+    };
+    /** CountryNobel */
+    CountryNobel: {
+      /** Affiliated */
+      affiliated: number;
+      /** Born */
+      born: number;
+      /** Items */
+      items: components["schemas"]["NobelPrizeOut"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
+    /** CountryOrganizations */
+    CountryOrganizations: {
+      /** Items */
+      items: components["schemas"]["CountryMembership"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
     /** CountryProfile */
     CountryProfile: {
       composition: components["schemas"]["CompositionOut"];
@@ -321,6 +375,15 @@ export interface components {
       regime_id: string | null;
       /** Region */
       region: string | null;
+    };
+    /** CountryTechOut */
+    CountryTechOut: {
+      /** Products */
+      products: components["schemas"]["TechProduct"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Year */
+      year: number | null;
     };
     /** CountryTradeOut */
     CountryTradeOut: {
@@ -664,6 +727,44 @@ export interface components {
       /** Year */
       year: number;
     };
+    /** LiveEventList */
+    LiveEventList: {
+      /** Fetched At */
+      fetched_at: string | null;
+      /** Items */
+      items: components["schemas"]["LiveEventOut"][];
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+    };
+    /** LiveEventOut */
+    LiveEventOut: {
+      /** Id */
+      id: string;
+      /** Lat */
+      lat: number;
+      /** Lng */
+      lng: number;
+      /** Magnitude */
+      magnitude: number | null;
+      /** Magnitude Unit */
+      magnitude_unit: string | null;
+      /**
+       * Source
+       * @enum {string}
+       */
+      source: "usgs" | "eonet";
+      /** Time */
+      time: string;
+      /** Title */
+      title: string;
+      /**
+       * Type
+       * @enum {string}
+       */
+      type: "earthquake" | "wildfire" | "severe_storm" | "volcano" | "flood" | "landslide" | "dust_haze" | "temp_extreme" | "drought" | "snow";
+      /** Url */
+      url: string | null;
+    };
     /** Marker */
     Marker: {
       /** Lat */
@@ -685,6 +786,12 @@ export interface components {
       /** Year Min */
       year_min: number;
     };
+    /**
+     * Mode
+     * @description spec 039: only ever set from the request's `mode` field, never from user or tool text.
+     * @enum {string}
+     */
+    Mode: "learn" | "analyse" | "tell";
     /** NamePeriod */
     NamePeriod: {
       /** From Year */
@@ -727,6 +834,85 @@ export interface components {
       next: string | null;
       /** Sources */
       sources: components["schemas"]["Source"][];
+    };
+    /** NobelAffiliation */
+    NobelAffiliation: {
+      /** City */
+      city: string | null;
+      /** Iso2 */
+      iso2: string | null;
+      /** Name */
+      name: string;
+    };
+    /** NobelPrizeOut */
+    NobelPrizeOut: {
+      /** Affiliated Here */
+      affiliated_here: boolean;
+      /** Affiliations */
+      affiliations: components["schemas"]["NobelAffiliation"][];
+      /** Born Here */
+      born_here: boolean;
+      /**
+       * Category
+       * @enum {string}
+       */
+      category: "physics" | "chemistry" | "medicine" | "literature" | "peace" | "economics";
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: "person" | "organization";
+      /** Laureate Id */
+      laureate_id: string;
+      /** Motivation */
+      motivation: string | null;
+      /** Name */
+      name: string;
+      /** Portion */
+      portion: string | null;
+      /** Url */
+      url: string;
+      /** Wikipedia Url */
+      wikipedia_url: string | null;
+      /** Year */
+      year: number;
+    };
+    /** Organization */
+    Organization: {
+      /** Icon */
+      icon: string | null;
+      /** Id */
+      id: string;
+      /** Label */
+      label: string;
+      /** Members */
+      members: components["schemas"]["OrganizationMember"][];
+      /** Note */
+      note: string | null;
+      /** Short */
+      short: string;
+      /** Sources */
+      sources: components["schemas"]["Source"][];
+      /** Wikidata Qid */
+      wikidata_qid: string | null;
+    };
+    /** OrganizationList */
+    OrganizationList: {
+      /** Items */
+      items: components["schemas"]["Organization"][];
+    };
+    /** OrganizationMember */
+    OrganizationMember: {
+      /** Iso2 */
+      iso2: string;
+      /** Joined */
+      joined: string;
+      /** Left */
+      left: string | null;
+      /** Note */
+      note: string | null;
+      /** Suspended */
+      suspended: boolean;
     };
     /** Party */
     Party: {
@@ -1098,6 +1284,24 @@ export interface components {
       /** Year */
       year: number | null;
     };
+    /** TechProduct */
+    TechProduct: {
+      /**
+       * Flow
+       * @enum {string}
+       */
+      flow: "export" | "import";
+      /** Hs */
+      hs: string;
+      /** Label */
+      label: string;
+      /** Partners */
+      partners: components["schemas"]["TradePartner"][];
+      /** Share */
+      share: number;
+      /** Value Usd */
+      value_usd: number;
+    };
     /** TradePartner */
     TradePartner: {
       /** Iso2 */
@@ -1362,6 +1566,50 @@ export interface operations {
       };
     };
   };
+  /** Get Nobel */
+  get_nobel_v1_countries__iso2__nobel_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryNobel"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Organizations */
+  get_organizations_v1_countries__iso2__organizations_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryOrganizations"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** List People */
   list_people_v1_countries__iso2__people_get: {
     parameters: {
@@ -1422,6 +1670,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["SubdivisionList"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Tech */
+  get_tech_v1_countries__iso2__tech_get: {
+    parameters: {
+      path: {
+        iso2: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["CountryTechOut"];
         };
       };
       /** @description Validation Error */
@@ -1632,6 +1902,31 @@ export interface operations {
       };
     };
   };
+  /** Live Events */
+  live_events_v1_live_events_get: {
+    parameters: {
+      query?: {
+        /** @description ISO 8601; default and minimum: 7 days ago */
+        since?: string | null;
+        /** @description comma-separated event types */
+        type?: string | null;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LiveEventList"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** Get Meta */
   get_meta_v1_meta_get: {
     responses: {
@@ -1667,6 +1962,17 @@ export interface operations {
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** List Organizations */
+  list_organizations_v1_organizations_get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OrganizationList"];
         };
       };
     };

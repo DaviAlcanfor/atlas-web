@@ -9,6 +9,7 @@ import { useAsync } from '../hooks/useAsync';
 import { flagPreviewUrl } from '../lib/url';
 import { Block, BlockIndex, FlagName } from './Block';
 import { Compare, Economy } from './CurrencyPage';
+import { hasTech, loadTech, TechSection } from './Tech';
 import { loadTrade, TradeSection } from './Trade';
 
 const MAIN_CURRENCIES: [string, string][] = [
@@ -95,9 +96,11 @@ export function EconomyCountry({ iso2 }: { iso2: string }) {
   const unknown = loaded && !list.some((c) => c.iso2 === iso2);
   const trade = useAsync(() => loadTrade(iso2), iso2); // spec 029: block only when BACI has the country (404 = no block)
   const hasTrade = trade.status === 'ok';
+  const tech = useAsync(() => loadTech(iso2), iso2); // spec 041: block only when `products` is not empty
   const blocks = [
     { id: 'economia', title: 'Economia' },
     ...(hasTrade ? [{ id: 'comercio', title: 'Comércio' }] : []),
+    ...(hasTech(tech) ? [{ id: 'tecnologia', title: 'Tecnologia' }] : []),
     { id: 'comparar', title: 'Comparar' },
     ...(currencies.length ? [{ id: 'moedas', title: 'Moeda' }] : []),
   ];
@@ -118,6 +121,11 @@ export function EconomyCountry({ iso2 }: { iso2: string }) {
           {hasTrade && (
             <Block n={n('comercio')} id="comercio" title="Comércio" blurb="O que o país exporta e com quem negocia (mercadorias).">
               <TradeSection iso2={iso2} />
+            </Block>
+          )}
+          {tech.status === 'ok' && tech.data.products.length > 0 && (
+            <Block n={n('tecnologia')} id="tecnologia" title="Tecnologia e chips" blurb="Circuitos integrados, computadores, aeronaves, semicondutores e telecom: comércio exterior por produto e parceiros.">
+              <TechSection data={tech.data} />
             </Block>
           )}
           <Compare n={n('comparar')} self={iso2} cmp={cmp} setCmp={setCmp} names={list} nameOf={nameOf} />

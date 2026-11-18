@@ -287,3 +287,16 @@ describe('spec 029 phase 2: trade (not in the contract yet)', () => {
     vi.unstubAllGlobals();
   });
 });
+
+describe('spec 041: tecnologia e chips', () => {
+  it('mock JP has products (labels verbatim, one article per HS); an empty answer is the no-data shape', async () => {
+    const { api } = await import('../src/api');
+    const { TechSection } = await import('../src/components/Tech');
+    const kr = await api.tech('JP');
+    render(<TechSection data={kr} />);
+    expect(screen.getAllByRole('article').length).toBe(4);
+    expect(screen.getAllByText(/^Circuitos eletrônicos integrados/).length).toBe(1);
+    expect(screen.getAllByText('Exportação').length).toBe(4);
+    expect((await api.tech('BR')).products).toEqual([]);
+  });
+});
