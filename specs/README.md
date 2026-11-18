@@ -35,7 +35,7 @@ Regras:
 | 025 | [Chatbot do Atlas](025-chatbot.md) | sim | draft |
 | 028 | [Rodada de polimento 4 (controles inferiores, carregamento do globo)](028-polish-round-4.md) | não | done |
 | 029 | [Do que vive a economia: setores, exportações, parceiros](029-economy-structure-trade.md) | sim (fase 2) | approved |
-| 039 | [Chat: modos de resposta e "mostrar no mapa"](039-chat-modos.md) | sim | draft |
+| 039 | [Chat: modos de resposta e "mostrar no mapa"](039-chat-modos.md) | sim | approved |
 
 Plano de execução e checklist: [PLAN.md](PLAN.md). Avaliação de stack: [ADR-001-stack.md](ADR-001-stack.md).
 
