@@ -1,5 +1,5 @@
 // spec 036 B: several chat conversations kept in this browser (localStorage; no login yet, so nothing goes to the server).
-export interface Session<T> { id: string; title: string; updated: number; turns: T[] }
+export interface Session<T> { id: string; title: string; updated: number; turns: T[]; mode?: string } // mode: spec 039, the chat mode chosen for this conversation
 
 export const SESSIONS_KEY = 'atlas.chats';
 export const OLD_KEY = 'atlas.chat'; // before spec 036: the single history lived in sessionStorage

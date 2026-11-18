@@ -1,5 +1,5 @@
-# 039 — Chat: modos de resposta e "mostrar no mapa"
-Status: approved (dono, 2026-11-18; nomes em português; Narrar na segunda entrega) | Contrato: v1.10 (precisa de CR para `mode` e para o evento `map`) | API: atlas-api/specs/039-chat-modes.md (a escrever)
+﻿# 039 — Chat: modos de resposta e "mostrar no mapa"
+Status: in progress (dono, 2026-11-18; nomes em português; Narrar na segunda entrega) | Contrato: v1.10 (precisa de CR para `mode` e para o evento `map`) | API: atlas-api/specs/039-chat-modes.md (a escrever)
 
 ## Por quê
 Há muito para explorar e a pessoa não sabe por onde começar. O chat deve **guiar a exploração**, não só responder. Um agente só, com
@@ -29,8 +29,8 @@ mapa" na bolha. Estados: sem sugestão = chips ocultos; `map` inválido = ignora
 
 ## Tarefas
 - [ ] API: spec 039, CR, `mode` no request, 3 blocos de prompt, evento `map`, testes (modo desconhecido = 422; injeção não troca modo)
-- [ ] Web: seletor de modo, comandos `/learn` `/analyse` `/tell`, chips "O que posso explorar daqui?", botão "mostrar no mapa"
-- [ ] Prints antes/depois no PR
+- [x] Web: seletor de modo, comandos `/learn` `/analyse` `/tell`, chips "O que posso explorar daqui?", botão "mostrar no mapa" (modo salvo com a conversa; tipos do chat locais em `src/api/chat.ts`, sem tocar no `openapi.gen.ts`)
+- [x] Prints antes/depois no PR (`docs/pr/039/`)
 
 ## Decisões abertas (do dono)
 - Nomes dos modos em português na tela (Aprender / Analisar / Narrar)?

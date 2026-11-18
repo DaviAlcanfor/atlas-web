@@ -28,6 +28,7 @@ import { entitySlug, findEntity, loadSnapshot, readTimeParams, timeTitle, tintOf
 import { eraOf } from './lib/eras';
 import { flagPreviewUrl } from './lib/url';
 import { formatYear } from './lib/years';
+import type { MapTarget } from './lib/chatModes';
 import { HistPanel, TimeBar } from './components/TimeTravel';
 import { SearchBox, type SearchItem } from './components/SearchBox';
 import { RankingLayer, rankColors } from './components/RankingLayer';
@@ -187,6 +188,14 @@ function Chrome({ children }: { children: ReactNode }) {
     document.title = title;
     return () => { document.title = before; };
   }, [title, path]);
+  // spec 039 "mostrar no mapa": year = time travel (the slider snaps to a snapshot, the layer then does not apply); else layer and/or focus
+  const knownIso = useMemo(() => (data ? new Set(data.features.flatMap((f) => (f.properties.ISO2 ? [f.properties.ISO2.toUpperCase()] : []))) : null), [data]);
+  const onChatMap = useCallback((m: MapTarget) => {
+    if (m.year !== undefined) { setSelectedCountry(null); setYear(m.year); return; }
+    setYear(null);
+    if (m.layer) setLayer(m.layer);
+    if (m.iso2.length) setChatFocus(m.iso2[0]!);
+  }, [setSelectedCountry, setYear, setLayer]);
   const histHover = timeMode && hist ? hist.props.get(hoveredCountry ?? histSel ?? '') : undefined;
 
   // Search (spec 026 follow-up): present = countries by their pt-BR name; time travel = the entities of the snapshot on screen.
@@ -325,7 +334,8 @@ function Chrome({ children }: { children: ReactNode }) {
             </LayerToggle>}
           </>
         )}
-        {globeRoute && <ChatDrawer onCountries={onChatCountries} />}
+        {globeRoute && <ChatDrawer onCountries={onChatCountries} onMap={onChatMap} known={knownIso} screen={{
+          country: selectedCountry ? data?.names.get(selectedCountry) ?? null : null, layer, year: timeMode ? snapYear ?? year : null }} />}
         {children}
         <Footer />
       </GlossaryProvider>

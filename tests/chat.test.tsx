@@ -6,6 +6,7 @@ import { ChatDrawer } from '../src/components/ChatDrawer';
 import { ToolList } from '../src/components/ToolList';
 import { argChips, toolName } from '../src/lib/chatTools';
 
+const props = { screen: { country: null, layer: 'content' as const, year: null }, known: new Set(['BR', 'JP']), onMap: vi.fn() };
 const push = vi.fn();
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
 
@@ -33,7 +34,7 @@ describe('chat drawer on the mock (spec 025)', () => {
     HTMLDialogElement.prototype.show ??= function (this: HTMLDialogElement) { this.open = true; };
     HTMLDialogElement.prototype.close ??= function (this: HTMLDialogElement) { this.open = false; this.dispatchEvent(new Event('close')); };
     const onCountries = vi.fn();
-    render(<ChatDrawer onCountries={onCountries} />);
+    render(<ChatDrawer onCountries={onCountries} {...props} />);
     fireEvent.click(screen.getByRole('button', { name: 'Perguntar ao Atlas' }));
     const box = screen.getByLabelText('Sua pergunta');
     fireEvent.change(box, { target: { value: 'Fale do Brasil' } });
@@ -52,6 +53,9 @@ describe('chat drawer on the mock (spec 025)', () => {
     // spec 036 B: conversations live in localStorage
     expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].turns[1].tools).toHaveLength(2);
     expect(onCountries).toHaveBeenCalledWith(['BR', 'JP']);
+    // spec 039: the `map` event becomes a "Mostrar no mapa" button
+    fireEvent.click(within(log).getByRole('button', { name: /Mostrar no mapa/ }));
+    expect(props.onMap).toHaveBeenCalledWith({ iso2: ['BR', 'JP'], layer: 'regime' });
     fireEvent.click(within(log).getByRole('link', { name: 'Brasil' }));
     expect(push).toHaveBeenCalledWith('/pais/br', { scroll: false });
     expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].turns).toHaveLength(2);
@@ -83,7 +87,7 @@ describe('conversations (spec 036 B)', () => {
   it('drawer: new conversation keeps the old one in the list; switch and delete', async () => {
     localStorage.clear(); sessionStorage.clear();
     sessionStorage.setItem('atlas.chat', JSON.stringify(turns('Pergunta antiga')));
-    render(<ChatDrawer onCountries={vi.fn()} />);
+    render(<ChatDrawer onCountries={vi.fn()} {...props} />);
     fireEvent.click(screen.getByRole('button', { name: 'Perguntar ao Atlas' }));
     const log = screen.getByRole('log');
     await within(log).findByText('Pergunta antiga'); // migrated and opened
@@ -120,5 +124,28 @@ describe('tool activity (spec 036 A)', () => {
     rerender(<ToolList tools={tools} live={false} />);
     expect((container.querySelector('details') as HTMLDetailsElement).open).toBe(false);
     expect(container.querySelectorAll('.spinner')).toHaveLength(0);
+  });
+});
+
+describe('chat modes and suggestions (spec 039)', () => {
+  it('shows suggestions, toggles a mode chip and strips the /learn command', async () => {
+    localStorage.clear(); sessionStorage.clear();
+    render(<ChatDrawer onCountries={vi.fn()} {...props} screen={{ country: 'Brasil', layer: 'content', year: null }} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Perguntar ao Atlas' }));
+    expect(screen.getByText('O que posso explorar daqui?')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Resuma a história de Brasil' })).toBeTruthy();
+    const chip = screen.getByRole('button', { name: 'Analisar' });
+    fireEvent.click(chip);
+    expect(chip.getAttribute('aria-pressed')).toBe('true');
+    fireEvent.click(chip);
+    expect(chip.getAttribute('aria-pressed')).toBe('false'); // clicking again unselects
+    const box = screen.getByLabelText('Sua pergunta');
+    fireEvent.change(box, { target: { value: '/learn o que é um regime?' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    const log = screen.getByRole('log');
+    expect(within(log).getByText('o que é um regime?')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Aprender' }).getAttribute('aria-pressed')).toBe('true');
+    await within(log).findByText(/Gerado por IA/, undefined, { timeout: 5000 });
+    expect(JSON.parse(localStorage.getItem('atlas.chats')!)[0].mode).toBe('learn'); // saved with the conversation
   });
 });
