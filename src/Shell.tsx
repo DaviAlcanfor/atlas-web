@@ -2,6 +2,7 @@
 // The app chrome that lives in the root layout (spec 020): globe, readout, layer toggle, footer, glossary dialog.
 // The layout stays mounted across /, /pais/[iso2] and /glossario, so the WebGL globe is created once and never remounts.
 // Pages render into `children`: the country panel (CountryRoute) or the glossary catalog (GlossaryRoute).
+import { tradeArcLines } from './lib/tradeArcs';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
@@ -211,12 +212,13 @@ function Chrome({ children }: { children: ReactNode }) {
   const inPast = timeMode && hist !== null && histLines !== null ? hist : null; // the snapshot on the globe, or null in the present
   // spec 029 phase 3: arcs to the top trade partners (destinations + origins, by combined value), present only. Failure = no arcs.
   const tradeReq = useAsync(() => loadTrade(selectedCountry!), selectedCountry && !timeMode ? selectedCountry : null);
-  const partners = useMemo(() => {
+  const selfName = selectedCountry ? data?.names.get(selectedCountry) ?? data?.features.find((f) => idOf(f) === selectedCountry)?.properties.NAME : undefined;
+  const tradeLines = useMemo(() => {
     if (tradeReq.status !== 'ok') return undefined;
-    const v = new Map<string, number>();
-    for (const p of [...tradeReq.data.top_destinations, ...tradeReq.data.top_origins]) v.set(p.iso2, (v.get(p.iso2) ?? 0) + p.value_usd);
-    return [...v].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([iso]) => iso);
-  }, [tradeReq]);
+    const nameOf = (iso: string) => data?.names.get(iso) ?? data?.features.find((f) => idOf(f) === iso)?.properties.NAME;
+    return tradeArcLines(tradeReq.data.top_destinations, tradeReq.data.top_origins, selfName ?? '', nameOf);
+  }, [tradeReq, data, selfName]);
+  const partners = useMemo(() => tradeLines?.map((l) => l.iso), [tradeLines]);
   const active = hoveredCountry ?? selectedCountry;
   const countryName = useCallback((iso2: string) => data?.names.get(iso2) ?? data?.features.find((f) => idOf(f) === iso2)?.properties.NAME, [data]);
   const name = active ? countryName(active) : undefined; // pt-BR name from the API, Natural Earth's English one as fallback
@@ -320,7 +322,7 @@ function Chrome({ children }: { children: ReactNode }) {
               )} onChange={setLayer} regimes={data.regimes} flagsLoading={flagsLoading}
               states={selectedCountry ? { on: showStates, toggle: () => { if (showStates && stateSlug) clearState(); setShowStates((s) => !s); },
                 all: allStateFlags, setAll: setAllStateFlags } : undefined}
-              trade={selectedCountry && partners?.length ? { on: tradeArcs, toggle: () => setTradeArcs((t) => !t) } : undefined}>
+              trade={selectedCountry && tradeLines?.length ? { on: tradeArcs, toggle: () => setTradeArcs((t) => !t), self: selfName ?? '', lines: tradeLines } : undefined}>
               <RailButton label="Viagem no tempo" icon={ClockCounterClockwise} onClick={enterTime} />
               <RailButton label="Notícias" icon={Newspaper} href="/noticias" />
               <RailButton label="Economia" icon={CurrencyCircleDollar} href="/economia" />

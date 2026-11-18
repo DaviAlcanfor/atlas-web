@@ -9,6 +9,8 @@ import { Scales } from '@phosphor-icons/react/dist/csr/Scales';
 import { SquaresFour } from '@phosphor-icons/react/dist/csr/SquaresFour';
 import { Stack } from '@phosphor-icons/react/dist/csr/Stack';
 import { Trophy } from '@phosphor-icons/react/dist/csr/Trophy';
+import { Hint } from './Hint';
+import type { TradeArcLine } from '../lib/tradeArcs';
 import { regimeGroups } from '../lib/regimes';
 import { STREETVIEW, STREETVIEW_SOURCE } from '../lib/streetview';
 import type { LayerId } from '../types';
@@ -22,7 +24,7 @@ interface Props {
   regimes: Map<string, string>;
   flagsLoading?: boolean; // the flag layer's atlas is still downloading
   states?: { on: boolean; toggle: () => void; all: boolean; setAll: (all: boolean) => void }; // "Estados" button; only while a country is selected
-  trade?: { on: boolean; toggle: () => void }; // spec 029 phase 3: trade arcs on/off; only while the selected country has trade data
+  trade?: { on: boolean; toggle: () => void; self: string; lines: TradeArcLine[] }; // spec 029 phase 3: trade arcs on/off; only while the selected country has trade data
   ranking?: ReactNode; // spec 027: the ranking layer's controls, shown while that layer is on
   children?: ReactNode; // RailButton items for the pages (time travel, news, economy, glossary)
 }
@@ -35,14 +37,28 @@ const LAYERS: { id: LayerId; label: string; icon: IconType }[] = [
   { id: 'ranking', label: 'Ranking', icon: Trophy },
 ];
 
+// spec 040: what each rail button does, one tap away on its (i). Fixed text.
+const INFO: Record<string, string> = {
+  'Padrão': 'Mapa em pontos: os países com conteúdo no Atlas ficam em destaque; clique num país para abrir o painel.',
+  'Regime político': 'Pinta cada país pela forma de governo (democracia, monarquia etc.). A legenda aparece ao lado; o texto de regime ainda não é verificado.',
+  'Bandeiras': 'Cobre cada país com a sua bandeira.',
+  'GeoGuessr': 'Mostra onde o Google Street View cobre o país, para quem joga GeoGuessr.',
+  'Ranking': 'Pinta os países por um indicador (população, renda etc.): quanto mais forte a cor, maior o valor. Escolha o indicador no painel ao lado.',
+  'Comércio': 'Liga o país selecionado aos 10 parceiros que mais compram ou vendem para ele (mercadorias, fonte BACI/CEPII). A lista ao lado diz quem é quem e quanto; a seta mostra o sentido: → exporta, ← importa, ⇄ os dois.',
+  'Estados': 'Mostra as divisões internas (estados, províncias) do país selecionado; clique numa para ver bandeira e dados.',
+  'Viagem no tempo': 'Troca o mapa pelas fronteiras de um ano do passado, com a linha do tempo embaixo.',
+};
+
 const svCount = (l: string) => Object.values(STREETVIEW).filter((v) => v === l).length;
 
 /** One button of the rail, icon + name (icons alone were hard to guess): a toggle (`onClick` + `pressed`) or a link (`href`). */
 export function RailButton({ label, icon: Ico, pressed, onClick, href }: { label: string; icon: IconType; pressed?: boolean; onClick?: () => void; href?: string }) {
   const body = <><Ico size={16} weight="light" aria-hidden />{label}</>;
-  return href
+  const btn = href
     ? <Link className="rail__btn" href={href}>{body}</Link>
     : <button type="button" className="rail__btn" aria-pressed={pressed} onClick={onClick}>{body}</button>;
+  const info = INFO[label]; // spec 040: a focusable (i) beside the button opens its explanation directly
+  return info ? <div className="rail__row">{btn}<Hint k={label} text={info} /></div> : btn;
 }
 
 export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, trade, ranking, children }: Props) {
@@ -55,7 +71,7 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, tr
         <List size={18} weight="light" aria-hidden /><span>{current.label}</span>
       </button>
       {/* any pick inside closes the phone menu (no effect on desktop) */}
-      <nav id="rail" className="rail" aria-label="Camadas e páginas" onClick={(e) => (e.target as Element).closest('button, a') && setOpen(false)}>
+      <nav id="rail" className="rail" aria-label="Camadas e páginas" onClick={(e) => (e.target as Element).closest('button:not(.hint), a') && setOpen(false)}>
         <div className="rail__group" role="group" aria-label="Camada do mapa">
           {LAYERS.map((l) => (
             <RailButton key={l.id} label={l.label} icon={l.icon} pressed={layer === l.id} onClick={() => onChange(l.id)} />
@@ -90,6 +106,16 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, tr
           </ul>
         )}
         {layer === 'ranking' && ranking}
+        {trade?.on && (
+          <section className="legend legend--trade" aria-label="Linhas de comércio no globo">
+            <h2 className="legend__h">Comércio de {trade.self} <Hint k="Comércio" text={INFO['Comércio']} /></h2>
+            <ul>
+              {trade.lines.map((l) => (
+                <li key={l.iso}><span>{l.label}</span><span className="legend__n">{l.detail}</span></li>
+              ))}
+            </ul>
+          </section>
+        )}
         {layer === 'regime' && (
           <ul className="legend">
             {groups.length === 0 && <li>Sem dados de regime</li>}
