@@ -1,5 +1,5 @@
 # 039 — Chat: modos de resposta e "mostrar no mapa"
-Status: draft | Contrato: v1.10 (precisa de CR para `mode` e para o evento `map`) | API: atlas-api/specs/039-chat-modes.md (a escrever)
+Status: approved (dono, 2026-11-18; nomes em português; Narrar na segunda entrega) | Contrato: v1.10 (precisa de CR para `mode` e para o evento `map`) | API: atlas-api/specs/039-chat-modes.md (a escrever)
 
 ## Por quê
 Há muito para explorar e a pessoa não sabe por onde começar. O chat deve **guiar a exploração**, não só responder. Um agente só, com
