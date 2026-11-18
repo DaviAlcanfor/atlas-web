@@ -37,17 +37,8 @@ const LAYERS: { id: LayerId; label: string; icon: IconType }[] = [
   { id: 'ranking', label: 'Ranking', icon: Trophy },
 ];
 
-// spec 040: what each rail button does, one tap away on its (i). Fixed text.
-const INFO: Record<string, string> = {
-  'Padrão': 'Mapa em pontos: os países com conteúdo no Atlas ficam em destaque; clique num país para abrir o painel.',
-  'Regime político': 'Pinta cada país pela forma de governo (democracia, monarquia etc.). A legenda aparece ao lado; o texto de regime ainda não é verificado.',
-  'Bandeiras': 'Cobre cada país com a sua bandeira.',
-  'GeoGuessr': 'Mostra onde o Google Street View cobre o país, para quem joga GeoGuessr.',
-  'Ranking': 'Pinta os países por um indicador (população, renda etc.): quanto mais forte a cor, maior o valor. Escolha o indicador no painel ao lado.',
-  'Comércio': 'Liga o país selecionado aos 10 parceiros que mais compram ou vendem para ele (mercadorias, fonte BACI/CEPII). A lista ao lado diz quem é quem e quanto; a seta mostra o sentido: → exporta, ← importa, ⇄ os dois.',
-  'Estados': 'Mostra as divisões internas (estados, províncias) do país selecionado; clique numa para ver bandeira e dados.',
-  'Viagem no tempo': 'Troca o mapa pelas fronteiras de um ano do passado, com a linha do tempo embaixo.',
-};
+// spec 040: the (i) beside the trade legend title. Fixed text.
+const COMERCIO_INFO = 'Liga o país selecionado aos 10 parceiros que mais compram ou vendem para ele (mercadorias, fonte BACI/CEPII). A lista ao lado diz quem é quem e quanto; a seta mostra o sentido: → exporta, ← importa, ⇄ os dois.';
 
 const svCount = (l: string) => Object.values(STREETVIEW).filter((v) => v === l).length;
 
@@ -57,8 +48,7 @@ export function RailButton({ label, icon: Ico, pressed, onClick, href }: { label
   const btn = href
     ? <Link className="rail__btn" href={href}>{body}</Link>
     : <button type="button" className="rail__btn" aria-pressed={pressed} onClick={onClick}>{body}</button>;
-  const info = INFO[label]; // spec 040: a focusable (i) beside the button opens its explanation directly
-  return info ? <div className="rail__row">{btn}<Hint k={label} text={info} /></div> : btn;
+  return btn;
 }
 
 export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, trade, ranking, children }: Props) {
@@ -108,7 +98,7 @@ export function LayerToggle({ layer, onChange, regimes, flagsLoading, states, tr
         {layer === 'ranking' && ranking}
         {trade?.on && (
           <section className="legend legend--trade" aria-label="Linhas de comércio no globo">
-            <h2 className="legend__h">Comércio de {trade.self} <Hint k="Comércio" text={INFO['Comércio']} /></h2>
+            <h2 className="legend__h">Comércio de {trade.self} <Hint k="Comércio" text={COMERCIO_INFO} /></h2>
             <ul>
               {trade.lines.map((l) => (
                 <li key={l.iso}><span>{l.label}</span><span className="legend__n">{l.detail}</span></li>
