@@ -80,6 +80,19 @@ comerciais destacados, governador no hover do estado.
 | Wireup (injeção de dependências) | Recomendação: só depois da refatoração em services, se ainda fizer falta |
 | E-mails/mensagens automáticas | Destinatários, frequência, canal; GitHub Actions agendado resolve sem servidor sempre ligado |
 
+### Estado em 2026-11-18 (tudo mergeado em `main`, produção no ar)
+**Feito da lista de 2026-11-17:** tabelas no chat; chat não fecha ao clicar fora; consultas das tools com argumentos (036 A);
+várias conversas no navegador (036 B); URL e título acompanham a viagem no tempo (036 C); carregamento com curiosidades, barra e etapa
+(037 A); h1 e contraste (037 B); medição de cache (037); polos e Rússia; parceiros comerciais destacados; governador no hover do estado;
+logs de uso das tools, sem texto do usuário, 14 dias (API #33, spec 038 A); testes de prompt injection no CI com 3 endurecimentos
+(API #34, 038 B). Ondas 1 a 3 do plano abaixo (chat, estados fase 2, bolsa, organizações, Nobel, acontecendo agora) estão no ar.
+
+**Ainda a fazer:** nome da linha no comércio aliado e "i" direto; mascote e ícone do chat (proposta visual antes); fatos dos polities
+na viagem no tempo (só dado real, nunca inventado) e expor ao agente; tool de território (evento SSE novo + CR); modo aula; modos
+`/learn` e `/analyse`; refatoração da API em services (branch `refactor/backend-layout`, em andamento); ondas 4 e 5.
+**Bugs sem reprodução:** Groenlândia e viagem no tempo: o dono precisa mandar passo a passo ou print.
+**Esperam decisão do dono:** as perguntas da tabela "Decisão do dono" abaixo (login, teto por conta, multiagentes, Jev, busca na web).
+
 ### Plano revisto em 2026-11-17 (dono: "planeja como fazer o resto e dale" = aprovação das ondas abaixo)
 Feito desde 2026-11-15: 029 fases 2 e 3 (BACI no ar, `/trade`, arcos, botão Comércio, `/economia/[iso2]`), 030 layout do celular,
 seções recolhíveis, contrato v1.7/v1.8 (CR-009, CR-010) colado pelo agente a pedido do dono (PRs api#26, web#34).
