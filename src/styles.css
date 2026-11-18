@@ -217,7 +217,7 @@ button:disabled, [aria-disabled='true'] { cursor: default; }
 .gpage__search { display: block; width: 100%; margin: 24px 0 8px; padding: 10px 12px; font: 400 14px/1.2 var(--f-sans); color: var(--c-text); background: var(--c-panel-solid); border: 1px solid var(--c-line-strong); border-radius: var(--r); }
 .gpage__search::placeholder { color: var(--c-text-faint); }
 .gpage .note { margin-top: 16px; }
-.gpage { padding-left: max(24px, calc(50vw - 560px)); padding-right: max(24px, calc(50vw - 560px)); }
+.gpage { padding-left: max(24px, calc(50vw - 800px)); padding-right: max(24px, calc(50vw - 800px)); }
 .gpage__intro { margin: 8px 0 0; max-width: 560px; color: var(--c-text-dim); }
 /* spec 023: sticky index on the left, themed sections on the right */
 .gpage__layout { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; margin-top: 24px; }
@@ -433,7 +433,7 @@ button:disabled, [aria-disabled='true'] { cursor: default; }
 .comp__legend b { font: 500 11px/1 var(--f-mono); color: var(--c-text); }
 
 /* ---------- currency page (spec 009) ---------- */
-.cpage { position: fixed; inset: 0; z-index: var(--z-overlay); overflow-y: auto; padding: 28px max(16px, calc(50vw - 440px)) 56px; background: var(--c-abyss); overflow-wrap: anywhere; scrollbar-width: thin; scrollbar-color: var(--c-line-strong) transparent; }
+.cpage { position: fixed; inset: 0; z-index: var(--z-overlay); overflow-y: auto; padding: 28px max(16px, calc(50vw - 800px)) 56px; background: var(--c-abyss); overflow-wrap: anywhere; scrollbar-width: thin; scrollbar-color: var(--c-line-strong) transparent; }
 .cpage h1 { margin: 6px 0 0; font: 600 36px/1.1 var(--f-sans); letter-spacing: -0.02em; }
 .cpage a { color: var(--c-ice); text-underline-offset: 3px; }
 .cpage .gpage__kind { margin-top: 22px; }
