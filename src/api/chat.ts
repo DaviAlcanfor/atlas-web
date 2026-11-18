@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { ApiError } from './client';
 import * as S from './schemas';
+import { cleanMap, type MapTarget, type Mode } from '../lib/chatModes';
 import type { Source } from './types';
 
 export type ChatMessage = z.infer<typeof S.ChatMessage>;
@@ -10,6 +11,7 @@ export type ChatEvent =
   | { type: 'text'; delta: string }
   | { type: 'tool'; name: string; args: Record<string, unknown> }
   | { type: 'countries'; iso2: string[] }
+  | ({ type: 'map' } & MapTarget)
   | { type: 'done'; sources: Source[] }
   | { type: 'error'; message: string };
 
@@ -17,6 +19,8 @@ const EVENTS = {
   text: z.object({ delta: z.string() }),
   tool: z.object({ name: z.string(), args: z.record(z.string(), z.unknown()) }),
   countries: z.object({ iso2: z.array(z.string()) }),
+  // spec 039: loose on purpose, cleanMap drops what the app does not know (an unknown layer must not hide valid countries)
+  map: z.object({ iso2: z.array(z.unknown()), layer: z.unknown().optional(), year: z.unknown().optional() }),
   done: z.object({ sources: z.array(S.Source) }),
   error: z.object({ message: z.string() }),
 };
@@ -52,23 +56,25 @@ export function toChatEvent({ event, data }: { event: string; data: string }): C
   if (!schema) return null;
   try {
     const r = schema.safeParse(JSON.parse(data));
-    return r.success ? ({ type: event, ...r.data } as ChatEvent) : null;
+    if (!r.success) return null;
+    if (event === 'map') { const m = cleanMap(r.data as Parameters<typeof cleanMap>[0], null); return m && { type: 'map', ...m }; }
+    return { type: event, ...r.data } as ChatEvent;
   } catch {
     return null;
   }
 }
 
 /** Streams the answer to `messages` (1..20, last one from the user). Throws ApiError on 422/429/503. */
-export async function* streamChat(messages: ChatMessage[], signal?: AbortSignal): AsyncGenerator<ChatEvent> {
+export async function* streamChat(messages: ChatMessage[], signal?: AbortSignal, mode?: Mode | null): AsyncGenerator<ChatEvent> {
   const url = process.env.NEXT_PUBLIC_API_URL;
   if (!url) {
-    yield* (await import('./mocks/chat')).mockChat(messages, signal);
+    yield* (await import('./mocks/chat')).mockChat(messages, signal, mode);
     return;
   }
   const res = await fetch(`${url.replace(/\/+$/, '')}/v1/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream, application/problem+json' },
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify(mode ? { messages, mode } : { messages }),
     signal,
   });
   if (!res.ok || !res.body) {
