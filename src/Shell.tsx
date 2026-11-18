@@ -34,6 +34,9 @@ import { RankingLayer, rankColors } from './components/RankingLayer';
 import { AtlasProvider, countryPath, selectionFromPath, stateSlugFromPath, statePath, useAtlas } from './state';
 import { idOf } from './types';
 
+// The chatbot is off in production for now (owner, 2026-11-18); NEXT_PUBLIC_CHAT_ENABLED=true turns it back on.
+const CHAT_ENABLED = process.env.NEXT_PUBLIC_CHAT_ENABLED === 'true';
+
 // three.js touches window/WebGL at import time: browser only, and in its own chunk (pages without the globe skip ~1 MB).
 const Globe = dynamic(() => import('./components/Globe').then((m) => m.Globe), { ssr: false });
 
@@ -325,7 +328,7 @@ function Chrome({ children }: { children: ReactNode }) {
             </LayerToggle>}
           </>
         )}
-        {globeRoute && <ChatDrawer onCountries={onChatCountries} />}
+        {globeRoute && CHAT_ENABLED && <ChatDrawer onCountries={onChatCountries} />}
         {children}
         <Footer />
       </GlossaryProvider>
