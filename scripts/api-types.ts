@@ -6,7 +6,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import openapiTS from 'openapi-typescript';
 
-const local = fileURLToPath(new URL('../../atlas-api/openapi.generated.json', import.meta.url));
+const local = process.env.OPENAPI_FILE ?? fileURLToPath(new URL('../../atlas-api/openapi.generated.json', import.meta.url));
 const remote = 'https://atlas-api.fastapicloud.dev/openapi.json';
 const out = fileURLToPath(new URL('../src/api/openapi.gen.ts', import.meta.url));
 
