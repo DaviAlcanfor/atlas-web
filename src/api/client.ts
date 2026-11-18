@@ -49,6 +49,9 @@ export function createClient(baseUrl: string, timeoutMs?: number): AtlasApi {
     search: async (text) => (await get(`/v1/search?q=${q(text)}`, S.SearchResults)).items,
     glossary: async () => (await get('/v1/glossary', S.GlossaryList)).items,
     leaders: async (iso2) => (await get(`/v1/countries/${q(iso2)}/leaders`, S.LeaderList)).items,
+    entityWikipedia: async (qid) => {
+      try { return await get(`/v1/entities/${q(qid)}/wikipedia`, S.WikipediaSummary); } catch (e) { if (isNotFound(e)) return null; throw e; }
+    },
     people: (iso2, domain, limit) => {
       const p = new URLSearchParams();
       if (domain) p.set('domain', domain);

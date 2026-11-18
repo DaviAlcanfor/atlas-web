@@ -101,7 +101,7 @@ type Link = PolityDetail['predecessors'][number];
 const link = (polity_id: string, name: string, year: number, kind: Link['kind']): Link => ({ polity_id, name, year, kind });
 const polity = (p: Partial<PolityDetail> & Pick<PolityDetail, 'id' | 'name' | 'type' | 'start_year' | 'end_year'>): PolityDetail => ({
   iso2: null, start_precision: 'exact', end_precision: p.end_year === null ? null : 'exact', names: [{ name: p.name, from_year: p.start_year, to_year: p.end_year }],
-  predecessors: [], successors: [], regime: null, summary: null, politics: null, timeline: [], wikipedia: null, sources: [MOCK_SOURCE], updated_at: T, ...p,
+  predecessors: [], successors: [], regime: null, summary: null, politics: null, timeline: [], wikipedia: null, wikipedia_summary: null, sources: [MOCK_SOURCE], updated_at: T, ...p,
 });
 
 const HISTORICAL: PolityDetail[] = [

@@ -9,6 +9,7 @@ import subdivisions from './subdivisions.json';
 import ideologies from './ideologies.json';
 import trade from './trade.json';
 import tech from './tech.json';
+import wikipedia from './wikipedia.json';
 import { COUNTRIES, COUNTRY_SUMMARIES, GLOSSARY, LEADERS, LINKS, PEOPLE, POLITIES, SNAPSHOTS } from './fixtures';
 
 const MOCK_NEWS = {
@@ -128,6 +129,10 @@ export function createMockApi(delayMs = 150): AtlasApi {
     tech: (iso2) => wait(() => { // spec 041: JP only (illustrative figures); everyone else = no data, like the real API before the import
       const t = (tech as Record<string, unknown>)[iso2] ?? { year: null, products: [], sources: [] };
       return parse(S.CountryTech, t, `mock tech ${iso2}`);
+    }),
+    entityWikipedia: (qid) => wait(() => { // spec 042: sample leads; any other Q-id = no article (404 in the real API)
+      const w = (wikipedia as Record<string, unknown>)[qid];
+      return w ? parse(S.WikipediaSummary, w, `mock wikipedia ${qid}`) : null;
     }),
     currency: (code) => wait(() => {
       const c = (v12.currency as Record<string, unknown>)[code];
